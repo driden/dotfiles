@@ -82,6 +82,9 @@ set expandtab
 " show mode
 set showmode
 
+" Always show line status
+set laststatus=2
+
 " Display matches for a search pattern while you type.
 set incsearch
 

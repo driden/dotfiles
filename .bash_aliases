@@ -23,3 +23,7 @@ alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo
 # reference https://www.atlassian.com/git/tutorials/dotfiles
 # dotfiles git alias
 alias dotfiles='/usr/bin/git --git-dir=$HOME/dotfiles/ --work-tree=$HOME'
+alias sdot='sudo /usr/bin/git --git-dir=$HOME/dotfiles/ --work-tree=$HOME'
+# editors
+alias vim=nvim
+alias vi=nvim
