@@ -16,85 +16,50 @@ call plug#end()
 "    Plugins END
 " -------------------------------------------------------------------------
 
-" hidden buffers
-set hidden
+set hidden " hidden buffers
 
 " no backup
 set nobackup
 set nowritebackup
 
-" Give more space for displaying messages.
-set cmdheight=2
+set cmdheight=2 " Give more space for displaying messages.
 
 " Having longer updatetime (default is 4000 ms = 4 s) leads to noticeable
 " delays and poor user experience.
 set updatetime=300
-
-" Don't pass messages to |ins-completion-menu|.
-set shortmess+=c
-
+set shortmess+=c " Don't pass messages to |ins-completion-menu|.
 " Always show the signcolumn, otherwise it would shift the text each time
 " diagnostics appear/become resolved.
 set signcolumn=yes
-
-" turn on syntax highlighting
-syntax on
-
-" share clipboard with OS
-set clipboard=unnamedplus
-
-" set cursorline
-set cursorline
-
-" no wrapping
-set nowrap
-
-" set line number
-set number
-
-" not compatible with earlier versions
-set nocompatible
-
-" always start with ignorecase option on
-set ignorecase
-
+syntax on " turn on syntax highlighting
+set clipboard=unnamedplus " share clipboard with OS
+set cursorline " set cursorline
+set nowrap " no wrapping
+set number " set line number
+set nocompatible " not compatible with earlier versions
+set ignorecase " always start with ignorecase option on
+set autoindent " make vim use the indent of the previous line for a newly created one.
+set tabstop=4 " show existing tab with 4 spaces width
+set shiftwidth=2 " when indenting with '>' use 2 spaces width
+set expandtab " change tab to spaces
+set incsearch " Display matches for a search pattern while you type.
+set background=dark " dark background
+set termguicolors
 " delete the white space at the start of the line, a line break and the
 " character before where Insert mode started.
 set backspace=indent,eol,start
 
-" make vim use the indent of the previous line for a newly created one.
-set autoindent
-
-" detect files based on type
-filetype on
-" when a files is edited, it's plugin file is loaded
-filetype plugin on
-" mantain indentation
-filetype indent on
-
-" show existing tab with 4 spaces width
-set tabstop=4
-
-" when indenting with '>' use 2 spaces width
-set shiftwidth=2
-
-" change tab to spaces
-set expandtab
+filetype on " detect files based on type
+filetype plugin on " when a files is edited, it's plugin file is loaded
+filetype indent on " mantain indentation 
 
 " show mode
-set showmode
+" set showmode
 
 " Always show line status
-set laststatus=2
+" set laststatus=2
 
-" Display matches for a search pattern while you type.
-set incsearch
 
-" dark background
-set background=dark
-
-" theme
-set termguicolors
 let g:gruvbox_contrast_dark='hard'
 colorscheme gruvbox
 
