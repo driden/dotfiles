@@ -7,10 +7,16 @@ Plug 'gruvbox-community/gruvbox'
 Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app & yarn install'  }
 Plug 'fatih/vim-go', { 'do': 'GoUpdateBinaries' }
 Plug 'neoclide/coc.nvim', {'do': 'yarn install --frozen-lockfile'}
+" coc extensions
+let g:coc_global_extensions = ['coc-tslint-plugin', 'coc-tsserver', 'coc-emmet', 'coc-css', 'coc-html', 'coc-json', 'coc-yank', 'coc-prettier']
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
+let g:airline_theme='base16_gruvbox_dark_hard'
 Plug '~/.fzf/'
-
+Plug 'tpope/vim-surround'
+Plug 'junegunn/rainbow_parentheses.vim'
+let g:rainbow#max_level = 16
+let g:rainbow#pairs = [['(', ')'], ['[', ']'],['{', '}']]
 call plug#end()
 " -------------------------------------------------------------------------
 "    Plugins END
@@ -54,7 +60,7 @@ filetype plugin on " when a files is edited, it's plugin file is loaded
 filetype indent on " mantain indentation 
 
 " show mode
-" set showmode
+set noshowmode
 
 " Always show line status
 " set laststatus=2
