@@ -50,7 +50,6 @@ set shiftwidth=2 " when indenting with '>' use 2 spaces width
 set expandtab " change tab to spaces
 set incsearch " Display matches for a search pattern while you type.
 set background=dark " dark background
-set termguicolors
 " delete the white space at the start of the line, a line break and the
 " character before where Insert mode started.
 set backspace=indent,eol,start
@@ -65,7 +64,7 @@ set noshowmode
 " Always show line status
 " set laststatus=2
 
-
+set termguicolors
 let g:gruvbox_contrast_dark='hard'
 colorscheme gruvbox
 
