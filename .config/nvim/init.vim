@@ -11,12 +11,16 @@ Plug 'neoclide/coc.nvim', {'do': 'yarn install --frozen-lockfile'}
 let g:coc_global_extensions = ['coc-tslint-plugin', 'coc-tsserver', 'coc-emmet', 'coc-css', 'coc-html', 'coc-json', 'coc-yank', 'coc-prettier']
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
-let g:airline_theme='base16_gruvbox_dark_hard'
+let g:airline_theme='onedark'
 Plug '~/.fzf/'
 Plug 'tpope/vim-surround'
 Plug 'junegunn/rainbow_parentheses.vim'
 let g:rainbow#max_level = 16
 let g:rainbow#pairs = [['(', ')'], ['[', ']'],['{', '}']]
+
+Plug 'sheerun/vim-polyglot'
+Plug 'joshdick/onedark.vim'
+Plug 'preservim/nerdtree'
 call plug#end()
 " -------------------------------------------------------------------------
 "    Plugins END
@@ -41,7 +45,7 @@ syntax on " turn on syntax highlighting
 set clipboard=unnamedplus " share clipboard with OS
 set cursorline " set cursorline
 set nowrap " no wrapping
-set number " set line number
+set relativenumber " set line number
 set nocompatible " not compatible with earlier versions
 set ignorecase " always start with ignorecase option on
 set autoindent " make vim use the indent of the previous line for a newly created one.
@@ -56,17 +60,21 @@ set backspace=indent,eol,start
 
 filetype on " detect files based on type
 filetype plugin on " when a files is edited, it's plugin file is loaded
-filetype indent on " mantain indentation 
+filetype indent on " mantain indentation
 
 " show mode
 set noshowmode
 
+" leader
+let mapleader=" "
 " Always show line status
 " set laststatus=2
 
+nnoremap <leader>p :FZF<CR>
+
 set termguicolors
 let g:gruvbox_contrast_dark='hard'
-colorscheme gruvbox
+colorscheme onedark
 
 " refresh preview on write/normal mode
 let g:mkdp_refresh_slow=1
