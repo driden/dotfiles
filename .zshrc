@@ -1,5 +1,5 @@
 # General
-export PATH="~/neovim/bin:/bin:/usr/bin:/usr/local/bin:${PATH}"
+export PATH="~/neovim/bin:/bin:/usr/bin:/usr/local/bin:/usr/local/sbin:${PATH}"
  
 export ZSH="$HOME/.oh-my-zsh"
 export MANPATH="/usr/local/man:$MANPATH"
