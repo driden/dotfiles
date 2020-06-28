@@ -1,7 +1,7 @@
 # General
-
-export PATH="$HOME/neovim/bin:$PATH"
-export ZSH="/home/iloureiro/.oh-my-zsh"
+export PATH="~/neovim/bin:/bin:/usr/bin:/usr/local/bin:${PATH}"
+ 
+export ZSH="$HOME/.oh-my-zsh"
 export MANPATH="/usr/local/man:$MANPATH"
 export LANG=en_US.UTF-8
 export BROWSER=/usr/bin/firefox
@@ -19,17 +19,18 @@ fi
 #
 # ZSH settings
 #
+ZSH_DISABLE_COMPFIX="true"
 ZSH_THEME="sorin"
 CASE_SENSITIVE="true"
 HYPHEN_INSENSITIVE="true"
 ENABLE_CORRECTION="true"
 COMPLETION_WAITING_DOTS="true"
 
-plugins=(git npm node fzf)
-source $ZSH/oh-my-zsh.sh
-
+plugins=(git git-prompt battery npm node fzf)
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+source $HOME/.oh-my-zsh/oh-my-zsh.sh
 
 # User configuration
 if command -v tmux &> /dev/null && [ -n "$PS1" ] && [[ ! "$TERM" =~ screen ]] && [[ ! "$TERM" =~ tmux ]] && [ -z "$TMUX" ]; then
@@ -47,3 +48,4 @@ alias v="$EDITOR"
 
 # dotfiles versioning with bare repo
 alias dotfiles='/usr/bin/git --git-dir=$HOME/dotfiles/ --work-tree=$HOME'
+
