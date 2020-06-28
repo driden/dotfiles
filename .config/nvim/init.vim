@@ -21,6 +21,7 @@ let g:rainbow#pairs = [['(', ')'], ['[', ']'],['{', '}']]
 Plug 'sheerun/vim-polyglot'
 Plug 'joshdick/onedark.vim'
 Plug 'preservim/nerdtree'
+Plug 'tpope/vim-fugitive'
 call plug#end()
 " -------------------------------------------------------------------------
 "    Plugins END
