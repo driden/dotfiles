@@ -25,6 +25,9 @@ Plug 'tpope/vim-fugitive'
 
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
+
+Plug 'vimwiki/vimwiki'
+
 call plug#end()
 " -------------------------------------------------------------------------
 "    Plugins END
