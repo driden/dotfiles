@@ -17,17 +17,17 @@ font:
   size: 14
   normal:
     #family: "Dejavu Sans Mono"
-    family: "Ubuntu Mono"
+    family: "MesloLGM Nerd Font Mono"
     style: Regular
   bold:
     #family: "Dejavu Sans Mono"
-    family: "Ubuntu Mono"
+    family: "MesloLGM Nerd Font Mono"
     style: Bold
   italic:
-    family: "Ubuntu Mono"
+    family: "MesloLGM Nerd Font Mono"
     style: Italic
   bold_italic:
-    family: "Ubuntu Mono"
+    family: "MesloLGM Nerd Font Mono"
     style: Bold Italic
 # Colors (One Dark)
 colors:

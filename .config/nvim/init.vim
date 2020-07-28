@@ -17,6 +17,7 @@ Plug 'tpope/vim-surround'
 Plug 'junegunn/rainbow_parentheses.vim'
 let g:rainbow#max_level = 16
 let g:rainbow#pairs = [['(', ')'], ['[', ']'],['{', '}']]
+let g:rainbow#blacklist = [59, 238, 248]
 
 Plug 'sheerun/vim-polyglot'
 Plug 'joshdick/onedark.vim'
@@ -76,12 +77,14 @@ let mapleader=" "
 " Always show line status
 " set laststatus=2
 
-nnoremap <leader>p :FZF<CR>
-
 set termguicolors
 let g:gruvbox_contrast_dark='hard'
 colorscheme onedark
 
+augroup rainbow_parens
+  autocmd!
+  autocmd FileType javascript,typescript,json,go RainbowParentheses
+augroup END
 " refresh preview on write/normal mode
 let g:mkdp_refresh_slow=1
 

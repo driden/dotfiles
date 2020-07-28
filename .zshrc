@@ -7,6 +7,11 @@ export LANG=en_US.UTF-8
 export BROWSER=/usr/bin/firefox
 export FZF_DEFAULT_COMMAND='rg --hidden -l ""'
 export EDITOR='nvim'
+
+# GO
+export GOPATH=$HOME/go
+export PATH=$PATH:$GOPATH/bin
+
 if [[ -n $SSH_CONNECTION ]]; then
   export EDITOR='vim'
 fi
