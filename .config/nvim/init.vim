@@ -33,6 +33,10 @@ call plug#end()
 "    Plugins END
 " -------------------------------------------------------------------------
 
+"set list of characters to show on invisible characters
+set listchars=tab:>·,trail:~,extends:>,precedes:<,space:.
+set list
+
 set hidden " hidden buffers
 
 " no backup
