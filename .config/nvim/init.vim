@@ -3,7 +3,8 @@
 " -------------------------------------------------------------------------
 call plug#begin('~/.config/nvim/plugged')
 
-Plug 'gruvbox-community/gruvbox'
+Plug 'sainnhe/gruvbox-material'
+Plug 'drewtempelmeyer/palenight.vim'
 Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app & yarn install'  }
 Plug 'fatih/vim-go', { 'do': 'GoUpdateBinaries' }
 Plug 'neoclide/coc.nvim', {'do': 'yarn install --frozen-lockfile'}
@@ -11,7 +12,7 @@ Plug 'neoclide/coc.nvim', {'do': 'yarn install --frozen-lockfile'}
 let g:coc_global_extensions = ['coc-tslint-plugin', 'coc-tsserver', 'coc-emmet', 'coc-css', 'coc-html', 'coc-json', 'coc-yank', 'coc-prettier']
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
-let g:airline_theme='onedark'
+let g:airline_theme='gruvbox_material'
 Plug '~/.fzf/'
 Plug 'tpope/vim-surround'
 Plug 'junegunn/rainbow_parentheses.vim'
@@ -82,8 +83,8 @@ let mapleader=" "
 " set laststatus=2
 
 set termguicolors
-let g:gruvbox_contrast_dark='hard'
-colorscheme onedark
+let g:gruvbox_material_background = 'hard' "soft,medium, hard
+colorscheme gruvbox-material
 
 augroup rainbow_parens
   autocmd!
