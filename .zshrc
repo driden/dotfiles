@@ -16,10 +16,21 @@ if [[ -n $SSH_CONNECTION ]]; then
   export EDITOR='vim'
 fi
 
+
+#
+# FZF
+#
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
 #
 # Work
 #
 [ -f ~/.work.zsh ] && source ~/.work.zsh
+
+#
+# Scripts
+#
+[ -f ~/scripts/gbd.zsh ] && source ~/scripts/gbd.zsh
 
 #
 # ZSH settings
@@ -33,7 +44,6 @@ COMPLETION_WAITING_DOTS="true"
 
 plugins=(git git-prompt battery npm node fzf)
 
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 source $HOME/.oh-my-zsh/oh-my-zsh.sh
 

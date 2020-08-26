@@ -1,6 +1,6 @@
 env:
   TERM: "xterm-256color"
-background_opacity: 0.9
+  background_opacity: "0.95"
 window.dynamic_title: true
 live_config_reload: true
 selection:
