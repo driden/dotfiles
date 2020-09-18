@@ -210,10 +210,10 @@ nnoremap <C-p> :GFiles<CR>
 nnoremap <Leader>pf :Files<CR>
 
 " Windows
-nnoremap <silent> <C-h>:wincmd h<CR>
-nnoremap <silent> <C-j>:wincmd j<CR>
-nnoremap <silent> <C-k>:wincmd k<CR>
-nnoremap <silent> <C-l>:wincmd l<CR>
+nmap <silent> <C-h> :wincmd h<CR>
+nmap <silent> <C-j> :wincmd j<CR>
+nmap <silent> <C-k> :wincmd k<CR>
+nmap <silent> <C-l> :wincmd l<CR>
 
 " Buffers
 nnoremap <leader>bd :bd<CR>
