@@ -13,7 +13,6 @@ let g:coc_global_extensions = ['coc-tslint-plugin', 'coc-tsserver', 'coc-emmet',
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 let g:airline_theme='gruvbox_material'
-Plug '~/.fzf/'
 Plug 'tpope/vim-surround'
 Plug 'junegunn/rainbow_parentheses.vim'
 let g:rainbow#max_level = 16
@@ -77,6 +76,8 @@ filetype indent on " mantain indentation
 " show mode
 set noshowmode
 
+" fzf
+set rtp+=/usr/local/bin/fzf
 " leader
 let mapleader=" "
 " Always show line status
