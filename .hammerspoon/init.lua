@@ -132,15 +132,24 @@ hs_bind("left", hs.grid.pushWindowLeft)
 hs_bind("down", hs.grid.pushWindowDown)
 hs_bind("up", hs.grid.pushWindowUp)
 
--- bind hotkey
-hs_bind('n', function()
+h_bind('n', function()
     -- get the focused window
     local win = hs.window.focusedWindow()
+    local isFullScreen = win:isFullScreen()
+
+    if isFullScreen then
+        win:setFullScreen(false)
+    end
+    
     -- get the screen where the focused window is displayed, a.k.a. current screen
     local screen = win:screen()
-    -- compute the unitRect of the focused window relative to the current screen
-    -- and move the window to the next screen setting the same unitRect
     win:move(win:frame():toUnitRect(screen:frame()), screen:next(), true, 0)
+
+    if isFullScreen then
+        hs.timer.doAfter(0.6, function()
+        win:setFullScreen(true)
+        end)
+    end
 end)
 
 h_bind('f', function()
