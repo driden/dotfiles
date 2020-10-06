@@ -70,5 +70,5 @@ alias v="$EDITOR"
 alias gtree="git log --oneline --decorate --all --graph"
 
 # dotfiles versioning with bare repo
-alias dotfiles='/usr/bin/git --git-dir=$HOME/dotfiles/ --work-tree=$HOME'
+alias dotfiles='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
 
