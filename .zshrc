@@ -1,5 +1,6 @@
 # General
 export PATH="$HOME/neovim/bin:/bin:/usr/bin:/usr/local/bin:/usr/local/sbin:${PATH}"
+export PATH="${PATH}:$HOME/.emacs.d/bin"
  
 export ZSH="$HOME/.oh-my-zsh"
 export MANPATH="/usr/local/man:$MANPATH"
@@ -31,6 +32,12 @@ fi
 # Scripts
 #
 [ -f ~/scripts/gbd.zsh ] && source ~/scripts/gbd.zsh
+[ -f ~/scripts/jump.zsh ] && source ~/scripts/jump.zsh
+
+
+# Node version manager
+#
+[ -f ~/nvm.zsh ] && source ~/nvm.zsh
 
 #
 # ZSH settings
