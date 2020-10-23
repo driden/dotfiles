@@ -5,11 +5,6 @@
 local hyper = {"cmd", "alt", "ctrl"}
 local hypershift = {"cmd", "alt", "ctrl", "shift"}
 
-local logger = hs.logger.new('config', 'debug')
-hs.hotkey.bind(hyper, "w", function()
-    hs.alert.show("Hello World!")
-end)
-
 function h_bind(key, func)
     hs.hotkey.bind(hyper, key, func)
 end
@@ -39,7 +34,6 @@ function positionWindow(x, y, w, h)
         f.y = s.y + s.h * y
         f.w = s.w * w
         f.h = s.h * h
-        -- hs.alert.show(s)
         win:setFrame(f)
     end
 end
@@ -140,7 +134,8 @@ h_bind('n', function()
     if isFullScreen then
         win:setFullScreen(false)
     end
-    
+
+    --
     -- get the screen where the focused window is displayed, a.k.a. current screen
     local screen = win:screen()
     win:move(win:frame():toUnitRect(screen:frame()), screen:next(), true, 0)
@@ -155,6 +150,18 @@ end)
 h_bind('f', function()
     local win = hs.window.focusedWindow()
     win:toggleFullscreen()
+end)
+
+h_bind("m", function()
+    local currentAudio = hs.audiodevice.current(true).device
+
+    if currentAudio:muted() then
+        currentAudio:setMuted(false)
+        hs.alert.show("unmuted mic")
+    else
+        currentAudio:setMuted(true)
+        hs.alert.show("muted mic")
+    end
 end)
 
 hs.alert.show("Hammerspoon started")
