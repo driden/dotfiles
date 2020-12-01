@@ -26,7 +26,7 @@ Plug 'tpope/vim-fugitive'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 
-Plug 'vimwiki/vimwiki'
+"Plug 'vimwiki/vimwiki'
 Plug 'machakann/vim-sandwich'
 call plug#end()
 " -------------------------------------------------------------------------
@@ -35,7 +35,7 @@ call plug#end()
 
 "set list of characters to show on invisible characters
 set listchars=tab:>·,trail:~,extends:>,precedes:<,space:.
-set list
+set nolist
 
 set hidden " hidden buffers
 
@@ -203,9 +203,12 @@ nnoremap <silent> <space>p  :<C-u>CocListResume<CR>
 let g:go_def_mapping_enabled = 0
 
 " Sweet Sweet FuGITive
-nmap <leader>gh :diffget //3<CR>
-nmap <leader>gu :diffget //2<CR>
+" der
+nmap <leader>gj :diffget //3<CR>
+" izq
+nmap <leader>gf :diffget //2<CR>
 nmap <leader>gs :G<CR>
+nmap <leader>gc :GCheckout<CR>
 
 nnoremap <C-p> :GFiles<CR>
 nnoremap <Leader>pf :Files<CR>
