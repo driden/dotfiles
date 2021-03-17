@@ -22,21 +22,11 @@ fi
 
 
 #
-# FZF
-#
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-
-#
-# Work
-#
-[ -f ~/.work.zsh ] && source ~/.work.zsh
-
-#
 # Scripts
 #
 [ -f ~/scripts/gbd.zsh ] && source ~/scripts/gbd.zsh
-[ -f ~/scripts/jump.zsh ] && source ~/scripts/jump.zsh
 [ -f ~/scripts/nvm.zsh ] && source ~/scripts/nvm.zsh
+[ -f ~/workscripts/jump.zsh ] && source ~/workscripts/jump.zsh
 
 
 #
