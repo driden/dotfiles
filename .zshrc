@@ -5,9 +5,10 @@ export PATH="${PATH}:$HOME/.emacs.d/bin"
 export ZSH="$HOME/.oh-my-zsh"
 export MANPATH="/usr/local/man:$MANPATH"
 export LANG=en_US.UTF-8
-export BROWSER=/usr/bin/firefox
+export BROWSER=/usr/bin/brave
 export FZF_DEFAULT_COMMAND='rg --hidden -l ""'
 export EDITOR='nvim'
+export TERMINAL='kitty'
 
 # GO
 export GOPATH=$HOME/go
