@@ -43,7 +43,7 @@ fi
 # ZSH settings
 #
 ZSH_DISABLE_COMPFIX="true"
-ZSH_THEME="spaceship"
+ZSH_THEME="af-magic"
 CASE_SENSITIVE="true"
 HYPHEN_INSENSITIVE="true"
 ENABLE_CORRECTION="true"
