@@ -8,6 +8,8 @@ export LANG=en_US.UTF-8
 export BROWSER=/usr/bin/brave
 export FZF_DEFAULT_COMMAND='rg --hidden -l ""'
 export EDITOR='nvim'
+export MANPAGER='nvim +Man!'
+export MANWIDTH=999
 export TERMINAL='kitty'
 
 # GO
@@ -20,31 +22,18 @@ fi
 
 
 #
-# FZF
-#
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-
-#
-# Work
-#
-[ -f ~/.work.zsh ] && source ~/.work.zsh
-
-#
 # Scripts
 #
 [ -f ~/scripts/gbd.zsh ] && source ~/scripts/gbd.zsh
-[ -f ~/scripts/jump.zsh ] && source ~/scripts/jump.zsh
+[ -f ~/scripts/nvm.zsh ] && source ~/scripts/nvm.zsh
+[ -f ~/workscripts/jump.zsh ] && source ~/workscripts/jump.zsh
 
-
-# Node version manager
-#
-[ -f ~/nvm.zsh ] && source ~/nvm.zsh
 
 #
 # ZSH settings
 #
 ZSH_DISABLE_COMPFIX="true"
-ZSH_THEME="af-magic"
+ZSH_THEME="spaceship"
 CASE_SENSITIVE="true"
 HYPHEN_INSENSITIVE="true"
 ENABLE_CORRECTION="true"
@@ -68,10 +57,17 @@ alias vimc="$EDITOR $HOME/.config/nvim/init.vim"
 alias vim="$EDITOR"
 alias vi="$EDITOR"
 alias v="$EDITOR"
+alias gs="git status"
+alias gc="git commit"
+alias ga="git add"
+alias gpull="git pull"
+alias gpush="git push"
+alias gb="git branch"
+alias gcb="git branch | fzf | xargs git checkout"
 alias gtree="git log --oneline --decorate --all --graph"
 
 # dotfiles versioning with bare repo
-alias dotfiles='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
+alias config='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
 
 
 export PATH=$HOME/.toolbox/bin:$PATH
