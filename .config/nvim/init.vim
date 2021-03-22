@@ -4,8 +4,7 @@
 call plug#begin('~/.config/nvim/plugged')
 
 Plug 'sainnhe/gruvbox-material'
-Plug 'drewtempelmeyer/palenight.vim'
-Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app & yarn install'  }
+" Plug 'drewtempelmeyer/palenight.vim'
 Plug 'fatih/vim-go', { 'do': 'GoUpdateBinaries' }
 Plug 'neoclide/coc.nvim', {'do': 'yarn install --frozen-lockfile'}
 " coc extensions
@@ -20,7 +19,7 @@ let g:rainbow#pairs = [['(', ')'], ['[', ']'],['{', '}']]
 let g:rainbow#blacklist = [59, 238, 248]
 
 Plug 'sheerun/vim-polyglot'
-Plug 'joshdick/onedark.vim'
+" Plug 'joshdick/onedark.vim'
 Plug 'tpope/vim-fugitive'
 
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
@@ -202,13 +201,17 @@ nnoremap <silent> <space>p  :<C-u>CocListResume<CR>
 
 let g:go_def_mapping_enabled = 0
 
-" Sweet Sweet FuGITive
-" der
+" For Gvdiffsplit!
+" choose right
 nmap <leader>gj :diffget //3<CR>
-" izq
+" choose left
 nmap <leader>gf :diffget //2<CR>
+
 nmap <leader>gs :G<CR>
 nmap <leader>gc :GCheckout<CR>
+nmap <leader>gg :Gvdiffsplit!<CR>
+nmap <leader>gP :Git push<CR>
+nmap <leader>gp :Git pull<CR>
 
 nnoremap <C-p> :GFiles<CR>
 nnoremap <Leader>pf :Files<CR>
