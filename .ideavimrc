@@ -1,0 +1,45 @@
+""" Map leader to space ---------------------
+let mapleader=" "
+
+set surround
+set multiple-cursors
+set commentary
+set argtextobj
+set easymotion
+set ReplaceWithRegister
+
+""" Plugin settings -------------------------
+let g:argtextobj_pairs="[:],(:),<:>"
+set highlightedyanjk
+set easymotion
+
+""" Common settings -------------------------
+set showmode
+set so=5
+set incsearch
+set noh
+set ignorecase
+set relativenumber
+set number
+
+
+""" Idea specific settings ------------------
+set ideajoin
+set ideastatusicon=purple
+set idearefactormode=keep
+
+""" Mappings --------------------------------
+map <leader>f :action(easymotion-s)
+map <leader>e :action(easymotion-f)
+
+map <leader>z  :action ToggleDistractionFreeMode<CR>
+
+nnoremap <leader>wh <C-W>h
+nnoremap <leader>wl <C-W>l
+
+map <leader>rn :action RenameElement<CR>
+map <leader>gr :action FindUsages<CR>
+
+map <leader>p "+p
+map <leader>y "+y
+
