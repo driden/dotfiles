@@ -4,34 +4,48 @@
 call plug#begin('~/.config/nvim/plugged')
 
 Plug 'sainnhe/gruvbox-material'
+
 " Plug 'drewtempelmeyer/palenight.vim'
 Plug 'fatih/vim-go', { 'do': 'GoUpdateBinaries' }
 Plug 'neoclide/coc.nvim', {'do': 'yarn install --frozen-lockfile'}
+"
 " coc extensions
-let g:coc_global_extensions = ['coc-tslint-plugin', 'coc-tsserver', 'coc-emmet', 'coc-css', 'coc-html', 'coc-json', 'coc-yank', 'coc-prettier', 'coc-explorer']
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
-let g:airline_theme='gruvbox_material'
-Plug 'tpope/vim-surround'
-Plug 'junegunn/rainbow_parentheses.vim'
-let g:rainbow#max_level = 16
-let g:rainbow#pairs = [['(', ')'], ['[', ']'],['{', '}']]
-let g:rainbow#blacklist = [59, 238, 248]
 
-Plug 'sheerun/vim-polyglot'
+Plug 'tpope/vim-surround'
+
+Plug 'junegunn/rainbow_parentheses.vim'
+
 " Plug 'joshdick/onedark.vim'
 Plug 'tpope/vim-fugitive'
 
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 
-"Plug 'vimwiki/vimwiki'
-Plug 'machakann/vim-sandwich'
+"Treesitter
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'} 
+
+" LSP
+Plug 'mfussenegger/nvim-jdtls'
+Plug 'neovim/nvim-lspconfig'
+
 call plug#end()
 " -------------------------------------------------------------------------
 "    Plugins END
 " -------------------------------------------------------------------------
+" Plugins directives
+let g:rainbow#max_level = 16
+let g:rainbow#pairs = [['(', ')'], ['[', ']'],['{', '}']]
+let g:rainbow#blacklist = [59, 238, 248]
 
+let g:coc_global_extensions = ['coc-tslint-plugin', 'coc-tsserver', 'coc-emmet', 'coc-css', 'coc-html', 'coc-json', 'coc-yank', 'coc-prettier', 'coc-explorer']
+
+let g:airline_theme='gruvbox_material'
+
+" -------------------------------------------------------------------------
+" VIM GENERAL SETTINGS
+"
 "set list of characters to show on invisible characters
 set listchars=tab:>·,trail:~,extends:>,precedes:<,space:.
 set nolist
@@ -148,6 +162,18 @@ endfunction
 " Highlight the symbol and its references when holding the cursor.
 autocmd CursorHold * silent call CocActionAsync('highlight')
 
+
+lua <<EOF
+require'nvim-treesitter.configs'.setup {
+  ensure_installed = "maintained", -- one of "all", "maintained" (parsers with maintainers), or a list of languages
+  ignore_install = { }, -- List of parsers to ignore installing
+  highlight = {
+    enable = true,              -- false will disable the whole extension
+    disable = {},  -- list of language that will be disabled
+  },
+}
+EOF
+
 " Symbol renaming.
 nmap <leader>rn <Plug>(coc-rename)
 
@@ -163,6 +189,12 @@ augroup mygroup
   autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
 augroup end
 
+if has('nvim-0.5')
+  augroup lsp
+    au!
+    au FileType java lua require('jdtls').start_or_attach({cmd = {'java-lsp.sh'}})
+  augroup end
+endif
 " Use CTRL-S for selections ranges.
 " Requires 'textDocument/selectionRange' support of LS, ex: coc-tsserver
 nmap <silent> <C-s> <Plug>(coc-range-select)
@@ -172,9 +204,6 @@ command! -nargs=0 Prettier :CocCommand prettier.formatFile
 
 " Add `:Format` command to format current buffer.
 command! -nargs=0 Format :call CocAction('format')
-
-" Add `:Fold` command to fold current buffer.
-command! -nargs=? Fold :call     CocAction('fold', <f-args>)
 
 " Add `:OR` command for organize imports of the current buffer.
 command! -nargs=0 OR   :call     CocAction('runCommand', 'editor.action.organizeImport')
@@ -217,10 +246,10 @@ nnoremap <C-p> :GFiles<CR>
 nnoremap <Leader>pf :Files<CR>
 
 " Windows
-nmap <silent> <C-h> :wincmd h<CR>
-nmap <silent> <C-j> :wincmd j<CR>
-nmap <silent> <C-k> :wincmd k<CR>
-nmap <silent> <C-l> :wincmd l<CR>
+nnoremap <silent> <C-h> :wincmd h<CR>
+nnoremap <silent> <C-j> :wincmd j<CR>
+nnoremap <silent> <C-k> :wincmd k<CR>
+nnoremap <silent> <C-l> :wincmd l<CR>
 
 " Buffers
 nnoremap <leader>bd :bd<CR>
@@ -231,3 +260,9 @@ nnoremap <leader>bp :bp<CR>
 nnoremap <leader>tn :tabNext<CR>
 nnoremap <leader>tp :tabprevious<CR>
 nnoremap <leader>tc :tabclose<CR>
+
+" Pase from OS
+nnoremap <leader>p "+p<CR>
+nnoremap <leader>y "+y<CR>
+
+
