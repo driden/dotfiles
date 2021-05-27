@@ -250,6 +250,7 @@ nnoremap <silent> <C-h> :wincmd h<CR>
 nnoremap <silent> <C-j> :wincmd j<CR>
 nnoremap <silent> <C-k> :wincmd k<CR>
 nnoremap <silent> <C-l> :wincmd l<CR>
+nnoremap <leader>wq :wincmd q<CR>
 
 " Buffers
 nnoremap <leader>bd :bd<CR>
@@ -261,8 +262,9 @@ nnoremap <leader>tn :tabNext<CR>
 nnoremap <leader>tp :tabprevious<CR>
 nnoremap <leader>tc :tabclose<CR>
 
-" Pase from OS
+" Paste from OS
 nnoremap <leader>p "+p<CR>
 nnoremap <leader>y "+y<CR>
 
-
+" Terminal
+tnoremap <C-[> <C-\><C-n>
