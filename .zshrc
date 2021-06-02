@@ -39,7 +39,7 @@ HYPHEN_INSENSITIVE="true"
 ENABLE_CORRECTION="true"
 COMPLETION_WAITING_DOTS="true"
 
-plugins=(git git-prompt battery npm node fzf)
+plugins=(git git-prompt battery fzf zsh-autosuggestions)
 
 
 source $HOME/.oh-my-zsh/oh-my-zsh.sh
