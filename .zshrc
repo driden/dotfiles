@@ -1,7 +1,7 @@
 # General
 export PATH="$HOME/neovim/bin:/bin:/usr/bin:/usr/local/bin:/usr/local/sbin:${PATH}"
 export PATH="${PATH}:$HOME/.emacs.d/bin"
- 
+
 export ZSH="$HOME/.oh-my-zsh"
 export MANPATH="/usr/local/man:$MANPATH"
 export LANG=en_US.UTF-8
@@ -14,6 +14,7 @@ export TERMINAL='kitty'
 
 # GO
 export GOPATH=$HOME/go
+export GOPROXY=direct
 export PATH=$PATH:$GOPATH/bin
 
 if [[ -n $SSH_CONNECTION ]]; then
@@ -39,8 +40,7 @@ HYPHEN_INSENSITIVE="true"
 ENABLE_CORRECTION="true"
 COMPLETION_WAITING_DOTS="true"
 
-plugins=(git git-prompt battery fzf zsh-autosuggestions)
-
+plugins=(git git-prompt fzf zsh-vi-mode)
 
 source $HOME/.oh-my-zsh/oh-my-zsh.sh
 
@@ -75,3 +75,13 @@ export PATH=$HOME/.toolbox/bin:$PATH
 #THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
 export SDKMAN_DIR="/Users/lrrezend/.sdkman"
 [[ -s "/Users/lrrezend/.sdkman/bin/sdkman-init.sh" ]] && source "/Users/lrrezend/.sdkman/bin/sdkman-init.sh"
+
+function init_fzf() {
+  [ -f ~/.fzf/completion.zsh ] && source ~/.fzf/completion.zsh
+  [ -f ~/.fzf/key-bindings.zsh ] && source ~/.fzf/key-bindings.zsh
+}
+
+zvm_before_init_commands=()
+zvm_after_init_commands+=(init_fzf)
+zvm_before_select_vi_mode_commands=()
+zvm_after_select_vi_mode_commands=()
