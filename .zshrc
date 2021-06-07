@@ -28,6 +28,7 @@ fi
 [ -f ~/scripts/gbd.zsh ] && source ~/scripts/gbd.zsh
 [ -f ~/scripts/nvm.zsh ] && source ~/scripts/nvm.zsh
 [ -f ~/workscripts/jump.zsh ] && source ~/workscripts/jump.zsh
+[ -f ~/workscripts/aliases.zsh ] && source ~/workscripts/aliases.zsh
 
 
 #
