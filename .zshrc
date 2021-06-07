@@ -1,7 +1,7 @@
 # General
 export PATH="$HOME/neovim/bin:/bin:/usr/bin:/usr/local/bin:/usr/local/sbin:${PATH}"
 export PATH="${PATH}:$HOME/.emacs.d/bin"
- 
+
 export ZSH="$HOME/.oh-my-zsh"
 export MANPATH="/usr/local/man:$MANPATH"
 export LANG=en_US.UTF-8
@@ -35,14 +35,13 @@ fi
 # ZSH settings
 #
 ZSH_DISABLE_COMPFIX="true"
-ZSH_THEME="spaceship"
+ZSH_THEME="af-magic"
 CASE_SENSITIVE="true"
 HYPHEN_INSENSITIVE="true"
 ENABLE_CORRECTION="true"
 COMPLETION_WAITING_DOTS="true"
 
 plugins=(git git-prompt fzf zsh-vi-mode)
-
 
 source $HOME/.oh-my-zsh/oh-my-zsh.sh
 
@@ -79,7 +78,7 @@ export SDKMAN_DIR="/Users/lrrezend/.sdkman"
 [[ -s "/Users/lrrezend/.sdkman/bin/sdkman-init.sh" ]] && source "/Users/lrrezend/.sdkman/bin/sdkman-init.sh"
 
 function init_fzf() {
-  [ -f ~/.fzf/completion.zsh ] && source ~/.fzf/completion.zsh 
+  [ -f ~/.fzf/completion.zsh ] && source ~/.fzf/completion.zsh
   [ -f ~/.fzf/key-bindings.zsh ] && source ~/.fzf/key-bindings.zsh
 }
 

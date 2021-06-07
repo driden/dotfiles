@@ -7,9 +7,9 @@ Plug 'sainnhe/gruvbox-material'
 
 " Plug 'drewtempelmeyer/palenight.vim'
 Plug 'fatih/vim-go', { 'do': 'GoUpdateBinaries' }
-Plug 'neoclide/coc.nvim', {'do': 'yarn install --frozen-lockfile'}
-"
+"Plug 'neoclide/coc.nvim', {'do': 'yarn install --frozen-lockfile'}
 " coc extensions
+"let g:coc_global_extensions = ['coc-tslint-plugin', 'coc-tsserver', 'coc-emmet', 'coc-css', 'coc-html', 'coc-json', 'coc-yank', 'coc-prettier', 'coc-explorer']
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 
@@ -17,9 +17,9 @@ Plug 'tpope/vim-surround'
 
 Plug 'junegunn/rainbow_parentheses.vim'
 
+"Plug 'sheerun/vim-polyglot'
 " Plug 'joshdick/onedark.vim'
 Plug 'tpope/vim-fugitive'
-
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 
@@ -107,11 +107,6 @@ augroup END
 " refresh preview on write/normal mode
 let g:mkdp_refresh_slow=1
 
-" Configuration below is copied from COC's configuration
-"
-" Use tab for trigger completion with characters ahead and navigate.
-" NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
-" other plugin before putting this into your config.
 inoremap <silent><expr> <TAB>
       \ pumvisible() ? "\<C-n>" :
       \ <SID>check_back_space() ? "\<TAB>" :
@@ -181,56 +176,13 @@ nmap <leader>rn <Plug>(coc-rename)
 xmap <leader>fs  <Plug>(coc-format-selected)
 nmap <leader>fs  <Plug>(coc-format-selected)
 
-augroup mygroup
-  autocmd!
-  " Setup formatexpr specified filetype(s).
-  autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected')
-  " Update signature help on jump placeholder.
-  autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
-augroup end
-
 if has('nvim-0.5')
   augroup lsp
     au!
     au FileType java lua require('jdtls').start_or_attach({cmd = {'java-lsp.sh'}})
   augroup end
 endif
-" Use CTRL-S for selections ranges.
-" Requires 'textDocument/selectionRange' support of LS, ex: coc-tsserver
-nmap <silent> <C-s> <Plug>(coc-range-select)
-xmap <silent> <C-s> <Plug>(coc-range-select)
 
-command! -nargs=0 Prettier :CocCommand prettier.formatFile
-
-" Add `:Format` command to format current buffer.
-command! -nargs=0 Format :call CocAction('format')
-
-" Add `:OR` command for organize imports of the current buffer.
-command! -nargs=0 OR   :call     CocAction('runCommand', 'editor.action.organizeImport')
-
-" Mappings using CoCList:
-" Show all diagnostics.
-nnoremap <silent> <space>a  :<C-u>CocList diagnostics<cr>
-" Manage extensions.
-nnoremap <silent> <space>e  :<C-u>CocList extensions<cr>
-" Show commands.
-nnoremap <silent> <space>ca  :<C-u>CocList actions<cr>
-" Show commands.
-nnoremap <silent> <space>cc  :<C-u>CocList commands<cr>
-" Find symbol of current document.
-nnoremap <silent> <space>o  :<C-u>CocList outline<cr>
-" Search workspace symbols.
-nnoremap <silent> <space>cs  :<C-u>CocList -I symbols<cr>
-" Do default action for next item.
-nnoremap <silent> <space>cj  :<C-u>CocNext<CR>
-" Do default action for previous item.
-nnoremap <silent> <space>ck  :<C-u>CocPrev<CR>
-" Resume latest coc list.
-nnoremap <silent> <space>p  :<C-u>CocListResume<CR>
-
-let g:go_def_mapping_enabled = 0
-
-" For Gvdiffsplit!
 " choose right
 nmap <leader>gj :diffget //3<CR>
 " choose left
@@ -262,6 +214,21 @@ nnoremap <leader>bp :bp<CR>
 nnoremap <leader>tn :tabNext<CR>
 nnoremap <leader>tp :tabprevious<CR>
 nnoremap <leader>tc :tabclose<CR>
+
+" LSP
+lua << EOF
+local lspconfig = require'lspconfig'
+local pid = vim.fn.getpid();
+local omnisharp_bin = "/usr/local/Cellar/omnisharp/1.35.3/libexec/run"
+
+lspconfig.omnisharp.setup {
+    cmd = { omnisharp_bin, "--languageserver" , "--hostPID", tostring(pid) };
+    filetypes = { "cs", "vb" };
+    init_options = {};
+    root_dir = lspconfig.util.root_pattern("../.csproj", "../.sln");
+}
+
+EOF
 
 " Paste from OS
 nnoremap <leader>p "+p<CR>
