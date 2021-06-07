@@ -65,6 +65,7 @@ alias gpush="git push"
 alias gb="git branch"
 alias gcb="git branch | fzf | xargs git checkout"
 alias gtree="git log --oneline --decorate --all --graph"
+alias lg="lazygit"
 
 # dotfiles versioning with bare repo
 alias config='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
