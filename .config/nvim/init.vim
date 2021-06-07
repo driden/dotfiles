@@ -127,6 +127,7 @@ nmap <leader>gp :Git pull<CR>
 
 nnoremap <C-p> :GFiles<CR>
 nnoremap <Leader>pf :Files<CR>
+nnoremap <Leader>pv :Explore<CR>
 
 " Windows
 nnoremap <silent> <C-h> :wincmd h<CR>
