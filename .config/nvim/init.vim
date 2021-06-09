@@ -3,22 +3,15 @@
 " -------------------------------------------------------------------------
 call plug#begin('~/.config/nvim/plugged')
 
+" Plug 'drewtempelmeyer/palenight.vim'
+" Plug 'joshdick/onedark.vim'
 Plug 'sainnhe/gruvbox-material'
 
-" Plug 'drewtempelmeyer/palenight.vim'
 Plug 'fatih/vim-go', { 'do': 'GoUpdateBinaries' }
-"Plug 'neoclide/coc.nvim', {'do': 'yarn install --frozen-lockfile'}
-" coc extensions
-"let g:coc_global_extensions = ['coc-tslint-plugin', 'coc-tsserver', 'coc-emmet', 'coc-css', 'coc-html', 'coc-json', 'coc-yank', 'coc-prettier', 'coc-explorer']
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
-
 Plug 'tpope/vim-surround'
-
 Plug 'junegunn/rainbow_parentheses.vim'
-
-"Plug 'sheerun/vim-polyglot'
-" Plug 'joshdick/onedark.vim'
 Plug 'tpope/vim-fugitive'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
@@ -38,14 +31,12 @@ call plug#end()
 let g:rainbow#max_level = 16
 let g:rainbow#pairs = [['(', ')'], ['[', ']'],['{', '}']]
 let g:rainbow#blacklist = [59, 238, 248]
-
-let g:coc_global_extensions = ['coc-tslint-plugin', 'coc-tsserver', 'coc-emmet', 'coc-css', 'coc-html', 'coc-json', 'coc-yank', 'coc-prettier', 'coc-explorer']
-
 let g:airline_theme='gruvbox_material'
 
 " -------------------------------------------------------------------------
 " VIM GENERAL SETTINGS
-"
+" -------------------------------------------------------------------------
+
 "set list of characters to show on invisible characters
 set listchars=tab:>·,trail:~,extends:>,precedes:<,space:.
 set nolist
@@ -104,59 +95,6 @@ augroup rainbow_parens
   autocmd!
   autocmd FileType javascript,typescript,json,go RainbowParentheses
 augroup END
-" refresh preview on write/normal mode
-let g:mkdp_refresh_slow=1
-
-inoremap <silent><expr> <TAB>
-      \ pumvisible() ? "\<C-n>" :
-      \ <SID>check_back_space() ? "\<TAB>" :
-      \ coc#refresh()
-inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
-
-function! s:check_back_space() abort
-  let col = col('.') - 1
-  return !col || getline('.')[col - 1]  =~# '\s'
-endfunction
-
-" Use <c-space> to trigger completion.
-inoremap <silent><expr> <c-space> coc#refresh()
-
-" Use <cr> to confirm completion, `<C-g>u` means break undo chain at current
-" position. Coc only does snippet and additional edit on confirm.
-" <cr> could be remapped by other vim plugin, try `:verbose imap <CR>`.
-if exists('*complete_info')
-  inoremap <expr> <cr> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>"
-else
-  inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
-endif
-
-" Coc-explorer
-nmap <leader>fe :CocCommand explorer<CR>
-
-" Use `[g` and `]g` to navigate diagnostics
-nmap <silent> [g <Plug>(coc-diagnostic-prev)
-nmap <silent> ]g <Plug>(coc-diagnostic-next)
-
-" GoTo code navigation.
-nmap <silent> gd <Plug>(coc-definition)
-nmap <silent> gy <Plug>(coc-type-definition)
-nmap <silent> gi <Plug>(coc-implementation)
-nmap <silent> gr <Plug>(coc-references)
-
-" Use K to show documentation in preview window.
-nnoremap <silent> K :call <SID>show_documentation()<CR>
-
-function! s:show_documentation()
-  if (index(['vim','help'], &filetype) >= 0)
-    execute 'h '.expand('<cword>')
-  else
-    call CocAction('doHover')
-  endif
-endfunction
-
-" Highlight the symbol and its references when holding the cursor.
-autocmd CursorHold * silent call CocActionAsync('highlight')
-
 
 lua <<EOF
 require'nvim-treesitter.configs'.setup {
@@ -169,17 +107,11 @@ require'nvim-treesitter.configs'.setup {
 }
 EOF
 
-" Symbol renaming.
-nmap <leader>rn <Plug>(coc-rename)
-
-" Formatting selected code.
-xmap <leader>fs  <Plug>(coc-format-selected)
-nmap <leader>fs  <Plug>(coc-format-selected)
-
 if has('nvim-0.5')
   augroup lsp
     au!
     au FileType java lua require('jdtls').start_or_attach({cmd = {'java-lsp.sh'}})
+
   augroup end
 endif
 
@@ -214,8 +146,18 @@ nnoremap <leader>bp :bp<CR>
 nnoremap <leader>tn :tabNext<CR>
 nnoremap <leader>tp :tabprevious<CR>
 nnoremap <leader>tc :tabclose<CR>
+" Paste from OS
+nnoremap <leader>p "+p<CR>
+nnoremap <leader>y "+y<CR>
 
+" Terminal
+tnoremap <C-[> <C-\><C-n>
+
+" -------------------------------------------------------------------------
 " LSP
+" -------------------------------------------------------------------------
+
+" C#
 lua << EOF
 local lspconfig = require'lspconfig'
 local pid = vim.fn.getpid();
@@ -230,9 +172,16 @@ lspconfig.omnisharp.setup {
 
 EOF
 
-" Paste from OS
-nnoremap <leader>p "+p<CR>
-nnoremap <leader>y "+y<CR>
+" Terraform
+" https://github.com/neovim/nvim-lspconfig/blob/master/CONFIG.md#terraformls
 
-" Terminal
-tnoremap <C-[> <C-\><C-n>
+lua << EOF
+local lsp = require'lspconfig'
+require'lspconfig'.terraformls.setup{
+  cmd = { "terraform-ls", "serve" },
+  filetypes = { "tf", "terraform", "hcl" },
+  root_dir = lsp.util.root_pattern(".git")
+}
+
+EOF
+

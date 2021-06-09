@@ -1,5 +1,5 @@
 # General
-export PATH="$HOME/neovim/bin:/bin:/usr/bin:/usr/local/bin:/usr/local/sbin:${PATH}"
+export PATH="$HOME/neovim/bin:/usr/local/bin:/usr/local/sbin:/usr/bin:/bin:${PATH}"
 export PATH="${PATH}:$HOME/.emacs.d/bin"
 
 export ZSH="$HOME/.oh-my-zsh"
@@ -28,8 +28,11 @@ fi
 [ -f ~/scripts/gbd.zsh ] && source ~/scripts/gbd.zsh
 [ -f ~/scripts/nvm.zsh ] && source ~/scripts/nvm.zsh
 [ -f ~/scripts/rkt.sh ] && source ~/scripts/rkt.sh
-[ -f ~/workscripts/jump.zsh ] && source ~/workscripts/jump.zsh
-[ -f ~/workscripts/aliases.zsh ] && source ~/workscripts/aliases.zsh
+
+for file in $(ls $HOME/workscripts/*.{zsh,sh})
+do
+  source "$file"
+done
 
 
 #
