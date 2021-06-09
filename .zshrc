@@ -1,5 +1,5 @@
 # General
-export PATH="$HOME/neovim/bin:/usr/local/bin:/usr/local/sbin:/usr/bin:/bin:${PATH}"
+export PATH="$HOME/neovim/bin:/usr/local/bin:/usr/bin:/usr/local/sbin:/bin:${PATH}"
 export PATH="${PATH}:$HOME/.emacs.d/bin"
 
 export ZSH="$HOME/.oh-my-zsh"
