@@ -3,9 +3,10 @@
 " -------------------------------------------------------------------------
 call plug#begin('~/.config/nvim/plugged')
 
+" Plug 'drewtempelmeyer/palenight.vim'
+" Plug 'joshdick/onedark.vim'
 Plug 'sainnhe/gruvbox-material'
 
-" Plug 'drewtempelmeyer/palenight.vim'
 Plug 'fatih/vim-go', { 'do': 'GoUpdateBinaries' }
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
@@ -34,7 +35,8 @@ let g:airline_theme='gruvbox_material'
 
 " -------------------------------------------------------------------------
 " VIM GENERAL SETTINGS
-"
+" -------------------------------------------------------------------------
+
 "set list of characters to show on invisible characters
 set listchars=tab:>·,trail:~,extends:>,precedes:<,space:.
 set nolist
@@ -93,8 +95,6 @@ augroup rainbow_parens
   autocmd!
   autocmd FileType javascript,typescript,json,go RainbowParentheses
 augroup END
-" refresh preview on write/normal mode
-let g:mkdp_refresh_slow=1
 
 lua <<EOF
 require'nvim-treesitter.configs'.setup {
@@ -111,6 +111,7 @@ if has('nvim-0.5')
   augroup lsp
     au!
     au FileType java lua require('jdtls').start_or_attach({cmd = {'java-lsp.sh'}})
+
   augroup end
 endif
 
@@ -145,8 +146,18 @@ nnoremap <leader>bp :bp<CR>
 nnoremap <leader>tn :tabNext<CR>
 nnoremap <leader>tp :tabprevious<CR>
 nnoremap <leader>tc :tabclose<CR>
+" Paste from OS
+nnoremap <leader>p "+p<CR>
+nnoremap <leader>y "+y<CR>
 
+" Terminal
+tnoremap <C-[> <C-\><C-n>
+
+" -------------------------------------------------------------------------
 " LSP
+" -------------------------------------------------------------------------
+
+" C#
 lua << EOF
 local lspconfig = require'lspconfig'
 local pid = vim.fn.getpid();
@@ -161,9 +172,16 @@ lspconfig.omnisharp.setup {
 
 EOF
 
-" Paste from OS
-nnoremap <leader>p "+p<CR>
-nnoremap <leader>y "+y<CR>
+" Terraform
+" https://github.com/neovim/nvim-lspconfig/blob/master/CONFIG.md#terraformls
 
-" Terminal
-tnoremap <C-[> <C-\><C-n>
+lua << EOF
+local lsp = require'lspconfig'
+require'lspconfig'.terraformls.setup{
+  cmd = { "terraform-ls", "serve" },
+  filetypes = { "tf", "terraform", "hcl" },
+  root_dir = lsp.util.root_pattern(".git")
+}
+
+EOF
+
