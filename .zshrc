@@ -32,7 +32,7 @@ fi
 WORKSCRIPTS=$HOME/workscripts
 if [[ -d  "$WORKSCRIPTS" ]]
 then
-  for file in $(ls $$WORKSCRIPTS/*.{zsh,sh})
+  for file in $(ls $WORKSCRIPTS/*.{zsh,sh})
   do
     source "$file"
   done
