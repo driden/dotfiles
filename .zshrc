@@ -73,6 +73,8 @@ alias gtree="git log --oneline --decorate --all --graph"
 
 # dotfiles versioning with bare repo
 alias config='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
+alias refreshenv='source $HOME/.zshenv'
+alias rc='source $HOME/.zshrc'
 
 
 export PATH=$HOME/.toolbox/bin:$PATH
