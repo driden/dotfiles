@@ -32,7 +32,7 @@ fi
 WORKSCRIPTS=$HOME/workscripts
 if [[ -d  "$WORKSCRIPTS" ]]
 then
-  for file in $(ls $$WORKSCRIPTS/*.{zsh,sh})
+  for file in $(ls $WORKSCRIPTS/*.{zsh,sh})
   do
     source "$file"
   done
@@ -78,6 +78,8 @@ alias lg="lazygit"
 
 # dotfiles versioning with bare repo
 alias config='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
+alias refreshenv='source $HOME/.zshenv'
+alias rc='source $HOME/.zshrc'
 
 
 export PATH=$HOME/.toolbox/bin:$PATH
