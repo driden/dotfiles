@@ -66,13 +66,16 @@ alias vimc="$EDITOR $HOME/.config/nvim/init.vim"
 alias vim="$EDITOR"
 alias vi="$EDITOR"
 alias v="$EDITOR"
+
+# Git aliases
 alias gs="git status"
 alias gc="git commit"
-alias ga="git add"
+alias ga="git add" # should list changed files and pick with fzf
+alias gap="git add -p"
 alias gpull="git pull"
 alias gpush="git push"
-alias gb="git branch"
-alias gcb="git branch | fzf | xargs git checkout"
+alias gbd="delbranch"
+alias gco="gcheckout"
 alias gtree="git log --oneline --decorate --all --graph"
 alias lg="lazygit"
 
