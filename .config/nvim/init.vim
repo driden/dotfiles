@@ -131,13 +131,27 @@ nnoremap <Leader>pf :Files<CR>
 nnoremap <Leader>pv :Explore<CR>
 
 " Windows
+nnoremap <leader>wq :wincmd q<CR>
+nnoremap <leader>wc :wincmd c<CR>
+
+nnoremap <leader>wj :wincmd j<CR>
+nnoremap <leader>wk :wincmd k<CR>
+nnoremap <leader>wh :wincmd h<CR>
+nnoremap <leader>wl :wincmd l<CR>
 nnoremap <silent> <C-h> :wincmd h<CR>
 nnoremap <silent> <C-j> :wincmd j<CR>
 nnoremap <silent> <C-k> :wincmd k<CR>
 nnoremap <silent> <C-l> :wincmd l<CR>
-nnoremap <leader>wq :wincmd q<CR>
 
-" Buffers
+" vertical resize
+noremap <leader>w] :vertical resize +10<CR>
+noremap <leader>w[ :vertical resize -10<CR>
+
+" horizontal resize
+noremap <leader>w= :resize +10<CR>
+noremap <leader>w- :resize -10<CR>
+
+"<CR> Buffers
 nnoremap <leader>bd :bd<CR>
 nnoremap <leader>bn :bn<CR>
 nnoremap <leader>bp :bp<CR>
@@ -152,6 +166,15 @@ nnoremap <leader>y "+y<CR>
 
 " Terminal
 tnoremap <C-[> <C-\><C-n>
+nnoremap <leader>tt :vs<CR>:term<CR>
+nnoremap <leader>tc <C-\><C-n>:q<CR>
+
+" Edit this file
+"
+nnoremap <leader>fp :e ~/.config/nvim/init.vim<CR>
+
+" Explorer 
+nnoremap <leader>fv :20Vexplore<CR>
 
 " -------------------------------------------------------------------------
 " LSP
