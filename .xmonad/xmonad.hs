@@ -8,6 +8,7 @@ import XMonad.Hooks.EwmhDesktops
 import XMonad.Hooks.Minimize
 import XMonad.Hooks.ManageHelpers(doFullFloat, doCenterFloat, isFullscreen, isDialog)
 import XMonad.Config.Desktop
+import XMonad.Config.Dmwit(viewShift)
 import XMonad.Util.Run(spawnPipe)
 import XMonad.Actions.SpawnOn
 import XMonad.Util.EZConfig (additionalKeys, additionalMouseBindings)
@@ -66,7 +67,7 @@ mydefaults = def {
 -- Autostart
 myStartupHook = do
     spawn "$HOME/.xmonad/scripts/autostart.sh"
-    setWMName "WM"
+    setWMName "LG3D"
 
 encodeCChar = map fromIntegral . B.unpack
 
@@ -107,7 +108,7 @@ myManageHook = composeAll . concat $
     , [title =? t --> doFloat | t <- myTFloats]
     , [resource =? r --> doFloat | r <- myRFloats]
     , [resource =? i --> doIgnore | i <- myIgnores]
---    , [className =? c --> doShift (myWorkspaces !! 0) <+> viewShift (myWorkspaces !! 0)        | c <- my1Shifts]
+    --, [className =? c --> doShift (myWorkspaces !! 0) <+> viewShift (myWorkspaces !! 0)        | c <- my1Shifts]
 --    , [className =? c --> doShift (myWorkspaces !! 1) <+> viewShift (myWorkspaces !! 1)        | c <- my2Shifts]
 --    , [className =? c --> doShift (myWorkspaces !! 2) <+> viewShift (myWorkspaces !! 2)        | c <- my3Shifts]
 --    , [className =? c --> doShift (myWorkspaces !! 3) <+> viewShift (myWorkspaces !! 3)        | c <- my4Shifts]
@@ -120,7 +121,7 @@ myManageHook = composeAll . concat $
        ]
     where
 --    viewShift    = doF . liftM2 (.) W.greedyView W.shift
-    myCFloats = ["Arandr", "Arcolinux-calamares-tool.py", "Arcolinux-tweak-tool.py", "Arcolinux-welcome-app.py", "Galculator", "feh", "mpv", "Xfce4-terminal"]
+    myCFloats = ["Arandr", "Arcolinux-calamares-tool.py", "Arcolinux-tweak-tool.py", "Arcolinux-welcome-app.py", "Galculator", "feh", "mpv"]
     myTFloats = ["Downloads", "Save As..."]
     myRFloats = []
     myIgnores = ["desktop_window"]
@@ -154,8 +155,8 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
   -- SUPER + SHIFT KEYS
 
   , ((modMask .|. shiftMask , xK_Return ), spawn $ "nemo")
-  , ((modMask .|. shiftMask , xK_r ), spawn $ "xmonad --recompile && xmonad --restart")
-  , ((modMask .|. shiftMask , xK_q ), kill)
+  , ((modMask .|. shiftMask , xK_r ), spawn $ "xmonad --recompile ; xmonad --restart")
+  --, ((modMask .|. shiftMask , xK_q ), kill)
   , ((modMask .|. shiftMask , xK_s ), spawn $ "flameshot gui")
   , ((modMask .|. shiftMask , xK_x ), spawn $ "arcolinux-logout" )
 
@@ -163,14 +164,13 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
 
   , ((controlMask .|. mod1Mask , xK_Next ), spawn $ "conky-rotate -n")
   , ((controlMask .|. mod1Mask , xK_Prior ), spawn $ "conky-rotate -p")
-  , ((controlMask .|. mod1Mask , xK_l ), spawn $ "arcolinux-logout")
   , ((controlMask .|. mod1Mask , xK_o ), spawn $ "$HOME/.xmonad/scripts/picom-toggle.sh")
   , ((controlMask .|. mod1Mask , xK_u ), spawn $ "pavucontrol")
   , ((controlMask .|. mod1Mask , xK_Return ), spawn $ myTerminal)
 
   -- ALT + ... KEYS
 
-  , ((mod1Mask, xK_r), spawn $ "xmonad --recompile && xmonad --restart" )
+  --, ((mod1Mask, xK_r), spawn $ "xmonad --recompile && xmonad --restart" )
 
   --SCREENSHOTS
 
@@ -292,9 +292,11 @@ myMouseBindings (XConfig {XMonad.modMask = modMask}) = M.fromList $
     ]
 
 --XMOBAR
+xmobarPath :: String
+xmobarPath = "$HOME/.cabal/bin/"
 main = do
-        xmproc0 <- spawnPipe "xmobar -x 0 $HOME/.config/.xmobarrc" -- xmobar monitor 1
-        xmproc1 <- spawnPipe "xmobar -x 1 $HOME/.config/.xmobarrc" -- xmobar monitor 2
+        xmproc0 <- spawnPipe $ xmobarPath ++ "xmobar -x 0 $HOME/.config/.xmobarrc" -- xmobar monitor 1
+        xmproc1 <- spawnPipe $ xmobarPath ++ "xmobar -x 1 $HOME/.config/.xmobarrc" -- xmobar monitor 2
         xmonad $ ewmh $ mydefaults {
         logHook =  dynamicLogWithPP $ def {
         ppOutput = \x -> System.IO.hPutStrLn xmproc0 x  >> System.IO.hPutStrLn xmproc1 x

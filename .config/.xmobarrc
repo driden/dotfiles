@@ -2,8 +2,8 @@
 -- https://github.com/krive001/xmonad-xmobar
 
 Config {
-    font = "xft:Noto Sans LGC:size=11:style=Regular",
-    additionalFonts = ["xft:Noto Sans:size=10:style=Bold","xft:FontAwesome:style=Regular:size=13"]
+    font              = "xft:Noto Sans LGC:size=11:style=Regular",
+   , additionalFonts  = ["xft:Noto Sans:size=10:style=Bold","xft:FontAwesome:style=Regular:size=13"]
    , bgColor          = "#2F343F"
    , fgColor          = "white"
    , position         = TopSize C 100 30
@@ -21,8 +21,8 @@ Config {
    , persistent       = True
    , sepChar          = "%"
    , alignSep         = "}{"
-   , template         = "<fc=white><fn=2><action=button=4><action=button=5>%UnsafeStdinReader%</action></action></fn></fc>}<action=`gsimplecal` button=1>%date%</action>{<fc=white> %update% |<fn=2>  </fn></fc> %kbd% | %coretemp% | %multicpu% | %memory% | <action=`pavucontrol` button=3><action=`XMMute` button=1><action=button=4><action=button=5>%XVol% </action></action></action></action>"
-   , commands         =
+   , template         = "<fc=white><fn=2><action=button=4><action=button=5>%UnsafeStdinReader%</action></action></fn></fc>}<action=`gsimplecal` button=1>%date%</action>{<fc=white> %update% |<fn=2>  </fn></fc> %kbd% | %coretemp% | %multicpu% | %memory% | <action=`pavucontrol` button=3><action=`XMMute` button=1><action=button=4><action=button=5>%XVol% </action></action></action></action>",
+     commands         =
       [ Run MultiCpu                            [ "--template" , "<fc=white><fn=2>  </fn></fc><fc=white></fc><total> %"
                                                 , "--Low"      , "50"        -- units: %
                                                 , "--High"     , "85"        -- units: %
@@ -57,7 +57,7 @@ Config {
 
 	  , Run Com "/bin/bash" ["-c",  "XMKupdate"] "update" 600
 
-      , Run DateZone "%Y-%m-%d  %a %H:%M" "es_UY.UTF-8" "UTC" "date" 60 
+      , Run DateZone "%Y-%m-%d  %a %H:%M" "es_UY.UTF-8" "America/Montevideo" "date" 60 
       ]
 
 }
