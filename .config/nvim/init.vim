@@ -5,16 +5,17 @@ call plug#begin('~/.config/nvim/plugged')
 
 " Plug 'drewtempelmeyer/palenight.vim'
 " Plug 'joshdick/onedark.vim'
-Plug 'sainnhe/gruvbox-material'
+" Plug 'sainnhe/gruvbox-material'
+Plug 'NLKNguyen/papercolor-theme'
 
-Plug 'fatih/vim-go', { 'do': 'GoUpdateBinaries' }
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
-Plug 'tpope/vim-surround'
-Plug 'junegunn/rainbow_parentheses.vim'
-Plug 'tpope/vim-fugitive'
+" Plug 'fatih/vim-go', { 'do': 'GoUpdateBinaries' }
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
+Plug 'junegunn/rainbow_parentheses.vim'
+Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-surround'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
 
 "Treesitter
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'} 
@@ -31,7 +32,7 @@ call plug#end()
 let g:rainbow#max_level = 16
 let g:rainbow#pairs = [['(', ')'], ['[', ']'],['{', '}']]
 let g:rainbow#blacklist = [59, 238, 248]
-let g:airline_theme='gruvbox_material'
+let g:airline_theme='minimalist'
 
 " -------------------------------------------------------------------------
 " VIM GENERAL SETTINGS
@@ -88,8 +89,8 @@ let mapleader=" "
 " set laststatus=2
 
 set termguicolors
-let g:gruvbox_material_background = 'hard' "soft,medium, hard
-colorscheme gruvbox-material
+"let g:gruvbox_material_background = 'hard' "soft,medium, hard
+colorscheme PaperColor 
 
 augroup rainbow_parens
   autocmd!
