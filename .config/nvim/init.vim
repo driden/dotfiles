@@ -96,6 +96,8 @@ augroup rainbow_parens
   autocmd FileType javascript,typescript,json,go RainbowParentheses
 augroup END
 
+command JqBuffer execute "%!jq"
+
 lua <<EOF
 require'nvim-treesitter.configs'.setup {
   ensure_installed = "maintained", -- one of "all", "maintained" (parsers with maintainers), or a list of languages
