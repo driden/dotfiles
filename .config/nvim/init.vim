@@ -3,10 +3,15 @@
 " -------------------------------------------------------------------------
 call plug#begin('~/.config/nvim/plugged')
 
+" THEMES
+
 " Plug 'drewtempelmeyer/palenight.vim'
 " Plug 'joshdick/onedark.vim'
 " Plug 'sainnhe/gruvbox-material'
 Plug 'NLKNguyen/papercolor-theme'
+Plug 'rktjmp/lush.nvim'
+Plug 'metalelf0/jellybeans-nvim'
+
 
 " Plug 'fatih/vim-go', { 'do': 'GoUpdateBinaries' }
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
