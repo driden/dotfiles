@@ -151,6 +151,10 @@ nnoremap <leader>fp :e ~/.config/nvim/init.vim<CR>
 " Explorer 
 nnoremap <leader>fv :20Vexplore<CR>
 
+" Dont copy replaced text in visual mode, you can past the same thing many
+" times
+xnoremap p "_dP
+
 " -------------------------------------------------------------------------
 " LSP
 " -------------------------------------------------------------------------
