@@ -29,6 +29,15 @@ fi
 [ -f ~/scripts/nvm.zsh ] && source ~/scripts/nvm.zsh
 [ -f ~/scripts/rkt.sh ] && source ~/scripts/rkt.sh
 
+SCRIPTS=$HOME/scripts
+if [[ -d  "$SCRIPTS" ]]
+then
+  for file in $(ls $SCRIPTS/*.{zsh,sh})
+  do
+    source "$file"
+  done
+fi
+
 WORKSCRIPTS=$HOME/workscripts
 if [[ -d  "$WORKSCRIPTS" ]]
 then
