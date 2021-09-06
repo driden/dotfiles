@@ -37,49 +37,17 @@ let g:airline_theme='minimalist'
 " -------------------------------------------------------------------------
 " VIM GENERAL SETTINGS
 " -------------------------------------------------------------------------
+lua << EOF
+require "globals"
+require "options"
+EOF
 
 "set list of characters to show on invisible characters
-set listchars=tab:>·,trail:~,extends:>,precedes:<,space:.
-set nolist
-
-set hidden " hidden buffers
-
-" no backup
-set nobackup
-set nowritebackup
-
-set cmdheight=2 " Give more space for displaying messages.
-
-" Having longer updatetime (default is 4000 ms = 4 s) leads to noticeable
-" delays and poor user experience.
-set updatetime=300
-set shortmess+=c " Don't pass messages to |ins-completion-menu|.
-" Always show the signcolumn, otherwise it would shift the text each time
-" diagnostics appear/become resolved.
-set signcolumn=yes
-syntax on " turn on syntax highlighting
-set clipboard=unnamedplus " share clipboard with OS
-set cursorline " set cursorline
-set nowrap " no wrapping
-set relativenumber " set line number
-set nocompatible " not compatible with earlier versions
-set ignorecase " always start with ignorecase option on
-set autoindent " make vim use the indent of the previous line for a newly created one.
-set tabstop=4 " show existing tab with 4 spaces width
-set shiftwidth=2 " when indenting with '>' use 2 spaces width
-set expandtab " change tab to spaces
-set incsearch " Display matches for a search pattern while you type.
-set background=dark " dark background
-" delete the white space at the start of the line, a line break and the
-" character before where Insert mode started.
-set backspace=indent,eol,start
+" set backspace=indent,eol,start
 
 filetype on " detect files based on type
 filetype plugin on " when a files is edited, it's plugin file is loaded
 filetype indent on " mantain indentation
-
-" show mode
-set noshowmode
 
 " fzf
 set rtp+=/usr/local/bin/fzf
@@ -88,7 +56,6 @@ let mapleader=" "
 " Always show line status
 " set laststatus=2
 
-set termguicolors
 "let g:gruvbox_material_background = 'hard' "soft,medium, hard
 colorscheme PaperColor 
 
