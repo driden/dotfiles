@@ -3,6 +3,8 @@
 " -------------------------------------------------------------------------
 call plug#begin('~/.config/nvim/plugged')
 
+"LUATHINGS"
+Plug 'nvim-lua/plenary.nvim'
 " THEMES
 
 " Plug 'drewtempelmeyer/palenight.vim'
@@ -13,14 +15,14 @@ Plug 'rktjmp/lush.nvim'
 Plug 'metalelf0/jellybeans-nvim'
 
 
-" Plug 'fatih/vim-go', { 'do': 'GoUpdateBinaries' }
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'junegunn/rainbow_parentheses.vim'
 Plug 'tpope/vim-fugitive'
-Plug 'tpope/vim-surround'
+Plug 'tpope/vim-surround' 
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
+Plug 'akinsho/toggleterm.nvim'
 
 "Treesitter
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'} 
@@ -29,8 +31,11 @@ Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'mfussenegger/nvim-jdtls'
 Plug 'neovim/nvim-lspconfig'
 Plug 'onsails/lspkind-nvim'
+Plug 'kabouzeid/nvim-lspinstall'
+Plug 'hrsh7th/nvim-cmp'
+Plug 'hrsh7th/cmp-buffer'
+Plug 'hrsh7th/vim-vsnip'
 
-Plug 'akinsho/toggleterm.nvim'
 
 call plug#end()
 " -------------------------------------------------------------------------
@@ -275,3 +280,50 @@ autocmd TermEnter term://*toggleterm#*
 " For example: 2<C-t> will open terminal 2
 nnoremap <silent><c-t> <Cmd>exe v:count1 . "ToggleTerm"<CR>
 inoremap <silent><c-t> <Esc><Cmd>exe v:count1 . "ToggleTerm"<CR>
+
+
+" LspInstall setup
+lua << EOF
+local function setup_servers()
+  require'lspinstall'.setup()
+  local servers = require'lspinstall'.installed_servers()
+  for _, server in pairs(servers) do
+    require'lspconfig'[server].setup{}
+  end
+end
+
+setup_servers()
+
+-- Automatically reload after `:LspInstall <server>` so we don't have to restart neovim
+require'lspinstall'.post_install_hook = function ()
+  setup_servers() -- reload installed servers
+  vim.cmd("bufdo e") -- this triggers the FileType autocmd that starts the server
+end
+EOF
+
+lua << EOF
+  local cmp = require'cmp'
+  cmp.setup {
+    completion = {
+      autocomplete = { },
+    },
+    snippet = {
+      expand = function(args)
+        vim.fn["vsnip#anonymous"](args.body)
+      end,
+    },
+    documentation = { },
+    sorting = {
+      priority_weight = 2.,
+      comparators = { },
+    },
+    mapping = {
+      ['<C-y>'] = cmp.mapping.confirm{ select = true },
+      ['<Tab>'] = cmp.mapping(cmp.mapping.select_next_item(), { 'i', 's' })
+    },
+    sources = {
+      { name = "nvim_lsp" },
+      { name = "emoji" },
+      { name = "treesitter" },
+    },}
+EOF
