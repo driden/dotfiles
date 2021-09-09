@@ -48,3 +48,4 @@ map <leader>gr :action FindUsages<CR>
 
 map <leader>p "+p
 map <leader>y "+y
+xmap p "_dP
