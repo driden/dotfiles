@@ -9,7 +9,6 @@ set.shortmess:append("c")
 set.updatetime = 300
 set.signcolumn = "yes"
 set.clipboard = "unnamedplus"
-set.syntax = "on"
 set.cursorline = true
 set.wrap = false
 set.relativenumber = true

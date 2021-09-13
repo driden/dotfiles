@@ -32,9 +32,9 @@ Plug 'mfussenegger/nvim-jdtls'
 Plug 'neovim/nvim-lspconfig'
 Plug 'onsails/lspkind-nvim'
 Plug 'kabouzeid/nvim-lspinstall'
-Plug 'hrsh7th/nvim-cmp'
-Plug 'hrsh7th/cmp-buffer'
 Plug 'hrsh7th/vim-vsnip'
+Plug 'hrsh7th/cmp-buffer'
+Plug 'hrsh7th/nvim-cmp'
 
 
 call plug#end()
@@ -58,9 +58,9 @@ EOF
 "set list of characters to show on invisible characters
 " set backspace=indent,eol,start
 
-filetype on " detect files based on type
-filetype plugin on " when a files is edited, it's plugin file is loaded
-filetype indent on " mantain indentation
+filetype on
+filetype plugin on
+filetype indent on
 
 " fzf
 set rtp+=/usr/local/bin/fzf
@@ -302,28 +302,46 @@ end
 EOF
 
 lua << EOF
-  local cmp = require'cmp'
-  cmp.setup {
-    completion = {
-      autocomplete = { },
-    },
-    snippet = {
-      expand = function(args)
-        vim.fn["vsnip#anonymous"](args.body)
-      end,
-    },
-    documentation = { },
-    sorting = {
-      priority_weight = 2.,
-      comparators = { },
-    },
-    mapping = {
-      ['<C-y>'] = cmp.mapping.confirm{ select = true },
-      ['<Tab>'] = cmp.mapping(cmp.mapping.select_next_item(), { 'i', 's' })
-    },
-    sources = {
-      { name = "nvim_lsp" },
-      { name = "emoji" },
-      { name = "treesitter" },
-    },}
+ local cmp = require("cmp")
+ cmp.setup({
+   completion = {
+     autocomplete = { },
+   },
+   snippet = {
+     expand = function(args)
+       vim.fn["vsnip#anonymous"](args.body)
+     end,
+   },
+   documentation = { },
+   sorting = {
+     priority_weight = 2.,
+     comparators = { },
+   },
+   mapping = {
+     ['<C-y>'] = cmp.mapping.confirm{ select = true },
+     -- Defaults from github
+     ['<Tab>'] = cmp.mapping(cmp.mapping.select_next_item(), { 'i', 's' }),
+     ['<C-d>'] = cmp.mapping.scroll_docs(-4),
+     ['<C-f>'] = cmp.mapping.scroll_docs(4),
+     ['<C-Space>'] = cmp.mapping.complete(),
+     ['<C-e>'] = cmp.mapping.close(),
+     ['<CR>'] = cmp.mapping.confirm({
+       behavior = cmp.ConfirmBehavior.Replace,
+       select = true,
+     })
+   },
+   sources = {
+     { name = "nvim_lsp" },
+     { name = "treesitter" },
+     { name = "emoji" },
+     { name = "buffer" }
+   },
+ })
 EOF
+
+autocmd FileType lua lua require'cmp'.setup.buffer {
+\   sources = {
+\     { name = 'nvim_lua' },
+\     { name = 'buffer' }
+\   },
+\ }
