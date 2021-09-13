@@ -58,7 +58,7 @@ HYPHEN_INSENSITIVE="true"
 ENABLE_CORRECTION="true"
 COMPLETION_WAITING_DOTS="true"
 
-plugins=(git git-prompt fzf zsh-vi-mode)
+plugins=(git git-prompt fzf)
 
 source $HOME/.oh-my-zsh/oh-my-zsh.sh
 
