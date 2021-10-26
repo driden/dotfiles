@@ -3,7 +3,6 @@
 " -------------------------------------------------------------------------
 call plug#begin('~/.config/nvim/plugged')
 
-"LUATHINGS"
 Plug 'nvim-lua/plenary.nvim'
 " THEMES
 
@@ -58,12 +57,12 @@ EOF
 "set list of characters to show on invisible characters
 " set backspace=indent,eol,start
 
-filetype on " detect files based on type
-filetype plugin on " when a files is edited, it's plugin file is loaded
-filetype indent on " mantain indentation
+" filetype on " detect files based on type
+" filetype plugin on " when a files is edited, it's plugin file is loaded
+" filetype indent on " mantain indentation
 
 " fzf
-set rtp+=/usr/local/bin/fzf
+" set rtp+=/usr/local/bin/fzf
 " leader
 let mapleader=" "
 " Always show line status
@@ -214,19 +213,6 @@ lspconfig.omnisharp.setup {
     filetypes = { "cs", "vb" };
     init_options = {};
     root_dir = lspconfig.util.root_pattern("../.csproj", "../.sln");
-}
-
-EOF
-
-" Terraform
-" https://github.com/neovim/nvim-lspconfig/blob/master/CONFIG.md#terraformls
-
-lua << EOF
-local lsp = require'lspconfig'
-require'lspconfig'.terraformls.setup{
-  cmd = { "terraform-ls", "serve" },
-  filetypes = { "tf", "terraform", "hcl" },
-  root_dir = lsp.util.root_pattern(".git")
 }
 
 EOF

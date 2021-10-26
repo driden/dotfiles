@@ -23,3 +23,4 @@ set.incsearch  = true
 set.listchars = "tab:>·,trail:~,extends:>,precedes:<,space:."
 set.backspace = "indent,eol,start"
 set.showmode = false
+set.rtp:append("/usr/loca/bin/fzf")
