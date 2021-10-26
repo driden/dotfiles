@@ -1,5 +1,6 @@
 local fzf="fzf --border --margin=1 --layout=reverse --padding=1"
 
+
 delbranch() {
   local branches branch
   branches=$(git for-each-ref --count=30 --sort=-committerdate refs/heads/ --format="%(refname:short)") &&
