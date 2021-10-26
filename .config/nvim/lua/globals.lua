@@ -1,4 +1,7 @@
-local global_options = vim.o
+local g = vim.o
 
-global_options.background = "dark"
-global_options.termguicolors = true
+g.background = "dark"
+g.termguicolors = true
+g.hlsearch = false
+g.incsearch = true
+g.ignorecase = true
