@@ -110,3 +110,4 @@ zvm_before_init_commands=()
 zvm_after_init_commands+=(init_fzf)
 zvm_before_select_vi_mode_commands=()
 zvm_after_select_vi_mode_commands=()
+alias lvim=/Users/poxy/.local/bin/lvim
