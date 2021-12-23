@@ -8,12 +8,14 @@
  '(custom-enabled-themes '(solaire-swap-bg-theme))
  '(custom-safe-themes
    '("fd22c8c803f2dac71db953b93df6560b6b058cb931ac12f688def67f08c10640" "8d7684de9abb5a770fbfd72a14506d6b4add9a7d30942c6285f020d41d76e0fa" "990e24b406787568c592db2b853aa65ecc2dcd08146c0d22293259d400174e37" "4bca89c1004e24981c840d3a32755bf859a6910c65b829d9441814000cf6c3d0" default))
+ '(exwm-floating-border-color "#0d0d0d")
  '(fci-rule-color "#505050")
+ '(highlight-tail-colors ((("#2c2e28") . 0) (("#272e30") . 20)))
  '(jdee-db-active-breakpoint-face-colors (cons "#1b1d1e" "#fc20bb"))
  '(jdee-db-requested-breakpoint-face-colors (cons "#1b1d1e" "#60aa00"))
  '(jdee-db-spec-breakpoint-face-colors (cons "#1b1d1e" "#505050"))
  '(objed-cursor-color "#d02b61")
- '(package-selected-packages '(fzf))
+ '(package-selected-packages '(org-bullets fzf))
  '(pdf-view-midnight-colors (cons "#dddddd" "#1b1d1e"))
  '(rustic-ansi-faces
    ["#1b1d1e" "#d02b61" "#60aa00" "#d08928" "#6c9ef8" "#b77fdb" "#00aa80" "#dddddd"])

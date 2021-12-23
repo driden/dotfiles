@@ -94,6 +94,7 @@ alias lg="lazygit"
 alias config='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
 alias refreshenv='source $HOME/.zshenv'
 alias rc='source $HOME/.zshrc'
+alias lvim=/Users/poxy/.local/bin/lvim
 
 
 export PATH=$HOME/.toolbox/bin:$PATH
