@@ -60,3 +60,9 @@
 ;; You can also try 'gd' (or 'C-c c d') to jump to their definition and see how
 ;; they are implemented.
 (use-package counsel)
+
+(map! :n "C-h" #'evil-window-left)
+(map! :n "C-j" #'evil-window-down)
+(map! :n "C-k" #'evil-window-up)
+(map! :n "C-l" #'evil-window-right)
+(map! :n "C-x" #'evil-window-delete)
