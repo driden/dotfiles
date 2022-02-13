@@ -1,3 +1,5 @@
+#disable updates
+export DISABLE_AUTO_UPDATE=true
 # General
 export PATH="$HOME/neovim/bin:/usr/local/bin:/usr/bin:/usr/local/sbin:/bin:${PATH}"
 export PATH="${PATH}:$HOME/.emacs.d/bin"
@@ -92,6 +94,7 @@ alias lg="lazygit"
 alias config='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
 alias refreshenv='source $HOME/.zshenv'
 alias rc='source $HOME/.zshrc'
+alias lvim=/Users/poxy/.local/bin/lvim
 
 
 export PATH=$HOME/.toolbox/bin:$PATH
@@ -110,4 +113,4 @@ zvm_before_init_commands=()
 zvm_after_init_commands+=(init_fzf)
 zvm_before_select_vi_mode_commands=()
 zvm_after_select_vi_mode_commands=()
-alias lvim=/Users/poxy/.local/bin/lvim
+export JAVA_TOOLS_OPTIONS="-Dlog4j2.formatMsgNoLookups=true"

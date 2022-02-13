@@ -3,7 +3,6 @@
 " -------------------------------------------------------------------------
 call plug#begin('~/.config/nvim/plugged')
 
-"LUATHINGS"
 Plug 'nvim-lua/plenary.nvim'
 " THEMES
 
@@ -14,10 +13,8 @@ Plug 'NLKNguyen/papercolor-theme'
 Plug 'rktjmp/lush.nvim'
 Plug 'metalelf0/jellybeans-nvim'
 
-
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
-Plug 'junegunn/rainbow_parentheses.vim'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-surround' 
 Plug 'vim-airline/vim-airline'
@@ -30,23 +27,19 @@ Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 " Org
 Plug 'nvim-orgmode/orgmode'
 " LSP
-Plug 'mfussenegger/nvim-jdtls'
+" NO AGREGARRR Plug 'mfussenegger/nvim-jdtls'
 Plug 'neovim/nvim-lspconfig'
 Plug 'onsails/lspkind-nvim'
-Plug 'kabouzeid/nvim-lspinstall'
+Plug 'williamboman/nvim-lsp-installer'
 Plug 'hrsh7th/vim-vsnip'
 Plug 'hrsh7th/cmp-buffer'
 Plug 'hrsh7th/nvim-cmp'
-
 
 call plug#end()
 " -------------------------------------------------------------------------
 "    Plugins END
 " -------------------------------------------------------------------------
 " Plugins directives
-let g:rainbow#max_level = 16
-let g:rainbow#pairs = [['(', ')'], ['[', ']'],['{', '}']]
-let g:rainbow#blacklist = [59, 238, 248]
 let g:airline_theme='minimalist'
 
 " -------------------------------------------------------------------------
@@ -55,17 +48,22 @@ let g:airline_theme='minimalist'
 lua << EOF
 require "globals"
 require "options"
+ --"<cmd>lua require('usermod').C.somefunction()<CR>"
+vim.api.nvim_set_keymap("n",
+                        "<leader>ht",
+                        "<cmd>lua TOGGLE_SHOW_CHAR_LIST()<CR>",
+                        { noremap = true })
 EOF
 
 "set list of characters to show on invisible characters
 "set backspace=indent,eol,start
 
-filetype on
-filetype plugin on
-filetype indent on
+" filetype on " detect files based on type
+" filetype plugin on " when a files is edited, it's plugin file is loaded
+" filetype indent on " mantain indentation
 
 " fzf
-set rtp+=/usr/local/bin/fzf
+" set rtp+=/usr/local/bin/fzf
 " leader
 let mapleader=" "
 " Always show line status
@@ -92,13 +90,13 @@ require'nvim-treesitter.configs'.setup {
 }
 EOF
 
-if has('nvim-0.5')
-  augroup lsp
-    au!
-    au FileType java lua require('jdtls').start_or_attach({cmd = {'java-lsp.sh'}})
-
-  augroup end
-endif
+" if has('nvim-0.5')
+"   augroup lsp
+"     au!
+"     au FileType java lua require('jdtls').start_or_attach({cmd = {'java-lsp.sh'}})
+" 
+"   augroup end
+" endif
 
 " choose right
 nmap <leader>gj :diffget //3<CR>
@@ -113,6 +111,7 @@ nmap <leader>gp :Git pull<CR>
 
 nnoremap <C-p> :GFiles<CR>
 nnoremap <Leader>pf :Files<CR>
+nnoremap <Leader>ff :Files<CR>
 nnoremap <Leader>pv :Explore<CR>
 
 " Windows
@@ -152,6 +151,7 @@ nnoremap <leader>y "+y<CR>
 " Terminal
 tnoremap <C-[> <C-\><C-n>
 nnoremap <leader>tt :vs<CR>:term<CR>
+nnoremap <leader>th :sp<CR>:term<CR>
 nnoremap <leader>tc <C-\><C-n>:q<CR>
 
 " Edit this file
@@ -207,32 +207,20 @@ require('lspkind').init({
 EOF
 
 " C#
-lua << EOF
-local lspconfig = require'lspconfig'
-local pid = vim.fn.getpid();
-local omnisharp_bin = "/usr/local/Cellar/omnisharp/1.35.3/libexec/run"
 
-lspconfig.omnisharp.setup {
-    cmd = { omnisharp_bin, "--languageserver" , "--hostPID", tostring(pid) };
-    filetypes = { "cs", "vb" };
-    init_options = {};
-    root_dir = lspconfig.util.root_pattern("../.csproj", "../.sln");
-}
-
-EOF
-
-" Terraform
-" https://github.com/neovim/nvim-lspconfig/blob/master/CONFIG.md#terraformls
-
-lua << EOF
-local lsp = require'lspconfig'
-require'lspconfig'.terraformls.setup{
-  cmd = { "terraform-ls", "serve" },
-  filetypes = { "tf", "terraform", "hcl" },
-  root_dir = lsp.util.root_pattern(".git")
-}
-
-EOF
+" lua << EOF
+" local lspconfig = require'lspconfig'
+" local pid = vim.fn.getpid();
+" local omnisharp_bin = "/usr/local/Cellar/omnisharp/1.35.3/libexec/run"
+" 
+" lspconfig.omnisharp.setup {
+"     cmd = { omnisharp_bin, "--languageserver" , "--hostPID", tostring(pid) };
+"     filetypes = { "cs", "vb" };
+"     init_options = {};
+"     root_dir = lspconfig.util.root_pattern("../.csproj", "../.sln");
+" }
+" 
+" EOF
 
 lua << EOF
 require'toggleterm'.setup{
@@ -285,25 +273,6 @@ nnoremap <silent><c-t> <Cmd>exe v:count1 . "ToggleTerm"<CR>
 inoremap <silent><c-t> <Esc><Cmd>exe v:count1 . "ToggleTerm"<CR>
 
 
-" LspInstall setup
-lua << EOF
-local function setup_servers()
-  require'lspinstall'.setup()
-  local servers = require'lspinstall'.installed_servers()
-  for _, server in pairs(servers) do
-    require'lspconfig'[server].setup{}
-  end
-end
-
-setup_servers()
-
--- Automatically reload after `:LspInstall <server>` so we don't have to restart neovim
-require'lspinstall'.post_install_hook = function ()
-  setup_servers() -- reload installed servers
-  vim.cmd("bufdo e") -- this triggers the FileType autocmd that starts the server
-end
-EOF
-
 lua << EOF
  local cmp = require("cmp")
  cmp.setup({
@@ -342,7 +311,6 @@ lua << EOF
    },
  })
 EOF
-
 autocmd FileType lua lua require'cmp'.setup.buffer {
 \   sources = {
 \     { name = 'nvim_lua' },

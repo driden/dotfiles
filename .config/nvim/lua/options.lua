@@ -19,6 +19,24 @@ set.shiftwidth = 2
 set.tabstop = 4
 set.expandtab = true
 set.incsearch  = true
-set.listchars = "tab:>·,trail:~,extends:>,precedes:<,space:."
 set.backspace = "indent,eol,start"
 set.showmode = false
+set.rtp:append("/usr/loca/bin/fzf")
+
+set.listchars = "tab:>·,trail:~"
+    --set.listchars = "tab:>,trail:~,extends:>,precedes:<,space:."
+
+
+local function set_char_list(show)
+  if (show) then
+    set.listchars = "tab:>·,trail:~"
+  else
+    set.listchars = ""
+  end
+end
+
+function TOGGLE_SHOW_CHAR_LIST()
+  local show_chars = #(set.listchars) > 0
+  set_char_list(show_chars)
+end
+
