@@ -96,9 +96,6 @@ alias refreshenv='source $HOME/.zshenv'
 alias rc='source $HOME/.zshrc'
 alias lvim=/Users/poxy/.local/bin/lvim
 
-
-export PATH=$HOME/.toolbox/bin:$PATH
-
 #THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
 export SDKMAN_DIR="/Users/lrrezend/.sdkman"
 [[ -s "/Users/lrrezend/.sdkman/bin/sdkman-init.sh" ]] && source "/Users/lrrezend/.sdkman/bin/sdkman-init.sh"
