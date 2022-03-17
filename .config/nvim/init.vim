@@ -31,6 +31,7 @@ Plug 'nvim-orgmode/orgmode'
 Plug 'neovim/nvim-lspconfig'
 Plug 'onsails/lspkind-nvim'
 Plug 'williamboman/nvim-lsp-installer'
+
 Plug 'hrsh7th/vim-vsnip'
 Plug 'hrsh7th/cmp-buffer'
 Plug 'hrsh7th/nvim-cmp'
@@ -169,58 +170,6 @@ xnoremap p "_dP
 " LSP
 " -------------------------------------------------------------------------
 
-lua << EOF
-require('lspkind').init({
-    with_text = true,
-
-    preset = 'codicons',
-
-    symbol_map = {
-      Text = "",
-      Method = "",
-      Function = "",
-      Constructor = "",
-      Field = "ﰠ",
-      Variable = "",
-      Class = "ﴯ",
-      Interface = "",
-      Module = "",
-      Property = "ﰠ",
-      Unit = "塞",
-      Value = "",
-      Enum = "",
-      Keyword = "",
-      Snippet = "",
-      Color = "",
-      File = "",
-      Reference = "",
-      Folder = "",
-      EnumMember = "",
-      Constant = "",
-      Struct = "פּ",
-      Event = "",
-      Operator = "",
-      TypeParameter = ""
-    },
-})
-
-EOF
-
-" C#
-
-" lua << EOF
-" local lspconfig = require'lspconfig'
-" local pid = vim.fn.getpid();
-" local omnisharp_bin = "/usr/local/Cellar/omnisharp/1.35.3/libexec/run"
-" 
-" lspconfig.omnisharp.setup {
-"     cmd = { omnisharp_bin, "--languageserver" , "--hostPID", tostring(pid) };
-"     filetypes = { "cs", "vb" };
-"     init_options = {};
-"     root_dir = lspconfig.util.root_pattern("../.csproj", "../.sln");
-" }
-" 
-" EOF
 
 lua << EOF
 require'toggleterm'.setup{
@@ -275,6 +224,8 @@ inoremap <silent><c-t> <Esc><Cmd>exe v:count1 . "ToggleTerm"<CR>
 
 lua << EOF
  local cmp = require("cmp")
+ local lspkind = require('lspkind')
+
  cmp.setup({
    completion = {
      autocomplete = { },
@@ -309,7 +260,19 @@ lua << EOF
      { name = "orgmode" },
      { name = "buffer" }
    },
- })
+  formatting = {
+    format = lspkind.cmp_format({
+      mode = 'symbol', -- show only symbol annotations
+      maxwidth = 50, -- prevent the popup from showing more than provided characters (e.g 50 will not show more than 50 characters)
+
+      -- The function below will be called before any actual modifications from lspkind
+      -- so that you can provide more controls on popup customization. (See [#30](https://github.com/onsails/lspkind-nvim/pull/30))
+      before = function (entry, vim_item)
+        return vim_item
+      end
+    })
+  }})
+
 EOF
 autocmd FileType lua lua require'cmp'.setup.buffer {
 \   sources = {
@@ -340,8 +303,6 @@ require'nvim-treesitter.configs'.setup {
   ensure_installed = {'org'}, -- Or run :TSUpdate org
 }
 
-require('orgmode').setup({
-  org_agenda_files = {'~/Dropbox/org/*', '~/my-orgs/**/*'},
-  org_default_notes_file = '~/Dropbox/org/refile.org',
-})
+require "plugins/org".setup()
+require "plugins/lsp".setup()
 EOF
