@@ -157,7 +157,23 @@ nnoremap <leader>tc <C-\><C-n>:q<CR>
 
 " Edit this file
 "
-nnoremap <leader>fp :e ~/.config/nvim/init.vim<CR>
+nnoremap <leader>pc :e ~/.config/nvim/init.vim<CR>
+
+" QuickFix
+" Open the quickfix window
+nnoremap qo :copen<CR>
+" Close it
+nnoremap qc :ccl<CR>
+" Open it if there are "errors", close it otherwise (some people prefer this)
+nnoremap qe :cw<CR>
+" Go to the next error in the window
+nnoremap qn :cn<CR>
+" Go to the previous error in the window
+nnoremap qp :cp<CR>
+" Go to the first error in the next file
+nnoremap qf :cnf<CR>
+" Go to error under cursor (if cursor is in quickfix window)
+nnoremap q. :.cc<CR>
 
 " Explorer 
 nnoremap <leader>fv :20Vexplore<CR>
@@ -165,6 +181,12 @@ nnoremap <leader>fv :20Vexplore<CR>
 " Dont copy replaced text in visual mode, you can past the same thing many
 " times
 xnoremap p "_dP
+"
+" Changing(or deleting) a word shouldnt alter the default register
+nnoremap c "_c
+nnoremap d "_d
+vnoremap c "_c
+vnoremap d "_d
 
 " -------------------------------------------------------------------------
 " LSP

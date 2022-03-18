@@ -81,6 +81,7 @@ alias v="$EDITOR"
 # Git aliases
 alias gs="git status"
 alias gc="git commit"
+alias gcm="git commit -m"
 alias ga="add-files" # should list changed files and pick with fzf
 alias gap="git add -p"
 alias gpull="git pull"

@@ -20,3 +20,9 @@ add-files() {
   selected_files=$(git status -s | awk '{print $2}' | eval "$fzf --header 'Select files to add' --multi" )
   echo "$selected_files" | xargs git add --
 }
+
+gcob() {
+  local branch_name="$1"
+  git checkout -b $branch_name
+  git push --set-upstream origin $branch_name
+}
