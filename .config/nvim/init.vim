@@ -161,19 +161,19 @@ nnoremap <leader>pc :e ~/.config/nvim/init.vim<CR>
 
 " QuickFix
 " Open the quickfix window
-nnoremap qo :copen<CR>
+nnoremap <leader>qq :copen<CR>
 " Close it
-nnoremap qc :ccl<CR>
+nnoremap <leader>qc :ccl<CR>
 " Open it if there are "errors", close it otherwise (some people prefer this)
-nnoremap qe :cw<CR>
+nnoremap <leader>qe :cw<CR>
 " Go to the next error in the window
-nnoremap qn :cn<CR>
+nnoremap <leader>qn :cn<CR>
 " Go to the previous error in the window
-nnoremap qp :cp<CR>
+nnoremap <leader>qp :cp<CR>
 " Go to the first error in the next file
-nnoremap qf :cnf<CR>
+nnoremap <leader>qf :cnf<CR>
 " Go to error under cursor (if cursor is in quickfix window)
-nnoremap q. :.cc<CR>
+nnoremap <leader>q. :.cc<CR>
 
 " Explorer 
 nnoremap <leader>fv :20Vexplore<CR>
@@ -184,9 +184,7 @@ xnoremap p "_dP
 "
 " Changing(or deleting) a word shouldnt alter the default register
 nnoremap c "_c
-nnoremap d "_d
 vnoremap c "_c
-vnoremap d "_d
 
 " -------------------------------------------------------------------------
 " LSP
