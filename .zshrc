@@ -97,18 +97,15 @@ alias refreshenv='source $HOME/.zshenv'
 alias rc='source $HOME/.zshrc'
 alias lvim=/Users/poxy/.local/bin/lvim
 
-#THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
-export SDKMAN_DIR="/Users/lrrezend/.sdkman"
-[[ -s "/Users/lrrezend/.sdkman/bin/sdkman-init.sh" ]] && source "/Users/lrrezend/.sdkman/bin/sdkman-init.sh"
-[ -f "/home/driden/.ghcup/env" ] && source "/home/driden/.ghcup/env" # ghcup-env
-
 function init_fzf() {
   [ -f ~/.fzf/completion.zsh ] && source ~/.fzf/completion.zsh
   [ -f ~/.fzf/key-bindings.zsh ] && source ~/.fzf/key-bindings.zsh
 }
 
+[ -f "$HOME/.ghcup/env" ] && source "$HOME/.ghcup/env" # ghcup-env
+[[ -s "$SDKMAN_DIR/bin/sdkman-init.sh" ]] && source "$SDKMAN_DIR/bin/sdkman-init.sh"
+
 zvm_before_init_commands=()
 zvm_after_init_commands+=(init_fzf)
 zvm_before_select_vi_mode_commands=()
 zvm_after_select_vi_mode_commands=()
-export JAVA_TOOLS_OPTIONS="-Dlog4j2.formatMsgNoLookups=true"
