@@ -56,21 +56,8 @@ vim.api.nvim_set_keymap("n",
                         { noremap = true })
 EOF
 
-"set list of characters to show on invisible characters
-"set backspace=indent,eol,start
-
-" filetype on " detect files based on type
-" filetype plugin on " when a files is edited, it's plugin file is loaded
-" filetype indent on " mantain indentation
-
-" fzf
-" set rtp+=/usr/local/bin/fzf
-" leader
 let mapleader=" "
-" Always show line status
-" set laststatus=2
 
-"let g:gruvbox_material_background = 'hard' "soft,medium, hard
 colorscheme PaperColor 
 
 augroup rainbow_parens
@@ -79,25 +66,6 @@ augroup rainbow_parens
 augroup END
 
 command JqBuffer execute "%!jq"
-
-lua <<EOF
-require'nvim-treesitter.configs'.setup {
-  ensure_installed = "maintained", -- one of "all", "maintained" (parsers with maintainers), or a list of languages
-  ignore_install = { }, -- List of parsers to ignore installing
-  highlight = {
-    enable = true,              -- false will disable the whole extension
-    disable = {},  -- list of language that will be disabled
-  },
-}
-EOF
-
-" if has('nvim-0.5')
-"   augroup lsp
-"     au!
-"     au FileType java lua require('jdtls').start_or_attach({cmd = {'java-lsp.sh'}})
-" 
-"   augroup end
-" endif
 
 " choose right
 nmap <leader>gj :diffget //3<CR>
@@ -158,6 +126,8 @@ nnoremap <leader>tc <C-\><C-n>:q<CR>
 " Edit this file
 "
 nnoremap <leader>pc :e ~/.config/nvim/init.vim<CR>
+" Source config
+nnoremap <leader>rr :source ~/.config/nvim/init.vim<CR>
 
 " QuickFix
 " Open the quickfix window
@@ -186,49 +156,16 @@ xnoremap p "_dP
 nnoremap c "_c
 vnoremap c "_c
 
-" -------------------------------------------------------------------------
-" LSP
-" -------------------------------------------------------------------------
-
 
 lua << EOF
-require'toggleterm'.setup{
-  function(term)
-    if term.direction == "horizontal" then
-      return 15
-    elseif term.direction == "vertical" then
-      return vim.o.columns * 0.4
-    end
-  end,
-  open_mapping = [[<c-\>]],
-  hide_numbers = true, -- hide the number column in toggleterm buffers
-  shade_filetypes = {},
-  shade_terminals = true,
-  shading_factor = '1', -- the degree by which to darken to terminal colour, default: 1 for dark backgrounds, 3 for light
-  start_in_insert = true,
-  insert_mappings = true, -- whether or not the open mapping applies in insert mode
-  persist_size = true,
-  direction = 'horizontal', -- | 'horizontal' | 'window' | 'float',
-  close_on_exit = true, -- close the terminal window when the process exits
-  shell = vim.o.shell, -- change the default shell
-  -- This field is only relevant if direction is set to 'float'
-  float_opts = {
-    -- The border key is *almost* the same as 'nvim_open_win'
-    -- see :h nvim_open_win for details on borders however
-    -- the 'curved' border is a custom border type
-    -- not natively supported but implemented in this plugin.
-    border = 'single', -- | 'double' | 'shadow' | 'curved' | ... other options supported by win open
-    -- width = <value>,
-    -- height = <value>,
-    winblend = 3,
-    highlights = {
-      border = "Normal",
-      background = "Normal",
-    }
-  }
-}
+require "plugins/org".setup()
+require "plugins/lsp".setup()
+require "plugins/autocomplete".setup()
+require "plugins/treesitter".setup()
+require "plugins/toggleterm".setup()
 
 EOF
+
 " set
 let g:toggleterm_terminal_mapping = '<C-t>'
 " or manually...
@@ -242,58 +179,6 @@ nnoremap <silent><c-t> <Cmd>exe v:count1 . "ToggleTerm"<CR>
 inoremap <silent><c-t> <Esc><Cmd>exe v:count1 . "ToggleTerm"<CR>
 
 
-lua << EOF
- local cmp = require("cmp")
- local lspkind = require('lspkind')
-
- cmp.setup({
-   completion = {
-     autocomplete = { },
-   },
-   snippet = {
-     expand = function(args)
-       vim.fn["vsnip#anonymous"](args.body)
-     end,
-   },
-   documentation = { },
-   sorting = {
-     priority_weight = 2.,
-     comparators = { },
-   },
-   mapping = {
-     ['<C-y>'] = cmp.mapping.confirm{ select = true },
-     -- Defaults from github
-     ['<Tab>'] = cmp.mapping(cmp.mapping.select_next_item(), { 'i', 's' }),
-     ['<C-d>'] = cmp.mapping.scroll_docs(-4),
-     ['<C-f>'] = cmp.mapping.scroll_docs(4),
-     ['<C-Space>'] = cmp.mapping.complete(),
-     ['<C-e>'] = cmp.mapping.close(),
-     ['<CR>'] = cmp.mapping.confirm({
-       behavior = cmp.ConfirmBehavior.Replace,
-       select = true,
-     })
-   },
-   sources = {
-     { name = "nvim_lsp" },
-     { name = "treesitter" },
-     { name = "emoji" },
-     { name = "orgmode" },
-     { name = "buffer" }
-   },
-  formatting = {
-    format = lspkind.cmp_format({
-      mode = 'symbol', -- show only symbol annotations
-      maxwidth = 50, -- prevent the popup from showing more than provided characters (e.g 50 will not show more than 50 characters)
-
-      -- The function below will be called before any actual modifications from lspkind
-      -- so that you can provide more controls on popup customization. (See [#30](https://github.com/onsails/lspkind-nvim/pull/30))
-      before = function (entry, vim_item)
-        return vim_item
-      end
-    })
-  }})
-
-EOF
 autocmd FileType lua lua require'cmp'.setup.buffer {
 \   sources = {
 \     { name = 'nvim_lua' },
@@ -301,28 +186,3 @@ autocmd FileType lua lua require'cmp'.setup.buffer {
 \   },
 \ }
 
-" Org
-lua << EOF
-local parser_config = require "nvim-treesitter.parsers".get_parser_configs()
-parser_config.org = {
-  install_info = {
-    url = 'https://github.com/milisims/tree-sitter-org',
-    revision = 'f110024d539e676f25b72b7c80b0fd43c34264ef',
-    files = {'src/parser.c', 'src/scanner.cc'},
-  },
-  filetype = 'org',
-}
-
-require'nvim-treesitter.configs'.setup {
-  -- If TS highlights are not enabled at all, or disabled via `disable` prop, highlighting will fallback to default Vim syntax highlighting
-  highlight = {
-    enable = true,
-    disable = {'org'}, -- Remove this to use TS highlighter for some of the highlights (Experimental)
-    additional_vim_regex_highlighting = {'org'}, -- Required since TS highlighter doesn't support all syntax features (conceal)
-  },
-  ensure_installed = {'org'}, -- Or run :TSUpdate org
-}
-
-require "plugins/org".setup()
-require "plugins/lsp".setup()
-EOF
