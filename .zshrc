@@ -93,8 +93,7 @@ alias lg="lazygit"
 
 # dotfiles versioning with bare repo
 alias config='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
-alias refreshenv='source $HOME/.zshenv'
-alias rc='source $HOME/.zshrc'
+alias refreshenv='source $HOME/.zshrc && source $HOME/.zshenv'
 alias lvim=/Users/poxy/.local/bin/lvim
 
 function init_fzf() {
@@ -103,7 +102,9 @@ function init_fzf() {
 }
 
 [ -f "$HOME/.ghcup/env" ] && source "$HOME/.ghcup/env" # ghcup-env
+export SDKMAN_DIR="$HOME/.sdkman"
 [[ -s "$SDKMAN_DIR/bin/sdkman-init.sh" ]] && source "$SDKMAN_DIR/bin/sdkman-init.sh"
+
 
 zvm_before_init_commands=()
 zvm_after_init_commands+=(init_fzf)
