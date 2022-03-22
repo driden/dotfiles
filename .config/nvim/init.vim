@@ -21,6 +21,11 @@ Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'akinsho/toggleterm.nvim'
 
+" FileTree
+Plug 'kyazdani42/nvim-web-devicons'
+Plug 'kyazdani42/nvim-tree.lua'
+
+
 "Treesitter
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'} 
 
@@ -31,10 +36,33 @@ Plug 'nvim-orgmode/orgmode'
 Plug 'neovim/nvim-lspconfig'
 Plug 'onsails/lspkind-nvim'
 Plug 'williamboman/nvim-lsp-installer'
+Plug 'jose-elias-alvarez/null-ls.nvim'
 
-Plug 'hrsh7th/vim-vsnip'
-Plug 'hrsh7th/cmp-buffer'
+"" Plug 'hrsh7th/cmp-buffer'
+Plug 'hrsh7th/cmp-cmdline'
+Plug 'hrsh7th/cmp-nvim-lua'
+Plug 'hrsh7th/cmp-nvim-lsp'
+Plug 'hrsh7th/cmp-path'
 Plug 'hrsh7th/nvim-cmp'
+Plug 'hrsh7th/cmp-nvim-lsp-signature-help'
+Plug 'hrsh7th/cmp-nvim-lsp-signature-help'
+Plug 'hrsh7th/cmp-nvim-lsp-document-symbol'
+
+" For vsnip users.
+Plug 'hrsh7th/cmp-vsnip'
+Plug 'hrsh7th/vim-vsnip'
+
+" For luasnip users.
+" Plug 'L3MON4D3/LuaSnip'
+" Plug 'saadparwaiz1/cmp_luasnip'
+
+" For ultisnips users.
+" Plug 'SirVer/ultisnips'
+" Plug 'quangnguyen30192/cmp-nvim-ultisnips'
+
+" For snippy users.
+" Plug 'dcampos/nvim-snippy'
+" Plug 'dcampos/cmp-snippy'
 
 call plug#end()
 " -------------------------------------------------------------------------
@@ -46,24 +74,10 @@ let g:airline_theme='minimalist'
 " -------------------------------------------------------------------------
 " VIM GENERAL SETTINGS
 " -------------------------------------------------------------------------
-lua << EOF
-require "globals"
-require "options"
- --"<cmd>lua require('usermod').C.somefunction()<CR>"
-vim.api.nvim_set_keymap("n",
-                        "<leader>ht",
-                        "<cmd>lua TOGGLE_SHOW_CHAR_LIST()<CR>",
-                        { noremap = true })
-EOF
 
 let mapleader=" "
 
 colorscheme PaperColor 
-
-augroup rainbow_parens
-  autocmd!
-  autocmd FileType javascript,typescript,json,go RainbowParentheses
-augroup END
 
 command JqBuffer execute "%!jq"
 
@@ -144,9 +158,8 @@ nnoremap <leader>qp :cp<CR>
 nnoremap <leader>qf :cnf<CR>
 " Go to error under cursor (if cursor is in quickfix window)
 nnoremap <leader>q. :.cc<CR>
-
 " Explorer 
-nnoremap <leader>fv :20Vexplore<CR>
+nnoremap <leader>fv :20NnvimTreeToggle<CR>
 
 " Dont copy replaced text in visual mode, you can past the same thing many
 " times
@@ -158,18 +171,22 @@ vnoremap c "_c
 
 
 lua << EOF
+
+require "globals"
+require "options"
+ --"<cmd>lua require('usermod').C.somefunction()<CR>"
+vim.api.nvim_set_keymap("n",
+                        "<leader>ht",
+                        "<cmd>lua TOGGLE_SHOW_CHAR_LIST()<CR>",
+                        { noremap = true })
+
+require "options".setup()
 require "plugins/org".setup()
 require "plugins/lsp".setup()
 require "plugins/autocomplete".setup()
 require "plugins/treesitter".setup()
 require "plugins/toggleterm".setup()
+require "plugins/file_tree".setup()
 
 EOF
-
-autocmd FileType lua lua require'cmp'.setup.buffer {
-\   sources = {
-\     { name = 'nvim_lua' },
-\     { name = 'buffer' }
-\   },
-\ }
 

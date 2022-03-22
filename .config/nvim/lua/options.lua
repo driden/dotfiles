@@ -1,42 +1,34 @@
-local set = vim.opt
-
-set.hidden = true
-set.backup = false
-set.writebackup = false
-set.list = true
-set.cmdheight = 2
-set.shortmess:append("c")
-set.updatetime = 300
-set.signcolumn = "yes"
-set.clipboard = "unnamedplus"
-set.cursorline = true
-set.wrap = false
-set.relativenumber = true
-set.compatible = false
-set.ignorecase = true
-set.autoindent = true
-set.shiftwidth = 2
-set.tabstop = 4
-set.expandtab = true
-set.incsearch  = true
-set.backspace = "indent,eol,start"
-set.showmode = false
-set.rtp:append("/usr/loca/bin/fzf")
-
-set.listchars = "tab:>·,trail:~"
-    --set.listchars = "tab:>,trail:~,extends:>,precedes:<,space:."
-
-
-local function set_char_list(show)
-  if (show) then
-    set.listchars = "tab:>·,trail:~"
-  else
-    set.listchars = ""
-  end
+local M = {}
+-- local M = {{show_chars = true}}
+--
+-- function M.toggle_meta_chars()
+--    M.show_chars = ~M.show_chars
+--    vim.opt.list = ~M.show_chars
+-- end
+function M.setup()
+	vim.opt.autoindent = true
+	vim.opt.backspace = "indent,eol,start"
+	vim.opt.backup = false
+	vim.opt.clipboard = "unnamedplus"
+	vim.opt.cmdheight = 2
+	vim.opt.compatible = false
+	vim.opt.cursorline = true
+	vim.opt.expandtab = true
+	vim.opt.hidden = true
+	vim.opt.ignorecase = true
+	vim.opt.incsearch = true
+	vim.opt.list = true
+	vim.opt.listchars = "tab:>·,trail:~"
+	vim.opt.relativenumber = true
+	vim.opt.rtp:append("/usr/loca/bin/fzf")
+	vim.opt.shiftwidth = 2
+	vim.opt.shortmess:append("c")
+	vim.opt.showmode = false
+	vim.opt.signcolumn = "yes"
+	vim.opt.tabstop = 4
+	vim.opt.updatetime = 300
+	vim.opt.wrap = false
+	vim.opt.writebackup = false
 end
 
-function TOGGLE_SHOW_CHAR_LIST()
-  local show_chars = #(set.listchars) > 0
-  set_char_list(show_chars)
-end
-
+return M
