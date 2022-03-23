@@ -1,34 +1,35 @@
 local M = {}
--- local M = {{show_chars = true}}
---
--- function M.toggle_meta_chars()
---    M.show_chars = ~M.show_chars
---    vim.opt.list = ~M.show_chars
--- end
+
+M.toggle_meta_chars = function()
+	vim.o.list = not vim.o.list
+end
+
 function M.setup()
-	vim.opt.autoindent = true
-	vim.opt.backspace = "indent,eol,start"
-	vim.opt.backup = false
-	vim.opt.clipboard = "unnamedplus"
-	vim.opt.cmdheight = 2
-	vim.opt.compatible = false
-	vim.opt.cursorline = true
-	vim.opt.expandtab = true
-	vim.opt.hidden = true
-	vim.opt.ignorecase = true
-	vim.opt.incsearch = true
-	vim.opt.list = true
-	vim.opt.listchars = "tab:>·,trail:~"
-	vim.opt.relativenumber = true
+	vim.o.autoindent = true
+	vim.o.background = "dark"
+	vim.o.backspace = "indent,eol,start"
+	vim.o.backup = false
+	vim.o.clipboard = "unnamedplus"
+	vim.o.cmdheight = 2
+	vim.o.compatible = false
+	vim.o.cursorline = true
+	vim.o.expandtab = true
+	vim.o.hidden = true
+	vim.o.hlsearch = false
+	vim.o.ignorecase = true
+	vim.o.list = true
+	vim.o.listchars = "tab:>·,trail:~,eol:↴"
+	vim.o.relativenumber = true
+	vim.o.shiftwidth = 2
+	vim.o.showmode = false
+	vim.o.signcolumn = "yes"
+	vim.o.tabstop = 4
+	--vim.o.termguicolors = true
+	vim.o.updatetime = 300
+	vim.o.wrap = false
+	vim.o.writebackup = false
 	vim.opt.rtp:append("/usr/loca/bin/fzf")
-	vim.opt.shiftwidth = 2
 	vim.opt.shortmess:append("c")
-	vim.opt.showmode = false
-	vim.opt.signcolumn = "yes"
-	vim.opt.tabstop = 4
-	vim.opt.updatetime = 300
-	vim.opt.wrap = false
-	vim.opt.writebackup = false
 end
 
 return M

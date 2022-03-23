@@ -16,7 +16,7 @@ Plug 'metalelf0/jellybeans-nvim'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'tpope/vim-fugitive'
-Plug 'tpope/vim-surround' 
+Plug 'tpope/vim-surround'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'akinsho/toggleterm.nvim'
@@ -27,12 +27,11 @@ Plug 'kyazdani42/nvim-tree.lua'
 
 
 "Treesitter
-Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'} 
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 
 " Org
 Plug 'nvim-orgmode/orgmode'
 " LSP
-" NO AGREGARRR Plug 'mfussenegger/nvim-jdtls'
 Plug 'neovim/nvim-lspconfig'
 Plug 'onsails/lspkind-nvim'
 Plug 'williamboman/nvim-lsp-installer'
@@ -77,7 +76,7 @@ let g:airline_theme='minimalist'
 
 let mapleader=" "
 
-colorscheme PaperColor 
+colorscheme PaperColor
 
 command JqBuffer execute "%!jq"
 
@@ -158,7 +157,7 @@ nnoremap <leader>qp :cp<CR>
 nnoremap <leader>qf :cnf<CR>
 " Go to error under cursor (if cursor is in quickfix window)
 nnoremap <leader>q. :.cc<CR>
-" Explorer 
+" Explorer
 nnoremap <leader>fv :20NnvimTreeToggle<CR>
 
 " Dont copy replaced text in visual mode, you can past the same thing many
@@ -172,21 +171,18 @@ vnoremap c "_c
 
 lua << EOF
 
-require "globals"
-require "options"
- --"<cmd>lua require('usermod').C.somefunction()<CR>"
-vim.api.nvim_set_keymap("n",
-                        "<leader>ht",
-                        "<cmd>lua TOGGLE_SHOW_CHAR_LIST()<CR>",
-                        { noremap = true })
-
-require "options".setup()
-require "plugins/org".setup()
-require "plugins/lsp".setup()
 require "plugins/autocomplete".setup()
-require "plugins/treesitter".setup()
-require "plugins/toggleterm".setup()
 require "plugins/file_tree".setup()
+require "plugins/lsp".setup()
+require "plugins/org".setup()
+require "plugins/toggleterm".setup()
+require "plugins/treesitter".setup()
+require "options".setup()
+
+vim.api.nvim_set_keymap("n",
+                        "<leader>tm",
+                        "<cmd>lua require\"options\".toggle_meta_chars()<CR>",
+                        { noremap = true })
 
 EOF
 

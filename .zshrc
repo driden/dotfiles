@@ -3,6 +3,7 @@ export DISABLE_AUTO_UPDATE=true
 # General
 export PATH="$HOME/neovim/bin:/usr/local/bin:/usr/bin:/usr/local/sbin:/bin:${PATH}"
 export PATH="${PATH}:$HOME/.emacs.d/bin"
+export PATH="${PATH}:$HOME/.cargo/bin"
 
 export ZSH="$HOME/.oh-my-zsh"
 export MANPATH="/usr/local/man:$MANPATH"
