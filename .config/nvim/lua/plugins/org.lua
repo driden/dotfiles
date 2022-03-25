@@ -1,9 +1,7 @@
 local M = {}
 
 function M.setup()
-	local orgmode = require("orgmode")
-
-	orgmode.setup_ts_grammar()
+	--require("orgmode").setup_ts_grammar()
 	-- Tree-sitter configuration
 	require("nvim-treesitter.configs").setup({
 		-- If TS highlights are not enabled at all, or disabled via `disable` prop, highlighting will fallback to default Vim syntax highlighting
@@ -15,9 +13,9 @@ function M.setup()
 		ensure_installed = { "org" }, -- Or run :TSUpdate org
 	})
 
-	orgmode.setup({
-		org_agenda_files = { "~/Documents/Notes/org/*", "~/my-orgs/**/*" },
-		org_default_notes_file = "~/Documents/Notes/org/refile.org",
+	require("orgmode").setup({
+		org_agenda_files = { "~/Documents/agenda/*" },
+		org_default_notes_file = "~/Documents/Notes/VerifyEndpointV2Tests.org",
 	})
 end
 

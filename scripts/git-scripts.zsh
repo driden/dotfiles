@@ -1,21 +1,21 @@
 local fzf="fzf --border --margin=1 --layout=reverse --padding=1"
 
 
-delbranch() {
+gbd() {
   local branches branch
   branches=$(git for-each-ref --count=30 --sort=-committerdate refs/heads/ --format="%(refname:short)") &&
   branch=$(echo "$branches" | eval "${fzf} --header 'Select branch(es) to delete...' --multi") &&
   git branch -D $(echo "$branch" | sed "s/.* //" | sed "s#remotes/[^/]*/##")
 }
 
-gcheckout() {
+gco() {
   local branches branch
   branches=$(git for-each-ref --count=30 --sort=-committerdate refs/heads/ --format="%(refname:short)") &&
   branch=$(echo "$branches" | eval "${fzf} --header 'Select branch to checkout'") &&
   git checkout $(echo "$branch" | sed "s/.* //" | sed "s#remotes/[^/]*/##")
 }
 
-add-files() {
+ga() {
   local changed_files files
   selected_files=$(git status -s | awk '{print $2}' | eval "$fzf --header 'Select files to add' --multi" )
   echo "$selected_files" | xargs git add --
@@ -25,4 +25,8 @@ gcob() {
   local branch_name="$1"
   git checkout -b $branch_name
   git push --set-upstream origin $branch_name
+}
+
+gcm() {
+  git commit -m "$1"
 }

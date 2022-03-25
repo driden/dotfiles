@@ -29,6 +29,9 @@ Plug 'kyazdani42/nvim-tree.lua'
 "Treesitter
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 
+"jq queries
+Plug 'gennaro-tedesco/nvim-jqx'
+
 " Org
 Plug 'nvim-orgmode/orgmode'
 " LSP

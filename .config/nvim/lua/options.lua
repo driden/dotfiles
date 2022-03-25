@@ -5,29 +5,43 @@ M.toggle_meta_chars = function()
 end
 
 function M.setup()
-	vim.o.autoindent = true
-	vim.o.background = "dark"
-	vim.o.backspace = "indent,eol,start"
-	vim.o.backup = false
-	vim.o.clipboard = "unnamedplus"
-	vim.o.cmdheight = 2
-	vim.o.compatible = false
-	vim.o.cursorline = true
-	vim.o.expandtab = true
-	vim.o.hidden = true
-	vim.o.hlsearch = false
-	vim.o.ignorecase = true
-	vim.o.list = true
-	vim.o.listchars = "tab:>·,trail:~,eol:↴"
-	vim.o.relativenumber = true
-	vim.o.shiftwidth = 2
-	vim.o.showmode = false
-	vim.o.signcolumn = "yes"
-	vim.o.tabstop = 4
-	--vim.o.termguicolors = true
-	vim.o.updatetime = 300
-	vim.o.wrap = false
-	vim.o.writebackup = false
+	local opts = {
+		--o.termguicolors = true Seems to be broken now
+		autoindent = true,
+		background = "dark",
+		backspace = "indent,eol,start",
+		backup = false,
+		clipboard = "unnamedplus",
+		cmdheight = 2,
+		compatible = false,
+		conceallevel = 2, -- so that `` is visible in markdown files
+		concealcursor = "nc",
+		cursorline = true,
+		expandtab = true,
+		fileencoding = "utf-8", -- the encoding written to a file
+		hidden = true,
+		hlsearch = false,
+		ignorecase = true,
+		list = false,
+		listchars = "tab:>.,trail:~,eol:↴",
+		number = true,
+		relativenumber = true,
+		shiftwidth = 2,
+		showmode = false,
+		signcolumn = "yes",
+		smartindent = true,
+		splitbelow = true,
+		splitright = true,
+		swapfile = false,
+		tabstop = 2,
+		updatetime = 300,
+		wrap = false,
+		writebackup = false,
+	}
+
+	for k, v in pairs(opts) do
+		vim.o[k] = v
+	end
 	vim.opt.rtp:append("/usr/loca/bin/fzf")
 	vim.opt.shortmess:append("c")
 end
