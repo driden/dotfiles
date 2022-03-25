@@ -50,13 +50,13 @@ myModMask                     = mod4Mask
 myTerminal = "kitty"
 mydefaults = def {
           normalBorderColor   = "#4c566a"
-        , focusedBorderColor  = "#5e81ac"
+        , focusedBorderColor  = "#b5179e"
         , focusFollowsMouse   = True
         , mouseBindings       = myMouseBindings
         , workspaces          = myWorkspaces
         , keys                = myKeys
         , modMask             = myModMask
-        , borderWidth         = 3
+        , borderWidth         = 5
         , layoutHook          = myLayoutHook
         , startupHook         = myStartupHook
         , manageHook          = myManageHook
@@ -103,7 +103,8 @@ myWorkspaces = clickable . (map xmobarEscape) $ ["\61612","\61899","\61947","\61
 
 -- window manipulations
 myManageHook = composeAll . concat $
-    [ [isDialog --> doCenterFloat]
+    [ [isDialog --> doCenterFloat ]
+    , [isFullscreen --> doFullFloat ]
     , [className =? c --> doCenterFloat | c <- myCFloats]
     , [title =? t --> doFloat | t <- myTFloats]
     , [resource =? r --> doFloat | r <- myRFloats]
@@ -145,18 +146,17 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
   [ ((modMask, xK_c), spawn $ "conky-toggle" )
   , ((modMask, xK_q), kill )
   , ((modMask, xK_v), spawn $ "pavucontrol" )
-  , ((modMask, xK_Escape), spawn $ "xkill" )
+  , ((modMask, xK_Escape), spawn $ "xkill"  )
   , ((modMask, xK_Return), spawn $ myTerminal)
   , ((modMask, xK_F1), spawn $ "brave")
+  , ((modMask, xK_F2), spawn $ "$HOME/.local/share/JetBrains/android-studio/bin/studio.sh")
+  , ((modMask, xK_F3), spawn $ "$HOME/.local/share/JetBrains/Rider-2021.2.1/bin/rider.sh")
   , ((modMask, xK_p), spawn $ "rofi -show-icons -show run" )
-  --, ((modMask, xK_u), spawn $ "rofi -show run -fullscreen" )
-  --, ((modMask, xK_p ), spawn $ "dmenu_run -i -nb '#191919' -nf '#fea63c' -sb '#fea63c' -sf '#191919' -fn 'UbuntuMono Nerd Font Mono:bold:pixelsize=16'")
 
   -- SUPER + SHIFT KEYS
 
   , ((modMask .|. shiftMask , xK_Return ), spawn $ "nemo")
-  , ((modMask .|. shiftMask , xK_r ), spawn $ "xmonad --recompile ; xmonad --restart")
-  --, ((modMask .|. shiftMask , xK_q ), kill)
+  , ((modMask .|. shiftMask , xK_r ), spawn $ "xmonad --recompile && xmonad --restart")
   , ((modMask .|. shiftMask , xK_s ), spawn $ "flameshot gui")
   , ((modMask .|. shiftMask , xK_x ), spawn $ "arcolinux-logout" )
 
@@ -260,8 +260,7 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
   , ((modMask .|. modMask, xK_Right), sendMessage (IncMasterN (-1)))
 
   ]
-  ++
-
+    ++
   -- mod-[1..9], Switch to workspace N
   -- mod-shift-[1..9], Move client to workspace N
   [((m .|. modMask, k), windows $ f i)
@@ -270,7 +269,7 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
   --qwerty users use this line
    | (i, k) <- zip (XMonad.workspaces conf) [xK_1,xK_2,xK_3,xK_4,xK_5,xK_6,xK_7,xK_8,xK_9,xK_0]
       , (f, m) <- [(W.greedyView, 0), (W.shift, shiftMask)
-      , (\i -> W.greedyView i . W.shift i, shiftMask)]]
+      , (\i -> W.greedyView i . W.shift i, shiftMask)] ]
    ++
   -- ctrl-{w,e,r}, Switch to physical/Xinerama screens 1, 2, or 3
   -- ctrl-shift-{w,e,r}, Move client to screen 1, 2, or 3
