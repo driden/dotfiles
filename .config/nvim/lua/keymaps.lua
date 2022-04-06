@@ -13,13 +13,13 @@ keymap("n", "<C-j>", "<C-w>j", opts)
 keymap("n", "<C-k>", "<C-w>k", opts)
 keymap("n", "<C-l>", "<C-w>l", opts)
 
-keymap("n", "<leader>e", ":Lex 30<cr>", opts)
+keymap("n", "<leader>e", ":NvimTreeToggle<CR>", opts)
 
 -- Resize with arrows
 keymap("n", "<Up>", ":resize +2<CR>", opts)
 keymap("n", "<Down>", ":resize -2<CR>", opts)
-keymap("n", "<Left>", ":vertical resize -2<CR>", opts)
-keymap("n", "<Right>", ":vertical resize +2<CR>", opts)
+keymap("n", "<Left>", ":vertical resize +3<CR>", opts)
+keymap("n", "<Right>", ":vertical resize -3<CR>", opts)
 
 -- Navigate buffers
 keymap("n", "<S-l>", ":bnext<CR>", opts)
@@ -45,7 +45,18 @@ keymap("x", "<A-k>", ":move '<-2<CR>gv-gv", opts)
 
 -- Terminal --
 -- Better terminal navigation
+keymap("t", "<C-[>", "<C-\\><C-n>", term_opts)
 keymap("t", "<C-h>", "<C-\\><C-N><C-w>h", term_opts)
 keymap("t", "<C-j>", "<C-\\><C-N><C-w>j", term_opts)
 keymap("t", "<C-k>", "<C-\\><C-N><C-w>k", term_opts)
 keymap("t", "<C-l>", "<C-\\><C-N><C-w>l", term_opts)
+keymap("t", "<leader>tc", "<C-><C-n>:q<CR>", term_opts)
+
+-- Paste from OS
+keymap("n", "<leader>p", "+p<CR>", term_opts)
+keymap("n", "<leader>y", "+y<CR>", term_opts)
+
+-- Tab
+keymap("n", "<leader>tn", ":tabNext<CR>", opts)
+keymap("n", "<leader>tp", ":tabprevious<CR>", opts)
+keymap("n", "<leader>tc", ":tabclose<CR>", opts)

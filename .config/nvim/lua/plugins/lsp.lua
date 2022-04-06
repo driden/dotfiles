@@ -44,7 +44,7 @@ function M.setup()
 			formatting.cmake_format,
 			formatting.dart_format,
 			formatting.gofmt,
-			formatting.prettier,
+			--formatting.prettier,
 			formatting.shfmt,
 			formatting.stylua.with({ indent_type = "Spaces" }),
 			null_ls.builtins.completion.spell,

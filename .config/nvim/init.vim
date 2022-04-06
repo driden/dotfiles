@@ -2,7 +2,6 @@
 "    Plugins START
 " -------------------------------------------------------------------------
 call plug#begin('~/.config/nvim/plugged')
-
 Plug 'nvim-lua/plenary.nvim'
 " THEMES
 
@@ -97,29 +96,12 @@ nmap <leader>gp :Git pull<CR>
 nnoremap <C-p> :GFiles<CR>
 nnoremap <Leader>pf :Files<CR>
 nnoremap <Leader>ff :Files<CR>
-nnoremap <Leader>pv :Explore<CR>
 
 " Windows
 nnoremap <leader>wq :wincmd q<CR>
 nnoremap <leader>wc :wincmd c<CR>
 
-" vertical resize
-noremap <leader>w] :vertical resize +10<CR>
-noremap <leader>w[ :vertical resize -10<CR>
-
-" Tabs
-nnoremap <leader>tn :tabNext<CR>
-nnoremap <leader>tp :tabprevious<CR>
-nnoremap <leader>tc :tabclose<CR>
-" Paste from OS
-nnoremap <leader>p "+p<CR>
-nnoremap <leader>y "+y<CR>
-
 " Terminal
-tnoremap <C-[> <C-\><C-n>
-nnoremap <leader>tt :vs<CR>:term<CR>
-nnoremap <leader>th :sp<CR>:term<CR>
-nnoremap <leader>tc <C-\><C-n>:q<CR>
 
 " Edit this file
 "
