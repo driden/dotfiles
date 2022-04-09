@@ -53,18 +53,6 @@ Plug 'hrsh7th/cmp-nvim-lsp-document-symbol'
 Plug 'hrsh7th/cmp-vsnip'
 Plug 'hrsh7th/vim-vsnip'
 
-" For luasnip users.
-" Plug 'L3MON4D3/LuaSnip'
-" Plug 'saadparwaiz1/cmp_luasnip'
-
-" For ultisnips users.
-" Plug 'SirVer/ultisnips'
-" Plug 'quangnguyen30192/cmp-nvim-ultisnips'
-
-" For snippy users.
-" Plug 'dcampos/nvim-snippy'
-" Plug 'dcampos/cmp-snippy'
-
 call plug#end()
 " -------------------------------------------------------------------------
 "    Plugins END
@@ -76,35 +64,10 @@ let g:airline_theme='minimalist'
 " VIM GENERAL SETTINGS
 " -------------------------------------------------------------------------
 
-let mapleader=" "
-
 colorscheme PaperColor
 
 command JqBuffer execute "%!jq"
 
-" choose right
-nmap <leader>gj :diffget //3<CR>
-" choose left
-nmap <leader>gf :diffget //2<CR>
-
-nmap <leader>gs :G<CR>
-nmap <leader>gc :GCheckout<CR>
-nmap <leader>gg :Gvdiffsplit!<CR>
-nmap <leader>gP :Git push<CR>
-nmap <leader>gp :Git pull<CR>
-
-nnoremap <C-p> :GFiles<CR>
-nnoremap <Leader>pf :Files<CR>
-nnoremap <Leader>ff :Files<CR>
-
-" Windows
-nnoremap <leader>wq :wincmd q<CR>
-nnoremap <leader>wc :wincmd c<CR>
-
-" Terminal
-
-" Edit this file
-"
 nnoremap <leader>pc :e ~/.config/nvim/init.vim<CR>
 " Source config
 nnoremap <leader>rr :source ~/.config/nvim/init.vim<CR>
@@ -125,15 +88,8 @@ nnoremap <leader>qf :cnf<CR>
 " Go to error under cursor (if cursor is in quickfix window)
 nnoremap <leader>q. :.cc<CR>
 " Explorer
-nnoremap <leader>fv :20NnvimTreeToggle<CR>
 
-" Dont copy replaced text in visual mode, you can past the same thing many
-" times
-xnoremap p "_dP
 "
-" Changing(or deleting) a word shouldnt alter the default register
-nnoremap c "_c
-vnoremap c "_c
 
 
 lua << EOF
