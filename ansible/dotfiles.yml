@@ -1,0 +1,28 @@
+---
+- hosts: localhost
+  vars_files:
+    - config.yml
+
+  roles: 
+    - zsh
+    - neovim
+    - role: macos
+      when: ansible_os_family == "Darwin"
+      tags:
+        - macos
+
+    - role: archlinux
+      #when: ansible_os_family == "Archlinux"
+      tags:
+        - linux
+        - archlinux
+
+
+  tasks:
+    - debug:
+        msg: 
+          os_fam: "{{ ansible_facts['os_family'] }}"
+          os_fam2: "{{ ansible_os_family }} "
+
+
+
