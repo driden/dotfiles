@@ -1,9 +1,14 @@
 #disable updates
 export DISABLE_AUTO_UPDATE=true
 # General
-export PATH="$HOME/neovim/bin:/usr/local/bin:/usr/bin:/usr/local/sbin:/bin:${PATH}"
+export PATH="$HOME/neovim/bin:/usr/bin:/bin:${PATH}"
+#/usr/local/sbin:
+#/usr/local/bin:
 export PATH="${PATH}:$HOME/.emacs.d/bin"
 export PATH="${PATH}:$HOME/.cargo/bin"
+#export PATH="${PATH}:/usr/local/bin/python3"
+export PATH="/opt/homebrew/bin:${PATH}"
+export PATH="/opt/homebrew/sbin:$PATH"
 
 export ZSH="$HOME/.oh-my-zsh"
 export MANPATH="/usr/local/man:$MANPATH"
@@ -59,6 +64,7 @@ ZSH_THEME="af-magic"
 CASE_SENSITIVE="true"
 HYPHEN_INSENSITIVE="true"
 ENABLE_CORRECTION="true"
+COMPLETION_WAITING_DOTS="%F{yellow}waiting...%f"
 COMPLETION_WAITING_DOTS="true"
 
 plugins=(git git-prompt fzf)
