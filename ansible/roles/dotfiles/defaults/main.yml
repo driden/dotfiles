@@ -1,0 +1,13 @@
+dotfiles_home: "~"
+dotfiles_repo: https://github.com/driden/dotfiles.git
+dotfiles_repo_accept_hostkey: true
+dotfiles_repo_local_destination: ~/dotfilesv3
+dotfiles_files:
+ - .config
+ - .doom.d
+ - .hammerspoon
+ - .ideavimrc
+ - .tmux.conf
+ - .xmonad
+ - .zshrc
+ - scripts

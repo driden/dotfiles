@@ -4,18 +4,25 @@
     - config.yml
 
   roles: 
-    - zsh
-    - neovim
-    - role: macos
-      when: ansible_os_family == "Darwin"
+    - role: geerlingguy.mac.homebrew
+      when: ansible_os_family == "Darwin" and homebrew_install
       tags:
         - macos
 
     - role: archlinux
-      #when: ansible_os_family == "Archlinux"
+      when: ansible_os_family == "Archlinux"
       tags:
-        - linux
         - archlinux
+
+    - role: zsh
+      when: zsh_install | bool
+      tags:
+        - zsh-install
+
+    - role: dotfiles
+      when: dotfiles_link | bool
+
+    - neovim
 
 
   tasks:

@@ -1,0 +1,11 @@
+---
+- name: Download 'oh-my-zsh' installation script
+  get_url:
+    url: https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh
+    dest: /tmp/install-zsh.sh
+    force: true
+    mode: '0755'
+  when: "zsh_install | bool"
+
+- name: Install 'oh-my-zsh'
+  command: /tmp/install-zsh.sh
