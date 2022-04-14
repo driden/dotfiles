@@ -1,6 +1,0 @@
-- name: Install Paru
-  ansible.builtin.command: echo "installing Paru"
-
-- name: Bleh
-  ansible.builtin.debug:
-    msg: "this task runs after the example role"
