@@ -28,9 +28,9 @@ fi
 #
 # Scripts
 #
-[ -f ~/scripts/gbd.zsh ] && source ~/scripts/gbd.zsh
-[ -f ~/scripts/nvm.zsh ] && source ~/scripts/nvm.zsh
-[ -f ~/scripts/rkt.sh ] && source ~/scripts/rkt.sh
+# [ -f ~/scripts/git-scripts.zsh ] && source ~/scripts/git-scripts.zsh
+# [ -f ~/scripts/nvm.zsh ] && source ~/scripts/nvm.zsh
+# [ -f ~/scripts/rkt.sh ] && source ~/scripts/rkt.sh
 
 SCRIPTS=$HOME/scripts
 if [[ -d  "$SCRIPTS" ]]
@@ -41,15 +41,20 @@ then
   done
 fi
 
-WORKSCRIPTS=$HOME/workscripts
-if [[ -d  "$WORKSCRIPTS" ]]
-then
-  for file in $(ls $WORKSCRIPTS/*.{zsh,sh})
-  do
-    source "$file"
-  done
-fi
+#WORKSCRIPTS=$HOME/workscripts
+#if [[ -d  "$WORKSCRIPTS" ]]
+#then
+#  for file in $(ls $WORKSCRIPTS/*.{zsh,sh})
+#  do
+#    source "$file"
+#  done
+#fi
 
+# Scripts
+#
+ [ -f ~/workscripts/jump.zsh ] && source  ~/workscripts/jump.zsh
+ [ -f ~/workscripts/aliases.zsh ] && source ~/workscripts/aliases.zsh
+ # [ -f ~/scripts/rkt.sh ] && source ~/scripts/rkt.sh
 
 #
 # ZSH settings
@@ -87,6 +92,10 @@ alias gp="git pull"
 alias gP="git push"
 alias gtree="git log --oneline --decorate --all --graph"
 alias lg="lazygit"
+
+# default with ohmyzsh
+unalias gco
+unalias gbd
 
 # dotfiles versioning with bare repo
 alias config='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
