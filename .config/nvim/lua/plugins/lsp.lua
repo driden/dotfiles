@@ -1,5 +1,11 @@
 local M = {}
 
+local function get_jdtls_opts()
+  return {
+    settings = {},
+  }
+end
+
 local function get_lua_opts()
   return {
     settings = {

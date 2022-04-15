@@ -12,6 +12,7 @@ set ReplaceWithRegister
 let g:argtextobj_pairs="[:],(:),<:>"
 set highlightedyanjk
 set easymotion
+set sneak
 
 """ Common settings -------------------------
 set showmode
@@ -46,8 +47,12 @@ nnoremap <C-k> <C-W>k
 map <leader>rn :action RenameElement<CR>
 map <leader>gr :action FindUsages<CR>
 
+nnoremap Y y$
+nnoremap p _dP
+xnoremap p _dP
+
 map <leader>p "+p
 map <leader>y "+y
-xmap p "_dP
+
 xmap > >gv
 xmap > <gv
