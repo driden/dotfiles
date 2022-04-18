@@ -89,10 +89,12 @@ alias vimc="$EDITOR $HOME/.config/nvim/init.vim"
 alias vim="$EDITOR"
 alias vi="$EDITOR"
 alias v="$EDITOR"
+alias emacsc="emacsclient --create-frame"
 
 # Git aliases
 alias gs="git status"
 alias gc="git commit"
+alias gcm="git commit -m"
 alias gap="git add -p"
 alias gp="git pull"
 alias gP="git push"
@@ -106,7 +108,6 @@ unalias gbd
 # dotfiles versioning with bare repo
 alias config='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
 alias refreshenv='source $HOME/.zshrc && source $HOME/.zshenv'
-alias lvim=/Users/poxy/.local/bin/lvim
 
 function init_fzf() {
   [ -f ~/.fzf/completion.zsh ] && source ~/.fzf/completion.zsh
