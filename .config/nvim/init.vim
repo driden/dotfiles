@@ -32,7 +32,7 @@ Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'gennaro-tedesco/nvim-jqx'
 
 " Org
-Plug 'nvim-orgmode/orgmode'
+" Plug 'nvim-orgmode/orgmode'
 " LSP
 Plug 'neovim/nvim-lspconfig'
 Plug 'onsails/lspkind-nvim'
@@ -97,7 +97,7 @@ lua << EOF
 require "plugins/autocomplete".setup()
 require "plugins/file_tree".setup()
 require "plugins/lsp".setup()
-require "plugins/org".setup()
+--require "plugins/org".setup()
 require "plugins/toggleterm".setup()
 require "plugins/treesitter".setup()
 require "options".setup()

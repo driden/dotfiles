@@ -14,7 +14,7 @@ local function get_lua_opts()
           version = "LuaJIT",
           path = vim.split(package.path, ";"),
         },
-        diagnostics = { globals = { "vim" } },
+        diagnostics = { globals = { "vim", "hs" } },
         workspace = {
           library = vim.api.nvim_get_runtime_file("", true),
           checkThirdParty = false,
