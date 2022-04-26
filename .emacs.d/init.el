@@ -6,9 +6,6 @@
 ;; * LSP mode
 ;; * Straight package manager https://github.com/raxod502/straight.el
 
-;; at some point it would be wise to 
-;; it can also integrate with 
-
 (scroll-bar-mode t) ;; -1 to turn off
 (tool-bar-mode -1)
 (tooltip-mode -1)
@@ -30,12 +27,12 @@
 (setq use-package-alway-ensure t)
 
 ;; Evil
-(use-package evil)
+(use-package evil :ensure t)
 (require 'evil)
 (evil-mode 1)
 
 ;; Download a theme
-(use-package ayu-theme)
+(use-package ayu-theme :ensure t)
 (load-theme 'ayu-dark t)
 
 (custom-set-variables
@@ -67,3 +64,22 @@ apps are not started from a shell."
     (setq exec-path (split-string path-from-shell path-separator))))
 
 (set-exec-path-from-shell-PATH)
+
+(use-package ivy
+  :ensure t
+  :diminish
+  :bind (("C-s" . swiper)
+         :map ivy-minibuffer-map
+         ("TAB" . ivy-alt-done)	
+         ("C-l" . ivy-alt-done)
+         ("C-j" . ivy-next-line)
+         ("C-k" . ivy-previous-line)
+         :map ivy-switch-buffer-map
+         ("C-k" . ivy-previous-line)
+         ("C-l" . ivy-done)
+         ("C-d" . ivy-switch-buffer-kill)
+         :map ivy-reverse-i-search-map
+         ("C-k" . ivy-previous-line)
+         ("C-d" . ivy-reverse-i-search-kill))
+  :config
+  (ivy-mode 1))
