@@ -21,12 +21,12 @@ ga() {
   echo "$selected_files" | xargs git add --
 }
 
-gcob() {
+function gcob() {
   local branch_name="$1"
   git checkout -b $branch_name
   git push --set-upstream origin $branch_name
 }
 
-gcm() {
+function gcm() {
   git commit -m "$1"
 }

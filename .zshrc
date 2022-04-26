@@ -102,6 +102,7 @@ alias gtree="git log --oneline --decorate --all --graph"
 alias lg="lazygit"
 
 # default with ohmyzsh
+unalias ga
 unalias gco
 unalias gbd
 

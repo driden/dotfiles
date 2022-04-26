@@ -12,7 +12,6 @@ set ReplaceWithRegister
 let g:argtextobj_pairs="[:],(:),<:>"
 set highlightedyanjk
 set easymotion
-set sneak
 
 """ Common settings -------------------------
 set showmode
@@ -30,10 +29,10 @@ set ideastatusicon=purple
 set idearefactormode=keep
 
 """ Mappings --------------------------------
-map <leader>f :action(easymotion-s)
-map <leader>e :action(easymotion-f)
+nnoremap <leader>f :action(easymotion-s)
+nnoremap <leader><S-f> :action(easymotion-f)
 
-map <leader>z  :action ToggleDistractionFreeMode<CR>
+map <leader>z :action ToggleDistractionFreeMode<CR>
 
 nnoremap <leader>wh <C-W>h
 nnoremap <leader>wl <C-W>l
@@ -48,8 +47,8 @@ map <leader>rn :action RenameElement<CR>
 map <leader>gr :action FindUsages<CR>
 
 nnoremap Y y$
-nnoremap p _dP
-xnoremap p _dP
+xnoremap p "_dP
+vnoremap p "_dP
 
 map <leader>p "+p
 map <leader>y "+y
