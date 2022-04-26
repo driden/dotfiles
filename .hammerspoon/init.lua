@@ -4,6 +4,7 @@
 
 local hyper = { "cmd", "alt", "ctrl" }
 local hypershift = { "cmd", "alt", "ctrl", "shift" }
+local log = hs.logger.new("log", 4)
 
 local function h_bind(key, func)
   hs.hotkey.bind(hyper, key, func)
@@ -155,6 +156,18 @@ h_bind("m", function()
   else
     currentAudio:setMuted(true)
     hs.alert.show("muted mic")
+  end
+end)
+
+h_bind("e", function()
+  -- emacsclient --reuse-frame
+  --
+  local _, _, _, code = hs.execute("emacsclient --reuse-frame &", true)
+  if code > 0 then
+    local emacs = hs.application.get("Emacs")
+    if emacs ~= nil then
+      emacs:activate()
+    end
   end
 end)
 

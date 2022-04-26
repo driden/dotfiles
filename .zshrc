@@ -123,3 +123,4 @@ zvm_before_init_commands=()
 zvm_after_init_commands+=(init_fzf)
 zvm_before_select_vi_mode_commands=()
 zvm_after_select_vi_mode_commands=()
+export PATH=/Users/driden/.nvm/versions/node/v17.9.0/bin:/opt/homebrew/sbin:/opt/homebrew/bin:/Users/driden/neovim/bin:/usr/bin:/bin:/Library/Frameworks/Python.framework/Versions/3.10/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Library/TeX/texbin:/Applications/kitty.app/Contents/MacOS:/Users/driden/.emacs.d/bin:/Users/driden/.cargo/bin:/Users/driden/go/bin:/Users/driden/.cabal/bin
