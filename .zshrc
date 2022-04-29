@@ -9,6 +9,7 @@ export PATH="${PATH}:$HOME/.cargo/bin"
 #export PATH="${PATH}:/usr/local/bin/python3"
 export PATH="/opt/homebrew/bin:${PATH}"
 export PATH="/opt/homebrew/sbin:$PATH"
+export PATH="$PATH:$HOME/.ghcup/bin"
 
 export ZSH="$HOME/.oh-my-zsh"
 export MANPATH="/usr/local/man:$MANPATH"
