@@ -6,11 +6,33 @@
 ;; * LSP mode
 ;; * Straight package manager https://github.com/raxod502/straight.el
 
+(setq custom-file "~/.emacs.d/custom.el")
+(load custom-file)
 (scroll-bar-mode t) ;; -1 to turn off
 (tool-bar-mode -1)
 (tooltip-mode -1)
 (set-fringe-mode 10)
 (set-face-attribute 'default nil :height 180)
+
+;; When opening a symlink that links to a file in a git repo, edit the file in the
+;; git repo so we can use the Emacs vc features (like Diff) in the future
+(setq vc-follow-symlinks t)
+(setq create-lockfiles nil
+      make-backup-files nil)
+
+;; ENCODING -------------
+(when (fboundp 'set-charset-priority)
+  (set-charset-priority 'unicode))       ; pretty
+(prefer-coding-system 'utf-8)            ; pretty
+(setq locale-coding-system 'utf-8)       ; please
+(setq default-input-method "spanish-postfix")
+
+(setq mac-command-modifier 'meta
+      mac-option-modifier nil
+      mac-control-modifier 'control
+      mac-right-command-modifier 'meta)
+
+(global-set-key (kbd "<escape>") 'keyboard-quit)
 
 (require 'package)
 (add-to-list 'package-archives
@@ -28,39 +50,30 @@
 
 ;; Evil
 (use-package evil
-  :init (evil-mode 1))
+  :init
+  (setq evil-want-integration t)
+  (setq evil-want-C-u-scroll t)
+  (setq evil-want-Y-yank-to-eol t)
+  ;; OFF
+  (setq evil-want-keybinding nil)
+  :config
+  (evil-mode 1)
+  (define-key evil-normal-state-map (kbd "C-l") 'evil-window-right)
+  (define-key evil-normal-state-map (kbd "C-h") 'evil-window-left)
+  (define-key evil-normal-state-map (kbd "C-j") 'evil-window-down)
+  (define-key evil-normal-state-map (kbd "C-k") 'evil-window-up)
+)
 
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(custom-safe-themes
-   '("e8df30cd7fb42e56a4efc585540a2e63b0c6eeb9f4dc053373e05d774332fc13" default))
- '(package-selected-packages
-   '(doom-themes helpful counsel ivy-rich rainbow-delimiters which-key use-package haskell-mode rainbow-mode evil da)))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(haskell-stylish-on-save t))
+(use-package evil-collection
+  :after evil
+  :config (evil-collection-init))
 
-(defun set-exec-path-from-shell-PATH ()
-  "Set up Emacs' `exec-path' and PATH environment variable to match
-that used by the user's shell.
-
-This is particularly useful under Mac OS X and macOS, where GUI
-apps are not started from a shell."
-  (interactive)
-  (let ((path-from-shell (replace-regexp-in-string
-			  "[ \t\n]*$" "" (shell-command-to-string
-					  "$SHELL --login -c 'echo $PATH'"
-						    ))))
-    (setenv "PATH" path-from-shell)
-    (setq exec-path (split-string path-from-shell path-separator))))
-
-(set-exec-path-from-shell-PATH)
+(use-package evil-snipe
+  :diminish evil-snipe-mode
+  :diminish evil-snipe-local-mode
+  :after evil
+  :config
+  (evil-snipe-mode +1))
 
 (use-package ivy
   :diminish
@@ -79,6 +92,7 @@ apps are not started from a shell."
          ("C-d" . ivy-reverse-i-search-kill))
   :config
   (ivy-mode 1))
+(global-set-key (kbd "C-M-j") 'counsel-switch-buffer)
 
 (global-display-line-numbers-mode t)
 
@@ -101,8 +115,7 @@ apps are not started from a shell."
 (use-package counsel
   :bind (("M-x"     . counsel-M-x)
 	 ("C-x b"   . counsel-ibuffer)
-	 ("C-x C-f" . counsel-find-file))
-  :config (setq ivy-initial-inputs-alist nil)) ;; Don't start searches with ^
+	 ("C-x C-f" . counsel-find-file))) 
 
 (use-package helpful
   :commands (helpful-callable helpful-variable helpful-command helpful-key)
@@ -117,3 +130,18 @@ apps are not started from a shell."
 
 (use-package doom-themes)
 (load-theme 'doom-tokyo-night t)
+
+(use-package general
+  :config
+  (general-create-definer ddn/leader-keys
+    :keymaps '(normal insert visual emacs)
+    :prefix "SPC"
+    :global-prefix: "C-SPC")
+
+  (ddn/leader-keys
+    "t" '(:ignore t :which-key "toggle")
+    "b" '(:ignore t :which-key "buffer")
+    "c" '(:ignore t :which-key "code")
+    "w" '(:ignore t :which-key "window")
+    "g" '(:ignore t :which-key "git")))
+
