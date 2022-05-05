@@ -1,17 +1,19 @@
-# TODO: Update PATH according to processor arch (looking at you homebrew)
-# uname -p returns "i386" if its x86 arch
 #disable updates
 export DISABLE_AUTO_UPDATE=true
+
 # General
 export PATH="$HOME/neovim/bin:/usr/bin:/bin:${PATH}"
-#/usr/local/sbin:
-#/usr/local/bin:
 export PATH="${PATH}:$HOME/.emacs.d/bin"
 export PATH="${PATH}:$HOME/.cargo/bin"
-#export PATH="${PATH}:/usr/local/bin/python3"
-export PATH="/opt/homebrew/bin:${PATH}"
-export PATH="/opt/homebrew/sbin:$PATH"
 export PATH="$PATH:$HOME/.ghcup/bin"
+
+BREW_PREFIX=
+if [[ $(uname -p) == "arm" ]]; then
+  BREW_PREFIX=/opt/homebrew
+else
+  BREW_PREFIX=/usr/local/homebrew
+fi
+export PATH=$BREW_PREFIX/sbin:$BREW_PREFIX/bin:$PATH
 
 export ZSH="$HOME/.oh-my-zsh"
 export MANPATH="/usr/local/man:$MANPATH"
@@ -119,6 +121,7 @@ function init_fzf() {
 }
 
 [ -f "$HOME/.ghcup/env" ] && source "$HOME/.ghcup/env" # ghcup-env
+
 export SDKMAN_DIR="$HOME/.sdkman"
 [[ -s "$SDKMAN_DIR/bin/sdkman-init.sh" ]] && source "$SDKMAN_DIR/bin/sdkman-init.sh"
 
@@ -127,4 +130,3 @@ zvm_before_init_commands=()
 zvm_after_init_commands+=(init_fzf)
 zvm_before_select_vi_mode_commands=()
 zvm_after_select_vi_mode_commands=()
-export PATH=/Users/driden/.nvm/versions/node/v17.9.0/bin:/opt/homebrew/sbin:/opt/homebrew/bin:/Users/driden/neovim/bin:/usr/bin:/bin:/Library/Frameworks/Python.framework/Versions/3.10/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Library/TeX/texbin:/Applications/kitty.app/Contents/MacOS:/Users/driden/.emacs.d/bin:/Users/driden/.cargo/bin:/Users/driden/go/bin:/Users/driden/.cabal/bin
