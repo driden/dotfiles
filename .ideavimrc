@@ -1,12 +1,14 @@
 """ Map leader to space ---------------------
 let mapleader=" "
 
+
 set surround
 set multiple-cursors
 set commentary
 set argtextobj
 set easymotion
 set ReplaceWithRegister
+set NERDTree
 
 """ Plugin settings -------------------------
 let g:argtextobj_pairs="[:],(:),<:>"
@@ -43,6 +45,7 @@ nnoremap <C-l> <C-W>l
 nnoremap <C-j> <C-W>j
 nnoremap <C-k> <C-W>k
 
+map <leader>e :NERDTreeToggle<CR>
 map <leader>rn :action RenameElement<CR>
 map <leader>gr :action FindUsages<CR>
 

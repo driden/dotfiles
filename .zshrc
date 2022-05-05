@@ -1,3 +1,5 @@
+# TODO: Update PATH according to processor arch (looking at you homebrew)
+# uname -p returns "i386" if its x86 arch
 #disable updates
 export DISABLE_AUTO_UPDATE=true
 # General
