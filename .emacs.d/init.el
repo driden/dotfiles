@@ -1,6 +1,5 @@
 ;; TODOs
 ;; * Disable C-x C-c
-;; * Better keybindings
 ;; * Better terminal emulator
 ;; * Org mode keybindings that exist on Doom
 ;; * LSP mode
@@ -8,6 +7,7 @@
 
 (setq custom-file "~/.emacs.d/custom.el")
 (load custom-file)
+
 (scroll-bar-mode t) ;; -1 to turn off
 (tool-bar-mode -1)
 (tooltip-mode -1)
@@ -27,10 +27,8 @@
 (setq locale-coding-system 'utf-8)       ; please
 (setq default-input-method "spanish-postfix")
 
-(setq mac-command-modifier 'meta
-      mac-option-modifier nil
-      mac-control-modifier 'control
-      mac-right-command-modifier 'meta)
+(setq mac-control-modifier 'control
+      mac-right-command-modifier 'control)
 
 (global-set-key (kbd "<escape>") 'keyboard-quit)
 
@@ -92,7 +90,6 @@
          ("C-d" . ivy-reverse-i-search-kill))
   :config
   (ivy-mode 1))
-(global-set-key (kbd "C-M-j") 'counsel-switch-buffer)
 
 (global-display-line-numbers-mode t)
 
@@ -131,17 +128,35 @@
 (use-package doom-themes)
 (load-theme 'doom-tokyo-night t)
 
+(use-package hydra)
+
+;; It would be nice if we could highlight the border of the current window with some color
+
+(defhydra hydra-split-resizing (:timeout 4)
+  "Split resize function for hydra"
+
+   ("<left>" evil-window-decrease-width "<")
+   ("<right>" evil-window-increase-width ">")
+   ("<down>" evil-window-increase-height "-")
+   ("<up>" evil-window-decrease-height "+")
+   ("f" nil "done" :exit t))
+
 (use-package general
   :config
   (general-create-definer ddn/leader-keys
-    :keymaps '(normal insert visual emacs)
+    :keymaps '(normal visual emacs)
     :prefix "SPC"
     :global-prefix: "C-SPC")
 
   (ddn/leader-keys
-    "t" '(:ignore t :which-key "toggle")
     "b" '(:ignore t :which-key "buffer")
     "c" '(:ignore t :which-key "code")
-    "w" '(:ignore t :which-key "window")
-    "g" '(:ignore t :which-key "git")))
+    "f" '(:ignore t :which-key "find")
+    "g" '(:ignore t :which-key "git")
+    "p" '(:ignore t :which-key "project")
+    "t" '(:ignore t :which-key "toggle")
+    "w" '(hydra-split-resizing/body :which-key "window")))
+
+
+(global-set-key (kbd "C-M-j") 'counsel-switch-buffer)
 
