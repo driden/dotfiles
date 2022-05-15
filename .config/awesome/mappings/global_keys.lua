@@ -4,25 +4,42 @@ local awful = require("awful")
 local hotkeys_popup = require("awful.hotkeys_popup")
 local ruled = require("ruled")
 
+--[[
+   TODO:
+   - When no client is focused, we should set the focus to whatever is being shown,
+     this is mainly for better navigation.
+   - Move al keys to their own module and replace them in the config. I hate keycodes
+]]
+
+-- A new module should be born
 local modkey = user_vars.modkey
+local alt        = "Mod1"
+local shift      = "Shift"
+local control    = "Control"
+local h, j, k, l = "h","j","k","l"
+local tab, ret   = "#23", "#36"
+local s          = "#39"
+local e          = "e"
+local prnt       = "#107"
+local backspace  = "#22"   
+local space      = "#65"
+local d          = "#40"
+local p          = "p"
 
 return gears.table.join(
   awful.key(
-    { modkey },
-    "#39",
+    { modkey }, s,
     hotkeys_popup.show_help,
     { description = "Cheat sheet", group = "Awesome" }
   ),
   -- Tag browsing
   awful.key(
-    { modkey },
-    "#113",
+    { modkey }, h,
     awful.tag.viewprev,
     { description = "View previous tag", group = "Tag" }
   ),
   awful.key(
-    { modkey },
-    "#114",
+    { modkey }, l,
     awful.tag.viewnext,
     { description = "View next tag", group = "Tag" }
   ),
@@ -33,56 +50,55 @@ return gears.table.join(
     { description = "Go back to last tag", group = "Tag" }
   ),
   awful.key(
-    { modkey },
-    "#44",
+    { modkey }, k,
     function()
       awful.client.focus.byidx(1)
     end,
     { description = "Focus next client by index", group = "Client" }
   ),
   awful.key(
-    { modkey },
-    "#45",
+    { modkey }, j,
+    --[[
+       TODO: This function needs to check if there's anything selected before acting
+       If there's nothing then we probably want to select whatever client is attached
+       to this screen.
+       I don't know if that's the right terminology but it works.
+    ]]
     function()
       awful.client.focus.byidx(-1)
     end,
     { description = "Focus previous client by index", group = "Client" }
   ),
   awful.key(
-    { modkey },
-    "#25",
+    { modkey }, "#25",
     function()
       user_vars.main_menu:show()
     end,
     { description = "Show context menu", group = "Awesome" }
   ),
   awful.key(
-    { modkey, "Shift" },
-    "#44",
+    { modkey, shift}, j,
     function()
       awful.client.swap.byidx(1)
     end,
     { description = "Swap with next client by index", group = "Client" }
   ),
   awful.key(
-    { modkey, "Shift" },
-    "#45",
+    { modkey, shift}, k,
     function()
       awful.client.swap.byidx(-1)
     end,
     { description = "Swap with previous client by index", group = "Client" }
   ),
   awful.key(
-    { modkey, "Control" },
-    "#44",
+    { modkey, control }, h,
     function()
       awful.screen.focus_relative(1)
     end,
     { description = "Focus the next screen", group = "Screen" }
   ),
   awful.key(
-    { modkey, "Control" },
-    "#45",
+    { modkey, control }, l,
     function()
       awful.screen.focus_relative(-1)
     end,
@@ -95,37 +111,34 @@ return gears.table.join(
     { description = "Jump to urgent client", group = "Client" }
   ),
   awful.key(
-    { modkey },
-    "#36",
+    { modkey }, ret,
     function()
       awful.spawn(user_vars.terminal)
     end,
     { description = "Open terminal", group = "Applications" }
   ),
   awful.key(
-    { modkey, "Control" },
-    "#27",
+    { modkey, control },
+    "r",
     awesome.restart,
     { description = "Reload awesome", group = "Awesome" }
   ),
   awful.key(
-    { modkey },
-    "#46",
+    { modkey, shift}, l,
     function()
       awful.tag.incmwfact(0.05)
     end,
     { description = "Increase client width", group = "Layout" }
   ),
   awful.key(
-    { modkey },
-    "#43",
+    { modkey, shift }, h, 
     function()
       awful.tag.incmwfact(-0.05)
     end,
     { description = "Decrease client width", group = "Layout" }
   ),
   awful.key(
-    { modkey, "Control" },
+    { modkey, control },
     "#43",
     function()
       awful.tag.incncol(1, nil, true)
@@ -133,72 +146,63 @@ return gears.table.join(
     { description = "Increase the number of columns", group = "Layout" }
   ),
   awful.key(
-    { modkey, "Control" },
-    "#46",
+    { modkey, control }, "#46",
     function()
       awful.tag.incncol(-1, nil, true)
     end,
     { description = "Decrease the number of columns", group = "Layout" }
   ),
   awful.key(
-    { modkey },
-    "#65",
+    { modkey }, space,
     function()
       awful.layout.inc(1)
     end,
     { description = "Select next layout", group = "Layout" }
   ),
   awful.key(
-    { modkey },
-    "#40",
+    { modkey }, d,
     function()
       awful.spawn("rofi -show drun -theme ~/.config/rofi/rofi.rasi")
     end,
     { descripton = "Application launcher", group = "Application" }
   ),
   awful.key(
-    { modkey },
-    "p",
+    { modkey }, p,
     function()
       awful.spawn("rofi -show drun -theme ~/.config/rofi/rofi.rasi")
     end,
     { descripton = "Application launcher", group = "Application" }
   ),
   awful.key(
-    { modkey },
-    "#23",
+    { modkey }, tab,
     function()
       awful.spawn("rofi -show window -theme ~/.config/rofi/window.rasi")
     end,
     { descripton = "Client switcher (alt+tab)", group = "Application" }
   ),
   awful.key(
-    { "Mod1" },
-    "#23",
+    { alt }, tab, -- TAB key
     function()
       awful.spawn("rofi -show window -theme ~/.config/rofi/window.rasi")
     end,
     { descripton = "Client switcher (alt+tab)", group = "Application" }
   ),
   awful.key(
-    { modkey },
-    "#26",
+    { modkey }, e,
     function()
       awful.spawn(user_vars.file_manager)
     end,
     { descripton = "Open file manager", group = "System" }
   ),
   awful.key(
-    { modkey, "Shift" },
-    "#26",
+    { modkey, shift }, "#26",
     function()
       awesome.emit_signal("module::powermenu:show")
     end,
     { descripton = "Session options", group = "System" }
   ),
   awful.key(
-    {},
-    "#107",
+    {}, prnt ,
     function()
       awful.spawn(user_vars.screenshot_program)
     end,
@@ -312,8 +316,7 @@ return gears.table.join(
     { description = "Toggle keyboard layout", group = "System" }
   ),
   awful.key(
-    { modkey },
-    "#22",
+    { modkey }, backspace,
     function()
     awful.spawn.easy_async_with_shell(
       [[xprop | grep WM_CLASS | awk '{gsub(/"/, "", $4); print $4}']],
@@ -340,16 +343,13 @@ return gears.table.join(
               client.floating = true
             end
           end
-        end
-        )
+        end)
       end
-    end
-    )
+    end)
   end
   ),
   awful.key(
-    { modkey, "Shift" },
-    "#22",
+    { modkey, shift }, backspace,
     function()
     awful.spawn.easy_async_with_shell(
       [[xprop | grep WM_CLASS | awk '{gsub(/"/, "", $4); print $4}']],
