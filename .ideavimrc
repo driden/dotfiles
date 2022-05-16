@@ -1,6 +1,8 @@
 """ Map leader to space ---------------------
 let mapleader=" "
 
+set visualbell
+set noerrorbells
 
 set surround
 set multiple-cursors
