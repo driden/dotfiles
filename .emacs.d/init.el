@@ -8,9 +8,10 @@
 (setq custom-file "~/.emacs.d/custom.el")
 (load custom-file)
 
-(scroll-bar-mode t) ;; -1 to turn off
+(scroll-bar-mode -1) 
 (tool-bar-mode -1)
 (tooltip-mode -1)
+(menu-bar-mode -1)
 (set-fringe-mode 10)
 (set-face-attribute 'default nil :height 180)
 
@@ -135,10 +136,10 @@
 (defhydra hydra-split-resizing (:timeout 4)
   "Split resize function for hydra"
 
-   ("<left>" evil-window-decrease-width "<")
-   ("<right>" evil-window-increase-width ">")
-   ("<down>" evil-window-increase-height "-")
-   ("<up>" evil-window-decrease-height "+")
+   ("<left>" (evil-window-decrease-width 5) "<")
+   ("<right>" (evil-window-increase-width 5) ">")
+   ("<down>" (evil-window-increase-height 3) "-")
+   ("<up>" (evil-window-decrease-height 3) "+")
    ("f" nil "done" :exit t))
 
 (use-package general
@@ -155,8 +156,8 @@
     "g" '(:ignore t :which-key "git")
     "p" '(:ignore t :which-key "project")
     "t" '(:ignore t :which-key "toggle")
-    "w" '(hydra-split-resizing/body :which-key "window")))
+    "w r" '(hydra-split-resizing/body :which-key "window")))
 
-
-(global-set-key (kbd "C-M-j") 'counsel-switch-buffer)
-
+;; langs
+(use-package haskell-mode)
+(use-package lua-mode)
