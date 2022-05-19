@@ -5,6 +5,7 @@ export DISABLE_AUTO_UPDATE=true
 export PATH="$HOME/neovim/bin:/usr/bin:/bin:${PATH}"
 export PATH="${PATH}:$HOME/.emacs.d/bin"
 export PATH="${PATH}:$HOME/.cargo/bin"
+export PATH="${PATH}:$HOME/.cabal/bin"
 export PATH="$PATH:$HOME/.ghcup/bin"
 
 BREW_PREFIX=
@@ -111,8 +112,6 @@ unalias ga
 unalias gco
 unalias gbd
 
-# dotfiles versioning with bare repo
-alias config='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
 alias refreshenv='source $HOME/.zshrc && source $HOME/.zshenv'
 
 function init_fzf() {
