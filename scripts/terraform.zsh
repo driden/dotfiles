@@ -7,7 +7,7 @@ function tws() {
   local header=$(printf "Using:%s\nChoose new" "${current}")
   local workspace=$(echo "$ws" | fzf --border --margin=1 --layout=reverse --padding=1 --header "$header")
   
-  [[ -z $workpace ]] && return 1
+  [[ -z "$workspace" ]] && return 1
 
-  terraform workspace select "${workspace}"
+  terraform workspace select "$workspace"
 }
