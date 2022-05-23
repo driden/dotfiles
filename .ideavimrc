@@ -1,21 +1,27 @@
+Plug 'preservim/nerdtree'
+Plug 'vim-scripts/ReplaceWithRegister'
+Plug 'machakann/vim-highlightedyank'
+
+
 """ Map leader to space ---------------------
 let mapleader=" "
 
 set visualbell
 set noerrorbells
 
-set surround
-set multiple-cursors
-set commentary
-set argtextobj
-set easymotion
-set ReplaceWithRegister
-set NERDTree
+" set surround
+" set multiple-cursors
+" set commentary
+" set argtextobj
+" set easymotion
+
 
 """ Plugin settings -------------------------
 let g:argtextobj_pairs="[:],(:),<:>"
-set highlightedyanjk
+set highlightedyank
 set easymotion
+set NERDTree
+set ReplaceWithRegister
 
 """ Common settings -------------------------
 set showmode
@@ -47,6 +53,8 @@ nnoremap <C-l> <C-W>l
 nnoremap <C-j> <C-W>j
 nnoremap <C-k> <C-W>k
 
+nnoremap <leader>ff :NERDTreeFind<CR>
+
 map <leader>e :NERDTreeToggle<CR>
 map <leader>rn :action RenameElement<CR>
 map <leader>gr :action FindUsages<CR>
@@ -59,4 +67,4 @@ map <leader>p "+p
 map <leader>y "+y
 
 xmap > >gv
-xmap > <gv
+xmap < <gv
