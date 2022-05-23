@@ -5,7 +5,6 @@ export DISABLE_AUTO_UPDATE=true
 export PATH="$HOME/neovim/bin:/usr/bin:/bin:${PATH}"
 export PATH="${PATH}:$HOME/.emacs.d/bin"
 export PATH="${PATH}:$HOME/.cargo/bin"
-export PATH="$PATH:$HOME/.ghcup/bin"
 
 BREW_PREFIX=
 if [[ $(uname -p) == "arm" ]]; then
@@ -118,9 +117,12 @@ unalias gco
 unalias gbd
 
 
-# dotfiles versioning with bare repo
 alias config='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
 alias refreshenv='source $HOME/.zshrc && source $HOME/.zshenv'
+
+
+# Important for mac M1
+alias ibrew='arch -x86_64 /usr/local/bin/brew'
 
 function init_fzf() {
   [ -f ~/.fzf/completion.zsh ] && source ~/.fzf/completion.zsh
@@ -137,3 +139,4 @@ zvm_before_init_commands=()
 zvm_after_init_commands+=(init_fzf)
 zvm_before_select_vi_mode_commands=()
 zvm_after_select_vi_mode_commands=()
+
