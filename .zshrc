@@ -106,10 +106,17 @@ alias gP="git push"
 alias gtree="git log --oneline --decorate --all --graph"
 alias lg="lazygit"
 
+# Terraform
+alias tp="terraform plan"
+alias ta="terraform apply"
+alias twl="terraform workspace list"
+alias twc="terraform workspace list | grep '*' | tr -d '*'| tr -d '[:space:]'"
+
 # default with ohmyzsh
 unalias ga
 unalias gco
 unalias gbd
+
 
 # dotfiles versioning with bare repo
 alias config='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
