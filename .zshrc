@@ -9,9 +9,15 @@ export PATH="${PATH}:$HOME/.cargo/bin"
 BREW_PREFIX=
 if [[ $(uname -p) == "arm" ]]; then
   BREW_PREFIX=/opt/homebrew
+# Important for mac M1
+alias ibrew='arch -x86_64 /usr/local/bin/brew'
 else
   BREW_PREFIX=/usr/local/homebrew
+  HOMEBREW_CELLAR=/usr/local/Cellar
+
+
 fi
+
 export PATH=$BREW_PREFIX/sbin:$BREW_PREFIX/bin:$PATH
 
 export ZSH="$HOME/.oh-my-zsh"
@@ -120,9 +126,6 @@ unalias gbd
 alias config='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
 alias refreshenv='source $HOME/.zshrc && source $HOME/.zshenv'
 
-
-# Important for mac M1
-alias ibrew='arch -x86_64 /usr/local/bin/brew'
 
 function init_fzf() {
   [ -f ~/.fzf/completion.zsh ] && source ~/.fzf/completion.zsh
