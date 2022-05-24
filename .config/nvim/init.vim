@@ -38,6 +38,7 @@ Plug 'neovim/nvim-lspconfig'
 Plug 'onsails/lspkind-nvim'
 Plug 'williamboman/nvim-lsp-installer'
 Plug 'jose-elias-alvarez/null-ls.nvim'
+Plug 'mfussenegger/nvim-jdtls'
 
 "" Plug 'hrsh7th/cmp-buffer'
 Plug 'hrsh7th/cmp-cmdline'
