@@ -13,7 +13,7 @@ if [[ $(uname -p) == "arm" ]]; then
 # Important for mac M1
 alias ibrew='arch -x86_64 /usr/local/bin/brew'
 else
-  BREW_PREFIX=/usr/local/homebrew
+  BREW_PREFIX=/usr/local
   HOMEBREW_CELLAR=/usr/local/Cellar
 
 
