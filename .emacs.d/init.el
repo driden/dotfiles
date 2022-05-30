@@ -47,32 +47,12 @@
 (require 'use-package)
 (setq use-package-always-ensure t)
 
-;; Evil
-(use-package evil
-  :init
-  (setq evil-want-integration t)
-  (setq evil-want-C-u-scroll t)
-  (setq evil-want-Y-yank-to-eol t)
-  ;; OFF
-  (setq evil-want-keybinding nil)
-  :config
-  (evil-mode 1)
-  (define-key evil-normal-state-map (kbd "C-l") 'evil-window-right)
-  (define-key evil-normal-state-map (kbd "C-h") 'evil-window-left)
-  (define-key evil-normal-state-map (kbd "C-j") 'evil-window-down)
-  (define-key evil-normal-state-map (kbd "C-k") 'evil-window-up)
-)
+;; https://github.com/akermu/emacs-libvterm
+(use-package vterm)
 
-(use-package evil-collection
-  :after evil
-  :config (evil-collection-init))
 
-(use-package evil-snipe
-  :diminish evil-snipe-mode
-  :diminish evil-snipe-local-mode
-  :after evil
-  :config
-  (evil-snipe-mode +1))
+(dolist (mode '(term-mode-hook eshell-mode-hook org-mode-hook help-mode-hook))
+        (add-hook mode (lambda() (display-line-numbers-mode 0))))    
 
 (use-package ivy
   :diminish
@@ -94,9 +74,9 @@
 
 (global-display-line-numbers-mode t)
 
-(dolist (mode '(term-mode-hook eshell-mode-hook org-mode-hook help-mode-hook))
-        (add-hook mode (lambda() (display-line-numbers-mode 0))))    
-
+;; langs
+(use-package haskell-mode)
+(use-package lua-mode)
 
 (use-package rainbow-delimiters
   :hook (prog-mode . rainbow-delimiters-mode))
@@ -126,6 +106,29 @@
   ([remap describe-variable] . counsel-describe-variable)
   ([remap describe-key] . helpful-key))
 
+;; Evil
+(use-package evil
+  :init
+  (setq evil-want-integration t)
+  (setq evil-want-C-u-scroll t)
+  (setq evil-want-Y-yank-to-eol t)
+  (setq evil-want-keybinding nil)
+  :config
+  (evil-mode 1)
+)
+
+(use-package evil-collection
+  :after evil
+  :config (evil-collection-init))
+
+(use-package evil-snipe
+  :diminish evil-snipe-mode
+  :diminish evil-snipe-local-mode
+  :after evil
+  :config
+  (evil-snipe-mode +1))
+
+
 (use-package doom-themes)
 (load-theme 'doom-tokyo-night t)
 
@@ -142,22 +145,55 @@
    ("<up>" (evil-window-decrease-height 3) "+")
    ("f" nil "done" :exit t))
 
+;; EL GENERALISIMO
+
 (use-package general
+  :after evil
   :config
+  (general-define-key
+   :states '(normal motion visual)
+   :keymaps 'override
+
+   "C-l" 'evil-window-right
+   "C-h" 'evil-window-left
+   "C-j" 'evil-window-down
+   "C-k" 'evil-window-up
+
+   "<S-h>" 'next-buffer
+   "<S-l>" 'previous-buffer)
+
   (general-create-definer ddn/leader-keys
-    :keymaps '(normal visual emacs)
-    :prefix "SPC"
-    :global-prefix: "C-SPC")
+    :states '(normal visual emacs)
+    :keymaps 'override
+    :prefix "SPC")
 
   (ddn/leader-keys
-    "b" '(:ignore t :which-key "buffer")
-    "c" '(:ignore t :which-key "code")
-    "f" '(:ignore t :which-key "find")
-    "g" '(:ignore t :which-key "git")
-    "p" '(:ignore t :which-key "project")
-    "t" '(:ignore t :which-key "toggle")
-    "w r" '(hydra-split-resizing/body :which-key "window")))
+    "b"  '(nil  :which-key "buffer")
+    "bi" '(counsel-ibuffer  :which-key "ibuffer")
+    "c"  '(nil  :which-key "code")
+    "f"  '(nil  :which-key "find")
+    "g"  '(nil  :which-key "git")
+    "h"  '(nil  :which-key "help")
+    "ha" '(counsel-apropos  :which-key "apropos")
+    "hf" '(counsel-describe-function  :which-key "describe function")
+    "hm" '(describe-mode  :which-key "describe mode")
+    "hs" '(counsel-describe-symbol  :which-key "describe symbol")
+    "hv" '(counsel-describe-variable  :which-key "describe variable")
+    "p"  '(nil  :which-key "project")
+    "t"  '(nil  :which-key "toggle")
+    "w"  '(nil  :which-key "window"))
+    "wc" '(evil-window-delete :which-key "close")
+    "wr" '(hydra-split-resizing/body :which-key "resize")
+)
 
-;; langs
-(use-package haskell-mode)
-(use-package lua-mode)
+;;  (ddn/help-keys
+;;    "a" '(apropos :which-key "apropos")
+;;    "f" '(describe-function :which-key "function")
+;;    "v" '(describe-variable :which-key "variable"))
+;;    "m" '(describe-mode :which-key "mode"))
+;;
+;;  (ddn/window-keys
+;;    "r" '(hydra-split-resizing/body :which-key "resizing")
+;;    "c" '(evil-window-delete :which-key "close"))
+;;)
+
