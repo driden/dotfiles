@@ -181,10 +181,10 @@
     "hv" '(counsel-describe-variable  :which-key "describe variable")
     "p"  '(nil  :which-key "project")
     "t"  '(nil  :which-key "toggle")
-    "w"  '(nil  :which-key "window"))
+    "w"  '(nil  :which-key "window")
     "wc" '(evil-window-delete :which-key "close")
     "wr" '(hydra-split-resizing/body :which-key "resize")
-)
+))
 
 ;;  (ddn/help-keys
 ;;    "a" '(apropos :which-key "apropos")
