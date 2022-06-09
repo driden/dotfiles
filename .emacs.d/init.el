@@ -4,6 +4,7 @@
 ;; * Org mode keybindings that exist on Doom
 ;; * LSP mode
 ;; * Straight package manager https://github.com/raxod502/straight.el
+;; * Yasnippets + org mode snippets
 
 (setq custom-file "~/.emacs.d/custom.el")
 (load custom-file)
@@ -146,7 +147,6 @@
    ("f" nil "done" :exit t))
 
 ;; EL GENERALISIMO
-
 (use-package general
   :after evil
   :config
@@ -185,15 +185,4 @@
     "wc" '(evil-window-delete :which-key "close")
     "wr" '(hydra-split-resizing/body :which-key "resize")
 ))
-
-;;  (ddn/help-keys
-;;    "a" '(apropos :which-key "apropos")
-;;    "f" '(describe-function :which-key "function")
-;;    "v" '(describe-variable :which-key "variable"))
-;;    "m" '(describe-mode :which-key "mode"))
-;;
-;;  (ddn/window-keys
-;;    "r" '(hydra-split-resizing/body :which-key "resizing")
-;;    "c" '(evil-window-delete :which-key "close"))
-;;)
 
