@@ -1,3 +1,4 @@
+
 ;; TODOs
 ;; * Disable C-x C-c
 ;; * Better terminal emulator
@@ -197,3 +198,6 @@
 ;;    "c" '(evil-window-delete :which-key "close"))
 ;;)
 
+;; org
+;; disable prompts
+(setq org-confirm-babel-evaluate nil)
