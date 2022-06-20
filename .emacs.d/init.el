@@ -41,6 +41,7 @@
 (add-to-list 'package-archives
             '("melpa" . "https://melpa.org/packages/"))
 (package-initialize)
+(package-refresh-contents)
 
 (unless package-archive-contents
   (package-refresh-contents))
@@ -134,10 +135,38 @@
 
 
 (use-package doom-themes)
-(load-theme 'doom-tokyo-night t)
+;;(load-theme 'doom-tokyo-night t)
+(load-theme 'doom-ir-black t)
+
+(use-package ripgrep)
+(use-package projectile
+ :init
+ (projectile-mode +1))
+   
+(use-package flycheck)
+(use-package company)
+
+(use-package lsp-mode
+  :hook ((lsp-mode . lsp-enable-which-key-integration))
+  :commands lsp)
+
+(use-package lsp-ui :commands lsp-ui-mode)
+(use-package lsp-ivy :commands lsp-ivy-workspace-symbol)
+(use-package lsp-treemacs :commands lsp-treemacs-errors-list)
+(use-package lsp-java
+  :config
+  (add-hook 'java-mode-hook 'lsp)
+  (let ((lombok-path "/Users/lrrezend/.gradle/caches/modules-2/files-2.1/org.projectlombok/lombok/1.18.24/13a394eed5c4f9efb2a6d956e2086f1d81e857d9/lombok-1.18.24.jar"))
+    (setq lsp-java-vmargs  '("-noverify"
+			     "-Xmx1G"
+			     "-XX:+UseG1GC"
+			     "-XX:+UseStringDeduplication"
+			     "-javaagent:/Users/lrrezend/.gradle/caches/modules-2/files-2.1/org.projectlombok/lombok/1.18.24/13a394eed5c4f9efb2a6d956e2086f1d81e857d9/lombok-1.18.24.jar"
+			     "-Xbootclasspath/a:/Users/lrrezend/.gradle/caches/modules-2/files-2.1/org.projectlombok/lombok/1.18.24/13a394eed5c4f9efb2a6d956e2086f1d81e857d9/lombok-1.18.24.jar")))
+  )
+(use-package dap-mode :after lsp-mode :config (dap-auto-configure-mode))
 
 (use-package hydra)
-
 ;; It would be nice if we could highlight the border of the current window with some color
 
 (defhydra hydra-split-resizing (:timeout 4)
@@ -151,7 +180,7 @@
 
 ;; EL GENERALISIMO
 (use-package general
-  :after evil
+  :after evil projectile hydra lsp-mode
   :config
   (general-define-key
    :states '(normal motion visual)
@@ -161,9 +190,8 @@
    "C-h" 'evil-window-left
    "C-j" 'evil-window-down
    "C-k" 'evil-window-up
-
-   "<S-h>" 'next-buffer
-   "<S-l>" 'previous-buffer)
+   "H" 'next-buffer
+   "L" 'previous-buffer)
 
   (general-create-definer ddn/leader-keys
     :states '(normal visual emacs)
@@ -173,16 +201,17 @@
   (ddn/leader-keys
     "b"  '(nil  :which-key "buffer")
     "bi" '(counsel-ibuffer  :which-key "ibuffer")
-    "c"  '(nil  :which-key "code")
+    "c"  '(lsp-mode-map  :which-key "code")
     "f"  '(nil  :which-key "find")
     "g"  '(nil  :which-key "git")
     "h"  '(nil  :which-key "help")
     "ha" '(counsel-apropos  :which-key "apropos")
     "hf" '(counsel-describe-function  :which-key "describe function")
+    "hk" '(describe-key  :which-key "describe key")
     "hm" '(describe-mode  :which-key "describe mode")
     "hs" '(counsel-describe-symbol  :which-key "describe symbol")
     "hv" '(counsel-describe-variable  :which-key "describe variable")
-    "p"  '(nil  :which-key "project")
+    "p"  '(projectile-command-map :which-key "project")
     "t"  '(nil  :which-key "toggle")
     "w"  '(nil  :which-key "window")
     "wc" '(evil-window-delete :which-key "close")
