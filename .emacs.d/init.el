@@ -17,6 +17,8 @@
 (set-fringe-mode 10)
 (set-face-attribute 'default nil :height 180)
 
+(cond ((eq system-type' darwin) (set-face-attribute 'default nil :height 180 :font "UbuntuMono Nerd Font")))
+
 ;; When opening a symlink that links to a file in a git repo, edit the file in the
 ;; git repo so we can use the Emacs vc features (like Diff) in the future
 (setq vc-follow-symlinks t)
