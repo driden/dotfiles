@@ -28,11 +28,6 @@ Plug 'kyazdani42/nvim-tree.lua'
 "Treesitter
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 
-"jq queries
-Plug 'gennaro-tedesco/nvim-jqx'
-
-" Org
-" Plug 'nvim-orgmode/orgmode'
 " LSP
 Plug 'neovim/nvim-lspconfig'
 Plug 'onsails/lspkind-nvim'
@@ -66,8 +61,6 @@ let g:airline_theme='minimalist'
 " -------------------------------------------------------------------------
 
 colorscheme PaperColor
-
-"command JqBuffer execute "%!jq"
 
 nnoremap <leader>pc :e ~/.config/nvim/init.vim<CR>
 " Source config

@@ -24,7 +24,7 @@ function M.setup()
     ignorecase = true,
     laststatus = 3,
     list = false,
-    listchars = "tab:>.,trail:~,eol:↴",
+    listchars = "lead:-,tab:>.,trail:~,eol:↴",
     number = true,
     relativenumber = true,
     shiftwidth = 2,
@@ -41,6 +41,7 @@ function M.setup()
   }
 
   for k, v in pairs(opts) do
+    --  vim.pretty_print(k)
     vim.o[k] = v
   end
   vim.opt.rtp:append("/usr/loca/bin/fzf")
