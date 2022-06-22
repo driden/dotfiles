@@ -1,9 +1,4 @@
-
 ;; TODOs
-;; * Disable C-x C-c
-;; * Better terminal emulator
-;; * Org mode keybindings that exist on Doom
-;; * LSP mode
 ;; * Straight package manager https://github.com/raxod502/straight.el
 ;; * Yasnippets + org mode snippets
 
@@ -17,7 +12,8 @@
 (set-fringe-mode 10)
 (set-face-attribute 'default nil :height 180)
 
-(cond ((eq system-type' darwin) (set-face-attribute 'default nil :height 180 :font "UbuntuMono Nerd Font")))
+(cond ((eq system-type 'darwin) (set-face-attribute 'default nil :height 180 :font "UbuntuMono Nerd Font")
+       (eq system-type 'windows-nt) (set-face-attribute 'default nil :height 180 :font "Hack")))
 
 ;; When opening a symlink that links to a file in a git repo, edit the file in the
 ;; git repo so we can use the Emacs vc features (like Diff) in the future
@@ -52,12 +48,16 @@
 (require 'use-package)
 (setq use-package-always-ensure t)
 
+;; Don't really want vterm on windows, win shell is horrible
 ;; https://github.com/akermu/emacs-libvterm
-(use-package vterm)
+(unless (eq system-type 'windows-nt)
+        (use-package vterm))
 
 
 (dolist (mode '(term-mode-hook eshell-mode-hook org-mode-hook help-mode-hook))
         (add-hook mode (lambda() (display-line-numbers-mode 0))))    
+
+(use-package pdf-tools)
 
 (use-package ivy
   :diminish
@@ -201,7 +201,8 @@
   (ddn/leader-keys
     "b"  '(nil  :which-key "buffer")
     "bi" '(counsel-ibuffer  :which-key "ibuffer")
-    "c"  '(lsp-mode-map  :which-key "code")
+    "bk" '(kill-buffer  :which-key "kill buffer")
+    ;;"c"  '(lsp-mode-map  :which-key "code")
     "f"  '(nil  :which-key "find")
     "g"  '(nil  :which-key "git")
     "h"  '(nil  :which-key "help")
