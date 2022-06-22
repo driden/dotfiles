@@ -13,6 +13,11 @@ keymap("n", "<C-j>", "<C-w>j", opts)
 keymap("n", "<C-k>", "<C-w>k", opts)
 keymap("n", "<C-l>", "<C-w>l", opts)
 
+-- Buffers
+keymap("n", "<leader>bk", ":bdelete<CR>", opts)
+keymap("n", "<leader>bK", ":bdelete!<CR>", opts)
+
+-- Windows
 keymap("n", "<leader>wq", ":wincmd q<CR>", opts)
 keymap("n", "<leader>wc", ":wincmd c<CR>", opts)
 
