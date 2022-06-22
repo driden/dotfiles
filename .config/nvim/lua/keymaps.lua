@@ -74,10 +74,8 @@ keymap("n", "<leader>tp", ":tabprevious<CR>", opts)
 keymap("n", "<leader>tc", ":tabclose<CR>", opts)
 
 -- Git
--- right
-keymap("n", "<leader>gj", ":diffget //3<CR>", opts)
--- left
-keymap("n", "<leader>gf", ":diffget //2<CR>", opts)
+keymap("n", "<leader>gj", ":diffget //3<CR>", opts) -- right
+keymap("n", "<leader>gf", ":diffget //2<CR>", opts) -- left
 
 keymap("n", "<leader>gs", ":G<CR>", opts)
 keymap("n", "<leader>gc", ":GCheckout<CR>", opts)
@@ -85,6 +83,17 @@ keymap("n", "<leader>gg", ":Gvdiffsplit!<CR>", opts)
 keymap("n", "<leader>gP", ":Git push<CR>", opts)
 keymap("n", "<leader>gp", ":Git pull<CR>", opts)
 
--- Quickfix list
---
--- Vim config
+-- Quick Fix
+keymap("n", "<leader>qq", ":copen<CR>", opts) -- Open the quickfix window
+keymap("n", "<leader>qc", ":ccl<CR>", opts) --  Open it if there are "errors", close it otherwise
+keymap("n", "<leader>qe", ":cw<CR>", opts) --  Go to the next error in the window
+keymap("n", "<leader>qn", ":cn<CR>", opts) -- Go to the previous error in the window
+keymap("n", "<leader>qp", ":cp<CR>", opts) -- Go to the first error in the next file
+keymap("n", "<leader>qf", ":cnf<CR>", opts) --Go to error under cursor (if cursor is in quickfix window)
+keymap("n", "<leader>q.", ":.cc<CR>", opts)
+
+-- Misc
+keymap("n", "<leader>tm", "<cmd>lua require\"options\".toggle_meta_chars()<CR>", opts)
+
+keymap("n", "<leader>pc", ":e ~/.config/nvim/init.vim<CR>", opts)
+keymap("n", "<leader>rr", ":source ~/.config/nvim/init.vim<CR>", opts)

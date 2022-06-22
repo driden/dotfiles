@@ -60,47 +60,19 @@ let g:airline_theme='minimalist'
 " VIM GENERAL SETTINGS
 " -------------------------------------------------------------------------
 
-colorscheme PaperColor
-
-nnoremap <leader>pc :e ~/.config/nvim/init.vim<CR>
-" Source config
-nnoremap <leader>rr :source ~/.config/nvim/init.vim<CR>
-
-" QuickFix
-" Open the quickfix window
-nnoremap <leader>qq :copen<CR>
-" Close it
-nnoremap <leader>qc :ccl<CR>
-" Open it if there are "errors", close it otherwise (some people prefer this)
-nnoremap <leader>qe :cw<CR>
-" Go to the next error in the window
-nnoremap <leader>qn :cn<CR>
-" Go to the previous error in the window
-nnoremap <leader>qp :cp<CR>
-" Go to the first error in the next file
-nnoremap <leader>qf :cnf<CR>
-" Go to error under cursor (if cursor is in quickfix window)
-nnoremap <leader>q. :.cc<CR>
-" Explorer
-
-"
-
+"colorscheme PaperColor
 
 lua << EOF
 
-require "plugins/autocomplete".setup()
-require "plugins/file_tree".setup()
-require "plugins/lsp".setup()
---require "plugins/org".setup()
-require "plugins/toggleterm".setup()
-require "plugins/treesitter".setup()
+require "plugins.autocomplete".setup()
+require "plugins.file_tree".setup()
+require "plugins.lsp".setup()
+require "plugins.toggleterm".setup()
+require "plugins.treesitter".setup()
 require "options".setup()
+require "themes"
+require "statusbar"
 require "keymaps"
-
-vim.api.nvim_set_keymap("n",
-                        "<leader>tm",
-                        "<cmd>lua require\"options\".toggle_meta_chars()<CR>",
-                        { noremap = true })
-
+require "user_commands".load_commands()
 EOF
 
