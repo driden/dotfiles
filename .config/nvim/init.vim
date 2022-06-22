@@ -67,7 +67,7 @@ let g:airline_theme='minimalist'
 
 colorscheme PaperColor
 
-command JqBuffer execute "%!jq"
+"command JqBuffer execute "%!jq"
 
 nnoremap <leader>pc :e ~/.config/nvim/init.vim<CR>
 " Source config
