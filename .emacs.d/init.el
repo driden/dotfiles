@@ -10,10 +10,9 @@
 (tooltip-mode -1)
 (menu-bar-mode -1)
 (set-fringe-mode 10)
-(set-face-attribute 'default nil :height 180)
 
-(cond ((eq system-type 'darwin) (set-face-attribute 'default nil :height 180 :font "UbuntuMono Nerd Font")
-       (eq system-type 'windows-nt) (set-face-attribute 'default nil :height 180 :font "Hack")))
+(cond ((eq system-type 'darwin) (set-face-attribute 'default nil :height 180 :font "UbuntuMono Nerd Font"))
+      ((eq system-type 'windows-nt) (set-face-attribute 'default nil :height 180 :font "Hack")))
 
 ;; When opening a symlink that links to a file in a git repo, edit the file in the
 ;; git repo so we can use the Emacs vc features (like Diff) in the future
