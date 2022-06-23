@@ -55,6 +55,9 @@ keymap("x", "K", ":move '<-2<CR>gv-gv", opts)
 keymap("x", "<A-j>", ":move '>+1<CR>gv-gv", opts)
 keymap("x", "<A-k>", ":move '<-2<CR>gv-gv", opts)
 
+keymap("n", "Y", "y$", opts)
+keymap("x", "Y", "y$", opts)
+
 -- Terminal --
 -- Better terminal navigation
 keymap("t", "<C-[>", "<C-\\><C-n>", term_opts)
@@ -93,7 +96,7 @@ keymap("n", "<leader>qf", ":cnf<CR>", opts) --Go to error under cursor (if curso
 keymap("n", "<leader>q.", ":.cc<CR>", opts)
 
 -- Misc
-keymap("n", "<leader>tm", "<cmd>lua require\"options\".toggle_meta_chars()<CR>", opts)
+keymap("n", "<leader>tm", '<cmd>lua require"options".toggle_meta_chars()<CR>', opts)
 
-keymap("n", "<leader>pc", ":e ~/.config/nvim/init.vim<CR>", opts)
-keymap("n", "<leader>rr", ":source ~/.config/nvim/init.vim<CR>", opts)
+keymap("n", "<leader>pc", ":e ~/.config/nvim/init.lua<CR>", opts)
+keymap("n", "<leader>rr", ":source ~/.config/nvim/init.lua<CR>", opts)

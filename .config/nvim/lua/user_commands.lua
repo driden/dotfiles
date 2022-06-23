@@ -1,8 +1,8 @@
 local M = {}
 
 local commands = {
-  { name = "EditConfig", action = ":edit $HOME/.config/nvim/init.vim" },
-  { name = "ReloadConfig", action = ":source ~/.config/nvim/init.vim" }
+  { name = "EditConfig", action = ":edit $HOME/.config/nvim/init.lua" },
+  { name = "ReloadConfig", action = ":source ~/.config/nvim/init.lua" },
 }
 
 local function create_command(name, action)
