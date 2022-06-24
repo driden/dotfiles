@@ -36,7 +36,6 @@
 (add-to-list 'package-archives
             '("melpa" . "https://melpa.org/packages/"))
 (package-initialize)
-(package-refresh-contents)
 
 (unless package-archive-contents
   (package-refresh-contents))
@@ -47,10 +46,16 @@
 (require 'use-package)
 (setq use-package-always-ensure t)
 
+;;; END BOOTSTRAPPING
+
 ;; Don't really want vterm on windows, win shell is horrible
 ;; https://github.com/akermu/emacs-libvterm
 (unless (eq system-type 'windows-nt)
         (use-package vterm))
+(use-package org)
+(use-package org-evil
+  :after org evil
+  :hook (org-mode . evil-mode))
 
 
 (dolist (mode '(term-mode-hook eshell-mode-hook org-mode-hook help-mode-hook))
