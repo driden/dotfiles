@@ -1,5 +1,6 @@
 ;; TODOs
 ;; * Straight package manager https://github.com/raxod502/straight.el
+;; * add Eval buffer/last sexp keymaps hooked into emacs-lisp-mode
 ;; * Yasnippets + org mode snippets
 
 (setq custom-file "~/.emacs.d/custom.el")
@@ -18,7 +19,8 @@
 ;; git repo so we can use the Emacs vc features (like Diff) in the future
 (setq vc-follow-symlinks t)
 (setq create-lockfiles nil
-      make-backup-files nil)
+      make-backup-files nil
+      visible-bell t)
 
 ;; ENCODING -------------
 (when (fboundp 'set-charset-priority)
@@ -79,7 +81,8 @@
          ("C-k" . ivy-previous-line)
          ("C-d" . ivy-reverse-i-search-kill))
   :config
-  (ivy-mode 1))
+  (ivy-mode 1)
+  (setq ivy-re-builders-alist '((t . ivy--regex-fuzzy))))
 
 (global-display-line-numbers-mode t)
 
@@ -151,9 +154,13 @@
 (use-package company)
 
 (use-package lsp-mode
-  :hook ((lsp-mode . lsp-enable-which-key-integration))
+  :hook ((lsp-mode . lsp-enable-which-key-integration)
+	 (sh-mode . lsp))
+  :config
+    (setq lsp-modeline-diagnostics-scope :workspace)
   :commands lsp)
 
+;; In order to install servers run the lsp-install-server function
 (use-package lsp-ui :commands lsp-ui-mode)
 (use-package lsp-ivy :commands lsp-ivy-workspace-symbol)
 (use-package lsp-treemacs :commands lsp-treemacs-errors-list)
@@ -202,11 +209,22 @@
     :keymaps 'override
     :prefix "SPC")
 
+  (general-create-definer ddn/lsp-keys
+    :states '(normal)
+    :keymaps 'lsp-mode-map)
+
+  (ddn/lsp-keys
+    "gd" '(lsp-find-definition :whick-key "go to definition")
+    "gD" '(lsp-find-declaration :whick-key "go to declaration")
+    "gi" '(lsp-goto-implementation :whick-key "go to implementation")
+    "gr" '(lsp-find-references :whick-key "go to references"))
+
   (ddn/leader-keys
     "b"  '(nil  :which-key "buffer")
     "bi" '(counsel-ibuffer  :which-key "ibuffer")
     "bk" '(kill-buffer  :which-key "kill buffer")
-    ;;"c"  '(lsp-mode-map  :which-key "code")
+    "c"  '(nil  :which-key "code")
+    "ca"  '(lsp-execute-code-action  :which-key "code action")
     "f"  '(nil  :which-key "find")
     "g"  '(nil  :which-key "git")
     "h"  '(nil  :which-key "help")
@@ -220,8 +238,12 @@
     "t"  '(nil  :which-key "toggle")
     "w"  '(nil  :which-key "window")
     "wc" '(evil-window-delete :which-key "close")
-    "wr" '(hydra-split-resizing/body :which-key "resize")
-))
+    "wr" '(hydra-split-resizing/body :which-key "resize"))
+
+
+  ;;(general-define-key :keymaps lsp-ui-mode-map [remap xref-find-definitions] #'lsp-ui-peek-find-definitions )
+
+  )
 
 ;; org
 ;; disable prompts
