@@ -20,7 +20,8 @@
 (setq vc-follow-symlinks t)
 (setq create-lockfiles nil
       make-backup-files nil
-      visible-bell t)
+      visible-bell t
+(setq-default tab-width 2)
 
 ;; ENCODING -------------
 (when (fboundp 'set-charset-priority)
@@ -143,7 +144,8 @@
 
 (use-package doom-themes)
 ;;(load-theme 'doom-tokyo-night t)
-(load-theme 'doom-ir-black t)
+;;(load-theme 'doom-ir-black t)
+(load-theme 'doom-dracula t)
 
 (use-package ripgrep)
 (use-package projectile
