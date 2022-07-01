@@ -1,4 +1,4 @@
-;; TODOs
+;; Todos
 ;; * Straight package manager https://github.com/raxod502/straight.el
 ;; * add Eval buffer/last sexp keymaps hooked into emacs-lisp-mode
 ;; * Yasnippets + org mode snippets
@@ -12,8 +12,10 @@
 (menu-bar-mode -1)
 (set-fringe-mode 10)
 
-(cond ((eq system-type 'darwin) (set-face-attribute 'default nil :height 180 :font "UbuntuMono Nerd Font"))
-      ((eq system-type 'windows-nt) (set-face-attribute 'default nil :height 180 :font "Hack")))
+(cond ((or (eq system-type 'darwin) (eq system-type 'gnu/linux))
+			 (set-face-attribute 'default nil :height 180 :font "UbuntuMono Nerd Font"))
+			((eq system-type 'windows-nt)
+			 (set-face-attribute 'default nil :height 180 :font "Hack")))
 
 ;; When opening a symlink that links to a file in a git repo, edit the file in the
 ;; git repo so we can use the Emacs vc features (like Diff) in the future
