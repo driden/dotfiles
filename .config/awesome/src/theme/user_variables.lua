@@ -42,7 +42,7 @@ _G.user_vars = {
   },
 
   -- This is your default Terminal
-  terminal = "alacritty",
+  terminal = "kitty",
 
   -- This is the modkey 'mod4' = Super/Mod/WindowsKey, 'mod3' = alt...
   modkey = "Mod4",

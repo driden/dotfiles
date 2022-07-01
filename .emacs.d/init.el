@@ -20,7 +20,7 @@
 (setq vc-follow-symlinks t)
 (setq create-lockfiles nil
       make-backup-files nil
-      visible-bell t
+      visible-bell t)
 (setq-default tab-width 2)
 
 ;; ENCODING -------------
@@ -241,12 +241,12 @@
     "w"  '(nil  :which-key "window")
     "wc" '(evil-window-delete :which-key "close")
     "wr" '(hydra-split-resizing/body :which-key "resize"))
-
-
   ;;(general-define-key :keymaps lsp-ui-mode-map [remap xref-find-definitions] #'lsp-ui-peek-find-definitions )
+)
 
-  )
 
 ;; org
 ;; disable prompts
 (setq org-confirm-babel-evaluate nil)
+
+
