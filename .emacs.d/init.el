@@ -100,9 +100,11 @@
   :init (ivy-rich-mode 1))
 
 (use-package counsel
-  :bind (("M-x"     . counsel-M-x)
-	 ("C-x b"   . counsel-ibuffer)
-	 ("C-x C-f" . counsel-find-file))) 
+  :bind (("M-x"    . counsel-M-x)
+	("C-x b"   . counsel-ibuffer)
+	("C-x C-f" . counsel-find-file)
+	("C-x C-b" . counsel-switch-buffer)
+	 )) 
 
 (use-package helpful
   :commands (helpful-callable helpful-variable helpful-command helpful-key)
@@ -154,9 +156,10 @@
   :hook ((lsp-mode . lsp-enable-which-key-integration))
   :commands lsp)
 
+(use-package treemacs)
 (use-package lsp-ui :commands lsp-ui-mode)
 (use-package lsp-ivy :commands lsp-ivy-workspace-symbol)
-(use-package lsp-treemacs :commands lsp-treemacs-errors-list)
+(use-package lsp-treemacs :after treemacs :commands lsp-treemacs-errors-list)
 (use-package lsp-java
   :config
   (add-hook 'java-mode-hook 'lsp)
