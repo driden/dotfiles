@@ -146,10 +146,6 @@
   (evil-snipe-mode +1))
 
 
-(use-package doom-themes)
-;;(load-theme 'doom-tokyo-night t)
-;;(load-theme 'doom-ir-black t)
-(load-theme 'doom-dracula t)
 
 (use-package ripgrep)
 (use-package projectile
@@ -242,6 +238,7 @@
     "hv" '(counsel-describe-variable  :which-key "describe variable")
     "p"  '(projectile-command-map :which-key "project")
     "t"  '(nil  :which-key "toggle")
+    "tt" '(ddn/cycle-themes  :which-key "set next theme")
     "w"  '(nil  :which-key "window")
     "wc" '(evil-window-delete :which-key "close")
     "wr" '(hydra-split-resizing/body :which-key "resize"))
@@ -252,5 +249,38 @@
 ;; org
 ;; disable prompts
 (setq org-confirm-babel-evaluate nil)
+
+;; THEMES
+
+(use-package doom-themes)
+
+(setq ddn/available-themes (custom-available-themes))
+
+(defun ddn/next-theme ()
+  "Get the next valid theme from the list."
+  (let* ((themes-list   ddn/available-themes)
+				 (start-theme   ddn/current-theme)
+         (current-theme ddn/current-theme))
+
+				(setq current-theme
+						(nth (mod (1+ (cl-position current-theme themes-list))
+											(length themes-list))
+									themes-list))
+   current-theme))
+
+(defun ddn/set-theme (theme)
+		(disable-theme ddn/current-theme)
+		(setq ddn/current-theme theme)(message "%s" theme)
+    (load-theme theme t))
+
+(defun ddn/cycle-themes ()
+  "Cycle to the next theme."
+  (interactive)
+  (let ((new-theme (ddn/next-theme))
+        (current-theme 'ddn/current-theme))
+				(ddn/set-theme new-theme)))
+
+(setq ddn/current-theme 'doom-moonlight)
+(ddn/set-theme 'doom-moonlight)
 
 
