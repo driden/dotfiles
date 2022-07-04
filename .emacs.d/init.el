@@ -3,7 +3,9 @@
 ;; * add Eval buffer/last sexp keymaps hooked into emacs-lisp-mode
 ;; * Yasnippets + org mode snippets
 
-(setq custom-file "~/.emacs.d/custom.el")
+(setq custom-file (if (eq system-type 'windows-nt)
+												(concat (getenv "APPDATA") "\\.emacs.d\\custom.el")
+												("~/.emacs.d/custom.el")))
 (load custom-file)
 
 (scroll-bar-mode -1) 
