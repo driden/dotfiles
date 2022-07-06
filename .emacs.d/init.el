@@ -4,8 +4,8 @@
 ;; * Yasnippets + org mode snippets
 
 (setq custom-file (if (eq system-type 'windows-nt)
-												(concat (getenv "APPDATA") "\\.emacs.d\\custom.el")
-												("~/.emacs.d/custom.el")))
+		    (concat (getenv "APPDATA") "\\.emacs.d\\custom.el")
+		    "~/.emacs.d/custom.el"))
 (load custom-file)
 
 (scroll-bar-mode -1) 
@@ -290,6 +290,6 @@
         (current-theme 'ddn/current-theme))
 				(ddn/set-theme new-theme)))
 
-(setq ddn/current-theme 'doom-moonlight)
-(ddn/set-theme 'doom-moonlight)
+(setq ddn/current-theme 'doom-old-hope)
+(ddn/set-theme 'doom-old-hope)
 
