@@ -69,12 +69,9 @@
 (display-line-numbers-mode t)
 (setq display-line-numbers 'relative)
 
-(dolist (mode '(term-mode-hook eshell-mode-hook help-mode-hook))
-  (add-hook mode (lambda() (
-														(menu-bar-display-line-numbers-mode 'relative)
-														(display-line-numbers-mode 0)
-														)
-									)))    
+(dolist (mode '(shell-mode term-mode-hook eshell-mode-hook help-mode-hook))
+  (add-hook mode (lambda() ((menu-bar-display-line-numbers-mode 'relative)
+														(display-line-numbers-mode 0)))))
 
 (use-package pdf-tools)
 
@@ -168,11 +165,12 @@
 (use-package lsp-mode
   :hook ((lsp-mode . lsp-enable-which-key-integration)
 				 (sh-mode . lsp)
+				 (typescript-mode . lsp-deferred)
 				 (javascript-mode . lsp))
   :config
     (setq lsp-modeline-diagnostics-scope :workspace)
 		(setq lsp-keymap-prefix "s-y")
-  :commands lsp)
+  :commands (lsp lsp-deferred))
 
 (use-package treemacs)
 (use-package lsp-ui :commands lsp-ui-mode)
