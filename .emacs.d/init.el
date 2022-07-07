@@ -65,7 +65,11 @@
   :hook (org-mode . evil-mode))
 
 
-(dolist (mode '(term-mode-hook eshell-mode-hook org-mode-hook help-mode-hook))
+; Line Numbers
+(display-line-numbers-mode t)
+(setq display-line-numbers 'relative)
+
+(dolist (mode '(term-mode-hook eshell-mode-hook help-mode-hook))
   (add-hook mode (lambda() (
 														(menu-bar-display-line-numbers-mode 'relative)
 														(display-line-numbers-mode 0)
@@ -93,12 +97,11 @@
   (ivy-mode 1)
   (setq ivy-re-builders-alist '((t . ivy--regex-fuzzy))))
 
-(global-display-line-numbers-mode t)
-
 ;; langs
 (use-package yaml-mode)
 (use-package haskell-mode)
 (use-package lua-mode)
+(use-package typescript-mode)
 
 (use-package rainbow-delimiters
   :hook (prog-mode . rainbow-delimiters-mode))
@@ -175,6 +178,7 @@
 (use-package lsp-ui :commands lsp-ui-mode)
 (use-package lsp-ivy :commands lsp-ivy-workspace-symbol)
 (use-package lsp-treemacs :after treemacs :commands lsp-treemacs-errors-list)
+;; Probably need to move this config to custom.el now
 (use-package lsp-java
   :config
   (add-hook 'java-mode-hook 'lsp)
@@ -263,7 +267,6 @@
 ;; THEMES
 
 (use-package doom-themes)
-
 (setq ddn/available-themes (custom-available-themes))
 
 (defun ddn/next-theme ()
