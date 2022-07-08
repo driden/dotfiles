@@ -68,12 +68,11 @@
 
 
 ; Line Numbers
-(display-line-numbers-mode t)
+;(global-display-line-numbers-mode t)
 (setq display-line-numbers 'relative)
 
 (dolist (mode '(shell-mode term-mode-hook eshell-mode-hook help-mode-hook))
-  (add-hook mode (lambda() ((menu-bar-display-line-numbers-mode 'relative)
-														(display-line-numbers-mode 0)))))
+  (add-hook mode (lambda() (display-line-numbers-mode 0))))
 
 (use-package pdf-tools)
 
@@ -239,6 +238,7 @@
     "bk" '(kill-buffer  :which-key "kill buffer")
     "c"  '(nil  :which-key "code")
     "ca" '(lsp-execute-code-action  :which-key "code action")
+    "cr" '(lsp-rename  :which-key "rename symbol")
     "cs" '(lsp  :which-key "lsp start")
     "e"  '(treemacs  :which-key "explore project")
     "f"  '(nil  :which-key "find")
