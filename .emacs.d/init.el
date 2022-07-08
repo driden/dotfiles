@@ -68,11 +68,14 @@
 
 
 ; Line Numbers
-;(global-display-line-numbers-mode t)
+(global-display-line-numbers-mode t)
 (setq display-line-numbers 'relative)
 
-(dolist (mode '(shell-mode term-mode-hook eshell-mode-hook help-mode-hook))
-  (add-hook mode (lambda() (display-line-numbers-mode 0))))
+(dolist (mode '(shell-mode-hook
+								term-mode-hook
+								eshell-mode-hook
+								help-mode-hook))
+				(add-hook mode (lambda() (display-line-numbers-mode -1))))
 
 (use-package pdf-tools)
 
