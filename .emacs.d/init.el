@@ -8,6 +8,8 @@
 		    "~/.emacs.d/custom.el"))
 (load custom-file)
 
+(if (eq system-type 'darwin)
+		 (setq ns-function-modifier 'super))
 (scroll-bar-mode -1) 
 (tool-bar-mode -1)
 (tooltip-mode -1)
@@ -169,7 +171,6 @@
 				 (javascript-mode . lsp))
   :config
     (setq lsp-modeline-diagnostics-scope :workspace)
-		(setq lsp-keymap-prefix "s-y")
   :commands (lsp lsp-deferred))
 
 (use-package treemacs)
