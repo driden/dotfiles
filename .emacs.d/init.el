@@ -99,6 +99,8 @@
   (setq ivy-re-builders-alist '((t . ivy--regex-fuzzy))))
 
 ;; langs
+(use-package json-mode
+	:hook (json-mode . flycheck-mode))
 (use-package yaml-mode)
 (use-package haskell-mode)
 (use-package lua-mode)
