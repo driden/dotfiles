@@ -3,9 +3,13 @@
 ;; * add Eval buffer/last sexp keymaps hooked into emacs-lisp-mode
 ;; * Yasnippets + org mode snippets
 
-(setq custom-file "~/.emacs.d/custom.el")
+(setq custom-file (if (eq system-type 'windows-nt)
+		    (concat (getenv "APPDATA") "\\.emacs.d\\custom.el")
+		    "~/.emacs.d/custom.el"))
 (load custom-file)
 
+(if (eq system-type 'darwin)
+		 (setq ns-function-modifier 'super))
 (scroll-bar-mode -1) 
 (tool-bar-mode -1)
 (tooltip-mode -1)
@@ -63,8 +67,15 @@
   :hook (org-mode . evil-mode))
 
 
-(dolist (mode '(term-mode-hook eshell-mode-hook org-mode-hook help-mode-hook))
-        (add-hook mode (lambda() (display-line-numbers-mode 0))))    
+; Line Numbers
+(global-display-line-numbers-mode t)
+(setq display-line-numbers 'relative)
+
+(dolist (mode '(shell-mode-hook
+								term-mode-hook
+								eshell-mode-hook
+								help-mode-hook))
+				(add-hook mode (lambda() (display-line-numbers-mode -1))))
 
 (use-package pdf-tools)
 
@@ -87,11 +98,11 @@
   (ivy-mode 1)
   (setq ivy-re-builders-alist '((t . ivy--regex-fuzzy))))
 
-(global-display-line-numbers-mode t)
-
 ;; langs
+(use-package yaml-mode)
 (use-package haskell-mode)
 (use-package lua-mode)
+(use-package typescript-mode)
 
 (use-package rainbow-delimiters
   :hook (prog-mode . rainbow-delimiters-mode))
@@ -106,9 +117,10 @@
   :init (ivy-rich-mode 1))
 
 (use-package counsel
-  :bind (("M-x"     . counsel-M-x)
-	 ("C-x b"   . counsel-ibuffer)
-	 ("C-x C-f" . counsel-find-file))) 
+  :bind (("M-x"    . counsel-M-x)
+				("C-x C-b" . counsel-ibuffer)
+				("C-x C-f" . counsel-find-file)
+				("C-x b"   . counsel-switch-buffer))) 
 
 (use-package helpful
   :commands (helpful-callable helpful-variable helpful-command helpful-key)
@@ -143,12 +155,6 @@
   :config
   (evil-snipe-mode +1))
 
-
-(use-package doom-themes)
-;;(load-theme 'doom-tokyo-night t)
-;;(load-theme 'doom-ir-black t)
-(load-theme 'doom-dracula t)
-
 (use-package ripgrep)
 (use-package projectile
  :init
@@ -157,17 +163,23 @@
 (use-package flycheck)
 (use-package company)
 
+(use-package all-the-icons
+  :if (display-graphic-p))
+
 (use-package lsp-mode
   :hook ((lsp-mode . lsp-enable-which-key-integration)
-	 (sh-mode . lsp))
+				 (sh-mode . lsp)
+				 (typescript-mode . lsp-deferred)
+				 (javascript-mode . lsp))
   :config
     (setq lsp-modeline-diagnostics-scope :workspace)
-  :commands lsp)
+  :commands (lsp lsp-deferred))
 
-;; In order to install servers run the lsp-install-server function
+(use-package treemacs)
 (use-package lsp-ui :commands lsp-ui-mode)
 (use-package lsp-ivy :commands lsp-ivy-workspace-symbol)
-(use-package lsp-treemacs :commands lsp-treemacs-errors-list)
+(use-package lsp-treemacs :after treemacs :commands lsp-treemacs-errors-list)
+;; Probably need to move this config to custom.el now
 (use-package lsp-java
   :config
   (add-hook 'java-mode-hook 'lsp)
@@ -205,8 +217,8 @@
    "C-h" 'evil-window-left
    "C-j" 'evil-window-down
    "C-k" 'evil-window-up
-   "H" 'next-buffer
-   "L" 'previous-buffer)
+   "H"   'next-buffer
+   "L"   'previous-buffer)
 
   (general-create-definer ddn/leader-keys
     :states '(normal visual emacs)
@@ -228,7 +240,10 @@
     "bi" '(counsel-ibuffer  :which-key "ibuffer")
     "bk" '(kill-buffer  :which-key "kill buffer")
     "c"  '(nil  :which-key "code")
-    "ca"  '(lsp-execute-code-action  :which-key "code action")
+    "ca" '(lsp-execute-code-action  :which-key "code action")
+    "cr" '(lsp-rename  :which-key "rename symbol")
+    "cs" '(lsp  :which-key "lsp start")
+    "e"  '(treemacs  :which-key "explore project")
     "f"  '(nil  :which-key "find")
     "g"  '(nil  :which-key "git")
     "h"  '(nil  :which-key "help")
@@ -240,10 +255,10 @@
     "hv" '(counsel-describe-variable  :which-key "describe variable")
     "p"  '(projectile-command-map :which-key "project")
     "t"  '(nil  :which-key "toggle")
+    "tt" '(ddn/cycle-themes  :which-key "set next theme")
     "w"  '(nil  :which-key "window")
     "wc" '(evil-window-delete :which-key "close")
     "wr" '(hydra-split-resizing/body :which-key "resize"))
-  ;;(general-define-key :keymaps lsp-ui-mode-map [remap xref-find-definitions] #'lsp-ui-peek-find-definitions )
 )
 
 
@@ -251,4 +266,35 @@
 ;; disable prompts
 (setq org-confirm-babel-evaluate nil)
 
+;; THEMES
+
+(use-package doom-themes)
+(setq ddn/available-themes (custom-available-themes))
+
+(defun ddn/next-theme ()
+  "Get the next valid theme from the list."
+  (let* ((themes-list   ddn/available-themes)
+				 (start-theme   ddn/current-theme)
+         (current-theme ddn/current-theme))
+
+				(setq current-theme
+						(nth (mod (1+ (cl-position current-theme themes-list))
+											(length themes-list))
+									themes-list))
+   current-theme))
+
+(defun ddn/set-theme (theme)
+		(disable-theme ddn/current-theme)
+		(setq ddn/current-theme theme)(message "%s" theme)
+    (load-theme theme t))
+
+(defun ddn/cycle-themes ()
+  "Cycle to the next theme."
+  (interactive)
+  (let ((new-theme (ddn/next-theme))
+        (current-theme 'ddn/current-theme))
+				(ddn/set-theme new-theme)))
+
+(setq ddn/current-theme 'doom-old-hope)
+(ddn/set-theme 'doom-old-hope)
 
