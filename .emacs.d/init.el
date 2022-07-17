@@ -154,6 +154,10 @@
   :after evil
   :config
   (evil-snipe-mode +1))
+(use-package evil-goggles
+	:config
+	(evil-goggles-mode)
+	(evil-goggles-use-diff-faces))
 
 (use-package ripgrep)
 (use-package projectile
