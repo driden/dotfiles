@@ -158,6 +158,10 @@
 	:config
 	(evil-goggles-mode)
 	(evil-goggles-use-diff-faces))
+(custom-set-faces
+ '(evil-goggles-delete-face ((t (:inherit 'shadow))))
+ '(evil-goggles-paste-face ((t (:inherit 'lazy-highlight))))
+ '(evil-goggles-yank-face ((t (:inherit 'isearch-fail)))))
 
 (use-package ripgrep)
 (use-package projectile
