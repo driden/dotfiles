@@ -62,10 +62,12 @@
 (unless (eq system-type 'windows-nt)
         (use-package vterm))
 (use-package org)
+(use-package org-contrib :after orgn)
 (use-package org-evil
   :after org evil
   :hook (org-mode . evil-mode))
 
+(use-package ox-clip :after org)
 
 ; Line Numbers
 (global-display-line-numbers-mode t)
@@ -167,11 +169,21 @@
   :if (display-graphic-p))
 
 (use-package lsp-mode
-  :hook ((lsp-mode . lsp-enable-which-key-integration)
-				 (sh-mode . lsp)
-				 (typescript-mode . lsp-deferred)
-				 (javascript-mode . lsp))
+  :defer t
+  :hook (lsp-mode . (lambda ()
+                      (let ((lsp-keymap-prefix "C-c l"))
+                        (lsp-enable-which-key-integration))))
+				(sh-mode . lsp)
+				(typescript-mode . lsp-deferred)
+				(javascript-mode . lsp)
+  :init
+  (setq lsp-keep-workspace-alive nil
+        lsp-signature-doc-lines 5
+        lsp-idle-delay 0.5
+        lsp-prefer-capf t
+        lsp-client-packages nil)
   :config
+		(define-key lsp-mode-map (kbd "C-c l") lsp-command-map)
     (setq lsp-modeline-diagnostics-scope :workspace)
   :commands (lsp lsp-deferred))
 
@@ -210,6 +222,13 @@
   :after evil projectile hydra lsp-mode
   :config
   (general-define-key
+   :states '(normal motion visual emacs)
+   :keymaps 'override
+	 :prefix "C-x"
+
+   "C-c" 'nil) ;; I always quit emacs by accident
+
+  (general-define-key
    :states '(normal motion visual)
    :keymaps 'override
 
@@ -220,20 +239,33 @@
    "H"   'next-buffer
    "L"   'previous-buffer)
 
+	(general-define-key
+   :states '(normal, insert)
+   :keymaps 'company-mode-map
+	 "C-n" 'company-select-next
+	 "C-p" 'company-select-previous
+	 "TAB" 'company-complete-selction)
+
+  (general-define-key 
+    :states '(normal)
+    :keymaps 'lsp-mode-map
+
+    "C-SPC" '(completion-at-point)
+    "gd"    '(lsp-find-definition :whick-key "go to definition")
+    "gD"    '(lsp-find-declaration :whick-key "go to declaration")
+    "gi"    '(lsp-goto-implementation :whick-key "go to implementation")
+    "gr"    '(lsp-find-references :whick-key "go to references"))
+
+  (general-define-key 
+    :states '(insert)
+    :keymaps 'lsp-mode-map
+
+    "C-SPC" '(completion-at-point))
+
   (general-create-definer ddn/leader-keys
     :states '(normal visual emacs)
     :keymaps 'override
     :prefix "SPC")
-
-  (general-create-definer ddn/lsp-keys
-    :states '(normal)
-    :keymaps 'lsp-mode-map)
-
-  (ddn/lsp-keys
-    "gd" '(lsp-find-definition :whick-key "go to definition")
-    "gD" '(lsp-find-declaration :whick-key "go to declaration")
-    "gi" '(lsp-goto-implementation :whick-key "go to implementation")
-    "gr" '(lsp-find-references :whick-key "go to references"))
 
   (ddn/leader-keys
     "b"  '(nil  :which-key "buffer")
@@ -243,8 +275,10 @@
     "ca" '(lsp-execute-code-action  :which-key "code action")
     "cr" '(lsp-rename  :which-key "rename symbol")
     "cs" '(lsp  :which-key "lsp start")
-    "e"  '(treemacs  :which-key "explore project")
+    "e"  '(nil  :which-key "explore")
+    "ee"  '(treemacs  :which-key "explore project")
     "f"  '(nil  :which-key "find")
+    "ff" '(counsel-find-file  :which-key "find file")
     "g"  '(nil  :which-key "git")
     "h"  '(nil  :which-key "help")
     "ha" '(counsel-apropos  :which-key "apropos")
@@ -253,6 +287,7 @@
     "hm" '(describe-mode  :which-key "describe mode")
     "hs" '(counsel-describe-symbol  :which-key "describe symbol")
     "hv" '(counsel-describe-variable  :which-key "describe variable")
+    "o"  '(nil :which-key "org")
     "p"  '(projectile-command-map :which-key "project")
     "t"  '(nil  :which-key "toggle")
     "tt" '(ddn/cycle-themes  :which-key "set next theme")
