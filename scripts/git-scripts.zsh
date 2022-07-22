@@ -15,6 +15,13 @@ gco() {
   git checkout $(echo "$branch" | sed "s/.* //" | sed "s#remotes/[^/]*/##")
 }
 
+gcr() {
+  local branches branch
+  branches=$(git branch --remote) &&
+  branch=$(echo "$branches" | eval "${fzf} --header 'Select branch to checkout'") &&
+  git checkout $(echo "$branch")
+}
+
 ga() {
   local changed_files files
   selected_files=$(git status -s | awk '{print $2}' | eval "$fzf --header 'Select files to add' --multi" )
