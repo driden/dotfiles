@@ -26,6 +26,7 @@
 (setq vc-follow-symlinks t)
 (setq create-lockfiles nil
       make-backup-files nil
+      create-lockfiles nil
       visible-bell t)
 (setq-default tab-width 2)
 
@@ -69,6 +70,8 @@
 
 (use-package ox-clip :after org)
 
+(use-package exec-path-from-shell :config (exec-path-from-shell-initialize))
+
 ; Line Numbers
 (global-display-line-numbers-mode t)
 (setq display-line-numbers 'relative)
@@ -104,8 +107,21 @@
 (use-package yaml-mode)
 (use-package haskell-mode)
 (use-package lua-mode)
-(use-package typescript-mode)
 
+;;; https://vxlabs.com/2022/06/12/typescript-development-with-emacs-tree-sitter-and-lsp-in-2022/
+;(use-package typescript-mode
+;  :after tree-sitter
+;  :config
+;  ;; we choose this instead of tsx-mode so that eglot can automatically figure out language for server
+;  ;; see https://github.com/joaotavora/eglot/issues/624 and https://github.com/joaotavora/eglot#handling-quirky-servers
+;  (define-derived-mode typescriptreact-mode typescript-mode
+;    "TypeScript TSX")
+;
+;  ;; use our derived mode for tsx files
+;  (add-to-list 'auto-mode-alist '("\\.tsx?\\'" . typescriptreact-mode))
+;  ;; by default, typescript-mode is mapped to the treesitter typescript parser
+;  ;; use our derived mode to map both .tsx AND .ts -> typescriptreact-mode -> treesitter tsx
+;  (add-to-list 'tree-sitter-major-mode-language-alist '(typescriptreact-mode . tsx)))
 (use-package rainbow-delimiters
   :hook (prog-mode . rainbow-delimiters-mode))
 
@@ -173,17 +189,24 @@
 (use-package flycheck)
 (use-package company)
 
+(use-package tree-sitter
+	:config (global-tree-sitter-mode)
+	:hook (tree-sitter-hl-mode))
+
+(use-package tree-sitter-langs
+	:after tree-sitter)
+
 (use-package all-the-icons
   :if (display-graphic-p))
 
 (use-package lsp-mode
   :defer t
-  :hook (lsp-mode . (lambda ()
+  :hook ((lsp-mode . (lambda ()
                       (let ((lsp-keymap-prefix "C-c l"))
                         (lsp-enable-which-key-integration))))
-				(sh-mode . lsp)
-				(typescript-mode . lsp-deferred)
-				(javascript-mode . lsp)
+				(sh-mode . lsp-mode)
+				(javascript-mode . lsp-mode))
+				;;(typescript-mode . lsp-mode)
   :init
   (setq lsp-keep-workspace-alive nil
         lsp-signature-doc-lines 5
@@ -201,8 +224,8 @@
 (use-package lsp-treemacs :after treemacs :commands lsp-treemacs-errors-list)
 ;; Probably need to move this config to custom.el now
 (use-package lsp-java
+  :hook (java-mode . lsp)
   :config
-  (add-hook 'java-mode-hook 'lsp)
   (let ((lombok-path "/Users/lrrezend/.gradle/caches/modules-2/files-2.1/org.projectlombok/lombok/1.18.24/13a394eed5c4f9efb2a6d956e2086f1d81e857d9/lombok-1.18.24.jar"))
     (setq lsp-java-vmargs  '("-noverify"
 			     "-Xmx1G"
@@ -296,6 +319,9 @@
     "hs" '(counsel-describe-symbol  :which-key "describe symbol")
     "hv" '(counsel-describe-variable  :which-key "describe variable")
     "o"  '(nil :which-key "org")
+    "oc" '(nil :which-key "org-clock")
+    "oci"'(org-clock-in :which-key "org-clock-in")
+    "oco"'(org-clock-out :which-key "org-clock-out")
     "p"  '(projectile-command-map :which-key "project")
     "t"  '(nil  :which-key "toggle")
     "tt" '(ddn/cycle-themes  :which-key "set next theme")
