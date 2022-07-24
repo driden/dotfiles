@@ -28,6 +28,8 @@
       make-backup-files nil
       create-lockfiles nil
       visible-bell t)
+(setq gc-cons-threshold (* 100 1024 1024)
+      read-process-output-max (* 1024 1024))
 (setq-default tab-width 2)
 
 ;; ENCODING -------------
@@ -35,40 +37,50 @@
   (set-charset-priority 'unicode))       ; pretty
 (prefer-coding-system 'utf-8)            ; pretty
 (setq locale-coding-system 'utf-8)       ; please
-(setq default-input-method "spanish-postfix")
+(setq default-input-method "latin-prefix")
 
 (setq mac-control-modifier 'control
       mac-right-command-modifier 'control)
 
 (global-set-key (kbd "<escape>") 'keyboard-quit)
 
-(require 'package)
-(add-to-list 'package-archives
-            '("melpa" . "https://melpa.org/packages/"))
-(package-initialize)
+;; straight.el
+(defvar bootstrap-version)
+(let ((bootstrap-file
+       (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
+      (bootstrap-version 5))
+  (unless (file-exists-p bootstrap-file)
+    (with-current-buffer
+        (url-retrieve-synchronously
+         "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
+         'silent 'inhibit-cookies)
+      (goto-char (point-max))
+      (eval-print-last-sexp)))
+  (load bootstrap-file nil 'nomessage))
 
-(unless package-archive-contents
-  (package-refresh-contents))
 
-(unless (package-installed-p 'use-package)
-  (package-install 'use-package))
-
-(require 'use-package)
-(setq use-package-always-ensure t)
-
+(straight-use-package 'use-package)
+(setq straight-use-package-by-default t)
 ;;; END BOOTSTRAPPING
 
-;; Don't really want vterm on windows, win shell is horrible
-;; https://github.com/akermu/emacs-libvterm
-(unless (eq system-type 'windows-nt)
-        (use-package vterm))
+
+;;; Evil
+(use-package evil
+  :init
+  (setq evil-want-integration t)
+  (setq evil-want-C-u-scroll t)
+  (setq evil-want-Y-yank-to-eol t)
+  (setq evil-want-keybinding nil)
+  :config
+  (evil-mode 1))
+
 (use-package org)
 (use-package org-contrib :after orgn)
 (use-package org-evil
   :after org evil
   :hook (org-mode . evil-mode))
 
-(use-package ox-clip :after org)
+;;(use-package ox-clip :after org)
 
 (use-package exec-path-from-shell :config (exec-path-from-shell-initialize))
 
@@ -100,8 +112,9 @@
          ("C-k" . ivy-previous-line)
          ("C-d" . ivy-reverse-i-search-kill))
   :config
-  (ivy-mode 1)
-  (setq ivy-re-builders-alist '((t . ivy--regex-fuzzy))))
+		(ivy-mode 1)
+		(setq ivy-initial-inputs-alist nil)
+		(setq ivy-re-builders-alist '((t . ivy--regex-fuzzy))))
 
 ;; langs
 (use-package yaml-mode)
@@ -109,19 +122,19 @@
 (use-package lua-mode)
 
 ;;; https://vxlabs.com/2022/06/12/typescript-development-with-emacs-tree-sitter-and-lsp-in-2022/
-;(use-package typescript-mode
-;  :after tree-sitter
-;  :config
-;  ;; we choose this instead of tsx-mode so that eglot can automatically figure out language for server
-;  ;; see https://github.com/joaotavora/eglot/issues/624 and https://github.com/joaotavora/eglot#handling-quirky-servers
-;  (define-derived-mode typescriptreact-mode typescript-mode
-;    "TypeScript TSX")
-;
-;  ;; use our derived mode for tsx files
-;  (add-to-list 'auto-mode-alist '("\\.tsx?\\'" . typescriptreact-mode))
-;  ;; by default, typescript-mode is mapped to the treesitter typescript parser
-;  ;; use our derived mode to map both .tsx AND .ts -> typescriptreact-mode -> treesitter tsx
-;  (add-to-list 'tree-sitter-major-mode-language-alist '(typescriptreact-mode . tsx)))
+(use-package typescript-mode
+  :after tree-sitter
+  :config
+  ;; we choose this instead of tsx-mode so that eglot can automatically figure out language for server
+  ;; see https://github.com/joaotavora/eglot/issues/624 and https://github.com/joaotavora/eglot#handling-quirky-servers
+  (define-derived-mode typescriptreact-mode typescript-mode
+    "TypeScript TSX")
+
+  ;; use our derived mode for tsx files
+  (add-to-list 'auto-mode-alist '("\\.tsx?\\'" . typescriptreact-mode))
+  ;; by default, typescript-mode is mapped to the treesitter typescript parser
+  ;; use our derived mode to map both .tsx AND .ts -> typescriptreact-mode -> treesitter tsx
+  (add-to-list 'tree-sitter-major-mode-language-alist '(typescriptreact-mode . tsx)))
 (use-package rainbow-delimiters
   :hook (prog-mode . rainbow-delimiters-mode))
 
@@ -151,16 +164,6 @@
   ([remap describe-variable] . counsel-describe-variable)
   ([remap describe-key] . helpful-key))
 
-;; Evil
-(use-package evil
-  :init
-  (setq evil-want-integration t)
-  (setq evil-want-C-u-scroll t)
-  (setq evil-want-Y-yank-to-eol t)
-  (setq evil-want-keybinding nil)
-  :config
-  (evil-mode 1)
-)
 
 (use-package evil-collection
   :after evil
