@@ -74,7 +74,10 @@
   :config
   (evil-mode 1))
 
-(use-package org)
+(use-package org
+	:config 
+		(setq org-confirm-babel-evaluate nil))
+
 (use-package org-contrib :after orgn)
 (use-package org-evil
   :after org evil
@@ -144,8 +147,8 @@
   :config
   (setq which-key-idle-delay 1))
 
-(use-package ivy-rich
-  :init (ivy-rich-mode 1))
+(use-package ivy-rich)
+  ;:init (ivy-rich-mode 1))
 
 (use-package counsel
   :bind (("M-x"    . counsel-M-x)
@@ -208,8 +211,8 @@
                       (let ((lsp-keymap-prefix "C-c l"))
                         (lsp-enable-which-key-integration))))
 				(sh-mode . lsp-mode)
-				(javascript-mode . lsp-mode))
-				;;(typescript-mode . lsp-mode)
+				(javascript-mode . lsp-mode)
+				(typescript-mode . lsp-mode))
   :init
   (setq lsp-keep-workspace-alive nil
         lsp-signature-doc-lines 5
@@ -333,13 +336,7 @@
     "wr" '(hydra-split-resizing/body :which-key "resize"))
 )
 
-
-;; org
-;; disable prompts
-(setq org-confirm-babel-evaluate nil)
-
 ;; THEMES
-
 (use-package doom-themes)
 (setq ddn/available-themes (custom-available-themes))
 
