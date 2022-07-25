@@ -26,7 +26,10 @@
 (setq vc-follow-symlinks t)
 (setq create-lockfiles nil
       make-backup-files nil
+      create-lockfiles nil
       visible-bell t)
+(setq gc-cons-threshold (* 100 1024 1024)
+      read-process-output-max (* 1024 1024))
 (setq-default tab-width 2)
 
 ;; ENCODING -------------
@@ -34,38 +37,52 @@
   (set-charset-priority 'unicode))       ; pretty
 (prefer-coding-system 'utf-8)            ; pretty
 (setq locale-coding-system 'utf-8)       ; please
-(setq default-input-method "spanish-postfix")
+(setq default-input-method "latin-prefix")
 
 (setq mac-control-modifier 'control
       mac-right-command-modifier 'control)
 
 (global-set-key (kbd "<escape>") 'keyboard-quit)
 
-(require 'package)
-(add-to-list 'package-archives
-            '("melpa" . "https://melpa.org/packages/"))
-(package-initialize)
+;; straight.el
+(defvar bootstrap-version)
+(let ((bootstrap-file
+       (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
+      (bootstrap-version 5))
+  (unless (file-exists-p bootstrap-file)
+    (with-current-buffer
+        (url-retrieve-synchronously
+         "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
+         'silent 'inhibit-cookies)
+      (goto-char (point-max))
+      (eval-print-last-sexp)))
+  (load bootstrap-file nil 'nomessage))
 
-(unless package-archive-contents
-  (package-refresh-contents))
 
-(unless (package-installed-p 'use-package)
-  (package-install 'use-package))
-
-(require 'use-package)
-(setq use-package-always-ensure t)
-
+(straight-use-package 'use-package)
+(setq straight-use-package-by-default t)
 ;;; END BOOTSTRAPPING
 
-;; Don't really want vterm on windows, win shell is horrible
-;; https://github.com/akermu/emacs-libvterm
-(unless (eq system-type 'windows-nt)
-        (use-package vterm))
+
+;;; Evil
+(use-package evil
+  :init
+  (setq evil-want-integration t)
+  (setq evil-want-C-u-scroll t)
+  (setq evil-want-Y-yank-to-eol t)
+  (setq evil-want-keybinding nil)
+  :config
+  (evil-mode 1))
+
 (use-package org)
+(use-package org-contrib :after orgn)
 (use-package org-evil
   :after org evil
   :hook (org-mode . evil-mode))
 
+;;(use-package ox-clip :after org)
+
+(use-package exec-path-from-shell :config (exec-path-from-shell-initialize))
 
 ; Line Numbers
 (global-display-line-numbers-mode t)
@@ -95,8 +112,9 @@
          ("C-k" . ivy-previous-line)
          ("C-d" . ivy-reverse-i-search-kill))
   :config
-  (ivy-mode 1)
-  (setq ivy-re-builders-alist '((t . ivy--regex-fuzzy))))
+		(ivy-mode 1)
+		(setq ivy-initial-inputs-alist nil)
+		(setq ivy-re-builders-alist '((t . ivy--regex-fuzzy))))
 
 ;; langs
 (use-package json-mode
@@ -104,8 +122,21 @@
 (use-package yaml-mode)
 (use-package haskell-mode)
 (use-package lua-mode)
-(use-package typescript-mode)
 
+;;; https://vxlabs.com/2022/06/12/typescript-development-with-emacs-tree-sitter-and-lsp-in-2022/
+(use-package typescript-mode
+  :after tree-sitter
+  :config
+  ;; we choose this instead of tsx-mode so that eglot can automatically figure out language for server
+  ;; see https://github.com/joaotavora/eglot/issues/624 and https://github.com/joaotavora/eglot#handling-quirky-servers
+  (define-derived-mode typescriptreact-mode typescript-mode
+    "TypeScript TSX")
+
+  ;; use our derived mode for tsx files
+  (add-to-list 'auto-mode-alist '("\\.tsx?\\'" . typescriptreact-mode))
+  ;; by default, typescript-mode is mapped to the treesitter typescript parser
+  ;; use our derived mode to map both .tsx AND .ts -> typescriptreact-mode -> treesitter tsx
+  (add-to-list 'tree-sitter-major-mode-language-alist '(typescriptreact-mode . tsx)))
 (use-package rainbow-delimiters
   :hook (prog-mode . rainbow-delimiters-mode))
 
@@ -135,16 +166,6 @@
   ([remap describe-variable] . counsel-describe-variable)
   ([remap describe-key] . helpful-key))
 
-;; Evil
-(use-package evil
-  :init
-  (setq evil-want-integration t)
-  (setq evil-want-C-u-scroll t)
-  (setq evil-want-Y-yank-to-eol t)
-  (setq evil-want-keybinding nil)
-  :config
-  (evil-mode 1)
-)
 
 (use-package evil-collection
   :after evil
@@ -156,6 +177,14 @@
   :after evil
   :config
   (evil-snipe-mode +1))
+(use-package evil-goggles
+	:config
+	(evil-goggles-mode)
+	(evil-goggles-use-diff-faces))
+(custom-set-faces
+ '(evil-goggles-delete-face ((t (:inherit 'shadow))))
+ '(evil-goggles-paste-face ((t (:inherit 'lazy-highlight))))
+ '(evil-goggles-yank-face ((t (:inherit 'isearch-fail)))))
 
 (use-package ripgrep)
 (use-package projectile
@@ -165,15 +194,32 @@
 (use-package flycheck)
 (use-package company)
 
+(use-package tree-sitter
+	:config (global-tree-sitter-mode)
+	:hook (tree-sitter-hl-mode))
+
+(use-package tree-sitter-langs
+	:after tree-sitter)
+
 (use-package all-the-icons
   :if (display-graphic-p))
 
 (use-package lsp-mode
-  :hook ((lsp-mode . lsp-enable-which-key-integration)
-				 (sh-mode . lsp)
-				 (typescript-mode . lsp-deferred)
-				 (javascript-mode . lsp))
+  :defer t
+  :hook ((lsp-mode . (lambda ()
+                      (let ((lsp-keymap-prefix "C-c l"))
+                        (lsp-enable-which-key-integration))))
+				(sh-mode . lsp-mode)
+				(javascript-mode . lsp-mode))
+				;;(typescript-mode . lsp-mode)
+  :init
+  (setq lsp-keep-workspace-alive nil
+        lsp-signature-doc-lines 5
+        lsp-idle-delay 0.5
+        lsp-prefer-capf t
+        lsp-client-packages nil)
   :config
+		(define-key lsp-mode-map (kbd "C-c l") lsp-command-map)
     (setq lsp-modeline-diagnostics-scope :workspace)
   :commands (lsp lsp-deferred))
 
@@ -183,8 +229,8 @@
 (use-package lsp-treemacs :after treemacs :commands lsp-treemacs-errors-list)
 ;; Probably need to move this config to custom.el now
 (use-package lsp-java
+  :hook (java-mode . lsp)
   :config
-  (add-hook 'java-mode-hook 'lsp)
   (let ((lombok-path "/Users/lrrezend/.gradle/caches/modules-2/files-2.1/org.projectlombok/lombok/1.18.24/13a394eed5c4f9efb2a6d956e2086f1d81e857d9/lombok-1.18.24.jar"))
     (setq lsp-java-vmargs  '("-noverify"
 			     "-Xmx1G"
@@ -212,6 +258,13 @@
   :after evil projectile hydra lsp-mode
   :config
   (general-define-key
+   :states '(normal motion visual emacs)
+   :keymaps 'override
+	 :prefix "C-x"
+
+   "C-c" 'nil) ;; I always quit emacs by accident
+
+  (general-define-key
    :states '(normal motion visual)
    :keymaps 'override
 
@@ -222,20 +275,33 @@
    "H"   'next-buffer
    "L"   'previous-buffer)
 
+	(general-define-key
+   :states '(normal, insert)
+   :keymaps 'company-mode-map
+	 "C-n" 'company-select-next
+	 "C-p" 'company-select-previous
+	 "TAB" 'company-complete-selction)
+
+  (general-define-key 
+    :states '(normal)
+    :keymaps 'lsp-mode-map
+
+    "C-SPC" '(completion-at-point)
+    "gd"    '(lsp-find-definition :whick-key "go to definition")
+    "gD"    '(lsp-find-declaration :whick-key "go to declaration")
+    "gi"    '(lsp-goto-implementation :whick-key "go to implementation")
+    "gr"    '(lsp-find-references :whick-key "go to references"))
+
+  (general-define-key 
+    :states '(insert)
+    :keymaps 'lsp-mode-map
+
+    "C-SPC" '(completion-at-point))
+
   (general-create-definer ddn/leader-keys
     :states '(normal visual emacs)
     :keymaps 'override
     :prefix "SPC")
-
-  (general-create-definer ddn/lsp-keys
-    :states '(normal)
-    :keymaps 'lsp-mode-map)
-
-  (ddn/lsp-keys
-    "gd" '(lsp-find-definition :whick-key "go to definition")
-    "gD" '(lsp-find-declaration :whick-key "go to declaration")
-    "gi" '(lsp-goto-implementation :whick-key "go to implementation")
-    "gr" '(lsp-find-references :whick-key "go to references"))
 
   (ddn/leader-keys
     "b"  '(nil  :which-key "buffer")
@@ -245,8 +311,10 @@
     "ca" '(lsp-execute-code-action  :which-key "code action")
     "cr" '(lsp-rename  :which-key "rename symbol")
     "cs" '(lsp  :which-key "lsp start")
-    "e"  '(treemacs  :which-key "explore project")
+    "e"  '(nil  :which-key "explore")
+    "ee"  '(treemacs  :which-key "explore project")
     "f"  '(nil  :which-key "find")
+    "ff" '(counsel-find-file  :which-key "find file")
     "g"  '(nil  :which-key "git")
     "h"  '(nil  :which-key "help")
     "ha" '(counsel-apropos  :which-key "apropos")
@@ -255,6 +323,10 @@
     "hm" '(describe-mode  :which-key "describe mode")
     "hs" '(counsel-describe-symbol  :which-key "describe symbol")
     "hv" '(counsel-describe-variable  :which-key "describe variable")
+    "o"  '(nil :which-key "org")
+    "oc" '(nil :which-key "org-clock")
+    "oci"'(org-clock-in :which-key "org-clock-in")
+    "oco"'(org-clock-out :which-key "org-clock-out")
     "p"  '(projectile-command-map :which-key "project")
     "t"  '(nil  :which-key "toggle")
     "tt" '(ddn/cycle-themes  :which-key "set next theme")
