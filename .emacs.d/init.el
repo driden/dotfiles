@@ -125,7 +125,7 @@
 
 ;;; https://vxlabs.com/2022/06/12/typescript-development-with-emacs-tree-sitter-and-lsp-in-2022/
 (use-package typescript-mode
-  :after tree-sitter
+	:hook (typescript-mode . lsp-deferred)
   :config
   ;; we choose this instead of tsx-mode so that eglot can automatically figure out language for server
   ;; see https://github.com/joaotavora/eglot/issues/624 and https://github.com/joaotavora/eglot#handling-quirky-servers
@@ -137,6 +137,7 @@
   ;; by default, typescript-mode is mapped to the treesitter typescript parser
   ;; use our derived mode to map both .tsx AND .ts -> typescriptreact-mode -> treesitter tsx
   (add-to-list 'tree-sitter-major-mode-language-alist '(typescriptreact-mode . tsx)))
+
 (use-package rainbow-delimiters
   :hook (prog-mode . rainbow-delimiters-mode))
 
@@ -198,6 +199,8 @@
 (use-package flycheck)
 (use-package company)
 
+(use-package editorconfig-mode)
+
 (use-package tree-sitter
 	:config (global-tree-sitter-mode)
 	:hook (tree-sitter-hl-mode))
@@ -209,22 +212,12 @@
   :if (display-graphic-p))
 
 (use-package lsp-mode
-  :defer t
-  :hook ((lsp-mode . (lambda ()
-                      (let ((lsp-keymap-prefix "C-c l"))
-                        (lsp-enable-which-key-integration))))
-				(sh-mode . lsp-mode)
-				(javascript-mode . lsp-mode)
-				(typescript-mode . lsp-mode))
   :init
-  (setq lsp-keep-workspace-alive nil
-        lsp-signature-doc-lines 5
-        lsp-idle-delay 0.5
-        lsp-prefer-capf t
-        lsp-client-packages nil)
+		(setq lsp-keymap-prefix "C-c l"
+					lsp-signature-doc-lines 5
+					lsp-idle-delay 0.5)
   :config
-		(define-key lsp-mode-map (kbd "C-c l") lsp-command-map)
-    (setq lsp-modeline-diagnostics-scope :workspace)
+	  (lsp-enable-which-key-integration t)
   :commands (lsp lsp-deferred))
 
 (use-package treemacs)
@@ -265,7 +258,7 @@
 																		emacs
 																		hybrid
 																		normal
-																		visual
+																		visual))
 		(general-define-key
 				:states '(normal motion visual)
 				:keymaps 'override
