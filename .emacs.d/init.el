@@ -1,5 +1,4 @@
 ;; Todos
-;; * Straight package manager https://github.com/raxod502/straight.el
 ;; * add Eval buffer/last sexp keymaps hooked into emacs-lisp-mode
 ;; * Yasnippets + org mode snippets
 
@@ -67,17 +66,17 @@
 ;;; Evil
 (use-package evil
   :init
-  (setq evil-want-integration t)
-  (setq evil-want-C-u-scroll t)
-  (setq evil-want-Y-yank-to-eol t)
-  (setq evil-want-keybinding nil)
+  (setq evil-want-integration t
+				evil-want-C-u-scroll t
+				evil-want-Y-yank-to-eol t
+				evil-want-keybinding nil)
   :config
   (evil-mode 1))
 
-(use-package org)
-(use-package org-contrib :after orgn)
+(use-package org :config (setq org-confirm-babel-evaluate nil))
+(use-package org-contrib :after org)
 (use-package org-evil
-  :after org evil
+  :after (org evil)
   :hook (org-mode . evil-mode))
 
 ;;(use-package ox-clip :after org)
@@ -85,8 +84,9 @@
 (use-package exec-path-from-shell :config (exec-path-from-shell-initialize))
 
 ; Line Numbers
-(global-display-line-numbers-mode t)
-(setq display-line-numbers 'relative)
+
+(setq global-display-line-numbers-mode t
+			display-line-numbers 'relative)
 
 (dolist (mode '(shell-mode-hook
 								term-mode-hook
@@ -118,7 +118,7 @@
 
 ;; langs
 (use-package json-mode
-	:hook (json-mode . flycheck-mode))
+:hook (json-mode . flycheck-mode))
 (use-package yaml-mode)
 (use-package haskell-mode)
 (use-package lua-mode)
@@ -153,7 +153,6 @@
 				ivy-virtual-abbreviate 'full)
   :config
 		(ivy-rich-mode 1))
-
 (use-package counsel
   :bind (("M-x"    . counsel-M-x)
 				("C-x C-b" . counsel-ibuffer)
@@ -260,93 +259,89 @@
 
 ;; EL GENERALISIMO
 (use-package general
-  :after evil projectile hydra lsp-mode
-  :config
-  (general-define-key
-   :states '(normal motion visual emacs)
-   :keymaps 'override
-	 :prefix "C-x"
+	:demand t
+	:init
+		(setq general-override-states '(insert
+																		emacs
+																		hybrid
+																		normal
+																		visual
+		(general-define-key
+				:states '(normal motion visual)
+				:keymaps 'override
 
-   "C-c" 'nil) ;; I always quit emacs by accident
+				"C-l" 'evil-window-right
+				"C-h" 'evil-window-left
+				"C-j" 'evil-window-down
+				"C-k" 'evil-window-up
+				"H"   'next-buffer
+				"L"   'previous-buffer)
 
-  (general-define-key
-   :states '(normal motion visual)
-   :keymaps 'override
+		(general-define-key
+				:states '(normal motion visual emacs)
+				:keymaps 'override
+				:prefix "C-x"
+				"C-c" nil) ;; I always quit emacs by accident
 
-   "C-l" 'evil-window-right
-   "C-h" 'evil-window-left
-   "C-j" 'evil-window-down
-   "C-k" 'evil-window-up
-   "H"   'next-buffer
-   "L"   'previous-buffer)
+		(general-define-key
+				:states '(normal insert)
+				:keymaps 'company-mode-map
+				"C-n" 'company-select-next
+				"C-p" 'company-select-previous
+				"TAB" 'company-complete-selction)
 
-	(general-define-key
-   :states '(normal, insert)
-   :keymaps 'company-mode-map
-	 "C-n" 'company-select-next
-	 "C-p" 'company-select-previous
-	 "TAB" 'company-complete-selction)
+		(general-define-key 
+				:states '(normal)
+				:keymaps 'lsp-mode-map
 
-  (general-define-key 
-    :states '(normal)
-    :keymaps 'lsp-mode-map
+				"C-SPC" '(completion-at-point)
+				"gd"    '(lsp-find-definition :whick-key "go to definition")
+				"gD"    '(lsp-find-declaration :whick-key "go to declaration")
+				"gi"    '(lsp-goto-implementation :whick-key "go to implementation")
+				"gr"    '(lsp-find-references :whick-key "go to references"))
 
-    "C-SPC" '(completion-at-point)
-    "gd"    '(lsp-find-definition :whick-key "go to definition")
-    "gD"    '(lsp-find-declaration :whick-key "go to declaration")
-    "gi"    '(lsp-goto-implementation :whick-key "go to implementation")
-    "gr"    '(lsp-find-references :whick-key "go to references"))
+;		(general-define-key 
+;				:states '(insert)
+;				:keymaps 'lsp-mode-map
+;				"C-SPC" '(completion-at-point))
 
-  (general-define-key 
-    :states '(insert)
-    :keymaps 'lsp-mode-map
+		(general-define-key 
+				:states '(normal visual emacs)
+				:keymaps 'override
+				:prefix "SPC"
+				:global-prefix "C-SPC"
 
-    "C-SPC" '(completion-at-point))
-
-  (general-create-definer ddn/leader-keys
-    :states '(normal visual emacs)
-    :keymaps 'override
-    :prefix "SPC")
-
-  (ddn/leader-keys
-    "b"  '(nil  :which-key "buffer")
-    "bi" '(counsel-ibuffer  :which-key "ibuffer")
-    "bk" '(kill-buffer  :which-key "kill buffer")
-    "c"  '(nil  :which-key "code")
-    "ca" '(lsp-execute-code-action  :which-key "code action")
-    "cr" '(lsp-rename  :which-key "rename symbol")
-    "cs" '(lsp  :which-key "lsp start")
-    "e"  '(nil  :which-key "explore")
-    "ee"  '(treemacs  :which-key "explore project")
-    "f"  '(nil  :which-key "find")
-    "ff" '(counsel-find-file  :which-key "find file")
-    "g"  '(nil  :which-key "git")
-    "h"  '(nil  :which-key "help")
-    "ha" '(counsel-apropos  :which-key "apropos")
-    "hf" '(counsel-describe-function  :which-key "describe function")
-    "hk" '(describe-key  :which-key "describe key")
-    "hm" '(describe-mode  :which-key "describe mode")
-    "hs" '(counsel-describe-symbol  :which-key "describe symbol")
-    "hv" '(counsel-describe-variable  :which-key "describe variable")
-    "o"  '(nil :which-key "org")
-    "oc" '(nil :which-key "org-clock")
-    "oci"'(org-clock-in :which-key "org-clock-in")
-    "oco"'(org-clock-out :which-key "org-clock-out")
-    "p"  '(projectile-command-map :which-key "project")
-    "t"  '(nil  :which-key "toggle")
-    "tt" '(ddn/cycle-themes  :which-key "set next theme")
-    "w"  '(nil  :which-key "window")
-    "wc" '(evil-window-delete :which-key "close")
-    "wr" '(hydra-split-resizing/body :which-key "resize"))
-)
-
-
-;; org
-;; disable prompts
-(setq org-confirm-babel-evaluate nil)
+				"b"  '(nil  :which-key "buffer")
+				"bi" '(counsel-ibuffer  :which-key "ibuffer")
+				"bk" '(kill-buffer  :which-key "kill buffer")
+				"c"  '(nil  :which-key "code")
+				"ca" '(lsp-execute-code-action  :which-key "code action")
+				"cr" '(lsp-rename  :which-key "rename symbol")
+				"cs" '(lsp  :which-key "lsp start")
+				"e"  '(nil  :which-key "explore")
+				"ee" '(treemacs  :which-key "explore project")
+				"f"  '(nil  :which-key "find")
+				"ff" '(counsel-find-file  :which-key "find file")
+				"g"  '(nil  :which-key "git")
+				"h"  '(nil  :which-key "help")
+				"ha" '(counsel-apropos  :which-key "apropos")
+				"hf" '(counsel-describe-function  :which-key "describe function")
+				"hk" '(describe-key  :which-key "describe key")
+				"hm" '(describe-mode  :which-key "describe mode")
+				"hs" '(counsel-describe-symbol  :which-key "describe symbol")
+				"hv" '(counsel-describe-variable  :which-key "describe variable")
+				"o"  '(nil :which-key "org")
+				"oc" '(nil :which-key "org-clock")
+				"oci"'(org-clock-in :which-key "org-clock-in")
+				"oco"'(org-clock-out :which-key "org-clock-out")
+				"p"  '(projectile-command-map :which-key "project")
+				"t"  '(nil  :which-key "toggle")
+				"tt" '(ddn/cycle-themes  :which-key "set next theme")
+				"w"  '(nil  :which-key "window")
+				"wc" '(evil-window-delete :which-key "close")
+				"wr" '(hydra-split-resizing/body :which-key "resize")))
 
 ;; THEMES
-
 (use-package doom-themes)
 (setq ddn/available-themes (custom-available-themes))
 
