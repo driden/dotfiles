@@ -147,7 +147,12 @@
   (setq which-key-idle-delay 1))
 
 (use-package ivy-rich
-  :init (ivy-rich-mode 1))
+	:after (ivy)
+	:init
+	(setq ivy-rich-path-style 'abbrev
+				ivy-virtual-abbreviate 'full)
+  :config
+		(ivy-rich-mode 1))
 
 (use-package counsel
   :bind (("M-x"    . counsel-M-x)
