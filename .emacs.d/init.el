@@ -220,6 +220,9 @@
 	  (lsp-enable-which-key-integration t)
   :commands (lsp lsp-deferred))
 
+(use-package groovy-mode
+	:config
+	(add-to-list 'auto-mode-alist '("\\.gradle\\'" . groovy-mode)))
 (use-package treemacs)
 (use-package lsp-ui :commands lsp-ui-mode)
 (use-package lsp-ivy :commands lsp-ivy-workspace-symbol)
@@ -365,3 +368,7 @@
 (setq ddn/current-theme 'doom-old-hope)
 (ddn/set-theme 'doom-old-hope)
 
+(use-package doom-modeline
+  :ensure t
+  :hook (after-init . doom-modeline-mode))
+    

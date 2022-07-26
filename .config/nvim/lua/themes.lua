@@ -41,6 +41,27 @@ M.theme_id = 5
 
 function M.load_theme()
   set_colorscheme_by_id(5)
+
+  -- Nicer symbols!
+  local airline_symbols = {
+    { var = "airline_left_alt_sep", symbol = "" },
+    { var = "airline_left_sep", symbol = "" },
+    { var = "airline_right_alt_sep", symbol = "" },
+    { var = "airline_right_sep", symbol = "" },
+    { var = "airline_symbols.branch", symbol = "" },
+    { var = "airline_symbols.crypt", symbol = "🔒" },
+    { var = "airline_symbols.linenr", symbol = "☰" },
+    { var = "airline_symbols.maxlinenr", symbol = "" },
+    { var = "airline_symbols.notexists", symbol = "Ɇ" },
+    { var = "airline_symbols.paste", symbol = "ρ" },
+    { var = "airline_symbols.readonly", symbol = "" },
+    { var = "airline_symbols.spell", symbol = "Ꞩ" },
+    { var = "airline_symbols.whitespace", symbol = "Ξ" },
+  }
+
+  for _, p in pairs(airline_symbols) do
+    vim.g[p.var] = p.symbol
+  end
 end
 
 vim.api.nvim_create_user_command("ChangeTheme", function(data)
@@ -53,4 +74,5 @@ end, {
     return { "foo", "bar", "baz" }
   end,
 })
+
 return M
