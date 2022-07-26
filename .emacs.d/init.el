@@ -199,7 +199,7 @@
 (use-package flycheck)
 (use-package company)
 
-(use-package editorconfig-mode)
+(use-package editorconfig)
 
 (use-package tree-sitter
 	:config (global-tree-sitter-mode)
