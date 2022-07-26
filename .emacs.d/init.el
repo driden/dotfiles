@@ -220,6 +220,9 @@
 	  (lsp-enable-which-key-integration t)
   :commands (lsp lsp-deferred))
 
+(use-package groovy-mode
+	:config
+	(add-to-list 'auto-mode-alist '("\\.gradle\\'" . groovy-mode)))
 (use-package treemacs)
 (use-package lsp-ui :commands lsp-ui-mode)
 (use-package lsp-ivy :commands lsp-ivy-workspace-symbol)
