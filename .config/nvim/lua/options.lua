@@ -46,11 +46,12 @@ function M.setup()
   end
   vim.opt.rtp:append("/usr/loca/bin/fzf")
   vim.opt.shortmess:append("c")
-		-- neovid
-		if vim.fn.exists("g:neovide") then
-			vim.opt.guifont = "UbuntuMono Nerd Font Mono:h20"
-		end
-	end
+
+  -- neovide
+  if vim.fn.exists("g:neovide") then
+    vim.opt.guifont = "UbuntuMono Nerd Font Mono:h20"
+  end
+
 end
 
 return M
