@@ -1,13 +1,15 @@
+package.path = package.path .. ";../ddn.lua"
 local M = {}
+M.theme = "gruvbox-material"
 M.available_themes = {
-  { id = 1, name = "palenight", plugin = "drewtempelmeyer/palenight.vim" },
-  { id = 2, name = "onedark", plugin = "joshdick/onedark.vim" },
-  { id = 3, name = "gruvbox-material", plugin = "sainnhe/gruvbox-material", bar = "gruvbox-material" },
-  { id = 4, name = "jellybeans", plugin = "metalelf0/jellybeans-nvim" },
-  { id = 5, name = "PaperColor", bar = "papercolor", plugin = "papercolor-theme" },
+  { name = "palenight", bar = "palenight", plugin = "drewtempelmeyer/palenight.vim" },
+  { name = "onedark", bar = "onedark", plugin = "joshdick/onedark.vim" },
+  { name = "gruvbox-material", bar = "gruvbox_material", plugin = "sainnhe/gruvbox-material" },
+  { name = "jellybeans-nvim", bar = "jellybeans", plugin = "metalelf0/jellybeans-nvim" },
+  { name = "PaperColor", bar = "papercolor", plugin = "papercolor-theme" },
 }
 
-local function find_theme_by_name(name)
+local function find_theme(name)
   for _, v in ipairs(M.available_themes) do
     if v.name == name then
       return v
@@ -15,25 +17,14 @@ local function find_theme_by_name(name)
   end
 end
 
-local function set_colorscheme_by_id(id)
-  local theme = find_theme_by_id(id)
-
-  vim.cmd("colorscheme " .. theme.name)
-  vim.cmd("let g:airline_theme='" .. theme.bar .. "'")
-  vim.o.background = "dark"
-end
-
-local function set_colorscheme_by_name(name)
-  local theme = find_theme_by_name(name)
-
+local function set_colorscheme(name)
+  local theme = find_theme(name)
   vim.cmd("colorscheme " .. theme.name)
   vim.cmd("let g:airline_theme='" .. theme.bar .. "'")
 end
-
-M.theme_name = "gruvbox-material"
 
 function M.load_theme()
-  set_colorscheme_by_name("gruvbox-material")
+  set_colorscheme(M.theme)
 
   -- Nicer symbols!
   local airline_symbols = {
@@ -57,14 +48,27 @@ function M.load_theme()
   end
 end
 
+function M.set_next_theme()
+  local idx = -1
+  for i, v in ipairs(M.available_themes) do
+    if v.name == M.theme then
+      idx = i
+      break
+    end
+  end
+  idx = 1 + (idx % #M.available_themes)
+  M.theme = M.available_themes[idx].name
+  set_colorscheme(M.theme)
+end
+
+local map = require("ddn").map
 vim.api.nvim_create_user_command("ChangeTheme", function(data)
   local args = data.args
-  set_colorscheme_by_name(args)
+  set_colorscheme(args)
 end, {
   nargs = 1,
   complete = function()
-    -- return completion candidates as a list-like table
-    return { "foo", "bar", "baz" }
+    return map(function(theme) return theme.name end, M.available_themes)
   end,
 })
 

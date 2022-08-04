@@ -100,3 +100,5 @@ keymap("n", "<leader>tm", '<cmd>lua require"options".toggle_meta_chars()<CR>', o
 
 keymap("n", "<leader>pc", ":e ~/.config/nvim/init.lua<CR>", opts)
 keymap("n", "<leader>rr", ":source ~/.config/nvim/init.lua<CR>", opts)
+
+keymap("n", "<leader>tt", ":lua require('themes').set_next_theme()<CR>", opts)
