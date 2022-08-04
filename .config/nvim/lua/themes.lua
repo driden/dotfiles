@@ -1,12 +1,11 @@
-package.path = package.path .. ";../ddn.lua"
 local M = {}
 M.theme = "gruvbox-material"
 M.available_themes = {
-  { name = "palenight", bar = "palenight", plugin = "drewtempelmeyer/palenight.vim" },
-  { name = "onedark", bar = "onedark", plugin = "joshdick/onedark.vim" },
-  { name = "gruvbox-material", bar = "gruvbox_material", plugin = "sainnhe/gruvbox-material" },
-  { name = "jellybeans-nvim", bar = "jellybeans", plugin = "metalelf0/jellybeans-nvim" },
-  { name = "PaperColor", bar = "papercolor", plugin = "papercolor-theme" },
+  { name = "palenight", bar = "palenight", plugin = "drewtempelmeyer/palenight.vim", opts = {} },
+  { name = "onedark", bar = "onedark", plugin = "joshdick/onedark.vim", opts = {} },
+  { name = "gruvbox-material", bar = "gruvbox_material", plugin = "sainnhe/gruvbox-material", opts = {} },
+  { name = "jellybeans-nvim", bar = "jellybeans", plugin = "metalelf0/jellybeans-nvim", opts = {} },
+  { name = "PaperColor", bar = "papercolor", plugin = "papercolor-theme", opts = {} },
 }
 
 local function find_theme(name)
@@ -21,6 +20,7 @@ local function set_colorscheme(name)
   local theme = find_theme(name)
   vim.cmd("colorscheme " .. theme.name)
   vim.cmd("let g:airline_theme='" .. theme.bar .. "'")
+  print(name)
 end
 
 function M.load_theme()
@@ -61,14 +61,16 @@ function M.set_next_theme()
   set_colorscheme(M.theme)
 end
 
-local map = require("ddn").map
+local map = require("utils.collections").map
 vim.api.nvim_create_user_command("ChangeTheme", function(data)
   local args = data.args
   set_colorscheme(args)
 end, {
   nargs = 1,
   complete = function()
-    return map(function(theme) return theme.name end, M.available_themes)
+    return map(function(theme)
+      return theme.name
+    end, M.available_themes)
   end,
 })
 
