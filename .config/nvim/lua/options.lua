@@ -8,7 +8,6 @@ function M.setup()
   local opts = {
     --o.termguicolors = true Seems to be broken now
     autoindent = true,
-    background = "dark",
     backspace = "indent,eol,start",
     backup = false,
     clipboard = "unnamedplus",

@@ -28,6 +28,7 @@ local function set_colorscheme_by_id(id)
 
   vim.cmd("colorscheme " .. theme.name)
   vim.cmd("let g:airline_theme='" .. theme.bar .. "'")
+  vim.o.background = "dark"
 end
 
 local function set_colorscheme_by_name(name)
