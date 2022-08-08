@@ -6,6 +6,7 @@ function M.setup()
     'nvim-lua/plenary.nvim',
     -- THEMES
     'drewtempelmeyer/palenight.vim',
+    'editorconfig/editorconfig-vim',
     'joshdick/onedark.vim',
     'sainnhe/gruvbox-material',
     'NLKNguyen/papercolor-theme',
