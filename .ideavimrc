@@ -1,4 +1,5 @@
-Plug 'preservim/nerdtree'
+Plug 'easymotion/vim-esymotion'
+Plug 'peservim/nerdtree'
 Plug 'vim-scripts/ReplaceWithRegister'
 Plug 'machakann/vim-highlightedyank'
 
