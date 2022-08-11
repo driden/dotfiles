@@ -2,6 +2,7 @@
 ;; * add Eval buffer/last sexp keymaps hooked into emacs-lisp-mode
 ;; * Yasnippets + org mode snippets
 
+(setq make-backup-files nil)
 (setq custom-file (if (eq system-type 'windows-nt)
             (concat (getenv "APPDATA") "\\.emacs.d\\custom.el")
             "~/.emacs.d/custom.el"))
@@ -81,21 +82,24 @@
   :after (org evil)
   :hook (org-mode . evil-mode))
 
-;;(use-package ox-clip :after org)
-
 (use-package exec-path-from-shell :config (exec-path-from-shell-initialize))
 
-; Line Numbers
+(defun ddn/line-numbers ()
+  (display-line-numbers-mode)
+  (setq global-display-line-numbers-mode t
+        display-line-numbers 'relative))
 
+; Line Numbers
 (setq global-display-line-numbers-mode t
       display-line-numbers 'relative)
+(add-hook 'prog-mode-hook 'ddn/line-numbers)
 
 (dolist (mode '(shell-mode-hook
-                                term-mode-hook
-                                eshell-mode-hook
-                                help-mode-hook
-                                treemacs-mode))
-                (add-hook mode (lambda() (display-line-numbers-mode -1))))
+                term-mode-hook
+                eshell-mode-hook
+                help-mode-hook
+                treemacs-mode))
+        (add-hook mode #'(lambda() (display-line-numbers-mode -1))))
 
 (use-package pdf-tools)
 
@@ -200,15 +204,13 @@
    
 (use-package flycheck)
 (use-package company)
-(use-package editorconfig :hook ((typescript-mode . editorconfig-mode)
-                                 (js-mode . editorconfig-mode)))
+(use-package editorconfig :hook (typescript-mode . editorconfig-mode)
+                                (js-mode . editorconfig-mode))
 
 (use-package tree-sitter
-	:config (global-tree-sitter-mode)
-	:hook (tree-sitter-hl-mode))
+	:config (global-tree-sitter-mode))
+
 (use-package tree-sitter-langs
-    :hook ((typescript-mode . tree-sitter-hl-mode))
-    :hook ((js-mode . tree-sitter-hl-mode))
     :after tree-sitter)
 
 (use-package all-the-icons
@@ -221,7 +223,8 @@
             lsp-idle-delay 0.5)
   :config
       (lsp-enable-which-key-integration t)
-  :hook ((lsp-mode . lsp-treemacs-error-list-mode ))
+      :hook
+      (lsp-mode . lsp-treemacs-error-list-mode )
   :commands (lsp lsp-deferred))
 
 (use-package groovy-mode
@@ -368,8 +371,8 @@
         (current-theme 'ddn/current-theme))
                 (ddn/set-theme new-theme)))
 
-(setq ddn/current-theme 'doom-old-hope)
-(ddn/set-theme 'doom-old-hope)
+(setq ddn/current-theme 'modus-vivendi)
+(ddn/set-theme 'modus-vivendi)
 
 (use-package doom-modeline
   :ensure t
