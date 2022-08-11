@@ -117,12 +117,11 @@
 		(setq ivy-re-builders-alist '((t . ivy--regex-fuzzy))))
 
 ;; langs
-(use-package json-mode
-:hook (json-mode . flycheck-mode))
-(use-package yaml-mode)
+(use-package json-mode :hook (json-mode . flycheck-mode))
 (use-package haskell-mode)
 (use-package lua-mode)
-
+(use-package yaml-mode)
+(use-package terraform-mode :hook (terraform-mode . tree-sitter-hl-mode))
 ;;; https://vxlabs.com/2022/06/12/typescript-development-with-emacs-tree-sitter-and-lsp-in-2022/
 (use-package typescript-mode
 	:hook (typescript-mode . lsp-deferred)
@@ -204,7 +203,6 @@
 (use-package tree-sitter
 	:config (global-tree-sitter-mode)
 	:hook (tree-sitter-hl-mode))
-
 (use-package tree-sitter-langs
 	:after tree-sitter)
 
@@ -239,6 +237,7 @@
 			     "-javaagent:/Users/lrrezend/.gradle/caches/modules-2/files-2.1/org.projectlombok/lombok/1.18.24/13a394eed5c4f9efb2a6d956e2086f1d81e857d9/lombok-1.18.24.jar"
 			     "-Xbootclasspath/a:/Users/lrrezend/.gradle/caches/modules-2/files-2.1/org.projectlombok/lombok/1.18.24/13a394eed5c4f9efb2a6d956e2086f1d81e857d9/lombok-1.18.24.jar")))
   )
+
 (use-package dap-mode :after lsp-mode :config (dap-auto-configure-mode))
 
 (use-package hydra)

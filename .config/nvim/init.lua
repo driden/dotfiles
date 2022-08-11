@@ -1,3 +1,12 @@
+--[[
+--TODOS:
+--      * Telescope
+--      * lua themes
+--      * lualine
+--      * Kotlin lsp
+--      * DAP
+--      * Code lenses
+--]]
 require("plugins.plugin_manager").setup()
 require("plugins.autocomplete").setup()
 require("plugins.file_tree").setup()
