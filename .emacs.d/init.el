@@ -76,14 +76,44 @@
   :config
   (evil-mode 1))
 
-(use-package org :config (setq org-confirm-babel-evaluate nil))
+;;; ORG
+ (defun ddn/org-bullets ()
+    (dolist (face '((org-level-1 . 1.2)
+                  (org-level-2 . 1.1)
+                  (org-level-3 . 1.05)
+                  (org-level-4 . 1.0)
+                  (org-level-5 . 1.1)
+                  (org-level-6 . 1.1)
+                  (org-level-7 . 1.1)
+                  (org-level-8 . 1.1)))
+    (set-face-attribute (car face) nil :weight 'regular :height (cdr face))))
+(use-package org
+  :hook (org-mode . ddn/org-bullets)
+  :config (setq org-confirm-babel-evaluate nil))
 (use-package org-contrib :after org)
 (use-package org-evil
-  :after (org evil)
-  :hook (org-mode . evil-mode))
+  :after (org evil))
 
+(use-package org-bullets
+  :after org
+  :hook org-mode
+  :custom
+  (org-bullets-bullet-list '("◉" "○" "●" "○" "●" "○" "●")))
+
+
+
+(defun ddn/org-mode-visual-fill ()
+  (setq visual-fill-column-width 100
+        visual-fill-column-center-text t)
+  (visual-fill-column-mode 1))
+
+(use-package visual-fill-column
+  :hook (org-mode . efs/org-mode-visual-fill))
+
+;;; PATH
 (use-package exec-path-from-shell :config (exec-path-from-shell-initialize))
 
+;;; Line numbers
 (defun ddn/line-numbers ()
   (display-line-numbers-mode)
   (setq global-display-line-numbers-mode t
@@ -94,12 +124,13 @@
       display-line-numbers 'relative)
 (add-hook 'prog-mode-hook 'ddn/line-numbers)
 
-(dolist (mode '(shell-mode-hook
+(dolist (mode '(org-mode-hook
                 term-mode-hook
-                eshell-mode-hook
+                shell-mode-hook
+                treemacs-mode
                 help-mode-hook
-                treemacs-mode))
-        (add-hook mode #'(lambda() (display-line-numbers-mode -1))))
+                eshell-mode-hook))
+  (add-hook mode (lambda () (display-line-numbers-mode 0))))
 
 (use-package pdf-tools)
 
@@ -182,12 +213,6 @@
   :after evil
   :config (evil-collection-init))
 
-(use-package evil-snipe
-  :diminish evil-snipe-mode
-  :diminish evil-snipe-local-mode
-  :after evil
-  :config
-  (evil-snipe-mode +1))
 (use-package evil-goggles
     :config
     (evil-goggles-mode)
@@ -219,12 +244,13 @@
 (use-package lsp-mode
   :init
       (setq lsp-keymap-prefix "C-c l"
+            lsp-enable-symbol-highlighting nil
             lsp-signature-doc-lines 5
             lsp-idle-delay 0.5)
   :config
       (lsp-enable-which-key-integration t)
-      :hook
-      (lsp-mode . lsp-treemacs-error-list-mode )
+  :hook
+      (lsp-mode . lsp-treemacs-errors-list-mode)
   :commands (lsp lsp-deferred))
 
 (use-package groovy-mode
