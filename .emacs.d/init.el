@@ -77,29 +77,14 @@
   (evil-mode 1))
 
 ;;; ORG
- (defun ddn/org-bullets ()
-    (dolist (face '((org-level-1 . 1.2)
-                  (org-level-2 . 1.1)
-                  (org-level-3 . 1.05)
-                  (org-level-4 . 1.0)
-                  (org-level-5 . 1.1)
-                  (org-level-6 . 1.1)
-                  (org-level-7 . 1.1)
-                  (org-level-8 . 1.1)))
-    (set-face-attribute (car face) nil :weight 'regular :height (cdr face))))
-(use-package org
-  :hook (org-mode . ddn/org-bullets)
-  :config (setq org-confirm-babel-evaluate nil))
+(use-package org :config (setq org-confirm-babel-evaluate nil))
 (use-package org-contrib :after org)
-(use-package org-evil
-  :after (org evil))
-
+(use-package org-evil :after (org evil))
 (use-package org-bullets
   :after org
-  :hook org-mode
+  :hook (org-mode . org-bullets-mode)
   :custom
   (org-bullets-bullet-list '("◉" "○" "●" "○" "●" "○" "●")))
-
 
 
 (defun ddn/org-mode-visual-fill ()
@@ -108,7 +93,7 @@
   (visual-fill-column-mode 1))
 
 (use-package visual-fill-column
-  :hook (org-mode . efs/org-mode-visual-fill))
+  :hook (org-mode . ddn/org-mode-visual-fill))
 
 ;;; PATH
 (use-package exec-path-from-shell :config (exec-path-from-shell-initialize))
@@ -216,11 +201,8 @@
 (use-package evil-goggles
     :config
     (evil-goggles-mode)
+    (setq evil-goggles-duration 0.300) 
     (evil-goggles-use-diff-faces))
-(custom-set-faces
- '(evil-goggles-delete-face ((t (:inherit 'shadow))))
- '(evil-goggles-paste-face ((t (:inherit 'lazy-highlight))))
- '(evil-goggles-yank-face ((t (:inherit 'isearch-fail)))))
 
 (use-package ripgrep)
 (use-package projectile
