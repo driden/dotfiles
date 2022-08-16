@@ -215,7 +215,8 @@
                                 (js-mode . editorconfig-mode))
 
 (use-package tree-sitter
-	:config (global-tree-sitter-mode))
+	:config (global-tree-sitter-mode)
+  :hook (tree-sitter-mode . tree-sitter-hl-mode))
 
 (use-package tree-sitter-langs
     :after tree-sitter)
