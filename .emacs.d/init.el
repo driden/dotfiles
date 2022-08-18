@@ -143,7 +143,9 @@
 (use-package json-mode :hook (json-mode . flycheck-mode))
 (use-package haskell-mode)
 (use-package lua-mode)
-(use-package yaml-mode)
+(use-package yaml-mode
+  :hook
+     (yaml-mode . ddn/highlight-line))
 (use-package terraform-mode :hook (terraform-mode . tree-sitter-hl-mode))
 ;;; https://vxlabs.com/2022/06/12/typescript-development-with-emacs-tree-sitter-and-lsp-in-2022/
 (use-package typescript-mode
@@ -232,8 +234,7 @@
             lsp-idle-delay 0.5)
   :config
       (lsp-enable-which-key-integration t)
-  :hook
-      (lsp-mode . lsp-treemacs-errors-list-mode)
+      (setq lsp-file-watch-threshold 4000)
   :commands (lsp lsp-deferred))
 
 (use-package groovy-mode
@@ -372,7 +373,22 @@
                  "-Xbootclasspath/a:/Users/lrrezend/.gradle/caches/modules-2/files-2.1/org.projectlombok/lombok/1.18.24/13a394eed5c4f9efb2a6d956e2086f1d81e857d9/lombok-1.18.24.jar")))
   )
 
+(defvar test-args '())
+(defvar ddn/jvm-args  "-ea -DENV=dev -DsocksProxyHost=localhost -DsocksProxyPort=5001 -DREGION=us-east-1")
+
 (use-package dap-mode :after lsp-mode :config (dap-auto-configure-mode))
+(use-package dap-java :after dap-mode
+  :config
+  (setq dap-java-use-testng t)
+  (dap-register-debug-template "DEV"
+                             (list :type "java"
+                                   :request "launch"
+                                   :args ""
+                                   :vmArgs ddn/jvm-args
+                                   :projectName "myapp"
+                                   :mainClass "com.domain.AppRunner"
+                                   :env test-args)))
+
 
 (use-package hydra)
 ;; It would be nice if we could highlight the border of the current window with some color
@@ -410,7 +426,8 @@
                 :states '(normal motion visual emacs)
                 :keymaps 'override
                 :prefix "C-x"
-                "C-c" nil) ;; I always quit emacs by accident
+                "h" 'previous-buffer
+                "l" 'next-buffer) ;; I always quit emacs by accident
 
         (general-define-key
                 :states '(normal insert)
@@ -419,13 +436,19 @@
                 "C-p" 'company-select-previous
                 "TAB" 'company-complete-selction)
 
+            (general-define-key 
+                :states '(normal insert)
+                :keymaps 'lsp-mode-map
+
+                "C-SPC" '(completion-at-point))
+
         (general-define-key 
                 :states '(normal)
                 :keymaps 'lsp-mode-map
 
-                "C-SPC" '(completion-at-point)
                 "gd"    '(lsp-find-definition :whick-key "go to definition")
                 "gD"    '(lsp-find-declaration :whick-key "go to declaration")
+                "gh"    '(nil :whick-key "go hover")
                 "gi"    '(lsp-goto-implementation :whick-key "go to implementation")
                 "gr"    '(lsp-find-references :whick-key "go to references"))
 
@@ -506,5 +529,10 @@
 
 (defun ddn/highlight-line ()
  (hl-line-mode t))
+
+(use-package highlight-indent-guides
+  :config
+  (setq highlight-indent-guides-method 'bitmap)
+  :hook ((prog-mode yaml-mode) . highlight-indent-guides-mode))
 
 (add-hook 'prog-mode-hook #'ddn/highlight-line)
