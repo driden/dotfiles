@@ -237,6 +237,7 @@
       (setq lsp-file-watch-threshold 4000)
   :commands (lsp lsp-deferred))
 
+(use-package dap-mode :after lsp-mode :config (dap-auto-configure-mode))
 (use-package groovy-mode
     :config
     (add-to-list 'auto-mode-alist '("\\.gradle\\'" . groovy-mode)))
@@ -362,6 +363,7 @@
 (use-package lsp-treemacs :after treemacs :commands lsp-treemacs-errors-list)
 ;; Probably need to move this config to custom.el now
 (use-package lsp-java
+  :after (lsp-mode dap-mode)
   :hook (java-mode . lsp)
   :config
   (let ((lombok-path "/Users/lrrezend/.gradle/caches/modules-2/files-2.1/org.projectlombok/lombok/1.18.24/13a394eed5c4f9efb2a6d956e2086f1d81e857d9/lombok-1.18.24.jar"))
@@ -371,14 +373,7 @@
                  "-XX:+UseStringDeduplication"
                  "-javaagent:/Users/lrrezend/.gradle/caches/modules-2/files-2.1/org.projectlombok/lombok/1.18.24/13a394eed5c4f9efb2a6d956e2086f1d81e857d9/lombok-1.18.24.jar"
                  "-Xbootclasspath/a:/Users/lrrezend/.gradle/caches/modules-2/files-2.1/org.projectlombok/lombok/1.18.24/13a394eed5c4f9efb2a6d956e2086f1d81e857d9/lombok-1.18.24.jar")))
-  )
 
-(defvar test-args '())
-(defvar ddn/jvm-args  "-ea -DENV=dev -DsocksProxyHost=localhost -DsocksProxyPort=5001 -DREGION=us-east-1")
-
-(use-package dap-mode :after lsp-mode :config (dap-auto-configure-mode))
-(use-package dap-java :after dap-mode
-  :config
   (setq dap-java-use-testng t)
   (dap-register-debug-template "DEV"
                              (list :type "java"
@@ -389,6 +384,8 @@
                                    :mainClass "com.domain.AppRunner"
                                    :env test-args)))
 
+(defvar test-args '())
+(defvar ddn/jvm-args  "-ea -DENV=dev -DsocksProxyHost=localhost -DsocksProxyPort=5001 -DREGION=us-east-1")
 
 (use-package hydra)
 ;; It would be nice if we could highlight the border of the current window with some color
