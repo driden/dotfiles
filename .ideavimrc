@@ -3,8 +3,7 @@ Plug 'peservim/nerdtree'
 Plug 'vim-scripts/ReplaceWithRegister'
 Plug 'machakann/vim-highlightedyank'
 
-
-""" Map leader to space ---------------------
+" Map leader to space ---------------------
 let mapleader=" "
 
 set visualbell
@@ -14,7 +13,7 @@ set noerrorbells
 " set multiple-cursors
 " set commentary
 " set argtextobj
-" set easymotion
+set easymotion
 
 
 """ Plugin settings -------------------------
@@ -53,6 +52,8 @@ nnoremap <C-h> <C-W>h
 nnoremap <C-l> <C-W>l
 nnoremap <C-j> <C-W>j
 nnoremap <C-k> <C-W>k
+nnoremap H :bp<CR>
+nnoremap L :bn<CR>
 
 nnoremap <leader>ff :NERDTreeFind<CR>
 

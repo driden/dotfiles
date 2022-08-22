@@ -9,12 +9,13 @@
 (load custom-file)
 
 (if (eq system-type 'darwin)
-         (setq ns-function-modifier 'super))
+         (setq mac-command-modifier 'meta))
 (scroll-bar-mode -1)
 (tool-bar-mode -1)
 (tooltip-mode -1)
 (menu-bar-mode -1)
 (set-fringe-mode 10)
+(global-auto-revert-mode 1)
 
 (cond ((or (eq system-type 'darwin) (eq system-type 'gnu/linux))
              (set-face-attribute 'default nil :height 180 :font "UbuntuMono Nerd Font"))
@@ -27,10 +28,13 @@
 (setq indent-line-function 'insert-tab)
 
 (setq vc-follow-symlinks t)
-(setq create-lockfiles nil
+(setq
+      dired-auto-revert-buffer t
+      create-lockfiles nil
       make-backup-files nil
       create-lockfiles nil
-      visible-bell t)
+      visible-bell nil)
+
 (setq gc-cons-threshold (* 100 1024 1024)
       read-process-output-max (* 1024 1024))
 
