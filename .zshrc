@@ -129,6 +129,7 @@ unalias gbd
 alias config='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
 alias refreshenv='source $HOME/.zshrc && source $HOME/.zshenv'
 
+alias pip='pip3'
 
 function init_fzf() {
   [ -f ~/.fzf/completion.zsh ] && source ~/.fzf/completion.zsh

@@ -2,3 +2,6 @@
 .config/nvim/plugged/
 .emacs.d/elpa
 custom.el
+automatic_backups
+java-debug
+vscode-java-test
