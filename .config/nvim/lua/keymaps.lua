@@ -86,6 +86,16 @@ keymap("n", "<leader>gg", ":Gvdiffsplit!<CR>", opts)
 keymap("n", "<leader>gP", ":Git push<CR>", opts)
 keymap("n", "<leader>gp", ":Git pull<CR>", opts)
 
+
+-- Telescope
+vim.keymap.set("n", "<leader>ff", function() require("telescope.builtin").find_files() end, opts)
+vim.keymap.set("n", "<leader>ft", function() require("telescope.builtin").live_grep() end, opts)
+vim.keymap.set("n", "<leader>fw", function() require("telescope.builtin").grep_string() end, opts)
+vim.keymap.set("n", "<leader>fk", function() require("telescope.builtin").keymaps() end, opts)
+vim.keymap.set("n", "<leader>bi", function() require("telescope.builtin").buffers() end, opts)
+
+vim.keymap.set("n", "<leader>ht", function() require("telescope.builtin").help_tags() end, opts)
+
 -- Quick Fix
 keymap("n", "<leader>qq", ":copen<CR>", opts) -- Open the quickfix window
 keymap("n", "<leader>qc", ":ccl<CR>", opts) --  Open it if there are "errors", close it otherwise

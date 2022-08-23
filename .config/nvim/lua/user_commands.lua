@@ -1,8 +1,8 @@
 local M = {}
 
 local commands = {
-  { name = "EditConfig", action = ":edit $HOME/.config/nvim/init.lua" },
-  { name = "ReloadConfig", action = ":source ~/.config/nvim/init.lua" },
+  { name = "Config", action = ":edit $HOME/.config/nvim/init.lua" },
+  { name = "ReloadConfig", action = ":luafile ~/.config/nvim/init.lua" },
   { name = "RemoveEscapedQuotes", action = ':%s/\\"/"/g' },
 }
 
