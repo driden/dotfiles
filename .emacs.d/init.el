@@ -18,7 +18,7 @@
 (global-auto-revert-mode 1)
 
 (cond ((or (eq system-type 'darwin) (eq system-type 'gnu/linux))
-             (set-face-attribute 'default nil :height 180 :font "UbuntuMono Nerd Font"))
+             (set-face-attribute 'default nil :height 180 :font "Comic Mono"))
             ((eq system-type 'windows-nt)
              (set-face-attribute 'default nil :height 180 :font "Hack")))
 ;; When opening a symlink that links to a file in a git repo, edit the file in the
