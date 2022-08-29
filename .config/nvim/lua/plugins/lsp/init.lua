@@ -1,1 +1,1 @@
-require('plugins.lsp.setup').setup()
+require('plugins.lsp.setup')
