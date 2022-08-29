@@ -1,0 +1,6 @@
+require("plugins.plugin_manager")
+require("plugins.autocomplete").setup()
+require("plugins.file_tree").setup()
+require("plugins.lsp")
+require("plugins.toggleterm").setup()
+require("plugins.treesitter").setup()
