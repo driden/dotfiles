@@ -1,13 +1,18 @@
 local fn = vim.fn
-local install_path = fn.stdpath('data') .. '/site/pack/packer/start/packer.nvim'
+local install_path = fn.stdpath("data") .. "/site/pack/packer/start/packer.nvim"
 if fn.empty(fn.glob(install_path)) > 0 then
-  packer_bootstrap = fn.system({ 'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim',
-    install_path })
-  vim.cmd [[packadd packer.nvim]]
+  packer_bootstrap = fn.system({
+    "git",
+    "clone",
+    "--depth",
+    "1",
+    "https://github.com/wbthomason/packer.nvim",
+    install_path,
+  })
+  vim.cmd([[packadd packer.nvim]])
 end
 
 require("packer").startup(function(use)
-
   local plugins = {
     "wbthomason/packer.nvim",
     "nvim-lua/plenary.nvim",
@@ -64,10 +69,17 @@ require("packer").startup(function(use)
     use(plugin)
   end
 
-  use { "nvim-telescope/telescope.nvim", tag = '0.1.0', requires = { { 'nvim-lua/plenary.nvim' } } }
+  use({ "nvim-telescope/telescope.nvim", tag = "0.1.0", requires = { { "nvim-lua/plenary.nvim" } } })
+  use({
+    "phaazon/hop.nvim",
+    branch = "v2", -- optional but strongly recommended
+    config = function()
+      -- you can configure Hop the way you like here; see :h hop-config
+      require("hop").setup({ keys = "etovxqpdygfblzhckisuran" })
+    end,
+  })
 
   if packer_bootstrap then
-    require('packer').sync()
+    require("packer").sync()
   end
-
 end)
