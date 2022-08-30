@@ -18,9 +18,9 @@
 (global-auto-revert-mode 1)
 
 (cond ((or (eq system-type 'darwin) (eq system-type 'gnu/linux))
-             (set-face-attribute 'default nil :height 180 :font "Comic Mono"))
+             (set-face-attribute 'default nil :height 140 :font "Monaco"))
             ((eq system-type 'windows-nt)
-             (set-face-attribute 'default nil :height 180 :font "Hack")))
+             (set-face-attribute 'default nil :height 140 :font "Hack")))
 ;; When opening a symlink that links to a file in a git repo, edit the file in the
 ;; git repo so we can use the Emacs vc features (like Diff) in the future
 (setq-default indent-tabs-mode nil)
@@ -447,6 +447,7 @@
                 :states '(normal)
                 :keymaps 'lsp-mode-map
 
+                "ga"    '(lsp-execute-code-action :whick-key "go to actions")
                 "gd"    '(lsp-find-definition :whick-key "go to definition")
                 "gD"    '(lsp-find-declaration :whick-key "go to declaration")
                 "gh"    '(nil :whick-key "go hover")
@@ -537,3 +538,4 @@
   :hook ((prog-mode yaml-mode) . highlight-indent-guides-mode))
 
 (add-hook 'prog-mode-hook #'ddn/highlight-line)
+(add-hook 'js-mode-hook #'lsp-deferred)
