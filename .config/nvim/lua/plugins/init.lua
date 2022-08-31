@@ -1,7 +1,10 @@
 require("plugins.plugin_manager")
+
+require("plugins.lsp")
 require("plugins.autocomplete").setup()
 require("plugins.file_tree").setup()
-require("plugins.lsp")
+require("plugins.hop")
+require("plugins.indent-guides")
+require("plugins.telescope")
 require("plugins.toggleterm").setup()
 require("plugins.treesitter").setup()
-require("plugins.hop")

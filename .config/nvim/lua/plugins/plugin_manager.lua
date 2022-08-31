@@ -42,7 +42,7 @@ require("packer").startup(function(use)
     "kyazdani42/nvim-tree.lua",
     -- Treesitter
     "nvim-treesitter/nvim-treesitter", --{do = 'TSUpdate',}},
-
+ "lukas-reineke/indent-blankline.nvim",
     -- LSP
     "neovim/nvim-lspconfig",
     "onsails/lspkind-nvim",
@@ -53,7 +53,6 @@ require("packer").startup(function(use)
     "hrsh7th/cmp-nvim-lua",
     "hrsh7th/cmp-nvim-lsp",
     "hrsh7th/cmp-path",
-    "hrsh7th/cmp-nvim-lsp-signature-help",
     "hrsh7th/cmp-nvim-lsp-signature-help",
     "hrsh7th/cmp-nvim-lsp-document-symbol",
     "hrsh7th/cmp-buffer",
