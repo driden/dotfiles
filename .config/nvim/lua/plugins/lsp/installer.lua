@@ -1,3 +1,11 @@
 require("nvim-lsp-installer").setup {
-  ensure_installed = { "eslint", "tsserver", "sumneko_lua" }
+  ensure_installed = {
+    "bashls",
+    "eslint",
+    "tsserver",
+    "sumneko_lua",
+    "gopls",
+    "terraformls",
+    "tflint"
+  }
 }
