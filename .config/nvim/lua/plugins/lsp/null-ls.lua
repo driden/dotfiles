@@ -7,10 +7,9 @@ require("null-ls").setup {
   debug = false, -- :NullLsLog && :NullLsInfo
   sources = {
     formatting.eslint,
+    diagnostics.eslint,
     formatting.shfmt,
     formatting.stylua,
-    formatting.eslint,
-    diagnostics.eslint,
   },
   on_attach = require('plugins.lsp.keymaps').on_attach
 }

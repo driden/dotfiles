@@ -23,10 +23,7 @@ keymap("n", "<leader>wc", ":wincmd c<CR>", opts)
 
 -- Finding Files
 keymap("n", "<leader>e", ":NvimTreeToggle<CR>", opts)
-
-keymap("n", "<C-p>", ":GFiles<CR>", opts)
-keymap("n", "<Leader>ff", ":Files<CR>", opts)
-
+--
 -- Resize with arrows
 keymap("n", "<Up>", ":resize +2<CR>", opts)
 keymap("n", "<Down>", ":resize -2<CR>", opts)

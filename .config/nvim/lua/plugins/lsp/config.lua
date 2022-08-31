@@ -1,9 +1,15 @@
+-- https://github.com/ChristianChiarulli/nvim/blob/master/lua/user/lsp/handlers.lua
 
-local lspconfig = require("lspconfig")
-lspconfig['tsserver'].setup {}
-lspconfig['bashls'].setup {}
-lspconfig['eslint'].setup {}
-lspconfig['sumneko_lua'].setup {
+local config = require("lspconfig")
+local capabilities = vim.lsp.protocol.make_client_capabilities()
+
+capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
+
+config['tsserver'].setup { capabilities = capabilities }
+config['bashls'].setup { capabilities = capabilities }
+config['eslint'].setup { capabilities = capabilities }
+config['sumneko_lua'].setup {
+  capabilities = capabilities,
   settings = {
     Lua = {
       runtime = {
@@ -21,10 +27,6 @@ lspconfig['sumneko_lua'].setup {
     },
   },
 }
-
-
-local capabilities = require("cmp_nvim_lsp")
-  .update_capabilities(vim.lsp.protocol.make_client_capabilities())
-require("lspconfig")["terraformls"].setup({ capabilities = capabilities })
-require("lspconfig")["tflint"].setup({ capabilities = capabilities })
-require("lspconfig")["jdtls"].setup({ capabilities = capabilities })
+config["terraformls"].setup({ capabilities = capabilities })
+config["tflint"].setup({ capabilities = capabilities })
+config["jdtls"].setup({ capabilities = capabilities })

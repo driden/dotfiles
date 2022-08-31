@@ -69,6 +69,11 @@ end
 time([[try_loadstring definition]], false)
 time([[Defining packer_plugins]], true)
 _G.packer_plugins = {
+  LuaSnip = {
+    loaded = true,
+    path = "/Users/lrrezend/.local/share/nvim/site/pack/packer/start/LuaSnip",
+    url = "https://github.com/L3MON4D3/LuaSnip"
+  },
   ["cmp-buffer"] = {
     loaded = true,
     path = "/Users/lrrezend/.local/share/nvim/site/pack/packer/start/cmp-buffer",
@@ -99,6 +104,11 @@ _G.packer_plugins = {
     path = "/Users/lrrezend/.local/share/nvim/site/pack/packer/start/cmp-nvim-lua",
     url = "https://github.com/hrsh7th/cmp-nvim-lua"
   },
+  ["cmp-omni"] = {
+    loaded = true,
+    path = "/Users/lrrezend/.local/share/nvim/site/pack/packer/start/cmp-omni",
+    url = "https://github.com/hrsh7th/cmp-omni"
+  },
   ["cmp-path"] = {
     loaded = true,
     path = "/Users/lrrezend/.local/share/nvim/site/pack/packer/start/cmp-path",
@@ -108,16 +118,6 @@ _G.packer_plugins = {
     loaded = true,
     path = "/Users/lrrezend/.local/share/nvim/site/pack/packer/start/editorconfig-vim",
     url = "https://github.com/editorconfig/editorconfig-vim"
-  },
-  fzf = {
-    loaded = true,
-    path = "/Users/lrrezend/.local/share/nvim/site/pack/packer/start/fzf",
-    url = "https://github.com/junegunn/fzf"
-  },
-  ["fzf.vim"] = {
-    loaded = true,
-    path = "/Users/lrrezend/.local/share/nvim/site/pack/packer/start/fzf.vim",
-    url = "https://github.com/junegunn/fzf.vim"
   },
   ["gruvbox-material"] = {
     loaded = true,
