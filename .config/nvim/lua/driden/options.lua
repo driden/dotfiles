@@ -51,6 +51,8 @@ function M.setup()
     vim.opt.guifont = "UbuntuMono Nerd Font Mono:h20"
   end
 
+  vim.o.completeopt = "menu,menuone,noselect"
+
 end
 
 return M
