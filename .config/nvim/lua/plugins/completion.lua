@@ -1,6 +1,4 @@
-local M = {}
 
-function M.setup()
   local cmp = require("cmp")
   local lspkind = require("lspkind")
 
@@ -35,11 +33,7 @@ function M.setup()
       { name = "nvim_lsp" },
       { name = "nvim_lsp_signature_help" },
       { name = "path" },
-      { name = "vsnip" }, -- For vsnip users.
-      -- { name = 'luasnip' }, -- For luasnip users.
-      -- { name = 'ultisnips' }, -- For ultisnips users.
-      -- { name = 'snippy' }, -- For snippy users.
-      { name = "buffer", keyword_length = 5, max_item_count = 10 },
+      { name = "buffer", keyword_length = 4, max_item_count = 5 },
     }),
 
     formatting = {
@@ -104,6 +98,4 @@ function M.setup()
   cmp.setup.cmdline(":", {
     sources = cmp.config.sources({ { name = "path" } }, { { name = "cmdline" } }),
   })
-end
 
-return M

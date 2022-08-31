@@ -1,7 +1,7 @@
 require("plugins.plugin_manager")
 
 require("plugins.lsp")
-require("plugins.autocomplete").setup()
+require("plugins.completion")
 require("plugins.file_tree").setup()
 require("plugins.hop")
 require("plugins.indent-guides")
