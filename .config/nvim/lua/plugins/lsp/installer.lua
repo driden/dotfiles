@@ -1,11 +1,4 @@
+local servers = require("plugins.lsp.servers")
 require("nvim-lsp-installer").setup {
-  ensure_installed = {
-    "bashls",
-    "eslint",
-    "tsserver",
-    "sumneko_lua",
-    "gopls",
-    "terraformls",
-    "tflint"
-  }
+  ensure_installed = servers.names
 }

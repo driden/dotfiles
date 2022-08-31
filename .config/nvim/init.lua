@@ -1,4 +1,7 @@
 --[[
+--ISSUES:
+--      * Nulls not working
+--      * CMP reporting twice
 --TODOS:
 --      * Telescope
 --      * lua themes
