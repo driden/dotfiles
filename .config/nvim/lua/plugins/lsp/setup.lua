@@ -33,6 +33,7 @@ require("nvim-lsp-installer").setup {
 }
 
 local lspconfig = require("lspconfig")
+lspconfig.gopls.setup {}
 lspconfig.tsserver.setup {}
 lspconfig.eslint.setup {}
 lspconfig.sumneko_lua.setup {
