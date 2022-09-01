@@ -22,8 +22,8 @@ require("packer").startup(function(use)
     "joshdick/onedark.vim",
     "sainnhe/gruvbox-material",
     "NLKNguyen/papercolor-theme",
-    "metalelf0/jellybeans-nvim",
     "rktjmp/lush.nvim",
+    "rebelot/kanagawa.nvim",
 
     -- git
     "tpope/vim-fugitive",

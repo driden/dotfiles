@@ -140,6 +140,11 @@ _G.packer_plugins = {
     path = "/Users/driden/.local/share/nvim/site/pack/packer/start/jellybeans-nvim",
     url = "https://github.com/metalelf0/jellybeans-nvim"
   },
+  ["kanagawa.nvim"] = {
+    loaded = true,
+    path = "/Users/driden/.local/share/nvim/site/pack/packer/start/kanagawa.nvim",
+    url = "https://github.com/rebelot/kanagawa.nvim"
+  },
   ["lspkind-nvim"] = {
     loaded = true,
     path = "/Users/driden/.local/share/nvim/site/pack/packer/start/lspkind-nvim",
