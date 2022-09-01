@@ -125,8 +125,6 @@ unalias ga
 unalias gco
 unalias gbd
 
-
-alias config='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
 alias refreshenv='source $HOME/.zshrc && source $HOME/.zshenv'
 
 alias pip='pip3'
