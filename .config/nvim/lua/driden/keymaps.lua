@@ -114,12 +114,12 @@ keymap("n", "<leader>qf", ":cnf<CR>", opts) --Go to error under cursor (if curso
 keymap("n", "<leader>q.", ":.cc<CR>", opts)
 
 -- Misc
-keymap("n", "<leader>tm", '<cmd>lua require"driden.options".toggle_meta_chars()<CR>', opts)
+keymap("n", "<leader>tm", '<cmd>lua require("driden.options").toggle_meta_chars()<CR>', opts)
 
 keymap("n", "<leader>pc", ":e ~/.config/nvim/init.lua<CR>", opts)
 keymap("n", "<leader>rr", ":source ~/.config/nvim/init.lua<CR>", opts)
 
-keymap("n", "<leader>tt", ":lua require('themes').set_next_theme()<CR>", opts)
+keymap("n", "<leader>tt", ":lua require('driden.themes').set_next_theme()<CR>", opts)
 
 -- HOP
 vim.api.nvim_set_keymap(
