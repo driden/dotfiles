@@ -344,6 +344,16 @@
   :after (treemacs projectile)
   :ensure t)
 
+(defun ddn/dired-single ()
+  "Bunch of stuff to run for dired, either immediately or when it's
+   loaded."
+  (define-key dired-mode-map [remap dired-find-file] 'dired-single-buffer)
+  (define-key dired-mode-map [remap dired-mouse-find-file-other-window] 'dired-single-buffer-mouse)
+  (define-key dired-mode-map [remap dired-up-directory] 'dired-single-up-directory))
+
+(use-package dired-single
+  :init (ddn/dired-single))
+
 (use-package treemacs-icons-dired
   :hook (dired-mode . treemacs-icons-dired-enable-once)
   :ensure t)
