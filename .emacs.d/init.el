@@ -1,3 +1,4 @@
+(setq lexical-binding t)
 ;; Todos
 ;; * add Eval buffer/last sexp keymaps hooked into emacs-lisp-mode
 ;; * Yasnippets + org mode snippets
@@ -57,7 +58,8 @@
       create-lockfiles nil
       make-backup-files nil
       create-lockfiles nil
-      visible-bell nil)
+      visible-bell nil
+      ring-bell-function 'ignore)
 
 (setq gc-cons-threshold (* 100 1024 1024)
       read-process-output-max (* 1024 1024))
@@ -455,8 +457,11 @@
                                         visual))
         (general-define-key
                 :keymaps 'vertico-map
+
+                "C-u"   'vertico-scroll-down
+                "C-d"   'vertico-scroll-up
                 "C-["   'vertico-exit
-                "C-n"   'vertico-next
+                "C-n"   'vertico-previous
                 "C-p"   'vertico-next)
         (general-define-key
                 :states '(normal motion visual)
@@ -472,6 +477,7 @@
         (general-define-key
                 :states '(normal)
                 :keymaps 'override
+                :prefix "SPC"
                 "s" 'avy-goto-char 
                 "S" 'avy-goto-char-2) 
 
