@@ -2,6 +2,30 @@
 ;; * add Eval buffer/last sexp keymaps hooked into emacs-lisp-mode
 ;; * Yasnippets + org mode snippets
 
+; Moving around in buffers
+; 
+; The most basic buffer movement commands move point (the cursor) by rows (lines) or columns (characters):
+; 
+;  C-f  Forward one character  
+;  C-n  Next line  
+; 
+;  C-b  Back one character  
+;  C-p  Previous line  
+; 
+; Here are some ways to move around in larger increments:
+; 
+;  C-a  Beginning of line  
+;  M-f  Forward one word  
+;  M-a  Previous sentence  
+;  M-v  Previous screen  
+;  M-<  Beginning of buffer  
+; 
+;  C-e  End of line  
+;  M-b  Back one word  
+;  M-e  Next sentence  
+;  C-v  Next screen  
+;  M->  End of buffer  
+
 (setq make-backup-files nil)
 (setq custom-file (if (eq system-type 'windows-nt)
             (concat (getenv "APPDATA") "\\.emacs.d\\custom.el")
@@ -123,33 +147,56 @@
 
 (use-package pdf-tools)
 
-(use-package ivy
-  :diminish
-  :bind (("C-s" . swiper)
-         :map ivy-minibuffer-map
-         ("TAB" . ivy-alt-done)     
-         ("C-l" . ivy-alt-done)
-         ("C-j" . ivy-next-line)
-         ("C-k" . ivy-previous-line)
-         :map ivy-switch-buffer-map
-         ("C-k" . ivy-previous-line)
-         ("C-l" . ivy-done)
-         ("C-d" . ivy-switch-buffer-kill)
-         :map ivy-reverse-i-search-map
-         ("C-k" . ivy-previous-line)
-         ("C-d" . ivy-reverse-i-search-kill))
+(use-package avy)
+
+(use-package vertico
   :config
-        (ivy-mode 1)
-        (setq ivy-initial-inputs-alist nil)
-        (setq ivy-re-builders-alist '((t . ivy--regex-fuzzy))))
+    (vertico-mode))
+(use-package orderless
+  :config
+   (setq completion-styles '(orderless basic)))
+(use-package marginalia :config (marginalia-mode))
+; Completions
+;(use-package ivy
+;  :diminish
+;  :bind (("C-s" . swiper)
+;         :map ivy-minibuffer-map
+;         ("TAB" . ivy-alt-done)     
+;         ("C-l" . ivy-alt-done)
+;         ("C-j" . ivy-next-line)
+;         ("C-k" . ivy-previous-line)
+;         :map ivy-switch-buffer-map
+;         ("C-k" . ivy-previous-line)
+;         ("C-l" . ivy-done)
+;         ("C-d" . ivy-switch-buffer-kill)
+;         :map ivy-reverse-i-search-map
+;         ("C-k" . ivy-previous-line)
+;         ("C-d" . ivy-reverse-i-search-kill))
+;  :config
+;        (ivy-mode 1)
+;        (setq vy-initial-inputs-alist nil)
+;        (setq ivy-re-builders-alist '((t . ivy--regex-fuzzy))))
+;
+;(use-package ivy-rich
+;    :after (ivy)
+;    :init
+;    (setq ivy-rich-path-style 'abbrev
+;                ivy-virtual-abbreviate 'full)
+;  :config
+;        (ivy-rich-mode 1))
+;
+;(use-package counsel
+;  :bind (("M-x"    . counsel-M-x)
+;         ("C-x C-b" . counsel-ibuffer)
+;         ("C-x C-f" . counsel-find-file)
+;         ("C-x b"   . counsel-switch-buffer))) 
 
 ;; langs
 (use-package json-mode :hook (json-mode . flycheck-mode))
 (use-package haskell-mode)
 (use-package lua-mode)
 (use-package yaml-mode
-  :hook
-     (yaml-mode . ddn/highlight-line))
+  :hook (yaml-mode . ddn/highlight-line))
 (use-package terraform-mode :hook (terraform-mode . tree-sitter-hl-mode))
 ;;; https://vxlabs.com/2022/06/12/typescript-development-with-emacs-tree-sitter-and-lsp-in-2022/
 (use-package typescript-mode
@@ -175,28 +222,13 @@
   :config
   (setq which-key-idle-delay 1))
 
-(use-package ivy-rich
-    :after (ivy)
-    :init
-    (setq ivy-rich-path-style 'abbrev
-                ivy-virtual-abbreviate 'full)
-  :config
-        (ivy-rich-mode 1))
-(use-package counsel
-  :bind (("M-x"    . counsel-M-x)
-         ("C-x C-b" . counsel-ibuffer)
-         ("C-x C-f" . counsel-find-file)
-         ("C-x b"   . counsel-switch-buffer))) 
 
 (use-package helpful
   :commands (helpful-callable helpful-variable helpful-command helpful-key)
-  :custom
-  (counsel-describe-function-function #'helpful-callable)
-  (counsel-describe-variable-function #'helpful-variable)
   :bind
-  ([remap describe-function] . counsel-describe-function)
+  ([remap describe-function] . helpful-function)
   ([remap describe-command] . helpful-command)
-  ([remap describe-variable] . counsel-describe-variable)
+  ([remap describe-variable] . helpful-variable)
   ([remap describe-key] . helpful-key))
 
 
@@ -373,7 +405,6 @@
   :config (treemacs-set-scope-type 'Tabs))
 
 (use-package lsp-ui :commands lsp-ui-mode)
-(use-package lsp-ivy :commands lsp-ivy-workspace-symbol)
 (use-package lsp-treemacs :after treemacs :commands lsp-treemacs-errors-list)
 ;; Probably need to move this config to custom.el now
 (use-package lsp-java
@@ -423,6 +454,11 @@
                                         normal
                                         visual))
         (general-define-key
+                :keymaps 'vertico-map
+                "C-["   'vertico-exit
+                "C-n"   'vertico-next
+                "C-p"   'vertico-next)
+        (general-define-key
                 :states '(normal motion visual)
                 :keymaps 'override
 
@@ -434,11 +470,17 @@
                 "L"   'previous-buffer)
 
         (general-define-key
+                :states '(normal)
+                :keymaps 'override
+                "s" 'avy-goto-char 
+                "S" 'avy-goto-char-2) 
+
+        (general-define-key
                 :states '(normal motion visual emacs)
                 :keymaps 'override
                 :prefix "C-x"
                 "h" 'previous-buffer
-                "l" 'next-buffer) ;; I always quit emacs by accident
+                "l" 'next-buffer)
 
         (general-define-key
                 :states '(normal insert)
@@ -471,7 +513,7 @@
                 :global-prefix "C-SPC"
 
                 "b"  '(nil  :which-key "buffer")
-                "bi" '(counsel-ibuffer  :which-key "ibuffer")
+                "bi" '(ibuffer  :which-key "ibuffer")
                 "bk" '(kill-buffer  :which-key "kill buffer")
                 "c"  '(nil  :which-key "code")
                 "ca" '(lsp-execute-code-action  :which-key "code action")
@@ -480,15 +522,16 @@
                 "e"  '(nil  :which-key "explore")
                 "ee" '(treemacs  :which-key "explore project")
                 "f"  '(nil  :which-key "find")
-                "ff" '(counsel-find-file  :which-key "find file")
+                "ff" '(find-file  :which-key "find file")
                 "g"  '(nil  :which-key "git")
                 "h"  '(nil  :which-key "help")
-                "ha" '(counsel-apropos  :which-key "apropos")
-                "hf" '(counsel-describe-function  :which-key "describe function")
+                "ha" '(apropos  :which-key "apropos")
+                "hf" '(describe-function  :which-key "describe function")
                 "hk" '(describe-key  :which-key "describe key")
                 "hm" '(describe-mode  :which-key "describe mode")
-                "hs" '(counsel-describe-symbol  :which-key "describe symbol")
-                "hv" '(counsel-describe-variable  :which-key "describe variable")
+                "hs" '(describe-symbol  :which-key "describe symbol")
+                "hv" '(describe-variable  :which-key "describe variable")
+
                 "o"  '(nil :which-key "org")
                 "oc" '(nil :which-key "org-clock")
                 "oci"'(org-clock-in :which-key "org-clock-in")

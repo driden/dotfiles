@@ -5,3 +5,5 @@ custom.el
 automatic_backups
 java-debug
 vscode-java-test
+
+.config/nvim/plugin/packer_compiled.lua
