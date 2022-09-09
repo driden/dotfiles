@@ -27,6 +27,7 @@
 ;  C-v  Next screen  
 ;  M->  End of buffer  
 
+(defalias 'yes-or-no-p 'y-or-n-p)
 (setq make-backup-files nil)
 (setq custom-file (if (eq system-type 'windows-nt)
             (concat (getenv "APPDATA") "\\.emacs.d\\custom.el")
@@ -251,8 +252,8 @@
    
 (use-package flycheck)
 (use-package company)
-(use-package editorconfig :hook (typescript-mode . editorconfig-mode)
-                                (js-mode . editorconfig-mode))
+(use-package editorconfig :hook ((typescript-mode . editorconfig-mode)
+                                (js-mode . editorconfig-mode)))
 
 (use-package tree-sitter
 	:config (global-tree-sitter-mode)
@@ -282,7 +283,7 @@
 
 (use-package winum :config (winum-mode 1))
 (use-package js ;built-in
-    :hook (js-mode . tree-sitter-hl-mode))
+    :hook (js-mode . tree-sitter-mode))
 (use-package treemacs
   :defer t
   :init
@@ -411,7 +412,7 @@
 ;; Probably need to move this config to custom.el now
 (use-package lsp-java
   :after (lsp-mode dap-mode)
-  :hook (java-mode . lsp)
+  :hook ((java-mode . lsp-deferred) (java-mode . tree-sitter-mode ))
   :config
   (let ((lombok-path "/Users/lrrezend/.gradle/caches/modules-2/files-2.1/org.projectlombok/lombok/1.18.24/13a394eed5c4f9efb2a6d956e2086f1d81e857d9/lombok-1.18.24.jar"))
     (setq lsp-java-vmargs  '("-noverify"
@@ -458,11 +459,11 @@
         (general-define-key
                 :keymaps 'vertico-map
 
-                "C-u"   'vertico-scroll-down
-                "C-d"   'vertico-scroll-up
+                "C-p"   'vertico-scroll-down
+                "C-u"   'vertico-scroll-up
                 "C-["   'vertico-exit
-                "C-n"   'vertico-previous
-                "C-p"   'vertico-next)
+                "C-p"   'vertico-previous
+                "C-n"   'vertico-next)
         (general-define-key
                 :states '(normal motion visual)
                 :keymaps 'override
