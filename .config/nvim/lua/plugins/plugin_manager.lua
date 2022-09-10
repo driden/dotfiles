@@ -66,7 +66,10 @@ require("packer").startup(function(use)
     "mfussenegger/nvim-jdtls",
 
     -- Snippets
-    "L3MON4D3/LuaSnip"
+    "L3MON4D3/LuaSnip",
+
+  
+    'numToStr/Comment.nvim',
   }
 
   for _, plugin in ipairs(plugins) do
