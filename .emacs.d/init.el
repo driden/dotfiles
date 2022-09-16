@@ -155,9 +155,33 @@
 (use-package vertico
   :config
     (vertico-mode))
+
+(use-package consult
+  :after vertico
+  :config
+    (setq consult-narrow-key "<")
+  :hook
+    (completion-list-mode . consult-preview-at-point-mode)
+    :init
+      ;; `consult-register-store' and the Emacs built-ins.
+  (setq register-preview-delay 0.5
+        register-preview-function #'consult-register-format)
+
+  ;; Optionally tweak the register preview window.
+  ;; This adds thin lines, sorting and hides the mode line of the window.
+  (advice-add #'register-preview :override #'consult-register-window)
+
+  ;; Use Consult to select xref locations with preview
+  (setq xref-show-xrefs-function #'consult-xref
+        xref-show-definitions-function #'consult-xref))
+
+
 (use-package orderless
   :config
-   (setq completion-styles '(orderless basic)))
+   (setq completion-styles '(orderless basic))
+        completion-category-defaults nil
+        completion-category-overrides '((file (styles partial-completion))))
+
 (use-package marginalia :config (marginalia-mode))
 ; Completions
 ;(use-package ivy
@@ -200,7 +224,12 @@
 (use-package lua-mode)
 (use-package yaml-mode
   :hook (yaml-mode . ddn/highlight-line))
-(use-package terraform-mode :hook (terraform-mode . tree-sitter-hl-mode))
+
+(use-package terraform-mode
+  :hook
+  ((terraform-mode . lsp-deferred)
+   (terraform-mode . tree-sitter-hl-mode)))
+
 ;;; https://vxlabs.com/2022/06/12/typescript-development-with-emacs-tree-sitter-and-lsp-in-2022/
 (use-package typescript-mode
     :hook (typescript-mode . lsp-deferred)
@@ -595,7 +624,9 @@
 (use-package highlight-indent-guides
   :config
   (setq highlight-indent-guides-method 'bitmap)
-  :hook ((prog-mode yaml-mode) . highlight-indent-guides-mode))
+  :hook
+  ((prog-mode . highlight-indent-guides-mode)
+   (yaml-mode . highlight-indent-guides-mode)))
 
 (add-hook 'prog-mode-hook #'ddn/highlight-line)
 (add-hook 'js-mode-hook #'lsp-deferred)
