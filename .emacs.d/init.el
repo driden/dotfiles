@@ -523,7 +523,7 @@
                 :keymaps 'company-mode-map
                 "C-n" 'company-select-next
                 "C-p" 'company-select-previous
-                "TAB" 'company-complete-selction)
+                "TAB" 'company-complete-selection)
 
             (general-define-key 
                 :states '(normal insert)
