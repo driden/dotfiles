@@ -152,6 +152,11 @@
 
 (use-package avy)
 
+(use-package ace-window
+  :init 
+    (setq aw-keys '(?A ?S ?D ?F ?Q ?W ?R ?Z ?X))
+
+  )
 (use-package vertico
   :config
     (vertico-mode))
@@ -318,6 +323,7 @@
   :init
   (with-eval-after-load 'winum
     (define-key winum-keymap (kbd "M-0") #'treemacs-select-window))
+   (treemacs-define-RET-action 'file-node-open #’treemacs-visit-node-ace)
   :config
   (progn
     (setq treemacs-collapse-dirs                   (if treemacs-python-executable 3 0)
