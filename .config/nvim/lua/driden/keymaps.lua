@@ -55,18 +55,9 @@ keymap("x", "<A-k>", ":move '<-2<CR>gv-gv", opts)
 keymap("n", "Y", "y$", opts)
 keymap("x", "Y", "y$", opts)
 
--- Terminal --
--- Better terminal navigation
-keymap("t", "<C-[>", "<C-\\><C-n>", term_opts)
-keymap("t", "<C-h>", "<C-\\><C-N><C-w>h", term_opts)
-keymap("t", "<C-j>", "<C-\\><C-N><C-w>j", term_opts)
-keymap("t", "<C-k>", "<C-\\><C-N><C-w>k", term_opts)
-keymap("t", "<C-l>", "<C-\\><C-N><C-w>l", term_opts)
-keymap("t", "<leader>tc", "<C-><C-n>:q<CR>", term_opts)
-
 -- Paste from OS
-keymap("n", "<leader>p", "+p<CR>", term_opts)
-keymap("n", "<leader>y", "+y<CR>", term_opts)
+keymap("n", "<leader>p", "+p<CR>", opts)
+keymap("n", "<leader>y", "+y<CR>", opts)
 
 -- Tab
 keymap("n", "<leader>tn", ":tabNext<CR>", opts)
@@ -108,8 +99,8 @@ end, opts)
 keymap("n", "<leader>qq", ":copen<CR>", opts) -- Open the quickfix window
 keymap("n", "<leader>qc", ":ccl<CR>", opts) --  Open it if there are "errors", close it otherwise
 keymap("n", "<leader>qe", ":cw<CR>", opts) --  Go to the next error in the window
-keymap("n", "qn", ":cn<CR>", opts) -- Go to the previous error in the window
-keymap("n", "qp", ":cp<CR>", opts) -- Go to the first error in the next file
+keymap("n", "q]", ":cn<CR>", opts) -- Go to the previous error in the window
+keymap("n", "q[", ":cp<CR>", opts) -- Go to the first error in the next file
 keymap("n", "<leader>qf", ":cnf<CR>", opts) --Go to error under cursor (if cursor is in quickfix window)
 keymap("n", "<leader>q.", ":.cc<CR>", opts)
 
@@ -117,7 +108,7 @@ keymap("n", "<leader>q.", ":.cc<CR>", opts)
 keymap("n", "<leader>tm", '<cmd>lua require("driden.options").toggle_meta_chars()<CR>', opts)
 
 keymap("n", "<leader>pc", ":e ~/.config/nvim/init.lua<CR>", opts)
-keymap("n", "<leader>rr", ":source ~/.config/nvim/init.lua<CR>", opts)
+keymap("n", "<leader>rr", ":luafile ~/.config/nvim/init.lua<CR>", opts)
 
 keymap("n", "<leader>tt", ":lua require('driden.themes').set_next_theme()<CR>", opts)
 
@@ -136,3 +127,12 @@ vim.api.nvim_set_keymap(
   ,
   opts
 )
+
+-- Terminal --
+-- Better terminal navigation
+keymap("t", "<C-[>", "<C-\\><C-n>", term_opts)
+keymap("t", "<C-h>", "<C-\\><C-N><C-w>h", term_opts)
+keymap("t", "<C-j>", "<C-\\><C-N><C-w>j", term_opts)
+keymap("t", "<C-k>", "<C-\\><C-N><C-w>k", term_opts)
+keymap("t", "<C-l>", "<C-\\><C-N><C-w>l", term_opts)
+keymap("t", "<leader>tc", "<C-><C-n>:q<CR>", term_opts)

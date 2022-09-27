@@ -10,7 +10,7 @@ function M.setup()
     autoindent = true,
     backspace = "indent,eol,start",
     backup = false,
-    clipboard = "unnamedplus",
+    clipboard = "",
     cmdheight = 2,
     compatible = false,
     conceallevel = 2, -- so that `` is visible in markdown files
