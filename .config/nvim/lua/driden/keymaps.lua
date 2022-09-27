@@ -56,8 +56,8 @@ keymap("n", "Y", "y$", opts)
 keymap("x", "Y", "y$", opts)
 
 -- Paste from OS
-keymap("n", "<leader>p", "+p<CR>", opts)
-keymap("n", "<leader>y", "+y<CR>", opts)
+keymap("n", "<leader>p", '"+p<Crr', opts)
+keymap("n", "<leader>y", '"+y<CR>', opts)
 
 -- Tab
 keymap("n", "<leader>tn", ":tabNext<CR>", opts)
@@ -108,7 +108,7 @@ keymap("n", "<leader>q.", ":.cc<CR>", opts)
 keymap("n", "<leader>tm", '<cmd>lua require("driden.options").toggle_meta_chars()<CR>', opts)
 
 keymap("n", "<leader>pc", ":e ~/.config/nvim/init.lua<CR>", opts)
-keymap("n", "<leader>rr", ":luafile ~/.config/nvim/init.lua<CR>", opts)
+keymap("n", "<leader>rr", ":luafile ~/.config/nvim/init.lua<CR>", { noremap = true })
 
 keymap("n", "<leader>tt", ":lua require('driden.themes').set_next_theme()<CR>", opts)
 

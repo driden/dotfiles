@@ -318,12 +318,31 @@
 (use-package winum :config (winum-mode 1))
 (use-package js ;built-in
     :hook (js-mode . tree-sitter-mode))
+
+
 (use-package treemacs
   :defer t
   :init
   (with-eval-after-load 'winum
     (define-key winum-keymap (kbd "M-0") #'treemacs-select-window))
-   (treemacs-define-RET-action 'file-node-open #’treemacs-visit-node-ace)
+  :custom
+    (treemacs-RET-actions-config
+   '((treemacs-node-closed-state . lsp-treemacs-perform-ret-action)
+     (treemacs-node-open-state . lsp-treemacs-perform-ret-action)
+     (treemacs-lsp-treemacs-deps-closed-state . lsp-treemacs-deps--goto-element)
+     (treemacs-lsp-treemacs-deps-open-state . lsp-treemacs-deps--goto-element)
+     (treemacs-lsp-symbol-closed-state . lsp-treemacs-goto-symbol)
+     (treemacs-lsp-symbol-open-state . lsp-treemacs-goto-symbol)
+     (root-node-open . treemacs-toggle-node)
+     (root-node-closed . treemacs-toggle-node)
+     (dir-node-open . treemacs-toggle-node)
+     (dir-node-closed . treemacs-toggle-node)
+     (file-node-open . treemacs-visit-node-ace)
+     (file-node-closed . treemacs-visit-node-ace)
+     (tag-node-open . treemacs-toggle-node-prefer-tag-visit)
+     (tag-node-closed . treemacs-toggle-node-prefer-tag-visit)
+     (tag-node . treemacs-visit-node-default)))
+  ;(setq treemacs-RET-actions-confgi '(file-node-open #'treemacs-visit-node-ace))
   :config
   (progn
     (setq treemacs-collapse-dirs                   (if treemacs-python-executable 3 0)
@@ -491,6 +510,7 @@
                                         hybrid
                                         normal
                                         visual))
+
         (general-define-key
                 :keymaps 'vertico-map
 
@@ -613,8 +633,8 @@
         (current-theme 'ddn/current-theme))
                 (ddn/set-theme new-theme)))
 
-(setq ddn/current-theme 'modus-vivendi)
-(ddn/set-theme 'modus-vivendi)
+(setq ddn/current-theme 'doom-ayu-mirage)
+(ddn/set-theme 'doom-ayu-mirage)
 
 (use-package doom-modeline
   :ensure t
