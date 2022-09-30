@@ -43,10 +43,11 @@
 (set-fringe-mode 10)
 (global-auto-revert-mode 1)
 
-(cond ((or (eq system-type 'darwin) (eq system-type 'gnu/linux))
-             (set-face-attribute 'default nil :height 140 :font "Monaco"))
-            ((eq system-type 'windows-nt)
-             (set-face-attribute 'default nil :height 140 :font "Hack")))
+;(cond ((or (eq system-type 'darwin) (eq system-type 'gnu/linux))
+;             (set-face-attribute 'default nil :height 140 :font "Monaco"))
+;            ((eq system-type 'windows-nt)
+;             (set-face-attribute 'default nil :height 140 :font "Hack")))
+(set-face-attribute 'default nil :height 150 :font "Hack")
 ;; When opening a symlink that links to a file in a git repo, edit the file in the
 ;; git repo so we can use the Emacs vc features (like Diff) in the future
 (setq-default indent-tabs-mode nil)
