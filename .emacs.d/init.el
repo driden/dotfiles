@@ -1,6 +1,5 @@
 (setq lexical-binding t)
 ;; Todos
-;; * add Eval buffer/last sexp keymaps hooked into emacs-lisp-mode
 ;; * Yasnippets + org mode snippets
 
 ; Moving around in buffers
@@ -277,7 +276,7 @@
 (use-package evil-goggles
     :config
     (evil-goggles-mode)
-    (setq evil-goggles-duration 0.300) 
+    (setq evil-goggles-duration 0.075) 
     (evil-goggles-use-diff-faces))
 
 (use-package ripgrep)
@@ -287,6 +286,9 @@
    
 (use-package flycheck)
 (use-package company)
+(use-package company-quickhelp
+  :after company
+  :custom )
 (use-package editorconfig :hook ((typescript-mode . editorconfig-mode)
                                 (js-mode . editorconfig-mode)))
 
@@ -643,7 +645,13 @@
 
 (use-package beacon
   :diminish
-  :commands beacon-mode)
+  :commands beacon-mode
+  :config
+  (beacon-mode 1)
+  :custom
+  (beacon-blink-when-point-moves-vertically 10)
+  (beacon-blink-when-point-moves-vertically 10)
+  (beacon-color (face-attribute 'match :foreground)))
 
 (defun ddn/highlight-line ()
  (hl-line-mode t))
@@ -653,7 +661,10 @@
   (setq highlight-indent-guides-method 'bitmap)
   :hook
   ((prog-mode . highlight-indent-guides-mode)
-   (yaml-mode . highlight-indent-guides-mode)))
+   (Yaml-mode . highlight-indent-guides-mode)))
 
 (add-hook 'prog-mode-hook #'ddn/highlight-line)
 (add-hook 'js-mode-hook #'lsp-deferred)
+
+
+(use-package try)
