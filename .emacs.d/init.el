@@ -222,7 +222,8 @@
 ;         ("C-x C-b" . counsel-ibuffer)
 ;         ("C-x C-f" . counsel-find-file)
 ;         ("C-x b"   . counsel-switch-buffer))) 
-
+(setq-default indent-tabs-mode nil)
+(setq js-indent-level 2)
 ;; langs
 (use-package json-mode :hook (json-mode . flycheck-mode))
 (use-package haskell-mode)
@@ -285,10 +286,13 @@
  (projectile-mode +1))
    
 (use-package flycheck)
-(use-package company)
+(use-package company 
+  :bind 
+  :hook (prog-mode . company-mode))
+
 (use-package company-quickhelp
-  :after company
-  :custom )
+  :after company)
+
 (use-package editorconfig :hook ((typescript-mode . editorconfig-mode)
                                 (js-mode . editorconfig-mode)))
 
@@ -504,109 +508,7 @@
    ("<up>" (evil-window-decrease-height 3) "+")
    ("f" nil "done" :exit t))
 
-;; EL GENERALISIMO
-(use-package general
-    :demand t
-    :init
-        (setq general-override-states '(insert
-                                        emacs
-                                        hybrid
-                                        normal
-                                        visual))
 
-        (general-define-key
-                :keymaps 'vertico-map
-
-                "C-p"   'vertico-scroll-down
-                "C-u"   'vertico-scroll-up
-                "C-["   'vertico-exit
-                "C-p"   'vertico-previous
-                "C-n"   'vertico-next)
-        (general-define-key
-                :states '(normal motion visual)
-                :keymaps 'override
-
-                "C-l" 'evil-window-right
-                "C-h" 'evil-window-left
-                "C-j" 'evil-window-down
-                "C-k" 'evil-window-up
-                "H"   'next-buffer
-                "L"   'previous-buffer)
-
-        (general-define-key
-                :states '(normal)
-                :keymaps 'override
-                :prefix "SPC"
-                "s" 'avy-goto-char 
-                "S" 'avy-goto-char-2) 
-
-        (general-define-key
-                :states '(normal motion visual emacs)
-                :keymaps 'override
-                :prefix "C-x"
-                "h" 'previous-buffer
-                "l" 'next-buffer)
-
-        (general-define-key
-                :states '(normal insert)
-                :keymaps 'company-mode-map
-                "C-n" 'company-select-next
-                "C-p" 'company-select-previous
-                "TAB" 'company-complete-selection)
-
-            (general-define-key 
-                :states '(normal insert)
-                :keymaps 'lsp-mode-map
-
-                "C-SPC" '(completion-at-point))
-
-        (general-define-key 
-                :states '(normal)
-                :keymaps 'lsp-mode-map
-
-                "ga"    '(lsp-execute-code-action :whick-key "go to actions")
-                "gd"    '(lsp-find-definition :whick-key "go to definition")
-                "gD"    '(lsp-find-declaration :whick-key "go to declaration")
-                "gh"    '(nil :whick-key "go hover")
-                "gi"    '(lsp-goto-implementation :whick-key "go to implementation")
-                "gr"    '(lsp-find-references :whick-key "go to references"))
-
-        (general-define-key 
-                :states '(normal visual emacs)
-                :keymaps 'override
-                :prefix "SPC"
-                :global-prefix "C-SPC"
-
-                "b"  '(nil  :which-key "buffer")
-                "bi" '(ibuffer  :which-key "ibuffer")
-                "bk" '(kill-buffer  :which-key "kill buffer")
-                "c"  '(nil  :which-key "code")
-                "ca" '(lsp-execute-code-action  :which-key "code action")
-                "cr" '(lsp-rename  :which-key "rename symbol")
-                "cs" '(lsp  :which-key "lsp start")
-                "e"  '(nil  :which-key "explore")
-                "ee" '(treemacs  :which-key "explore project")
-                "f"  '(nil  :which-key "find")
-                "ff" '(find-file  :which-key "find file")
-                "g"  '(nil  :which-key "git")
-                "h"  '(nil  :which-key "help")
-                "ha" '(apropos  :which-key "apropos")
-                "hf" '(describe-function  :which-key "describe function")
-                "hk" '(describe-key  :which-key "describe key")
-                "hm" '(describe-mode  :which-key "describe mode")
-                "hs" '(describe-symbol  :which-key "describe symbol")
-                "hv" '(describe-variable  :which-key "describe variable")
-
-                "o"  '(nil :which-key "org")
-                "oc" '(nil :which-key "org-clock")
-                "oci"'(org-clock-in :which-key "org-clock-in")
-                "oco"'(org-clock-out :which-key "org-clock-out")
-                "p"  '(projectile-command-map :which-key "project")
-                "t"  '(nil  :which-key "toggle")
-                "tt" '(ddn/cycle-themes  :which-key "set next theme")
-                "w"  '(nil  :which-key "window")
-                "wc" '(evil-window-delete :which-key "close")
-                "wr" '(hydra-split-resizing/body :which-key "resize")))
 
 ;; THEMES
 (use-package doom-themes)
@@ -668,3 +570,106 @@
 
 
 (use-package try)
+
+;; EL GENERALISIMO
+(use-package general
+    :demand t
+    :init
+        (setq general-override-states '(insert
+                                        emacs
+                                        hybrid
+                                        normal
+                                        visual))
+
+        (general-define-key
+                :keymaps 'vertico-map
+
+                "C-p"   'vertico-scroll-down
+                "C-u"   'vertico-scroll-up
+                "C-["   'vertico-exit
+                "C-p"   'vertico-previous
+                "C-n"   'vertico-next)
+        (general-define-key
+                :states '(normal motion visual)
+                :keymaps 'override
+
+                "C-l" 'evil-window-right
+                "C-h" 'evil-window-left
+                "C-j" 'evil-window-down
+                "C-k" 'evil-window-up
+                "H"   'next-buffer
+                "L"   'previous-buffer)
+
+        (general-define-key
+                :states '(normal)
+                :keymaps 'override
+                :prefix "SPC"
+                "s" 'avy-goto-char 
+                "S" 'avy-goto-char-2) 
+
+        (general-define-key
+                :states '(normal motion visual emacs)
+                :keymaps 'override
+                :prefix "C-x"
+                "h" 'previous-buffer
+                "l" 'next-buffer)
+
+        ;; (general-define-key
+        ;;         :keymaps 'company-active-map
+        ;;         "C-n" 'company-select-next
+        ;;         "C-p" 'company-select-previous
+        ;;         "TAB" 'company-complete-selection)
+
+        (general-define-key 
+            :states '(normal insert)
+            :keymaps 'lsp-mode-map
+
+            "C-SPC" '(completion-at-point))
+
+        (general-define-key 
+                :states '(normal)
+                :keymaps 'lsp-mode-map
+
+                "ga"    '(lsp-execute-code-action :whick-key "go to actions")
+                "gd"    '(lsp-find-definition :whick-key "go to definition")
+                "gD"    '(lsp-find-declaration :whick-key "go to declaration")
+                "gh"    '(nil :whick-key "go hover")
+                "gi"    '(lsp-goto-implementation :whick-key "go to implementation")
+                "gr"    '(lsp-find-references :whick-key "go to references"))
+
+        (general-define-key 
+                :states '(normal visual emacs)
+                :keymaps 'override
+                :prefix "SPC"
+                :global-prefix "C-SPC"
+
+                "b"  '(nil  :which-key "buffer")
+                "bi" '(ibuffer  :which-key "ibuffer")
+                "bk" '(kill-buffer  :which-key "kill buffer")
+                "c"  '(nil  :which-key "code")
+                "ca" '(lsp-execute-code-action  :which-key "code action")
+                "cr" '(lsp-rename  :which-key "rename symbol")
+                "cs" '(lsp  :which-key "lsp start")
+                "e"  '(nil  :which-key "explore")
+                "ee" '(treemacs  :which-key "explore project")
+                "f"  '(nil  :which-key "find")
+                "ff" '(find-file  :which-key "find file")
+                "g"  '(nil  :which-key "git")
+                "h"  '(nil  :which-key "help")
+                "ha" '(apropos  :which-key "apropos")
+                "hf" '(describe-function  :which-key "describe function")
+                "hk" '(describe-key  :which-key "describe key")
+                "hm" '(describe-mode  :which-key "describe mode")
+                "hs" '(describe-symbol  :which-key "describe symbol")
+                "hv" '(describe-variable  :which-key "describe variable")
+
+                "o"  '(nil :which-key "org")
+                "oc" '(nil :which-key "org-clock")
+                "oci"'(org-clock-in :which-key "org-clock-in")
+                "oco"'(org-clock-out :which-key "org-clock-out")
+                "p"  '(projectile-command-map :which-key "project")
+                "t"  '(nil  :which-key "toggle")
+                "tt" '(ddn/cycle-themes  :which-key "set next theme")
+                "w"  '(nil  :which-key "window")
+                "wc" '(evil-window-delete :which-key "close")
+                "wr" '(hydra-split-resizing/body :which-key "resize")))
