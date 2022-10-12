@@ -287,7 +287,7 @@
    
 (use-package flycheck)
 (use-package company 
-  :bind 
+  :bind (:map company-active-map ("<tab>" . company-complete-selection))
   :hook (prog-mode . company-mode))
 
 (use-package company-quickhelp
