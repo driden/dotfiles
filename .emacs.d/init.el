@@ -108,7 +108,18 @@
   (evil-mode 1))
 
 ;;; ORG
-(use-package org :config (setq org-confirm-babel-evaluate nil))
+(use-package org
+  :config
+  (setq org-confirm-babel-evaluate nil)
+
+  (set-face-attribute 'org-document-title nil :weight 'bold :height 2.0)
+  (set-face-attribute 'org-level-1 nil :height 1.6)
+  (set-face-attribute 'org-level-2 nil :height 1.5)
+  (set-face-attribute 'org-level-3 nil :height 1.4)
+  (set-face-attribute 'org-level-4 nil :height 1.3)
+  (set-face-attribute 'org-level-5 nil :height 1.2)
+  (set-face-attribute 'org-level-6 nil :height 1.1)
+  )
 (use-package org-contrib :after org)
 (use-package org-evil :after (org evil))
 (use-package org-bullets
