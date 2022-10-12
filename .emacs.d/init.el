@@ -1,6 +1,4 @@
 (setq lexical-binding t)
-;; Todos
-;; * Yasnippets + org mode snippets
 
 ; Moving around in buffers
 ; 
@@ -107,36 +105,6 @@
   :config
   (evil-mode 1))
 
-;;; ORG
-(use-package org
-  :config
-  (setq org-confirm-babel-evaluate nil)
-
-  (set-face-attribute 'org-document-title nil :weight 'bold :height 2.0)
-  (set-face-attribute 'org-level-1 nil :height 1.6)
-  (set-face-attribute 'org-level-2 nil :height 1.5)
-  (set-face-attribute 'org-level-3 nil :height 1.4)
-  (set-face-attribute 'org-level-4 nil :height 1.3)
-  (set-face-attribute 'org-level-5 nil :height 1.2)
-  (set-face-attribute 'org-level-6 nil :height 1.1)
-  )
-(use-package org-contrib :after org)
-(use-package org-evil :after (org evil))
-(use-package org-bullets
-  :after org
-  :hook (org-mode . org-bullets-mode)
-  :custom
-  (org-bullets-bullet-list '("◉" "○" "●" "○" "●" "○" "●")))
-
-
-(defun ddn/org-mode-visual-fill ()
-  (setq visual-fill-column-width 100
-        visual-fill-column-center-text t)
-  (visual-fill-column-mode 1))
-
-(use-package visual-fill-column
-  :hook (org-mode . ddn/org-mode-visual-fill))
-
 ;;; PATH
 (use-package exec-path-from-shell :config (exec-path-from-shell-initialize))
 
@@ -199,40 +167,7 @@
         completion-category-overrides '((file (styles partial-completion))))
 
 (use-package marginalia :config (marginalia-mode))
-; Completions
-;(use-package ivy
-;  :diminish
-;  :bind (("C-s" . swiper)
-;         :map ivy-minibuffer-map
-;         ("TAB" . ivy-alt-done)     
-;         ("C-l" . ivy-alt-done)
-;         ("C-j" . ivy-next-line)
-;         ("C-k" . ivy-previous-line)
-;         :map ivy-switch-buffer-map
-;         ("C-k" . ivy-previous-line)
-;         ("C-l" . ivy-done)
-;         ("C-d" . ivy-switch-buffer-kill)
-;         :map ivy-reverse-i-search-map
-;         ("C-k" . ivy-previous-line)
-;         ("C-d" . ivy-reverse-i-search-kill))
-;  :config
-;        (ivy-mode 1)
-;        (setq vy-initial-inputs-alist nil)
-;        (setq ivy-re-builders-alist '((t . ivy--regex-fuzzy))))
-;
-;(use-package ivy-rich
-;    :after (ivy)
-;    :init
-;    (setq ivy-rich-path-style 'abbrev
-;                ivy-virtual-abbreviate 'full)
-;  :config
-;        (ivy-rich-mode 1))
-;
-;(use-package counsel
-;  :bind (("M-x"    . counsel-M-x)
-;         ("C-x C-b" . counsel-ibuffer)
-;         ("C-x C-f" . counsel-find-file)
-;         ("C-x b"   . counsel-switch-buffer))) 
+
 (setq-default indent-tabs-mode nil)
 (setq js-indent-level 2)
 ;; langs
@@ -296,13 +231,23 @@
  :init
  (projectile-mode +1))
    
-(use-package flycheck)
+(use-package flycheck
+  :custom
+  (flycheck-indication-mode nil)
+  (flycheck-highlighting-mode 'lines))
+
 (use-package company 
   :bind (:map company-active-map ("<tab>" . company-complete-selection))
   :hook (prog-mode . company-mode))
 
 (use-package company-quickhelp
   :after company)
+
+(use-package company-box
+  :after company
+  :config
+  :hook
+  (company-mode . company-box-mode))
 
 (use-package editorconfig :hook ((typescript-mode . editorconfig-mode)
                                 (js-mode . editorconfig-mode)))
@@ -559,11 +504,9 @@
 (use-package beacon
   :diminish
   :commands beacon-mode
-  :config
+  :init
   (beacon-mode 1)
   :custom
-  (beacon-blink-when-point-moves-vertically 10)
-  (beacon-blink-when-point-moves-vertically 10)
   (beacon-color (face-attribute 'match :foreground)))
 
 (defun ddn/highlight-line ()
@@ -581,6 +524,44 @@
 
 
 (use-package try)
+
+(use-package yasnippet
+  :config
+  (yas-reload-all)
+  (yas-global-mode 1))
+
+;; install useful snippets
+(use-package yasnippet-snippets
+  :after yasnippet)
+
+;;; ORG
+(use-package org
+  :config
+  (setq org-confirm-babel-evaluate nil)
+  (set-face-attribute 'org-level-1 nil :height 1.6)
+  (set-face-attribute 'org-level-2 nil :height 1.5)
+  (set-face-attribute 'org-level-3 nil :height 1.4)
+  (set-face-attribute 'org-level-4 nil :height 1.3)
+  (set-face-attribute 'org-level-5 nil :height 1.2)
+  (set-face-attribute 'org-level-6 nil :height 1.1)
+  (set-face-attribute 'org-document-title nil :height 2.0 :weight 'bold))
+
+(use-package org-contrib :after org)
+(use-package org-evil :after (org evil))
+(use-package org-bullets
+  :after org
+  :hook (org-mode . org-bullets-mode)
+  :custom
+  (org-bullets-bullet-list '("◉" "○" "●" "○" "●" "○" "●")))
+
+
+(defun ddn/org-mode-visual-fill ()
+  (setq visual-fill-column-width 100
+        visual-fill-column-center-text t)
+  (visual-fill-column-mode 1))
+
+(use-package visual-fill-column
+  :hook (org-mode . ddn/org-mode-visual-fill))
 
 ;; EL GENERALISIMO
 (use-package general
