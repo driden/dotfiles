@@ -494,8 +494,8 @@
         (current-theme 'ddn/current-theme))
                 (ddn/set-theme new-theme)))
 
-(setq ddn/current-theme 'doom-ayu-mirage)
-(ddn/set-theme 'doom-ayu-mirage)
+(defvar ddn/current-theme 'doom-rouge "Current set theme")
+(ddn/set-theme ddn/current-theme)
 
 (use-package doom-modeline
   :ensure t
@@ -509,8 +509,7 @@
   :custom
   (beacon-color (face-attribute 'match :foreground)))
 
-(defun ddn/highlight-line ()
- (hl-line-mode t))
+(defun ddn/highlight-line () (hl-line-mode t))
 
 (use-package highlight-indent-guides
   :config
