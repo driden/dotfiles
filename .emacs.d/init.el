@@ -139,6 +139,12 @@
 (use-package vertico
   :config
     (vertico-mode))
+(use-package vertico-posframe
+  :after vertico
+  :config
+   (setq vertico-posframe-parameters '((left-fringe . 10) (right-fringe . 10)))
+  (vertico-posframe-mode 1))
+
 
 (use-package consult
   :after vertico
