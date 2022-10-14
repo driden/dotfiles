@@ -183,7 +183,6 @@
 (setq-default indent-tabs-mode nil)
 (setq js-indent-level 2)
 ;; langs
-(add-hook 'js-mode-hook #'lsp-deferred)
 (use-package json-mode :hook (json-mode . flycheck-mode))
 (use-package haskell-mode)
 (use-package lua-mode)
@@ -285,6 +284,8 @@
   (lsp-enable-which-key-integration t)
   (setq lsp-file-watch-threshold 4000)
   :commands (lsp lsp-deferred))
+
+(add-hook 'js-mode-hook #'lsp-deferred)
 
 (use-package dap-mode :after lsp-mode :config (dap-auto-configure-mode))
 (use-package groovy-mode
