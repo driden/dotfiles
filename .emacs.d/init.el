@@ -25,6 +25,8 @@
 ;  M->  End of buffer  
 
 (defalias 'yes-or-no-p 'y-or-n-p)
+    (setq backup-directory-alist
+          `(("." . ,(concat user-emacs-directory "backups"))))
 (setq make-backup-files nil)
 (setq custom-file (if (eq system-type 'windows-nt)
             (concat (getenv "APPDATA") "\\.emacs.d\\custom.el")
