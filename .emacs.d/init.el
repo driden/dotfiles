@@ -505,9 +505,10 @@
 (defvar ddn/current-theme 'doom-rouge "Current set theme")
 (ddn/set-theme ddn/current-theme)
 
-(use-package doom-modeline
-  :ensure t
-  :hook (after-init . doom-modeline-mode))
+(unless (ddn/on-windows)
+        (use-package doom-modeline
+          :ensure t
+          :hook (after-init . doom-modeline-mode)))
 
 (use-package beacon
   :diminish
@@ -569,6 +570,8 @@
 
 (use-package visual-fill-column
   :hook (org-mode . ddn/org-mode-visual-fill))
+
+(defun ddn/on-windows () (eq system-type 'windows-nt))
 
 ;; EL GENERALISIMO
 (use-package general
