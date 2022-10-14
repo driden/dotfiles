@@ -29,12 +29,12 @@
           `(("." . ,(concat user-emacs-directory "backups"))))
 (setq make-backup-files nil)
 (setq custom-file (if (eq system-type 'windows-nt)
-            (concat (getenv "APPDATA") "\\.emacs.d\\custom.el")
-            "~/.emacs.d/custom.el"))
+                      (concat (getenv "APPDATA") "\\.emacs.d\\custom.el")
+                    "~/.emacs.d/custom.el"))
 (load custom-file)
 
 (if (eq system-type 'darwin)
-         (setq mac-command-modifier 'meta))
+    (setq mac-command-modifier 'meta))
 (scroll-bar-mode -1)
 (tool-bar-mode -1)
 (tooltip-mode -1)
@@ -42,10 +42,10 @@
 (set-fringe-mode 10)
 (global-auto-revert-mode 1)
 
-;(cond ((or (eq system-type 'darwin) (eq system-type 'gnu/linux))
-;             (set-face-attribute 'default nil :height 140 :font "Monaco"))
-;            ((eq system-type 'windows-nt)
-;             (set-face-attribute 'default nil :height 140 :font "Hack")))
+                                        ;(cond ((or (eq system-type 'darwin) (eq system-type 'gnu/linux))
+                                        ;             (set-face-attribute 'default nil :height 140 :font "Monaco"))
+                                        ;            ((eq system-type 'windows-nt)
+                                        ;             (set-face-attribute 'default nil :height 140 :font "Hack")))
 (set-face-attribute 'default nil :height 150 :font "Hack")
 ;; When opening a symlink that links to a file in a git repo, edit the file in the
 ;; git repo so we can use the Emacs vc features (like Diff) in the future
@@ -55,12 +55,12 @@
 
 (setq vc-follow-symlinks t)
 (setq
-      dired-auto-revert-buffer t
-      create-lockfiles nil
-      make-backup-files nil
-      create-lockfiles nil
-      visible-bell nil
-      ring-bell-function 'ignore)
+ dired-auto-revert-buffer t
+ create-lockfiles nil
+ make-backup-files nil
+ create-lockfiles nil
+ visible-bell nil
+ ring-bell-function 'ignore)
 
 (setq gc-cons-threshold (* 100 1024 1024)
       read-process-output-max (* 1024 1024))
@@ -107,8 +107,11 @@
   :config
   (evil-mode 1))
 
+
 ;;; PATH
-(use-package exec-path-from-shell :config (exec-path-from-shell-initialize))
+;; (unless (eq system-type 'windows-nt)
+;;     (use-package exec-path-from-shell :config (exec-path-from-shell-initialize)))
+(use-package vterm)
 
 ;;; Line numbers
 (defun ddn/line-numbers ()
@@ -116,7 +119,7 @@
   (setq global-display-line-numbers-mode t
         display-line-numbers 'relative))
 
-; Line Numbers
+                                        ; Line Numbers
 (setq global-display-line-numbers-mode t
       display-line-numbers 'relative)
 (add-hook 'prog-mode-hook 'ddn/line-numbers)
@@ -135,21 +138,30 @@
 
 (use-package ace-window
   :init 
-    (setq aw-keys '(?A ?S ?D ?F ?Q ?W ?R ?Z ?X))
+  (setq aw-keys '(?A ?S ?D ?F ?Q ?W ?R ?Z ?X))
 
   )
 (use-package vertico
   :config
-    (vertico-mode))
+  (vertico-mode))
+(use-package vertico-posframe
+  :after vertico
+  :config
+  (setq vertico-posframe-parameters '((line-spacing . 7)
+                                      (border-width . 3)
+                                      (left-fringe . 10)
+                                      (right-fringe . 10)))
+  (vertico-posframe-mode 1))
+
 
 (use-package consult
   :after vertico
   :config
-    (setq consult-narrow-key "<")
+  (setq consult-narrow-key "<")
   :hook
-    (completion-list-mode . consult-preview-at-point-mode)
-    :init
-      ;; `consult-register-store' and the Emacs built-ins.
+  (completion-list-mode . consult-preview-at-point-mode)
+  :init
+  ;; `consult-register-store' and the Emacs built-ins.
   (setq register-preview-delay 0.5
         register-preview-function #'consult-register-format)
 
@@ -164,9 +176,9 @@
 
 (use-package orderless
   :config
-   (setq completion-styles '(orderless basic))
-        completion-category-defaults nil
-        completion-category-overrides '((file (styles partial-completion))))
+  (setq completion-styles '(orderless basic))
+  completion-category-defaults nil
+  completion-category-overrides '((file (styles partial-completion))))
 
 (use-package marginalia :config (marginalia-mode))
 
@@ -186,7 +198,7 @@
 
 ;;; https://vxlabs.com/2022/06/12/typescript-development-with-emacs-tree-sitter-and-lsp-in-2022/
 (use-package typescript-mode
-    :hook (typescript-mode . lsp-deferred)
+  :hook (typescript-mode . lsp-deferred)
   :config
   ;; we choose this instead of tsx-mode so that eglot can automatically figure out language for server
   ;; see https://github.com/joaotavora/eglot/issues/624 and https://github.com/joaotavora/eglot#handling-quirky-servers
@@ -223,16 +235,16 @@
   :config (evil-collection-init))
 
 (use-package evil-goggles
-    :config
-    (evil-goggles-mode)
-    (setq evil-goggles-duration 0.075) 
-    (evil-goggles-use-diff-faces))
+  :config
+  (evil-goggles-mode)
+  (setq evil-goggles-duration 0.075) 
+  (evil-goggles-use-diff-faces))
 
 (use-package ripgrep)
 (use-package projectile
- :init
- (projectile-mode +1))
-   
+  :init
+  (projectile-mode +1))
+
 (use-package flycheck
   :custom
   (flycheck-indication-mode nil)
@@ -252,37 +264,39 @@
   (company-mode . company-box-mode))
 
 (use-package editorconfig :hook ((typescript-mode . editorconfig-mode)
-                                (js-mode . editorconfig-mode)))
+                                 (js-mode . editorconfig-mode)))
 
 (use-package tree-sitter
-	:config (global-tree-sitter-mode)
+  :config (global-tree-sitter-mode)
   :hook (tree-sitter-mode . tree-sitter-hl-mode))
 
 (use-package tree-sitter-langs
-    :after tree-sitter)
+  :after tree-sitter)
 
 (use-package all-the-icons
   :if (display-graphic-p))
 
 (use-package lsp-mode
   :init
-      (setq lsp-keymap-prefix "C-c l"
-            lsp-enable-symbol-highlighting nil
-            lsp-signature-doc-lines 5
-            lsp-idle-delay 0.5)
+  (setq lsp-keymap-prefix "C-c l"
+        lsp-enable-symbol-highlighting nil
+        lsp-signature-doc-lines 5
+        lsp-idle-delay 0.5)
   :config
-      (lsp-enable-which-key-integration t)
-      (setq lsp-file-watch-threshold 4000)
+  (lsp-enable-which-key-integration t)
+  (setq lsp-file-watch-threshold 4000)
   :commands (lsp lsp-deferred))
+
+(add-hook 'js-mode-hook #'lsp-deferred)
 
 (use-package dap-mode :after lsp-mode :config (dap-auto-configure-mode))
 (use-package groovy-mode
-    :config
-    (add-to-list 'auto-mode-alist '("\\.gradle\\'" . groovy-mode)))
+  :config
+  (add-to-list 'auto-mode-alist '("\\.gradle\\'" . groovy-mode)))
 
 (use-package winum :config (winum-mode 1))
 (use-package js ;built-in
-    :hook (js-mode . tree-sitter-mode))
+  :hook (js-mode . tree-sitter-mode))
 
 
 (use-package treemacs
@@ -291,7 +305,7 @@
   (with-eval-after-load 'winum
     (define-key winum-keymap (kbd "M-0") #'treemacs-select-window))
   :custom
-    (treemacs-RET-actions-config
+  (treemacs-RET-actions-config
    '((treemacs-node-closed-state . lsp-treemacs-perform-ret-action)
      (treemacs-node-open-state . lsp-treemacs-perform-ret-action)
      (treemacs-lsp-treemacs-deps-closed-state . lsp-treemacs-deps--goto-element)
@@ -307,7 +321,7 @@
      (tag-node-open . treemacs-toggle-node-prefer-tag-visit)
      (tag-node-closed . treemacs-toggle-node-prefer-tag-visit)
      (tag-node . treemacs-visit-node-default)))
-  ;(setq treemacs-RET-actions-confgi '(file-node-open #'treemacs-visit-node-ace))
+                                        ;(setq treemacs-RET-actions-confgi '(file-node-open #'treemacs-visit-node-ace))
   :config
   (progn
     (setq treemacs-collapse-dirs                   (if treemacs-python-executable 3 0)
@@ -435,21 +449,21 @@
   :config
   (let ((lombok-path "/Users/lrrezend/.gradle/caches/modules-2/files-2.1/org.projectlombok/lombok/1.18.24/13a394eed5c4f9efb2a6d956e2086f1d81e857d9/lombok-1.18.24.jar"))
     (setq lsp-java-vmargs  '("-noverify"
-                 "-Xmx1G"
-                 "-XX:+UseG1GC"
-                 "-XX:+UseStringDeduplication"
-                 "-javaagent:/Users/lrrezend/.gradle/caches/modules-2/files-2.1/org.projectlombok/lombok/1.18.24/13a394eed5c4f9efb2a6d956e2086f1d81e857d9/lombok-1.18.24.jar"
-                 "-Xbootclasspath/a:/Users/lrrezend/.gradle/caches/modules-2/files-2.1/org.projectlombok/lombok/1.18.24/13a394eed5c4f9efb2a6d956e2086f1d81e857d9/lombok-1.18.24.jar")))
+                             "-Xmx1G"
+                             "-XX:+UseG1GC"
+                             "-XX:+UseStringDeduplication"
+                             "-javaagent:/Users/lrrezend/.gradle/caches/modules-2/files-2.1/org.projectlombok/lombok/1.18.24/13a394eed5c4f9efb2a6d956e2086f1d81e857d9/lombok-1.18.24.jar"
+                             "-Xbootclasspath/a:/Users/lrrezend/.gradle/caches/modules-2/files-2.1/org.projectlombok/lombok/1.18.24/13a394eed5c4f9efb2a6d956e2086f1d81e857d9/lombok-1.18.24.jar")))
 
   (setq dap-java-use-testng t)
   (dap-register-debug-template "DEV"
-                             (list :type "java"
-                                   :request "launch"
-                                   :args ""
-                                   :vmArgs ddn/jvm-args
-                                   :projectName "myapp"
-                                   :mainClass "com.domain.AppRunner"
-                                   :env test-args)))
+                               (list :type "java"
+                                     :request "launch"
+                                     :args ""
+                                     :vmArgs ddn/jvm-args
+                                     :projectName "myapp"
+                                     :mainClass "com.domain.AppRunner"
+                                     :env test-args)))
 
 (defvar test-args '())
 (defvar ddn/jvm-args  "-ea -DENV=dev -DsocksProxyHost=localhost -DsocksProxyPort=5001 -DREGION=us-east-1")
@@ -460,11 +474,11 @@
 (defhydra hydra-split-resizing (:timeout 4)
   "Split resize function for hydra"
 
-   ("<left>" (evil-window-decrease-width 5) "<")
-   ("<right>" (evil-window-increase-width 5) ">")
-   ("<down>" (evil-window-increase-height 3) "-")
-   ("<up>" (evil-window-decrease-height 3) "+")
-   ("f" nil "done" :exit t))
+  ("<left>" (evil-window-decrease-width 5) "<")
+  ("<right>" (evil-window-increase-width 5) ">")
+  ("<down>" (evil-window-increase-height 3) "-")
+  ("<up>" (evil-window-decrease-height 3) "+")
+  ("f" nil "done" :exit t))
 
 
 
@@ -475,33 +489,36 @@
 (defun ddn/next-theme ()
   "Get the next valid theme from the list."
   (let* ((themes-list   ddn/available-themes)
-                 (start-theme   ddn/current-theme)
+         (start-theme   ddn/current-theme)
          (current-theme ddn/current-theme))
 
-                (setq current-theme
-                        (nth (mod (1+ (cl-position current-theme themes-list))
-                                            (length themes-list))
-                                    themes-list))
-   current-theme))
+    (setq current-theme
+          (nth (mod (1+ (cl-position current-theme themes-list))
+                    (length themes-list))
+               themes-list))
+    current-theme))
 
 (defun ddn/set-theme (theme)
-        (disable-theme ddn/current-theme)
-        (setq ddn/current-theme theme)(message "%s" theme)
-    (load-theme theme t))
+  (disable-theme ddn/current-theme)
+  (setq ddn/current-theme theme)(message "%s" theme)
+  (load-theme theme t))
 
 (defun ddn/cycle-themes ()
   "Cycle to the next theme."
   (interactive)
   (let ((new-theme (ddn/next-theme))
         (current-theme 'ddn/current-theme))
-                (ddn/set-theme new-theme)))
+    (ddn/set-theme new-theme)))
 
-(defvar ddn/current-theme 'doom-rouge "Current set theme")
+(defvar ddn/current-theme 'doom-tomorrow-day "Current set theme")
 (ddn/set-theme ddn/current-theme)
 
-(use-package doom-modeline
-  :ensure t
-  :hook (after-init . doom-modeline-mode))
+(defun ddn/on-windows () (eq system-type 'windows-nt))
+
+(unless (ddn/on-windows)
+  (use-package doom-modeline
+    :ensure t
+    :hook (after-init . doom-modeline-mode)))
 
 (use-package beacon
   :diminish
@@ -512,16 +529,13 @@
   (beacon-color (face-attribute 'match :foreground)))
 
 (defun ddn/highlight-line () (hl-line-mode t))
-
+(defun ddn/toggle-indent-guideline  ()
+  "Toggle showing indentation guidelines"
+  (interactive)
+  (highlight-indent-guides-mode 'toggle))
 (use-package highlight-indent-guides
   :config
-  (setq highlight-indent-guides-method 'bitmap)
-  :hook
-  ((prog-mode . highlight-indent-guides-mode)
-   (Yaml-mode . highlight-indent-guides-mode)))
-
-(add-hook 'prog-mode-hook #'ddn/highlight-line)
-(add-hook 'js-mode-hook #'lsp-deferred)
+  (setq highlight-indent-guides-method 'character))
 
 
 (use-package try)
@@ -566,103 +580,98 @@
 
 ;; EL GENERALISIMO
 (use-package general
-    :demand t
-    :init
-        (setq general-override-states '(insert
-                                        emacs
-                                        hybrid
-                                        normal
-                                        visual))
+  :demand t
+  :init
+  (setq general-override-states '(insert
+                                  emacs
+                                  hybrid
+                                  normal
+                                  visual))
 
-        (general-define-key
-                :keymaps 'vertico-map
+  (general-define-key
+   :keymaps 'vertico-map
 
-                "C-p"   'vertico-scroll-down
-                "C-u"   'vertico-scroll-up
-                "C-["   'vertico-exit
-                "C-p"   'vertico-previous
-                "C-n"   'vertico-next)
-        (general-define-key
-                :states '(normal motion visual)
-                :keymaps 'override
+   "C-p"   'vertico-scroll-down
+   "C-u"   'vertico-scroll-up
+   "C-["   'vertico-exit
+   "C-p"   'vertico-previous
+   "C-n"   'vertico-next)
+  (general-define-key
+   :states '(normal motion visual)
+   :keymaps 'override
 
-                "C-l" 'evil-window-right
-                "C-h" 'evil-window-left
-                "C-j" 'evil-window-down
-                "C-k" 'evil-window-up
-                "H"   'next-buffer
-                "L"   'previous-buffer)
+   "C-l" 'evil-window-right
+   "C-h" 'evil-window-left
+   "C-j" 'evil-window-down
+   "C-k" 'evil-window-up
+   "H"   'next-buffer
+   "L"   'previous-buffer)
 
-        (general-define-key
-                :states '(normal)
-                :keymaps 'override
-                :prefix "SPC"
-                "s" 'avy-goto-char 
-                "S" 'avy-goto-char-2) 
+  (general-define-key
+   :states '(normal)
+   :keymaps 'override
+   :prefix "SPC"
+   "s" 'avy-goto-char 
+   "S" 'avy-goto-char-2) 
 
-        (general-define-key
-                :states '(normal motion visual emacs)
-                :keymaps 'override
-                :prefix "C-x"
-                "h" 'previous-buffer
-                "l" 'next-buffer)
+  (general-define-key
+   :states '(normal motion visual emacs)
+   :keymaps 'override
+   :prefix "C-x"
+   "h" 'previous-buffer
+   "l" 'next-buffer)
 
-        ;; (general-define-key
-        ;;         :keymaps 'company-active-map
-        ;;         "C-n" 'company-select-next
-        ;;         "C-p" 'company-select-previous
-        ;;         "TAB" 'company-complete-selection)
+  (general-define-key 
+   :states '(normal insert)
+   :keymaps 'lsp-mode-map
 
-        (general-define-key 
-            :states '(normal insert)
-            :keymaps 'lsp-mode-map
+   "C-SPC" '(completion-at-point))
 
-            "C-SPC" '(completion-at-point))
+  (general-define-key 
+   :states '(normal)
+   :keymaps 'lsp-mode-map
 
-        (general-define-key 
-                :states '(normal)
-                :keymaps 'lsp-mode-map
+   "ga"    '(lsp-execute-code-action :whick-key "go to actions")
+   "gd"    '(lsp-find-definition :whick-key "go to definition")
+   "gD"    '(lsp-find-declaration :whick-key "go to declaration")
+   "gh"    '(nil :whick-key "go hover")
+   "gi"    '(lsp-goto-implementation :whick-key "go to implementation")
+   "gr"    '(lsp-find-references :whick-key "go to references"))
 
-                "ga"    '(lsp-execute-code-action :whick-key "go to actions")
-                "gd"    '(lsp-find-definition :whick-key "go to definition")
-                "gD"    '(lsp-find-declaration :whick-key "go to declaration")
-                "gh"    '(nil :whick-key "go hover")
-                "gi"    '(lsp-goto-implementation :whick-key "go to implementation")
-                "gr"    '(lsp-find-references :whick-key "go to references"))
+  (general-define-key 
+   :states '(normal visual emacs)
+   :keymaps 'override
+   :prefix "SPC"
+   :global-prefix "C-SPC"
 
-        (general-define-key 
-                :states '(normal visual emacs)
-                :keymaps 'override
-                :prefix "SPC"
-                :global-prefix "C-SPC"
+   "b"  '(nil  :which-key "buffer")
+   "bi" '(ibuffer  :which-key "ibuffer")
+   "bk" '(kill-buffer  :which-key "kill buffer")
+   "c"  '(nil  :which-key "code")
+   "ca" '(lsp-execute-code-action  :which-key "code action")
+   "cr" '(lsp-rename  :which-key "rename symbol")
+   "cs" '(lsp  :which-key "lsp start")
+   "e"  '(nil  :which-key "explore")
+   "ee" '(treemacs  :which-key "explore project")
+   "f"  '(nil  :which-key "find")
+   "ff" '(find-file  :which-key "find file")
+   "g"  '(nil  :which-key "git")
+   "h"  '(nil  :which-key "help")
+   "ha" '(apropos  :which-key "apropos")
+   "hf" '(describe-function  :which-key "describe function")
+   "hk" '(describe-key  :which-key "describe key")
+   "hm" '(describe-mode  :which-key "describe mode")
+   "hs" '(describe-symbol  :which-key "describe symbol")
+   "hv" '(describe-variable  :which-key "describe variable")
 
-                "b"  '(nil  :which-key "buffer")
-                "bi" '(ibuffer  :which-key "ibuffer")
-                "bk" '(kill-buffer  :which-key "kill buffer")
-                "c"  '(nil  :which-key "code")
-                "ca" '(lsp-execute-code-action  :which-key "code action")
-                "cr" '(lsp-rename  :which-key "rename symbol")
-                "cs" '(lsp  :which-key "lsp start")
-                "e"  '(nil  :which-key "explore")
-                "ee" '(treemacs  :which-key "explore project")
-                "f"  '(nil  :which-key "find")
-                "ff" '(find-file  :which-key "find file")
-                "g"  '(nil  :which-key "git")
-                "h"  '(nil  :which-key "help")
-                "ha" '(apropos  :which-key "apropos")
-                "hf" '(describe-function  :which-key "describe function")
-                "hk" '(describe-key  :which-key "describe key")
-                "hm" '(describe-mode  :which-key "describe mode")
-                "hs" '(describe-symbol  :which-key "describe symbol")
-                "hv" '(describe-variable  :which-key "describe variable")
-
-                "o"  '(nil :which-key "org")
-                "oc" '(nil :which-key "org-clock")
-                "oci"'(org-clock-in :which-key "org-clock-in")
-                "oco"'(org-clock-out :which-key "org-clock-out")
-                "p"  '(projectile-command-map :which-key "project")
-                "t"  '(nil  :which-key "toggle")
-                "tt" '(ddn/cycle-themes  :which-key "set next theme")
-                "w"  '(nil  :which-key "window")
-                "wc" '(evil-window-delete :which-key "close")
-                "wr" '(hydra-split-resizing/body :which-key "resize")))
+   "o"  '(nil :which-key "org")
+   "oc" '(nil :which-key "org-clock")
+   "oci"'(org-clock-in :which-key "org-clock-in")
+   "oco"'(org-clock-out :which-key "org-clock-out")
+   "p"  '(projectile-command-map :which-key "project")
+   "t"  '(nil  :which-key "toggle")
+   "ti" '(ddn/toggle-indent-guideline  :which-key "Toggle indentation guides")
+   "tt" '(ddn/cycle-themes  :which-key "set next theme")
+   "w"  '(nil  :which-key "window")
+   "wc" '(evil-window-delete :which-key "close")
+   "wr" '(hydra-split-resizing/body :which-key "resize")))
