@@ -107,8 +107,9 @@
 
 
 ;;; PATH
-(unless (eq system-type 'windows-nt)
-    (use-package exec-path-from-shell :config (exec-path-from-shell-initialize)))
+;; (unless (eq system-type 'windows-nt)
+;;     (use-package exec-path-from-shell :config (exec-path-from-shell-initialize)))
+(use-package vterm)
 
 ;;; Line numbers
 (defun ddn/line-numbers ()
@@ -502,7 +503,7 @@
         (current-theme 'ddn/current-theme))
                 (ddn/set-theme new-theme)))
 
-(defvar ddn/current-theme 'doom-rouge "Current set theme")
+(defvar ddn/current-theme 'doom-snazzy "Current set theme")
 (ddn/set-theme ddn/current-theme)
 
 (defun ddn/on-windows () (eq system-type 'windows-nt))
@@ -615,12 +616,6 @@
                 :prefix "C-x"
                 "h" 'previous-buffer
                 "l" 'next-buffer)
-
-        ;; (general-define-key
-        ;;         :keymaps 'company-active-map
-        ;;         "C-n" 'company-select-next
-        ;;         "C-p" 'company-select-previous
-        ;;         "TAB" 'company-complete-selection)
 
         (general-define-key 
             :states '(normal insert)
