@@ -505,6 +505,8 @@
 (defvar ddn/current-theme 'doom-rouge "Current set theme")
 (ddn/set-theme ddn/current-theme)
 
+(defun ddn/on-windows () (eq system-type 'windows-nt))
+
 (unless (ddn/on-windows)
         (use-package doom-modeline
           :ensure t
@@ -570,8 +572,6 @@
 
 (use-package visual-fill-column
   :hook (org-mode . ddn/org-mode-visual-fill))
-
-(defun ddn/on-windows () (eq system-type 'windows-nt))
 
 ;; EL GENERALISIMO
 (use-package general
