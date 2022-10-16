@@ -109,8 +109,8 @@
 
 
 ;;; PATH
-;; (unless (eq system-type 'windows-nt)
-;;     (use-package exec-path-from-shell :config (exec-path-from-shell-initialize)))
+(unless (eq system-type 'windows-nt)
+    (use-package exec-path-from-shell :config (exec-path-from-shell-initialize)))
 (use-package vterm)
 
 ;;; Line numbers
