@@ -1,4 +1,4 @@
-(setq lexical-binding t)
+;; -*- lexical-binding: t; -*-
 
 ; Moving around in buffers
 ; 
@@ -132,7 +132,8 @@
                 eshell-mode-hook))
   (add-hook mode (lambda () (display-line-numbers-mode 0))))
 
-(use-package pdf-tools)
+(use-package pdf-tools
+  :defer t)
 
 (use-package avy)
 
@@ -185,19 +186,21 @@
 (setq-default indent-tabs-mode nil)
 (setq js-indent-level 2)
 ;; langs
-(use-package json-mode :hook (json-mode . flycheck-mode))
-(use-package haskell-mode)
-(use-package lua-mode)
-(use-package yaml-mode
+(use-package json-mode :defer t :hook (json-mode . flycheck-mode))
+(use-package haskell-mode :defer t)
+(use-package lua-mode :defer t)
+(use-package yaml-mode :defer t
   :hook (yaml-mode . ddn/highlight-line))
 
 (use-package terraform-mode
+  :defer t
   :hook
   ((terraform-mode . lsp-deferred)
    (terraform-mode . tree-sitter-hl-mode)))
 
 ;;; https://vxlabs.com/2022/06/12/typescript-development-with-emacs-tree-sitter-and-lsp-in-2022/
 (use-package typescript-mode
+  :defer t
   :hook (typescript-mode . lsp-deferred)
   :config
   ;; we choose this instead of tsx-mode so that eglot can automatically figure out language for server
@@ -263,10 +266,13 @@
   :hook
   (company-mode . company-box-mode))
 
-(use-package editorconfig :hook ((typescript-mode . editorconfig-mode)
-                                 (js-mode . editorconfig-mode)))
+(use-package editorconfig
+  :defer t
+  :hook ((typescript-mode . editorconfig-mode)
+         (js-mode . editorconfig-mode)))
 
 (use-package tree-sitter
+  :defer t
   :config (global-tree-sitter-mode)
   :hook (tree-sitter-mode . tree-sitter-hl-mode))
 
@@ -277,6 +283,7 @@
   :if (display-graphic-p))
 
 (use-package lsp-mode
+  :defer t
   :init
   (setq lsp-keymap-prefix "C-c l"
         lsp-enable-symbol-highlighting nil
@@ -289,15 +296,19 @@
 
 (add-hook 'js-mode-hook #'lsp-deferred)
 
-(use-package dap-mode :after lsp-mode :config (dap-auto-configure-mode))
+(use-package dap-mode
+  :defer t
+  :after lsp-mode
+  :config (dap-auto-configure-mode))
+
 (use-package groovy-mode
+  :defer t
   :config
   (add-to-list 'auto-mode-alist '("\\.gradle\\'" . groovy-mode)))
 
 (use-package winum :config (winum-mode 1))
 (use-package js ;built-in
   :hook (js-mode . tree-sitter-mode))
-
 
 (use-package treemacs
   :defer t
@@ -405,10 +416,12 @@
         ("C-x t M-t" . treemacs-find-tag)))
 
 (use-package treemacs-evil
+  :defer t
   :after (treemacs evil)
   :ensure t)
 
 (use-package treemacs-projectile
+  :defer t
   :after (treemacs projectile)
   :ensure t)
 
@@ -443,8 +456,10 @@
 
 (use-package lsp-ui :commands lsp-ui-mode)
 (use-package lsp-treemacs :after treemacs :commands lsp-treemacs-errors-list)
+
 ;; Probably need to move this config to custom.el now
 (use-package lsp-java
+  :defer t
   :after (lsp-mode dap-mode)
   :hook ((java-mode . lsp-deferred) (java-mode . tree-sitter-mode ))
   :config
@@ -469,7 +484,7 @@
 (defvar test-args '())
 (defvar ddn/jvm-args  "-ea -DENV=dev -DsocksProxyHost=localhost -DsocksProxyPort=5001 -DREGION=us-east-1")
 
-(use-package hydra)
+(use-package hydra :defer t)
 ;; It would be nice if we could highlight the border of the current window with some color
 
 (defhydra hydra-split-resizing (:timeout 4)
@@ -480,8 +495,6 @@
   ("<down>" (evil-window-increase-height 3) "-")
   ("<up>" (evil-window-decrease-height 3) "+")
   ("f" nil "done" :exit t))
-
-
 
 ;; THEMES
 (use-package doom-themes)
@@ -510,9 +523,14 @@
   (let ((new-theme (ddn/next-theme))
         (current-theme 'ddn/current-theme))
     (ddn/set-theme new-theme)))
+; TODO / dark/light switching
+; light = doom-flatwhite
+; dark  = doom-ayu-dark 
 
 (defvar ddn/current-theme 'doom-ayu-dark "Current set theme")
 (ddn/set-theme ddn/current-theme)
+
+;; -------
 
 (defun ddn/on-windows () (eq system-type 'windows-nt))
 
@@ -539,9 +557,10 @@
   (setq highlight-indent-guides-method 'character))
 
 
-(use-package try)
+(use-package try :defer t)
 
 (use-package yasnippet
+  :defer t
   :config
   (yas-reload-all)
   (yas-global-mode 1))
