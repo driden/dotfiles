@@ -420,6 +420,7 @@
   (define-key dired-mode-map [remap dired-up-directory] 'dired-single-up-directory))
 
 (use-package dired-single
+  :after dired
   :init (ddn/dired-single))
 
 (use-package treemacs-icons-dired
