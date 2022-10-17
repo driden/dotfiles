@@ -510,7 +510,7 @@
         (current-theme 'ddn/current-theme))
     (ddn/set-theme new-theme)))
 
-(defvar ddn/current-theme 'doom-tomorrow-day "Current set theme")
+(defvar ddn/current-theme 'doom-ayu-dark "Current set theme")
 (ddn/set-theme ddn/current-theme)
 
 (defun ddn/on-windows () (eq system-type 'windows-nt))
@@ -563,11 +563,38 @@
 
 (use-package org-contrib :after org)
 (use-package org-evil :after (org evil))
-(use-package org-bullets
+;; (use-package org-bullets
+;;   :after org
+;;   :hook (org-mode . org-bullets-mode)
+;;   :custom
+;;   (org-bullets-bullet-list '("◉" "○" "●" "○" "●" "○" "●")))
+
+(use-package org-modern
   :after org
-  :hook (org-mode . org-bullets-mode)
-  :custom
-  (org-bullets-bullet-list '("◉" "○" "●" "○" "●" "○" "●")))
+  :hook (org-mode . org-modern-mode)
+  :config
+  (setq line-spacing 0.3
+        ;; Edit settings
+        org-auto-align-tags nil
+        org-tags-column 0
+        org-catch-invisible-edits 'show-and-error
+        org-special-ctrl-a/e t
+        org-insert-heading-respect-content t
+
+        ;; Org styling, hide markup etc.
+        org-hide-emphasis-markers t
+        org-pretty-entities t
+        org-ellipsis "…"
+
+        ;; Agenda styling
+        org-agenda-tags-column 0
+        org-agenda-block-separator ?─
+        org-agenda-time-grid
+        '((daily today require-timed)
+          (800 1000 1200 1400 1600 1800 2000)
+          " ┄┄┄┄┄ " "┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄")
+        org-agenda-current-time-string
+        "⭠ now ─────────────────────────────────────────────────"))
 
 
 (defun ddn/org-mode-visual-fill ()
