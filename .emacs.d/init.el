@@ -96,6 +96,43 @@
 (setq straight-use-package-by-default t)
 ;;; END BOOTSTRAPPING
 
+;; THEMES
+(use-package doom-themes)
+(setq ddn/available-themes (custom-available-themes))
+
+(defun ddn/next-theme ()
+  "Get the next valid theme from the list."
+  (let* ((themes-list   ddn/available-themes)
+         (start-theme   ddn/current-theme)
+         (current-theme ddn/current-theme))
+
+    (setq current-theme
+          (nth (mod (1+ (cl-position current-theme themes-list))
+                    (length themes-list))
+               themes-list))
+    current-theme))
+
+(defun ddn/set-theme (theme)
+  (disable-theme ddn/current-theme)
+  (setq ddn/current-theme theme)(message "%s" theme)
+  (load-theme theme t))
+
+;; TODO
+;; This function should take an optional list of hooks to run after cycling the theme
+(defun ddn/cycle-themes ()
+  "Cycle to the next theme."
+  (interactive)
+  (let ((new-theme (ddn/next-theme))
+        (current-theme 'ddn/current-theme))
+    (ddn/set-theme new-theme)))
+; TODO / dark/light switching
+; light = doom-flatwhite
+; dark  = doom-ayu-dark 
+
+(defvar ddn/current-theme 'doom-ayu-dark "Current set theme")
+(ddn/set-theme ddn/current-theme)
+
+;; -------
 
 ;;; Evil
 (use-package evil
@@ -145,13 +182,15 @@
 (use-package vertico
   :config
   (vertico-mode))
+
 (use-package vertico-posframe
   :after vertico
   :config
   (setq vertico-posframe-parameters '((line-spacing . 7)
-                                      (border-width . 3)
-                                      (left-fringe . 10)
-                                      (right-fringe . 10)))
+                                   (border-width . 3)
+                                   (left-fringe . 10)
+                                   (right-fringe . 10)))
+  (set-face-attribute 'vertico-posframe-border nil :background (face-foreground 'font-lock-keyword-face ))
   (vertico-posframe-mode 1))
 
 
@@ -496,41 +535,6 @@
   ("<up>" (evil-window-decrease-height 3) "+")
   ("f" nil "done" :exit t))
 
-;; THEMES
-(use-package doom-themes)
-(setq ddn/available-themes (custom-available-themes))
-
-(defun ddn/next-theme ()
-  "Get the next valid theme from the list."
-  (let* ((themes-list   ddn/available-themes)
-         (start-theme   ddn/current-theme)
-         (current-theme ddn/current-theme))
-
-    (setq current-theme
-          (nth (mod (1+ (cl-position current-theme themes-list))
-                    (length themes-list))
-               themes-list))
-    current-theme))
-
-(defun ddn/set-theme (theme)
-  (disable-theme ddn/current-theme)
-  (setq ddn/current-theme theme)(message "%s" theme)
-  (load-theme theme t))
-
-(defun ddn/cycle-themes ()
-  "Cycle to the next theme."
-  (interactive)
-  (let ((new-theme (ddn/next-theme))
-        (current-theme 'ddn/current-theme))
-    (ddn/set-theme new-theme)))
-; TODO / dark/light switching
-; light = doom-flatwhite
-; dark  = doom-ayu-dark 
-
-(defvar ddn/current-theme 'doom-ayu-dark "Current set theme")
-(ddn/set-theme ddn/current-theme)
-
-;; -------
 
 (defun ddn/on-windows () (eq system-type 'windows-nt))
 
@@ -625,6 +629,22 @@
 (use-package visual-fill-column
   :hook (org-mode . ddn/org-mode-visual-fill))
 
+(defvar ddn/org-roam-dir "Directory where org roam notes are stored") 
+(use-package org-roam
+  :init
+  (setq ddn/org-roam-dir (concat (getenv "HOME")
+                                 "/"
+                                 (if (ddn/on-windows)
+                                     "roam"
+                                   "roam")))
+  :config
+  (evil-collection-org-roam-setup)
+  (org-roam-setup)
+  :custom
+  (org-roam-completion-everywhere t)
+  (org-roam-directory ddn/org-roam-dir)
+  :bind (:map org-mode-map ("C-M-i"    . completion-at-point)))
+
 ;; EL GENERALISIMO
 (use-package general
   :demand t
@@ -643,6 +663,7 @@
    "C-["   'vertico-exit
    "C-p"   'vertico-previous
    "C-n"   'vertico-next)
+
   (general-define-key
    :states '(normal motion visual)
    :keymaps 'override
@@ -716,6 +737,10 @@
    "oci"'(org-clock-in :which-key "org-clock-in")
    "oco"'(org-clock-out :which-key "org-clock-out")
    "p"  '(projectile-command-map :which-key "project")
+   "r"  '(nil :which-key "org-roam")
+   "rt" '(org-roam-buffer-toggle :which-key "Buffer toggle")
+   "rf" '(org-roam-node-find :which-key "Find node")
+   "ri" '(org-roam-node-insert :which-key "Insert node")
    "t"  '(nil  :which-key "toggle")
    "ti" '(ddn/toggle-indent-guideline  :which-key "Toggle indentation guides")
    "tt" '(ddn/cycle-themes  :which-key "set next theme")
