@@ -630,6 +630,7 @@
   :hook (org-mode . ddn/org-mode-visual-fill))
 
 (defvar ddn/org-roam-dir "Directory where org roam notes are stored") 
+
 (use-package org-roam
   :init
   (setq ddn/org-roam-dir (concat (getenv "HOME")
@@ -643,7 +644,13 @@
   :custom
   (org-roam-completion-everywhere t)
   (org-roam-directory ddn/org-roam-dir)
-  :bind (:map org-mode-map ("C-M-i"    . completion-at-point)))
+  :bind (("C-c n l" . org-roam-buffer-toggle)
+         ("C-c n f" . org-roam-node-find)
+         ("C-c n i" . org-roam-node-insert)
+         :map org-mode-map
+         ("C-M-i" . completion-at-point))
+  :bind-keymap
+  ("C-c n d" . org-roam-dailies-map))
 
 ;; EL GENERALISIMO
 (use-package general
