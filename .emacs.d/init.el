@@ -649,8 +649,7 @@
          ("C-c n i" . org-roam-node-insert)
          :map org-mode-map
          ("C-M-i" . completion-at-point))
-  :bind-keymap
-  ("C-c n d" . org-roam-dailies-map))
+  )
 
 ;; EL GENERALISIMO
 (use-package general
