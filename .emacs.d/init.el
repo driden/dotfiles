@@ -129,7 +129,7 @@
 ; light = doom-flatwhite
 ; dark  = doom-ayu-dark 
 
-(defvar ddn/current-theme 'doom-ayu-dark "Current set theme")
+(defvar ddn/current-theme 'doom-challenger-deep "Current set theme")
 (ddn/set-theme ddn/current-theme)
 
 ;; -------
