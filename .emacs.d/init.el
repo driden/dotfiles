@@ -96,6 +96,14 @@
 (setq straight-use-package-by-default t)
 ;;; END BOOTSTRAPPING
 
+(defun ddn/buffer-remove-escaped-quotes ()
+  "Removed escaped quotes in buffer"
+  (interactive)
+  (goto-char (point-min))
+  (while (search-forward  "\\\"" nil t)
+    (replace-match "\""))
+  (goto-char (point-min)))
+
 ;; THEMES
 (use-package doom-themes)
 (setq ddn/available-themes (custom-available-themes))
@@ -252,6 +260,15 @@
   ;; by default, typescript-mode is mapped to the treesitter typescript parser
   ;; use our derived mode to map both .tsx AND .ts -> typescriptreact-mode -> treesitter tsx
   (add-to-list 'tree-sitter-major-mode-language-alist '(typescriptreact-mode . tsx)))
+
+(use-package kotlin-mode
+  :after (lsp-mode dap-mode)
+  :config
+  (require 'dap-kotlin)
+  ;; should probably have been in dap-kotlin instead of lsp-kotlin
+  (setq lsp-kotlin-debug-adapter-path (or (executable-find "kotlin-debug-adapter") ""))
+  :hook
+  (kotlin-mode . lsp))
 
 (use-package rainbow-delimiters
   :hook (prog-mode . rainbow-delimiters-mode))
