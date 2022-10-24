@@ -97,6 +97,8 @@ source $HOME/.oh-my-zsh/oh-my-zsh.sh
 alias zshconfig="nvim ~/.zshrc"
 alias ohmyzsh="nvim ~/.oh-my-zsh"
 alias srcz="source $ZSH/oh-my-zsh.sh"
+alias refreshenv='source $HOME/.zshrc && source $HOME/.zshenv'
+alias dot='cd $HOME/code/dotfiles'
 alias ll="ls -lah"
 alias vimc="$EDITOR $HOME/.config/nvim/init.lua"
 alias vim="$EDITOR"
@@ -125,7 +127,6 @@ unalias ga
 unalias gco
 unalias gbd
 
-alias refreshenv='source $HOME/.zshrc && source $HOME/.zshenv'
 
 alias pip='pip3'
 
