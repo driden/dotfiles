@@ -552,8 +552,29 @@
   ("<up>" (evil-window-decrease-height 3) "+")
   ("f" nil "done" :exit t))
 
+(defhydra ddn/hydra-roam-dailies (:hint nil)
+  "
+    Org-Roam Dailies:
 
-(defun ddn/on-windows () (eq system-type 'windows-nt))
+  
+    Goto                                      Capture:
+    _h_ ←  prev                                     - _T_oday
+    _l_ →  next
+    _t_ today
+
+
+
+    [_f_] done
+  " 
+
+  ("T" org-roam-dailies-capture-today)
+  ("h" org-roam-dailies-goto-previous-note)
+  ("l" org-roam-dailies-goto-next-note)
+  ("t" org-roam-dailies-goto-today)
+  ("f" nil :exit t))
+
+
+(Defun ddn/on-windows () (eq system-type 'windows-nt))
 
 (unless (ddn/on-windows)
   (use-package doom-modeline
@@ -762,11 +783,14 @@
    "p"  '(projectile-command-map :which-key "project")
    "r"  '(nil :which-key "org-roam")
    "rt" '(org-roam-buffer-toggle :which-key "Buffer toggle")
+   "rc" '(org-roam-capture :which-key "Capture note")
    "rf" '(org-roam-node-find :which-key "Find node")
    "ri" '(org-roam-node-insert :which-key "Insert node")
+   "rd" '(ddn/hydra-roam-dailies/body :which-key "Dailies")
    "t"  '(nil  :which-key "toggle")
    "ti" '(ddn/toggle-indent-guideline  :which-key "Toggle indentation guides")
    "tt" '(ddn/cycle-themes  :which-key "set next theme")
    "w"  '(nil  :which-key "window")
    "wc" '(evil-window-delete :which-key "close")
-   "wr" '(hydra-split-resizing/body :which-key "resize")))
+   "wr" '(hydra-split-resizing/body :which-key "resize"))
+
