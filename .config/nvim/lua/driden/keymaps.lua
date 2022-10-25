@@ -56,8 +56,8 @@ keymap("n", "Y", "y$", opts)
 keymap("x", "Y", "y$", opts)
 
 -- Paste from OS
-keymap("n", "<leader>p", '"+p<Crr', opts)
-keymap("n", "<leader>y", '"+y<CR>', opts)
+keymap("n", "<leader>p", '"*p<Crr', opts)
+keymap("n", "<leader>y", '"*y<CR>', opts)
 
 -- Tab
 keymap("n", "<leader>tn", ":tabNext<CR>", opts)

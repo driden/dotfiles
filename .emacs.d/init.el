@@ -574,7 +574,7 @@
   ("f" nil :exit t))
 
 
-(Defun ddn/on-windows () (eq system-type 'windows-nt))
+(defun ddn/on-windows () (eq system-type 'windows-nt))
 
 (unless (ddn/on-windows)
   (use-package doom-modeline
