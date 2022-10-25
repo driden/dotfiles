@@ -792,5 +792,5 @@
    "tt" '(ddn/cycle-themes  :which-key "set next theme")
    "w"  '(nil  :which-key "window")
    "wc" '(evil-window-delete :which-key "close")
-   "wr" '(hydra-split-resizing/body :which-key "resize"))
+   "wr" '(hydra-split-resizing/body :which-key "resize")))
 
