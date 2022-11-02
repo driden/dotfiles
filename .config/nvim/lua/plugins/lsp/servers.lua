@@ -1,3 +1,5 @@
+local lua_main = "~/.local/share/nvim/mason/packages/lua-language-server/extension/server/main.lua"
+
 local server_list = {
 	bashls = {},
 	eslint = {},
@@ -7,6 +9,7 @@ local server_list = {
 	tflint = {},
 	pyright = {},
 	sumneko_lua = {
+    cmd = {"lua-language-server","-E", lua_main },
 		settings = {
 			Lua = {
 				runtime = {
@@ -26,19 +29,7 @@ local server_list = {
 	},
 }
 
-local function get_server_names()
-	-- There's gotta be a better way
-	local server_names_list = {}
-	local i = 1
-	for key, _ in pairs(server_list) do
-		server_names_list[i] = key
-		i = i + 1
-	end
-
-	return server_names_list
-end
-
 return {
-	names = get_server_names(),
+	names = vim.tbl_keys(server_list),
 	list = server_list,
 }

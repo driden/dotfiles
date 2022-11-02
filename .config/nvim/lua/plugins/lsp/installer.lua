@@ -1,4 +1,7 @@
-local servers = require("plugins.lsp.servers")
-require("nvim-lsp-installer").setup {
-  ensure_installed = servers.names
-}
+require("mason").setup()
+require("mason-lspconfig").setup()
+
+require("mason-lspconfig").setup({
+    ensure_installed = require("plugins.lsp.servers").names
+})
+

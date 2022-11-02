@@ -46,7 +46,8 @@ require("packer").startup(function(use)
     -- LSP
     "neovim/nvim-lspconfig",
     "onsails/lspkind-nvim",
-    "williamboman/nvim-lsp-installer",
+    "williamboman/mason.nvim",
+    "williamboman/mason-lspconfig.nvim",
     "jose-elias-alvarez/null-ls.nvim",
     "hrsh7th/nvim-cmp",
     "hrsh7th/cmp-cmdline",
@@ -68,7 +69,6 @@ require("packer").startup(function(use)
     -- Snippets
     "L3MON4D3/LuaSnip",
 
-  
     'numToStr/Comment.nvim',
   }
 
@@ -85,6 +85,18 @@ require("packer").startup(function(use)
       require("hop").setup({ keys = "etovxqpdygfblzhckisuran" })
     end,
   })
+  -- Lua
+  use {
+    "folke/trouble.nvim",
+    requires = "kyazdani42/nvim-web-devicons",
+    config = function()
+      require("trouble").setup {
+        -- your configuration comes here
+        -- or leave it empty to use the default settings
+        -- refer to the configuration section below
+      }
+    end
+  }
 
   if packer_bootstrap then
     require("packer").sync()
