@@ -366,6 +366,8 @@
 (use-package js ;built-in
   :hook (js-mode . tree-sitter-mode))
 
+(use-package mode-minder)
+
 (use-package treemacs
   :defer t
   :init
