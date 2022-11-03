@@ -137,7 +137,7 @@
 ; light = doom-flatwhite
 ; dark  = doom-ayu-dark 
 
-(defvar ddn/current-theme 'doom-challenger-deep "Current set theme")
+(defvar ddn/current-theme 'doom-gruvbox "Current set theme")
 (ddn/set-theme ddn/current-theme)
 
 ;; -------
@@ -365,8 +365,6 @@
 (use-package winum :config (winum-mode 1))
 (use-package js ;built-in
   :hook (js-mode . tree-sitter-mode))
-
-(use-package mode-minder)
 
 (use-package treemacs
   :defer t
