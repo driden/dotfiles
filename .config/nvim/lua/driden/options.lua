@@ -11,7 +11,7 @@ function M.setup()
     backspace = "indent,eol,start",
     backup = false,
     clipboard = "",
-    cmdheight = 2,
+    cmdheight = 0,
     compatible = false,
     conceallevel = 2, -- so that `` is visible in markdown files
     concealcursor = "nc",
@@ -44,7 +44,7 @@ function M.setup()
     vim.o[k] = v
   end
   vim.opt.rtp:append("/usr/loca/bin/fzf")
-  vim.opt.shortmess:append("c")
+  vim.opt.shortmess:append("cmnwxsI")
 
   -- neovide
   if vim.fn.exists("g:neovide") then

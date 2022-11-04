@@ -20,7 +20,6 @@ local function set_colorscheme(name)
   local theme = find_theme(name)
   vim.cmd("colorscheme " .. theme.name)
   vim.cmd("let g:airline_theme='" .. theme.bar .. "'")
-  print(name)
 end
 
 function M.load_theme()
