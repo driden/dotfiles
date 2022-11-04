@@ -56,8 +56,12 @@ keymap("n", "Y", "y$", opts)
 keymap("x", "Y", "y$", opts)
 
 -- Paste from OS
-keymap("n", "<leader>p", '"*p<Crr', opts)
-keymap("n", "<leader>y", '"*y<CR>', opts)
+keymap("n", "<leader>p", "\"*p", opts)
+keymap("x", "<leader>p", "\"*p", opts)
+keymap("v", "<leader>p", "\"*p", opts)
+
+keymap("x", "<leader>y", "\"*y", opts)
+keymap("v", "<leader>y", "\"*y", opts)
 
 -- Tab
 keymap("n", "<leader>tn", ":tabNext<CR>", opts)
@@ -80,9 +84,6 @@ vim.keymap.set("n", "<leader>ff", function()
 end, opts)
 vim.keymap.set("n", "<leader>ft", function()
   require("telescope.builtin").live_grep()
-end, opts)
-vim.keymap.set("n", "<leader>fw", function()
-  require("telescope.builtin").grep_string()
 end, opts)
 vim.keymap.set("n", "<leader>fk", function()
   require("telescope.builtin").keymaps()

@@ -5,7 +5,7 @@ function M.setup()
 	require("nvim-tree").setup({
 		auto_reload_on_write = true,
 		disable_netrw = false,
-		hijack_cursor = true,
+		hijack_cursor = false,
 		hijack_netrw = true,
 		hijack_unnamed_buffer_when_opening = false,
 		ignore_buffer_on_setup = false,
@@ -21,7 +21,6 @@ function M.setup()
 		update_cwd = true,
 		view = {
 			width = 40,
-			height = 30,
 			side = "left",
 			preserve_window_proportions = true,
 			number = false,
