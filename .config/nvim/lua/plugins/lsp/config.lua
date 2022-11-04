@@ -1,14 +1,18 @@
--- https://github.com/ChristianChiarulli/nvim/blob/master/lua/user/lsp/handlers.lua
-local config = require("lspconfig")
-local capabilities = require("cmp_nvim_lsp").default_capabilities()
+-- Langs auto register themselved on the servers list, with their setup function
+require("plugins.lsp.langs.sumneko")
 
-local list = require("plugins.lsp.servers").list
-
-for server, cfg in pairs(list) do
-  local opts = vim.tbl_deep_extend("error", cfg, capabilities)
-  config[server].setup {
-    on_attach = require("plugins.lsp.keymaps").on_attach,
-    capabilities = opts
-  }
+local names = {}
+local fs = {}
+for _, v in ipairs(require("plugins.lsp.servers").servers) do
+  local val = vim.tbl_values(v)
+  table.insert(names, val[1])
+  table.insert(fs, val[2])
 end
 
+require("mason-lspconfig").setup({
+	ensure_installed = names
+})
+
+for _, setup in ipairs(fs) do
+  setup()
+end
