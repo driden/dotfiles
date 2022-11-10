@@ -1,4 +1,9 @@
-local capabilities = vim.lsp.protocol.make_client_capabilities()
+local status, jdtls = pcall(require, "jdtls")
+if not status then
+  return
+end
+
+local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
 local status_cmp_ok, cmp_nvim_lsp = pcall(require, "cmp_nvim_lsp")
 if not status_cmp_ok then
@@ -6,18 +11,19 @@ if not status_cmp_ok then
 end
 
 capabilities.textDocument.completion.completionItem.snippetSupport = false
-capabilities = cmp_nvim_lsp.update_capabilities(capabilities)
 
-local status, jdtls = pcall(require, "jdtls")
-if not status then
-  return
-end
 
 -- Determine OS
 local home = os.getenv("HOME")
-if vim.fn.has("mac") == 1 then
+local work = os.getenv("WORK") or false
+
+if work then
   WORKSPACE_PATH = home .. "/workspace/"
   CONFIG = "mac"
+elseif vim.fn.has("mac") == 1 then
+  WORKSPACE_PATH = home .. "/workspace/"
+  CONFIG = "mac"
+
 elseif vim.fn.has("unix") == 1 then
   WORKSPACE_PATH = home .. "/workspace/"
   CONFIG = "linux"
@@ -25,18 +31,29 @@ else
   print("Unsupported system")
 end
 
+
+local ws_folders_jdtls = {}
 -- Find root of project
-local root_markers = { ".git", "mvnw", "gradlew", "pom.xml", "build.gradle" }
-local root_dir = require("jdtls.setup").find_root(root_markers)
-if root_dir == "" then
-  return
+local root_markers = {"packageInfo"}
+-- local root_markers = {".git", "mvnw", "gradlew", "pom.xml", "build.gradle" }
+local root_dir = require("jdtls.setup").find_root(root_markers, "Config")
+
+if root_dir then
+ local file = io.open(root_dir .. "/.bemol/ws_root_folders")
+ if file then
+  for line in file:lines() do
+   table.insert(ws_folders_jdtls, "file://" .. line)
+  end
+  file:close()
+ end
+ else
+   return;
 end
+
 
 local extendedClientCapabilities = jdtls.extendedClientCapabilities
 extendedClientCapabilities.resolveAdditionalTextEditsSupport = true
-
 local project_name = vim.fn.fnamemodify(vim.fn.getcwd(), ":p:h:t")
-
 local workspace_dir = WORKSPACE_PATH .. project_name
 
 -- TODO: Testing
@@ -102,23 +119,7 @@ local config = {
     workspace_dir,
   },
 
-  on_attach = function(client, bufnr)
-    lsp_keymaps(bufnr)
-    lsp_highlight_document(client)
-    attach_navic(client, bufnr)
-
-    if client.name == "tsserver" then
-      require("lsp-inlayhints").on_attach(bufnr, client)
-    end
-
-    if client.name == "jdt.ls" then
-      vim.lsp.codelens.refresh()
-      if JAVA_DAP_ACTIVE then
-        require("jdtls").setup_dap({ hotcodereplace = "auto" })
-        require("jdtls.dap").setup_dap_main_class_configs()
-      end
-    end
-  end,
+  on_attach = require("plugins.lsp.keymaps").on_attach,
   capabilities = capabilities,
 
   -- 💀
@@ -209,9 +210,11 @@ local config = {
   init_options = {
     -- bundles = {},
     bundles = bundles,
+    workspaceFolders = ws_folders_jdtls,
   },
 }
 
+vim.pretty_print(vim.inspect(config.init_options.workspaceFolders))
 -- This starts a new client & server,
 -- or attaches to an existing client & server depending on the `root_dir`.
 jdtls.start_or_attach(config)
