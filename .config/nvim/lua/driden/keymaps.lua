@@ -80,7 +80,7 @@ keymap("n", "<leader>gp", ":Git pull<CR>", opts)
 
 -- Telescope
 vim.keymap.set("n", "<leader>ff", function()
-  require("telescope.builtin").find_files()
+  require("telescope.builtin").find_files { hidden = true }
 end, opts)
 vim.keymap.set("n", "<leader>ft", function()
   require("telescope.builtin").live_grep()
@@ -137,3 +137,8 @@ keymap("t", "<C-j>", "<C-\\><C-N><C-w>j", term_opts)
 keymap("t", "<C-k>", "<C-\\><C-N><C-w>k", term_opts)
 keymap("t", "<C-l>", "<C-\\><C-N><C-w>l", term_opts)
 keymap("t", "<leader>tc", "<C-><C-n>:q<CR>", term_opts)
+
+keymap('n', '<leader>tn', '<cmd>lua require("neotest").run.run()<CR>', opts)
+keymap('n', '<leader>tf', '<cmd>lua require("neotest").run.run(vim.fn.expand("%"))<CR>', opts)
+keymap('n', '<leader>ts', '<cmd>lua require("neotest").run.run { suite = true }<CR>', opts)
+keymap('n', '<leader>tS', '<cmd>lua require("neotest").summary.toggle()<CR>', opts)
