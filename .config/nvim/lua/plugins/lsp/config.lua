@@ -1,5 +1,6 @@
 -- Langs auto register themselved on the servers list, with their setup function
 require("plugins.lsp.langs.sumneko")
+require("plugins.lsp.langs.barium")
 
 local names = {}
 local fs = {}
