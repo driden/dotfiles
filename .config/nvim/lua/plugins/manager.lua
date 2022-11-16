@@ -31,8 +31,6 @@ require("packer").startup(function(use)
 		-- statusbar
 		"vim-airline/vim-airline",
 		"vim-airline/vim-airline-themes",
-		--term
-		"akinsho/toggleterm.nvim",
 
 		-- filetree
 		"kyazdani42/nvim-web-devicons",
@@ -103,7 +101,7 @@ require("packer").startup(function(use)
 			"nvim-lua/plenary.nvim",
 			"nvim-treesitter/nvim-treesitter",
 			"antoinemadec/FixCursorHold.nvim",
-			"marilari88/neotest-vitest"
+			"marilari88/neotest-vitest",
 		},
 	})
 
