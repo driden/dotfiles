@@ -31,8 +31,6 @@ require("packer").startup(function(use)
 		-- statusbar
 		"vim-airline/vim-airline",
 		"vim-airline/vim-airline-themes",
-		--term
-		"akinsho/toggleterm.nvim",
 
 		-- filetree
 		"kyazdani42/nvim-web-devicons",

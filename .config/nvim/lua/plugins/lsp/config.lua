@@ -8,8 +8,9 @@
 --  List all the files in the langs subfolder and just require everything automatically
 require("mason").setup()
 require("mason-lspconfig").setup()
-require("plugins.lsp.langs.sumneko")
 require("plugins.lsp.langs.barium")
+require("plugins.lsp.langs.bashls")
+require("plugins.lsp.langs.sumneko")
 require("plugins.lsp.langs.ts")
 
 local fs = {}
@@ -21,7 +22,7 @@ for _, v in ipairs(require("plugins.lsp.servers").servers) do
 end
 
 require("mason-lspconfig").setup({
-	ensure_installed = require("plugins.lsp.servers").servers,
+	ensure_installed = names,
 })
 
 for _, setup in ipairs(fs) do
