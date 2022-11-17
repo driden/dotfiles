@@ -1,4 +1,4 @@
-require("plugins.plugin_manager")
+require("plugins.manager")
 
 require("plugins.completion")
 require("plugins.lsp")
