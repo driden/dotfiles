@@ -146,3 +146,4 @@ zvm_after_init_commands+=(init_fzf)
 zvm_before_select_vi_mode_commands=()
 zvm_after_select_vi_mode_commands=()
 
+export PATH="/opt/homebrew/sbin:$PATH"

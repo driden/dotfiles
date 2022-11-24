@@ -1,4 +1,4 @@
-require("plugins.plugin_manager")
+require("plugins.manager")
 
 require("plugins.completion")
 require("plugins.lsp")
@@ -6,6 +6,5 @@ require("plugins.file_tree").setup()
 require("plugins.hop")
 require("plugins.indent-guides")
 require("plugins.telescope")
-require("plugins.toggleterm").setup()
 require("plugins.treesitter").setup()
 require("plugins.comment")

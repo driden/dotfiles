@@ -9,5 +9,8 @@
 --      * DAP
 --      * Code lenses
 --]]
-require("plugins")
+
+if not vim.g.vscode then
+  require("plugins")
+end
 require("driden")
