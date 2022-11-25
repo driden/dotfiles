@@ -12,21 +12,28 @@ local ruled = require("ruled")
 ]]
 
 -- A new module should be born
-local modkey = user_vars.modkey
+local modkey     = user_vars.modkey
 local alt        = "Mod1"
 local shift      = "Shift"
 local control    = "Control"
-local h, j, k, l = "h","j","k","l"
+local h, j, k, l = "h", "j", "k", "l"
 local tab, ret   = "#23", "#36"
 local s          = "#39"
 local e          = "e"
 local prnt       = "#107"
-local backspace  = "#22"   
+local backspace  = "#22"
 local space      = "#65"
 local d          = "#40"
 local p          = "p"
 
 return gears.table.join(
+  awful.key(
+    { modkey }, "b",
+    function()
+      awful.spawn("firefox")
+    end,
+    { description = "", group = "Firefox" }
+  ),
   awful.key(
     { modkey }, s,
     hotkeys_popup.show_help,
@@ -77,14 +84,14 @@ return gears.table.join(
     { description = "Show context menu", group = "Awesome" }
   ),
   awful.key(
-    { modkey, shift}, j,
+    { modkey, shift }, j,
     function()
       awful.client.swap.byidx(1)
     end,
     { description = "Swap with next client by index", group = "Client" }
   ),
   awful.key(
-    { modkey, shift}, k,
+    { modkey, shift }, k,
     function()
       awful.client.swap.byidx(-1)
     end,
@@ -124,14 +131,14 @@ return gears.table.join(
     { description = "Reload awesome", group = "Awesome" }
   ),
   awful.key(
-    { modkey, shift}, l,
+    { modkey, shift }, l,
     function()
       awful.tag.incmwfact(0.05)
     end,
     { description = "Increase client width", group = "Layout" }
   ),
   awful.key(
-    { modkey, shift }, h, 
+    { modkey, shift }, h,
     function()
       awful.tag.incmwfact(-0.05)
     end,
@@ -202,7 +209,7 @@ return gears.table.join(
     { descripton = "Session options", group = "System" }
   ),
   awful.key(
-    {}, prnt ,
+    {}, prnt,
     function()
       awful.spawn(user_vars.screenshot_program)
     end,
@@ -254,13 +261,14 @@ return gears.table.join(
       awful.spawn.easy_async_with_shell(
         "pkexec xfpm-power-backlight-helper --get-brightness",
         function(stdout)
-        awful.spawn.easy_async_with_shell("pkexec xfpm-power-backlight-helper --set-brightness " .. tostring(tonumber(stdout) + BACKLIGHT_SEPS), function(stdou2)
+          awful.spawn.easy_async_with_shell("pkexec xfpm-power-backlight-helper --set-brightness " ..
+            tostring(tonumber(stdout) + BACKLIGHT_SEPS), function(stdou2)
 
-        end)
-        awesome.emit_signal("module::brightness_osd:show", true)
-        awesome.emit_signal("module::brightness_slider:update")
-        awesome.emit_signal("widget::brightness_osd:rerun")
-      end
+          end)
+          awesome.emit_signal("module::brightness_osd:show", true)
+          awesome.emit_signal("module::brightness_slider:update")
+          awesome.emit_signal("widget::brightness_osd:rerun")
+        end
       )
     end,
     { description = "Raise backlight brightness", group = "System" }
@@ -272,13 +280,14 @@ return gears.table.join(
       awful.spawn.easy_async_with_shell(
         "pkexec xfpm-power-backlight-helper --get-brightness",
         function(stdout)
-        awful.spawn.easy_async_with_shell("pkexec xfpm-power-backlight-helper --set-brightness " .. tostring(tonumber(stdout) - BACKLIGHT_SEPS), function(stdout2)
+          awful.spawn.easy_async_with_shell("pkexec xfpm-power-backlight-helper --set-brightness " ..
+            tostring(tonumber(stdout) - BACKLIGHT_SEPS), function(stdout2)
 
-        end)
-        awesome.emit_signal("module::brightness_osd:show", true)
-        awesome.emit_signal("module::brightness_slider:update")
-        awesome.emit_signal("widget::brightness_osd:rerun")
-      end
+          end)
+          awesome.emit_signal("module::brightness_osd:show", true)
+          awesome.emit_signal("module::brightness_slider:update")
+          awesome.emit_signal("widget::brightness_osd:rerun")
+        end
       )
     end,
     { description = "Lower backlight brightness", group = "System" }
@@ -318,67 +327,68 @@ return gears.table.join(
   awful.key(
     { modkey }, backspace,
     function()
-    awful.spawn.easy_async_with_shell(
-      [[xprop | grep WM_CLASS | awk '{gsub(/"/, "", $4); print $4}']],
-      function(stdout)
-      if stdout then
-        ruled.client.append_rule {
-          rule = { class = stdout:gsub("\n", "") },
-          properties = {
-            floating = true
-          },
-        }
-        awful.spawn.easy_async_with_shell(
-          "cat ~/.config/awesome/src/assets/rules.txt",
-          function(stdout2)
-          for class in stdout2:gmatch("%a+") do
-            if class:match(stdout:gsub("\n", "")) then
-              return
-            end
-          end
-          awful.spawn.with_shell("echo -n '" .. stdout:gsub("\n", "") .. ";' >> ~/.config/awesome/src/assets/rules.txt")
-          local c = mouse.screen.selected_tag:clients()
-          for j, client in ipairs(c) do
-            if client.class:match(stdout:gsub("\n", "")) then
-              client.floating = true
-            end
+      awful.spawn.easy_async_with_shell(
+        [[xprop | grep WM_CLASS | awk '{gsub(/"/, "", $4); print $4}']],
+        function(stdout)
+          if stdout then
+            ruled.client.append_rule {
+              rule = { class = stdout:gsub("\n", "") },
+              properties = {
+                floating = true
+              },
+            }
+            awful.spawn.easy_async_with_shell(
+              "cat ~/.config/awesome/src/assets/rules.txt",
+              function(stdout2)
+                for class in stdout2:gmatch("%a+") do
+                  if class:match(stdout:gsub("\n", "")) then
+                    return
+                  end
+                end
+                awful.spawn.with_shell("echo -n '" ..
+                  stdout:gsub("\n", "") .. ";' >> ~/.config/awesome/src/assets/rules.txt")
+                local c = mouse.screen.selected_tag:clients()
+                for j, client in ipairs(c) do
+                  if client.class:match(stdout:gsub("\n", "")) then
+                    client.floating = true
+                  end
+                end
+              end)
           end
         end)
-      end
-    end)
-  end
+    end
   ),
   awful.key(
     { modkey, shift }, backspace,
     function()
-    awful.spawn.easy_async_with_shell(
-      [[xprop | grep WM_CLASS | awk '{gsub(/"/, "", $4); print $4}']],
-      function(stdout)
-      if stdout then
-        ruled.client.append_rule {
-          rule = { class = stdout:gsub("\n", "") },
-          properties = {
-            floating = false
-          },
-        }
-        awful.spawn.easy_async_with_shell(
-          [[
+      awful.spawn.easy_async_with_shell(
+        [[xprop | grep WM_CLASS | awk '{gsub(/"/, "", $4); print $4}']],
+        function(stdout)
+          if stdout then
+            ruled.client.append_rule {
+              rule = { class = stdout:gsub("\n", "") },
+              properties = {
+                floating = false
+              },
+            }
+            awful.spawn.easy_async_with_shell(
+              [[
                                 REMOVE="]] .. stdout:gsub("\n", "") .. [[;"
                                 STR=$(cat ~/.config/awesome/src/assets/rules.txt)
                                 echo -n ${STR//$REMOVE/} > ~/.config/awesome/src/assets/rules.txt
                             ]],
-          function(stdout2)
-          local c = mouse.screen.selected_tag:clients()
-          for j, client in ipairs(c) do
-            if client.class:match(stdout:gsub("\n", "")) then
-              client.floating = false
-            end
+              function(stdout2)
+                local c = mouse.screen.selected_tag:clients()
+                for j, client in ipairs(c) do
+                  if client.class:match(stdout:gsub("\n", "")) then
+                    client.floating = false
+                  end
+                end
+              end
+            )
           end
         end
-        )
-      end
+      )
     end
-    )
-  end
   )
 )
