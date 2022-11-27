@@ -20,10 +20,10 @@ _G.user_vars = {
 
   -- Write the terminal command to start anything here
   autostart = {
-    --"xfce4-power-manager",
-    --"flatpak run com.spotify.Client",
     "picom --experimental-backends",
+    "xfce4-power-manager",
     "light-locker --lock-on-suspend --lock-on-lid &",
+    "flatpak run com.spotify.Client",
     "discord",
     "/usr/lib/policykit-1-gnome/polkit-gnome-authentication-agent-1"
   },
@@ -42,7 +42,7 @@ _G.user_vars = {
   },
 
   -- This is your default Terminal
-  terminal = "kitty",
+  terminal = "alacritty",
 
   -- This is the modkey 'mod4' = Super/Mod/WindowsKey, 'mod3' = alt...
   modkey = "Mod4",
@@ -73,6 +73,7 @@ _G.user_vars = {
   -- Use xprop | grep WM_CLASS and use the *SECOND* string
   -- { WM_CLASS, program, name, isSteam }
   dock_programs = {
+    { "Alacritty", "alacritty", "Alacritty" },
     { "Kitty", "kitty", "Kitty" },
     { "firefox", "firefox", "Firefox" },
     { "discord", "discord", "Discord" },
