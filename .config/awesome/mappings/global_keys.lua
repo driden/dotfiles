@@ -25,7 +25,7 @@ local backspace  = "#22"
 local space      = "#65"
 local d          = "#40"
 local p          = "p"
-local modkey = user_vars.modkey
+local modkey     = user_vars.modkey
 
 return gears.table.join(
   awful.key(
@@ -261,13 +261,14 @@ return gears.table.join(
       awful.spawn.easy_async_with_shell(
         "pkexec xfpm-power-backlight-helper --get-brightness",
         function(stdout)
-          awful.spawn.easy_async_with_shell("pkexec xfpm-power-backlight-helper --set-brightness " .. tostring(tonumber(stdout) + BACKLIGHT_SEPS), function(stdou2)
+          awful.spawn.easy_async_with_shell("pkexec xfpm-power-backlight-helper --set-brightness " ..
+            tostring(tonumber(stdout) + BACKLIGHT_SEPS), function(stdou2)
 
-        end)
-        awesome.emit_signal("module::brightness_osd:show", true)
-        awesome.emit_signal("module::brightness_slider:update")
-        awesome.emit_signal("widget::brightness_osd:rerun")
-      end
+          end)
+          awesome.emit_signal("module::brightness_osd:show", true)
+          awesome.emit_signal("module::brightness_slider:update")
+          awesome.emit_signal("widget::brightness_osd:rerun")
+        end
       )
     end,
     { description = "Raise backlight brightness", group = "System" }
@@ -279,13 +280,14 @@ return gears.table.join(
       awful.spawn.easy_async_with_shell(
         "pkexec xfpm-power-backlight-helper --get-brightness",
         function(stdout)
-        awful.spawn.easy_async_with_shell("pkexec xfpm-power-backlight-helper --set-brightness " .. tostring(tonumber(stdout) - BACKLIGHT_SEPS), function(stdout2)
+          awful.spawn.easy_async_with_shell("pkexec xfpm-power-backlight-helper --set-brightness " ..
+            tostring(tonumber(stdout) - BACKLIGHT_SEPS), function(stdout2)
 
-        end)
-        awesome.emit_signal("module::brightness_osd:show", true)
-        awesome.emit_signal("module::brightness_slider:update")
-        awesome.emit_signal("widget::brightness_osd:rerun")
-      end
+          end)
+          awesome.emit_signal("module::brightness_osd:show", true)
+          awesome.emit_signal("module::brightness_slider:update")
+          awesome.emit_signal("widget::brightness_osd:rerun")
+        end
       )
     end,
     { description = "Lower backlight brightness", group = "System" }
@@ -343,7 +345,8 @@ return gears.table.join(
                     return
                   end
                 end
-                awful.spawn.with_shell("echo -n '" .. stdout:gsub("\n", "") .. ";' >> ~/.config/awesome/src/assets/rules.txt")
+                awful.spawn.with_shell("echo -n '" ..
+                  stdout:gsub("\n", "") .. ";' >> ~/.config/awesome/src/assets/rules.txt")
                 local c = mouse.screen.selected_tag:clients()
                 for j, client in ipairs(c) do
                   if client.class:match(stdout:gsub("\n", "")) then
