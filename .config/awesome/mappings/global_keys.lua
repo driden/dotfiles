@@ -385,13 +385,8 @@ return gears.table.join(
                     client.floating = false
                   end
                 end
-              end
-            )
+              end)
           end
-        end
-      )
-        )
-      end
-    end
-  )
+        end)
+    end)
 )

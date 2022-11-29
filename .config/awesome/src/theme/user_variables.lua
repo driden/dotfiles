@@ -20,7 +20,7 @@ _G.user_vars = {
 
   -- Write the terminal command to start anything here
   autostart = {
-    --"xrandr --output DP-4 --left-of HDMI-0 --primary --auto",
+    "xrandr --output DP-4 --left-of HDMI-0 --primary --auto",
     "picom --experimental-backends",
     "xfce4-power-manager",
     "light-locker --lock-on-suspend --lock-on-lid &",
