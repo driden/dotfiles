@@ -42,6 +42,34 @@ local config = {
 	init_options = {
 		workspaceFolders = ws_folders_jdtls,
 	},
+	format = {
+		comments = { enabled = false },
+		enabled = false,
+		insertSpaces = true,
+		tabSize = 4,
+	},
+	settings = {
+		java = {
+			runtimes = {
+				{
+					name = "JavaSE-17",
+					path = "$HOME/.sdkman/candidates/java/17.0.5-tem",
+				},
+				{
+					name = "JavaSE-18",
+					path = "$HOME/.sdkman/candidates/java/18.0.1-amzn",
+				},
+				{
+					name = "JavaSE-11",
+					path = "/Library/Java/JavaVirtualMachines/adoptopenjdk-11.jdk/Contents/Home",
+				},
+				{
+					name = "JavaSE-1.8",
+					path = "/Library/Java/JavaVirtualMachines/jdk1.8.0_231.jdk/Contents/Home",
+				},
+			},
+		},
+	},
 }
 
 -- This starts a new client & server,
