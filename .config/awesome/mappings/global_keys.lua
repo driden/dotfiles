@@ -26,6 +26,20 @@ local space      = "#65"
 local d          = "#40"
 local p          = "p"
 local modkey     = user_vars.modkey
+local naughty    = require("naughty")
+
+function dump(o)
+  if type(o) == 'table' then
+    local s = '{ '
+    for k, v in pairs(o) do
+      if type(k) ~= 'number' then k = '"' .. k .. '"' end
+      s = s .. '[' .. k .. '] = ' .. dump(v) .. ','
+    end
+    return s .. '} '
+  else
+    return tostring(o)
+  end
+end
 
 return gears.table.join(
   awful.key(
@@ -43,7 +57,26 @@ return gears.table.join(
   -- Tag browsing
   awful.key(
     { modkey }, h,
-    awful.tag.viewprev,
+    function()
+      awful.tag.viewprev()
+
+      local tag = awful.screen.focused().selected_tag
+      local c = tag:clients()[1]
+      awful.client.next(1, c)
+      -- local r = {
+      --   t = tag.name,
+      --   active = tag.activated,
+      --   selected = tag.selected,
+      --   clients = dump(tag:clients()),
+      --   one = dump(client)
+      -- }
+      -- local file = io.open("/home/driden/debug.txt", "a")
+      -- io.output(file)
+      -- io.write(dump(r))
+      -- io.write("\n\n")
+      -- io.close(file)
+      -- awful.tag.viewprev()
+    end,
     { description = "View previous tag", group = "Tag" }
   ),
   awful.key(

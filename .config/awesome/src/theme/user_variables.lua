@@ -36,7 +36,8 @@ _G.user_vars = {
   font = {
     regular = "JetBrainsMono Nerd Font, 14",
     bold = "JetBrainsMono Nerd Font, bold 14",
-    extrabold = "JetBrainsMono Nerd Font, ExtraBold 14"
+    extrabold = "JetBrainsMono Nerd Font, ExtraBold 14",
+    specify = "JetBrainsMono Nerd Font"
   },
 
   -- This is your default Terminal
