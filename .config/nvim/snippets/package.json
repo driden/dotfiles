@@ -1,0 +1,30 @@
+{
+  "name": "snips",
+  "engines": {
+    "vscode": "^1.11.0"
+  },
+  "contributes": {
+    "snippets": [
+      {
+        "language": [
+          "javascript",
+          "typescript"
+        ],
+        "path": "./all/vitest.json"
+      },
+      {
+        "example1": {
+          "prefix": "options",
+          "body": [
+            "whoa! :O"
+          ],
+          "luasnip": {
+            "priority": 2000,
+            "autotrigger": true,
+            "wordTrig": false
+          }
+        }
+      }
+    ]
+  }
+}
