@@ -4,6 +4,8 @@ if not status then
 end
 
 local capabilities = require("cmp_nvim_lsp").default_capabilities()
+local extendedClientCapabilities = require("jdtls").extendedClientCapabilities
+extendedClientCapabilities.resolveAdditionalTextEditsSupport = true
 local ws_folders_jdtls = {}
 
 local root_markers = { "packageInfo" }
@@ -41,6 +43,7 @@ local config = {
 	root_dir = root_dir,
 	init_options = {
 		workspaceFolders = ws_folders_jdtls,
+		extendedClientCapabilities = extendedClientCapabilities,
 	},
 	format = {
 		comments = { enabled = false },
@@ -72,9 +75,13 @@ local config = {
 	},
 }
 
--- This starts a new client & server,
--- or attaches to an existing client & server depending on the `root_dir`.
---
+config.on_init =
+	function(client, _)
+		client.notify("workspace/didChangeConfiguration", { settings = config.settings })
+	end,
+		-- This starts a new client & server,
+	-- or attaches to an existing client & server depending on the `root_dir`.
+	--
 jdtls.start_or_attach(config)
 
 -- require('jdtls').setup_dap()
