@@ -8,6 +8,7 @@ local color = require("src.theme.colors")
 local dpi = require("beautiful").xresources.apply_dpi
 local gears = require("gears")
 local wibox = require("wibox")
+local beautiful = require("beautiful")
 require("src.core.signals")
 
 -- Icon directory path
@@ -247,6 +248,7 @@ client.connect_signal(
       awful.titlebar.hide(c, 'right')
       awful.titlebar.hide(c, 'top')
       awful.titlebar.hide(c, 'bottom')
+      c.border_width = beautiful.border_width
     end
   end
 )

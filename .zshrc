@@ -131,6 +131,7 @@ unalias gbd
 alias pip='pip3'
 
 function init_fzf() {
+  [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
   [ -f ~/.fzf/completion.zsh ] && source ~/.fzf/completion.zsh
   [ -f ~/.fzf/key-bindings.zsh ] && source ~/.fzf/key-bindings.zsh
 }
@@ -147,3 +148,4 @@ zvm_before_select_vi_mode_commands=()
 zvm_after_select_vi_mode_commands=()
 
 export PATH="/opt/homebrew/sbin:$PATH"
+

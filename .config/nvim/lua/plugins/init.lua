@@ -1,5 +1,6 @@
 require("plugins.manager")
 
+require("plugins.snippets")
 require("plugins.completion")
 require("plugins.lsp")
 require("plugins.file_tree").setup()

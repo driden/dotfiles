@@ -20,10 +20,10 @@ _G.user_vars = {
 
   -- Write the terminal command to start anything here
   autostart = {
+    "/usr/bin/env bash /home/driden/.screenlayout/layout.sh",
     "picom --experimental-backends",
     "xfce4-power-manager",
     "light-locker --lock-on-suspend --lock-on-lid &",
-    "discord",
   },
 
   -- Type 'ip a' and check your wlan and ethernet name
