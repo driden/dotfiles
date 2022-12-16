@@ -3,7 +3,7 @@ M.theme = "gruvbox-material"
 M.available_themes = {
   { name = "palenight", bar = "palenight", plugin = "drewtempelmeyer/palenight.vim", opts = {} },
   { name = "onedark", bar = "onedark", plugin = "joshdick/onedark.vim", opts = {} },
-  { name = "kanegawa", bar = "onedark", plugin = "rebelot/kanagawa.nvim", opts = {} },
+  { name = "kanagawa", bar = "onedark", plugin = "rebelot/kanagawa.nvim", opts = {} },
   { name = "gruvbox-material", bar = "gruvbox_material", plugin = "sainnhe/gruvbox-material", opts = {} },
   { name = "PaperColor", bar = "papercolor", plugin = "papercolor-theme", opts = {} },
 }

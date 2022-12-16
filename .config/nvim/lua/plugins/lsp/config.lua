@@ -13,6 +13,7 @@ require("plugins.lsp.langs.bashls")
 require("plugins.lsp.langs.sumneko")
 require("plugins.lsp.langs.ts")
 require("plugins.lsp.langs.go")
+require("plugins.lsp.langs.python")
 
 local fs = {}
 local names = {}
