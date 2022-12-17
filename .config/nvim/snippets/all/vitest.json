@@ -11,5 +11,14 @@
       "});"
     ],
     "description": "Create a new test suite"
+  },
+  "it(vitest)": {
+    "prefix": ">it",
+    "body": [
+      "it(\"${0:test}\", async () => {",
+      "$2",
+      "});"
+    ],
+    "description": "Create a new test suite"
   }
 }
