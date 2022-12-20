@@ -1,6 +1,5 @@
-print("hola nacho")
-
 require("utils.general")
+require("driden.plugins")
 require("driden.options").setup()
 require("driden.themes").load_theme()
 require("driden.keymaps")

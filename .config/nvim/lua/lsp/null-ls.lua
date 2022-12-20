@@ -14,5 +14,5 @@ require("null-ls").setup({
     formatting.stylua,
     --formatting.google_java_format
   },
-  on_attach = require("plugins.lsp.keymaps").on_attach,
+  on_attach = require("lsp.keymaps").on_attach,
 })
