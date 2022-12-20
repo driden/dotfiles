@@ -56,12 +56,12 @@ keymap("n", "Y", "y$", opts)
 keymap("x", "Y", "y$", opts)
 
 -- Paste from OS
-keymap("n", "<leader>p", '"*p', opts)
-keymap("x", "<leader>p", '"*p', opts)
-keymap("v", "<leader>p", '"*p', opts)
+keymap("n", "<leader>p", '"+p', opts)
+keymap("x", "<leader>p", '"+p', opts)
+keymap("v", "<leader>p", '"+p', opts)
 
-keymap("x", "<leader>y", '"*y', opts)
-keymap("v", "<leader>y", '"*y', opts)
+keymap("x", "<leader>y", '"+y', opts)
+keymap("v", "<leader>y", '"+y', opts)
 
 -- Tab
 keymap("n", "<leader>tn", ":tabNext<CR>", opts)
@@ -80,20 +80,20 @@ keymap("n", "<leader>gp", ":Git pull<CR>", opts)
 
 -- Telescope
 vim.keymap.set("n", "<leader>ff", function()
-    require("telescope.builtin").find_files({ hidden = true })
+  require("telescope.builtin").find_files({ hidden = true })
 end, opts)
 vim.keymap.set("n", "<leader>ft", function()
-    require("telescope.builtin").live_grep()
+  require("telescope.builtin").live_grep()
 end, opts)
 vim.keymap.set("n", "<leader>fk", function()
-    require("telescope.builtin").keymaps()
+  require("telescope.builtin").keymaps()
 end, opts)
 vim.keymap.set("n", "<leader>bi", function()
-    require("telescope.builtin").buffers()
+  require("telescope.builtin").buffers()
 end, opts)
 
 vim.keymap.set("n", "<leader>ht", function()
-    require("telescope.builtin").help_tags()
+  require("telescope.builtin").help_tags()
 end, opts)
 
 -- Quick Fix
@@ -115,16 +115,18 @@ keymap("n", "<leader>tt", ":lua require('driden.themes').set_next_theme()<CR>", 
 
 -- HOP
 vim.api.nvim_set_keymap(
-    "n",
-    "s",
-    "<cmd>lua require'hop'.hint_char1({ direction = require'hop.hint'.HintDirection.AFTER_CURSOR, current_line_only = false })<cr>",
-    opts
+  "n",
+  "s",
+  "<cmd>lua require'hop'.hint_char1({ direction = require'hop.hint'.HintDirection.AFTER_CURSOR, current_line_only = false })<cr>"
+  ,
+  opts
 )
 vim.api.nvim_set_keymap(
-    "n",
-    "S",
-    "<cmd>lua require'hop'.hint_char1({ direction = require'hop.hint'.HintDirection.BEFORE_CURSOR, current_line_only = false })<cr>",
-    opts
+  "n",
+  "S",
+  "<cmd>lua require'hop'.hint_char1({ direction = require'hop.hint'.HintDirection.BEFORE_CURSOR, current_line_only = false })<cr>"
+  ,
+  opts
 )
 
 -- Terminal --
@@ -142,7 +144,7 @@ keymap("n", "<leader>ts", '<cmd>lua require("neotest").run.run { suite = true }<
 keymap("n", "<leader>tS", '<cmd>lua require("neotest").summary.toggle()<CR>', opts)
 
 return {
-    nnoremap = function(lhs, rhs)
-        keymap("n", lhs, rhs, opts)
-    end,
+  nnoremap = function(lhs, rhs)
+    keymap("n", lhs, rhs, opts)
+  end,
 }
