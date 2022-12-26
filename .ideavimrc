@@ -59,7 +59,8 @@ nnoremap <leader>ff :NERDTreeFind<CR>
 
 map <leader>e :NERDTreeToggle<CR>
 map <leader>rn :action RenameElement<CR>
-map gr :action FindUsages<CR>
+nnoremap <leader>gr :action FindUsages<CR>
+
 
 nnoremap Y y$
 xnoremap p "_dP
