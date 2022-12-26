@@ -8,7 +8,7 @@ require("null-ls").setup({
   debug = false, -- :NullLsLog && :NullLsInfo
   sources = {
     code_actions.eslint_d,
-    diagnostics.eslint_d,
+    --diagnostics.eslint_d,
     formatting.eslint_d,
     formatting.shfmt,
     formatting.stylua,

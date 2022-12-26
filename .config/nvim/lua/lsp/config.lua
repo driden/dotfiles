@@ -15,6 +15,7 @@ require("lsp.langs.sumneko")
 require("lsp.langs.ts")
 require("lsp.langs.go")
 require("lsp.langs.python")
+require("lsp.langs.terraform")
 
 local fs = {}
 local names = {}
