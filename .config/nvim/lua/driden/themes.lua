@@ -1,6 +1,7 @@
 local M = {}
-M.theme = "gruvbox-material"
+M.theme = "tokyonight-storm"
 M.available_themes = {
+  { name = "tokyonight-storm", bar = "onedark", plugin = "joshdick/onedark.vim", opts = {} },
   { name = "palenight", bar = "palenight", plugin = "drewtempelmeyer/palenight.vim", opts = {} },
   { name = "onedark", bar = "onedark", plugin = "joshdick/onedark.vim", opts = {} },
   { name = "kanagawa", bar = "onedark", plugin = "rebelot/kanagawa.nvim", opts = {} },

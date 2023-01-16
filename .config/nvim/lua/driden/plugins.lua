@@ -17,6 +17,7 @@ require("packer").startup(function(use)
     "wbthomason/packer.nvim",
     "nvim-lua/plenary.nvim",
     -- THEMES
+    "folke/tokyonight.nvim",
     "drewtempelmeyer/palenight.vim",
     "editorconfig/editorconfig-vim",
     "joshdick/onedark.vim",
