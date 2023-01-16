@@ -72,11 +72,12 @@ keymap("n", "<leader>tc", ":tabclose<CR>", opts)
 keymap("n", "<leader>gj", ":diffget //3<CR>", opts) -- right
 keymap("n", "<leader>gf", ":diffget //2<CR>", opts) -- left
 
-keymap("n", "<leader>gs", ":G<CR>", opts)
-keymap("n", "<leader>gc", ":GCheckout<CR>", opts)
-keymap("n", "<leader>gg", ":Gvdiffsplit!<CR>", opts)
-keymap("n", "<leader>gP", ":Git push<CR>", opts)
-keymap("n", "<leader>gp", ":Git pull<CR>", opts)
+-- Vim Fugitive
+-- keymap("n", "<leader>gs", ":G<CR>", opts)
+-- keymap("n", "<leader>gc", ":GCheckout<CR>", opts)
+-- keymap("n", "<leader>gg", ":Gvdiffsplit!<CR>", opts)
+-- keymap("n", "<leader>gP", ":Git push<CR>", opts)
+-- keymap("n", "<leader>gp", ":Git pull<CR>", opts)
 
 -- Telescope
 vim.keymap.set("n", "<leader>ff", function()

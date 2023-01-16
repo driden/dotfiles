@@ -1,7 +1,7 @@
 local M = {}
-M.theme = "tokyonight-storm"
+M.theme = "tokyonight-night"
 M.available_themes = {
-  { name = "tokyonight-storm", bar = "onedark", plugin = "joshdick/onedark.vim", opts = {} },
+  { name = "tokyonight-night", bar = "onedark", plugin = "joshdick/onedark.vim", opts = {} },
   { name = "palenight", bar = "palenight", plugin = "drewtempelmeyer/palenight.vim", opts = {} },
   { name = "onedark", bar = "onedark", plugin = "joshdick/onedark.vim", opts = {} },
   { name = "kanagawa", bar = "onedark", plugin = "rebelot/kanagawa.nvim", opts = {} },
@@ -20,7 +20,6 @@ end
 local function set_colorscheme(name)
   local theme = find_theme(name)
   vim.cmd("colorscheme " .. theme.name)
-  vim.cmd("let g:airline_theme='" .. theme.bar .. "'")
 end
 
 function M.load_theme()
@@ -62,6 +61,7 @@ function M.set_next_theme()
 end
 
 local map = require("utils.collections").map
+
 vim.api.nvim_create_user_command("ChangeTheme", function(data)
   local args = data.args
   set_colorscheme(args)

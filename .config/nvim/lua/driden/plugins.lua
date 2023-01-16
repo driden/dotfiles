@@ -26,9 +26,8 @@ require("packer").startup(function(use)
     "rktjmp/lush.nvim",
     "rebelot/kanagawa.nvim",
 
-    -- git
-    "tpope/vim-fugitive",
     "tpope/vim-surround",
+
     -- statusbar
     "vim-airline/vim-airline",
     "vim-airline/vim-airline-themes",
@@ -103,6 +102,11 @@ require("packer").startup(function(use)
       "marilari88/neotest-vitest",
     },
   })
+
+  use {
+    'nvim-lualine/lualine.nvim',
+    requires = { 'kyazdani42/nvim-web-devicons', opt = true }
+  }
 
   if Packer_bootstrap then
     require("packer").sync()
