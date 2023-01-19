@@ -119,6 +119,7 @@ alias lg="lazygit"
 # Terraform
 alias tp="terraform plan"
 alias ta="terraform apply"
+alias tap="terraform apply -auto-aprove"
 alias twl="terraform workspace list"
 alias twc="terraform workspace list | grep '*' | tr -d '*'| tr -d '[:space:]'"
 
