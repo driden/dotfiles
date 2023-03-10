@@ -1,22 +1,20 @@
 local api = require("nvim-tree.api")
 
-function tabkey(node)
+local function print_node(node)
+	vim.pretty_print({ node = node.name, type = node.type, open = node.open })
+end
+
+local function tabkey(node)
+	-- '<CR>' - api.node.open.edit
+	-- '<Tab>'- api.node.open.preview
+
 	if node == nil then
 		return
 	end
 
 	if node.type == "directory" then
-		if node.open then
-			api.tree.collapse_all()
-			return
-		end
-		api.tree.expand_all()
-		for key, value in pairs(node) do
-			if key ~= "nodes" then
-				print(key, value)
-			end
-		end
-	else -- assuming is a file
+		api.node.open.edit()
+	else
 		api.node.open.preview()
 	end
 end
