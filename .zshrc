@@ -43,13 +43,6 @@ fi
 #AWS
 export AWS_PAGER=
 
-#
-# Scripts
-#
-# [ -f ~/scripts/git-scripts.zsh ] && source ~/scripts/git-scripts.zsh
-# [ -f ~/scripts/nvm.zsh ] && source ~/scripts/nvm.zsh
-# [ -f ~/scripts/rkt.sh ] && source ~/scripts/rkt.sh
-
 SCRIPTS=$HOME/scripts
 if [[ -d  "$SCRIPTS" ]]
 then
@@ -59,20 +52,10 @@ then
   done
 fi
 
-#WORKSCRIPTS=$HOME/workscripts
-#if [[ -d  "$WORKSCRIPTS" ]]
-#then
-#  for file in $(ls $WORKSCRIPTS/*.{zsh,sh})
-#  do
-#    source "$file"
-#  done
-#fi
-
 # Scripts
 #
  [ -f ~/workscripts/jump.zsh ] && source  ~/workscripts/jump.zsh
  [ -f ~/workscripts/aliases.zsh ] && source ~/workscripts/aliases.zsh
- # [ -f ~/scripts/rkt.sh ] && source ~/scripts/rkt.sh
 
 #
 # ZSH settings
@@ -149,4 +132,3 @@ zvm_before_select_vi_mode_commands=()
 zvm_after_select_vi_mode_commands=()
 
 export PATH="/opt/homebrew/sbin:$PATH"
-
