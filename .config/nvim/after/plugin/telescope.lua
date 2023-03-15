@@ -16,3 +16,10 @@ vim.api.nvim_set_keymap(
 	":lua require('driden.telescope').del_buffers()<cr>",
 	{ noremap = true, silent = false }
 )
+
+vim.api.nvim_set_keymap(
+	"n",
+	'<leader>"',
+	":lua require('telescope.builtin').registers()<cr>",
+	{ noremap = true, silent = false }
+)
