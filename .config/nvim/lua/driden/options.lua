@@ -26,6 +26,7 @@ function M.setup()
     listchars = "lead:-,tab:>.,trail:~,eol:↴",
     number = true,
     relativenumber = true,
+    scrolloff = 10,
     shiftwidth = 2,
     showmode = false,
     signcolumn = "yes",
@@ -45,11 +46,6 @@ function M.setup()
   end
   vim.opt.rtp:append("/usr/loca/bin/fzf")
   vim.opt.shortmess:append("cmnwxsI")
-
-  -- neovide
-  if vim.fn.exists("g:neovide") then
-    vim.opt.guifont = "UbuntuMono Nerd Font Mono:h20"
-  end
 
   vim.o.completeopt = "menu,menuone,noselect"
 end
