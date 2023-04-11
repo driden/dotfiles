@@ -61,7 +61,7 @@ local config = {
 	},
 	format = {
 		comments = { enabled = false },
-		enabled = false,
+		enabled = true,
 		insertSpaces = true,
 		tabSize = 4,
 	},
