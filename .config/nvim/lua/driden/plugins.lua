@@ -3,6 +3,8 @@
 -- https://github.com/folke/noice.nvim
 -- https://github.com/folke/lazy.nvim
 -- https://github.com/echasnovski/mini.nvim
+--
+-- WHICH KEY
 
 local fn = vim.fn
 local install_path = fn.stdpath("data") .. "/site/pack/packer/start/packer.nvim"
