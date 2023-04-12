@@ -120,6 +120,8 @@ require("packer").startup(function(use)
     requires = { "kyazdani42/nvim-web-devicons", opt = true },
   })
 
+  use({ "rcarriga/nvim-notify" })
+
   if Packer_bootstrap then
     require("packer").sync()
   end

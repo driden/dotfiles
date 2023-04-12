@@ -48,6 +48,8 @@ function M.setup()
   vim.opt.shortmess:append("cmnwxsI")
 
   vim.o.completeopt = "menu,menuone,noselect"
+
+  vim.notify = require("notify")
 end
 
 return M
