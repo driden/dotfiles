@@ -41,7 +41,6 @@ require("packer").startup(function(use)
 
     -- filetree
     "kyazdani42/nvim-web-devicons",
-    "kyazdani42/nvim-tree.lua",
     -- Treesitter
     "nvim-treesitter/nvim-treesitter", --{do = 'TSUpdate',}},
 
@@ -109,6 +108,11 @@ require("packer").startup(function(use)
       "antoinemadec/FixCursorHold.nvim",
       "marilari88/neotest-vitest",
     },
+  })
+
+  use({
+    "kyazdani42/nvim-tree.lua",
+    commit = "874b7be5d053f1b31f545099d6fcbe8ae81e9e03", -- TOO MANY API CHANGES !!! just pin i
   })
 
   use({
