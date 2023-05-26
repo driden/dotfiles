@@ -15,8 +15,25 @@ capabilities.textDocument = {
 local extendedClientCapabilities = require("jdtls").extendedClientCapabilities
 extendedClientCapabilities.resolveAdditionalTextEditsSupport = true
 
-local root_markers = { ".git", "gradlew", "pom.xml" }
+local root_markers = { ".git", "gradlew", "build.gradle", "pom.xml" }
 local root_dir = require("jdtls.setup").find_root(root_markers)
+
+-- For Gradle only lets remove the .settings folder
+if root_dir ~= nil then
+	local f = io.open(root_dir .. "/build.gradle", "r")
+	if f ~= nil then
+		io.close(f)
+		-- vim.g['test#java#runner'] = 'gradletest'
+		-- vim.api.nvim_exec(
+		-- 	[[
+		--          let test#java#runner = 'gradletest'
+		--          ]],
+		-- 	true
+		-- )
+		os.execute("rm -rf " .. root_dir .. "/.settings")
+	end
+end
+
 local home = os.getenv("HOME")
 
 local workspace_dir = home .. "/.local/workspace/" .. vim.fn.fnamemodify(root_dir, ":p:h:t")
