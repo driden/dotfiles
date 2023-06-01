@@ -45,6 +45,7 @@ require("packer").startup(function(use)
     "kyazdani42/nvim-web-devicons",
     -- Treesitter
     "nvim-treesitter/nvim-treesitter", --{do = 'TSUpdate',}},
+    "nvim-treesitter/nvim-treesitter-context",
 
     -- Indent
     "lukas-reineke/indent-blankline.nvim",
