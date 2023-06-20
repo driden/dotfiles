@@ -8,3 +8,16 @@ vim.api.nvim_create_autocmd({ "VimEnter" }, {
     end
   end
 })
+
+-- recording macro
+vim.api.nvim_create_autocmd({ "RecordingEnter" }, {
+  callback = function()
+    vim.o.cmdheight = 1
+  end
+})
+
+vim.api.nvim_create_autocmd({ "RecordingLeave" }, {
+  callback = function()
+    vim.o.cmdheight = 0
+  end
+})

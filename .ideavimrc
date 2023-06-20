@@ -13,15 +13,16 @@ set noerrorbells
 " set multiple-cursors
 " set commentary
 " set argtextobj
-set easymotion
-
 
 """ Plugin settings -------------------------
 let g:argtextobj_pairs="[:],(:),<:>"
 set highlightedyank
-set easymotion
 set NERDTree
 set ReplaceWithRegister
+set easymotion
+
+"" Easy Motion
+map <leader>j <Plug>(easymotion-s)
 
 """ Common settings -------------------------
 set showmode
@@ -38,7 +39,7 @@ set ideajoin
 set ideastatusicon=purple
 set idearefactormode=keep
 
-""" Mappings --------------------------------
+""" Mappings -------------------------------
 nnoremap <leader>f :action(easymotion-s)
 nnoremap <leader><S-f> :action(easymotion-f)
 
