@@ -11,7 +11,7 @@ function M.setup()
     backspace = "indent,eol,start",
     backup = false,
     clipboard = "",
-    cmdheight = 0,
+    cmdheight = 1,
     compatible = false,
     conceallevel = 0, -- Might want to change this in specific filetypes
     concealcursor = "nc",
