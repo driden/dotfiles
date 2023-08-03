@@ -14,7 +14,7 @@ set noerrorbells
 " set commentary
 " set argtextobj
 
-""" Plugin settings -------------------------
+" Plugin settings -------------------------
 let g:argtextobj_pairs="[:],(:),<:>"
 set highlightedyank
 set NERDTree
