@@ -5,7 +5,7 @@ require("nvim-treesitter.configs").setup({
 		disable = { "org" }, -- Remove this to use TS highlighter for some of the highlights (Experimental)
 		additional_vim_regex_highlighting = { "org" }, -- Required since TS highlighter doesn't support all syntax features (conceal)
 	},
-	ensure_installed = { "org", "hcl", "bash", "typescript" },
+	ensure_installed = { "org", "hcl", "bash", "typescript", "go" },
 })
 
 require("treesitter-context").setup({
