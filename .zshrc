@@ -6,6 +6,7 @@ export PATH="$HOME/neovim/bin:/usr/bin:/bin:${PATH}"
 export PATH="${PATH}:$HOME/.emacs.d/bin"
 export PATH="${PATH}:$HOME/.cargo/bin"
 export PATH="${PATH}:$HOME/.ghcup/bin/"
+export PATH="${PATH}:$GOPATH"
 
 BREW_PREFIX=
 if [[ $(uname -p) == "arm" ]]; then
