@@ -69,7 +69,7 @@ ENABLE_CORRECTION="true"
 COMPLETION_WAITING_DOTS="%F{yellow}waiting...%f"
 COMPLETION_WAITING_DOTS="true"
 
-plugins=(git git-prompt fzf)
+plugins=(git git-prompt fzf zsh-syntax-highlighting)
 
 source $HOME/.oh-my-zsh/oh-my-zsh.sh
 
