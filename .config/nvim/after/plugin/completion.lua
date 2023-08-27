@@ -20,19 +20,18 @@ cmp.setup({
 		["<C-f>"] = cmp.mapping.scroll_docs(4),
 		["<C-Space>"] = cmp.mapping(cmp.mapping.complete(), { "i", "c" }),
 		["<Enter>"] = cmp.mapping(cmp.mapping.confirm(), { "i", "c" }),
-		["<TAB>"] = cmp.mapping(function(fallback)
-			if ls.expand_or_jumpable() then
+		["<Tab>"] = cmp.mapping(function(fallback)
+			if cmp.visible() then
+				cmp.confirm()
+			-- cmp.select_next_item()
+			elseif ls.expand_or_jumpable() then
 				ls.expand_or_jump()
-			elseif cmp.visible() or has_words_before() then
-				cmp.mapping.confirm({
-					behavior = cmp.ConfirmBehavior.Replace,
-					select = true,
-				})
+			elseif has_words_before() then
+				cmp.complete()
 			else
 				fallback()
 			end
-		end, { "i", "c" }),
-		["<C-y>"] = cmp.config.disable,
+		end, { "i", "s" }),
 		["<C-g>"] = cmp.mapping.abort(),
 	},
 	sources = cmp.config.sources({
