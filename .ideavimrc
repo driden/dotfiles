@@ -60,7 +60,7 @@ nnoremap <leader>ff :NERDTreeFind<CR>
 
 map <leader>e :NERDTreeToggle<CR>
 map <leader>rn :action RenameElement<CR>
-nnoremap gr :action FindUsages<CR>
+nnoremap gR :action FindUsages<CR>
 nnoremap gh :action QuickJavaDoc<cr>
 nnoremap ge :action ShowErrorDescription<cr>
 
