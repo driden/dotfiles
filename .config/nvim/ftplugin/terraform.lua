@@ -18,7 +18,5 @@
 -- vim.api.nvim_buf_create_user_command(0, "TfFormat", ":lua TfFormat()", {})
 
 local bufnr = vim.api.nvim_get_current_buf()
-vim.print(bufnr)
-
 vim.bo[bufnr].tabstop = 2
 vim.bo[bufnr].shiftwidth = 2

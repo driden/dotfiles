@@ -12,8 +12,7 @@ cmp.setup({
 			require("luasnip").lsp_expand(args.body) -- For `luasnip` users.
 		end,
 	},
-	performance = {},
-	mapping = {
+	mapping = cmp.mapping.preset.insert({
 		["<C-n>"] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Select }),
 		["<C-p>"] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Select }),
 		["<C-d>"] = cmp.mapping.scroll_docs(-4),
@@ -33,46 +32,12 @@ cmp.setup({
 			end
 		end, { "i", "s" }),
 		["<C-g>"] = cmp.mapping.abort(),
-	},
+	}),
 	sources = cmp.config.sources({
 		{ name = "nvim_lsp" },
 		{ name = "luasnip" },
 		{ name = "buffer", keyword_length = 4, max_item_count = 5 },
 	}),
-	-- formatting = {
-	-- 	format = require("lspkind").cmp_format({
-	-- 		maxwidth = 50,
-	-- 		mode = "symbol",
-	-- 		preset = "codicons",
-	-- 		symbol_map = {
-	-- 			Text = "",
-	-- 			Method = "",
-	-- 			Function = "",
-	-- 			Constructor = "",
-	-- 			Field = "ﰠ",
-	-- 			Variable = "",
-	-- 			Class = "ﴯ",
-	-- 			Interface = "",
-	-- 			Module = "",
-	-- 			Property = "ﰠ",
-	-- 			Unit = "塞",
-	-- 			Value = "",
-	-- 			Enum = "",
-	-- 			Keyword = "",
-	-- 			Snippet = "",
-	-- 			Color = "",
-	-- 			File = "",
-	-- 			Reference = "",
-	-- 			Folder = "",
-	-- 			EnumMember = "",
-	-- 			Constant = "",
-	-- 			Struct = "פּ",
-	-- 			Event = "",
-	-- 			Operator = "",
-	-- 			TypeParameter = "",
-	-- 		},
-	-- 	}),
-	-- },
 })
 
 -- Use buffer source for `/` and `?` (if you enabled `native_menu`, this won't work anymore).

@@ -19,7 +19,14 @@ vim.api.nvim_set_keymap(
 
 vim.api.nvim_set_keymap(
 	"n",
-	'<leader>"',
+	'<leader>f"',
 	":lua require('telescope.builtin').registers()<cr>",
+	{ noremap = true, silent = false }
+)
+
+vim.api.nvim_set_keymap(
+	"n",
+	"<leader>fb",
+	":lua require('telescope.builtin').buffers()<cr>",
 	{ noremap = true, silent = false }
 )
