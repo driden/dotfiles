@@ -44,7 +44,7 @@ require("packer").startup(function(use)
     -- filetree
     "kyazdani42/nvim-web-devicons",
     -- Treesitter
-    "nvim-treesitter/nvim-treesitter",     --{do = 'TSUpdate',}},
+    "nvim-treesitter/nvim-treesitter", --{do = 'TSUpdate',}},
     "nvim-treesitter/nvim-treesitter-context",
 
     -- Indent
@@ -92,7 +92,7 @@ require("packer").startup(function(use)
   })
   use({
     "phaazon/hop.nvim",
-    branch = "v2",     -- optional but strongly recommended
+    branch = "v2", -- optional but strongly recommended
     config = function()
       -- you can configure Hop the way you like here; see :h hop-config
       require("hop").setup({ keys = "etovxqpdygfblzhckisuran" })
@@ -115,7 +115,7 @@ require("packer").startup(function(use)
 
   use({
     "kyazdani42/nvim-tree.lua",
-    commit = "874b7be5d053f1b31f545099d6fcbe8ae81e9e03",     -- TOO MANY API CHANGES !!! just pin i
+    commit = "874b7be5d053f1b31f545099d6fcbe8ae81e9e03", -- TOO MANY API CHANGES !!! just pin i
   })
 
   use({
@@ -146,6 +146,12 @@ require("packer").startup(function(use)
         },
       })
     end,
+  })
+
+  use({
+    "nvim-treesitter/nvim-treesitter-textobjects",
+    after = "nvim-treesitter",
+    requires = "nvim-treesitter/nvim-treesitter",
   })
 
   if Packer_bootstrap then
