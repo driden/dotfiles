@@ -5,3 +5,8 @@
 -- 		})
 -- 	},
 -- })
+--
+-- keymap("n", "<leader>tn", '<cmd>lua require("neotest").run.run()<CR>', opts)
+-- keymap("n", "<leader>tf", '<cmd>lua require("neotest").run.run(vim.fn.expand("%"))<CR>', opts)
+-- keymap("n", "<leader>ts", '<cmd>lua require("neotest").run.run { suite = true }<CR>', opts)
+-- keymap("n", "<leader>tS", '<cmd>lua require("neotest").summary.toggle()<CR>', opts)

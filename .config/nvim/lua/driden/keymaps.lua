@@ -81,20 +81,20 @@ keymap("n", "<leader>gf", ":diffget //2<CR>", opts) -- left
 
 -- Telescope
 vim.keymap.set("n", "<leader>ff", function()
-  require("telescope.builtin").find_files({ hidden = true })
+    require("telescope.builtin").find_files({ hidden = true })
 end, opts)
 vim.keymap.set("n", "<leader>ft", function()
-  require("telescope.builtin").live_grep()
+    require("telescope.builtin").live_grep()
 end, opts)
 vim.keymap.set("n", "<leader>fk", function()
-  require("telescope.builtin").keymaps()
+    require("telescope.builtin").keymaps()
 end, opts)
-vim.keymap.set("n", "<leader>bi", function()
-  require("telescope.builtin").buffers()
+vim.keymap.set("n", "<leader>fb", function()
+    require("telescope.builtin").buffers()
 end, opts)
 
-vim.keymap.set("n", "<leader>ht", function()
-  require("telescope.builtin").help_tags()
+vim.keymap.set("n", "<leader>fh", function()
+    require("telescope.builtin").help_tags()
 end, opts)
 
 -- Quick Fix
@@ -116,18 +116,16 @@ keymap("n", "<leader>tt", ":lua require('driden.themes').set_next_theme()<CR>", 
 
 -- HOP
 vim.api.nvim_set_keymap(
-  "n",
-  "s",
-  "<cmd>lua require'hop'.hint_char1({ direction = require'hop.hint'.HintDirection.AFTER_CURSOR, current_line_only = false })<cr>"
-  ,
-  opts
+    "n",
+    "s",
+    "<cmd>lua require'hop'.hint_char1({ direction = require'hop.hint'.HintDirection.AFTER_CURSOR, current_line_only = false })<cr>",
+    opts
 )
 vim.api.nvim_set_keymap(
-  "n",
-  "S",
-  "<cmd>lua require'hop'.hint_char1({ direction = require'hop.hint'.HintDirection.BEFORE_CURSOR, current_line_only = false })<cr>"
-  ,
-  opts
+    "n",
+    "S",
+    "<cmd>lua require'hop'.hint_char1({ direction = require'hop.hint'.HintDirection.BEFORE_CURSOR, current_line_only = false })<cr>",
+    opts
 )
 
 -- Terminal --
@@ -139,13 +137,8 @@ keymap("t", "<C-k>", "<C-\\><C-N><C-w>k", term_opts)
 keymap("t", "<C-l>", "<C-\\><C-N><C-w>l", term_opts)
 keymap("t", "<leader>tc", "<C-><C-n>:q<CR>", term_opts)
 
-keymap("n", "<leader>tn", '<cmd>lua require("neotest").run.run()<CR>', opts)
-keymap("n", "<leader>tf", '<cmd>lua require("neotest").run.run(vim.fn.expand("%"))<CR>', opts)
-keymap("n", "<leader>ts", '<cmd>lua require("neotest").run.run { suite = true }<CR>', opts)
-keymap("n", "<leader>tS", '<cmd>lua require("neotest").summary.toggle()<CR>', opts)
-
 return {
-  nnoremap = function(lhs, rhs)
-    keymap("n", lhs, rhs, opts)
-  end,
+    nnoremap = function(lhs, rhs)
+        keymap("n", lhs, rhs, opts)
+    end,
 }
