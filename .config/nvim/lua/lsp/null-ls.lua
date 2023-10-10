@@ -3,34 +3,40 @@ local formatting = require("null-ls").builtins.formatting
 local diagnostics = require("null-ls").builtins.diagnostics
 local code_actions = require("null-ls").builtins.code_actions
 
-local with_root_file = function(...)
-    local files = { ... }
-    return function(utils)
-        return utils.root_has_file(files)
-    end
+local with_root_file = function(files)
+  return function(utils)
+    vim.print(utils)
+    return utils.root_has_file(files)
+  end
 end
 
--- https://github.com/0x221A/dotfiles/blob/2a1cc44bf39268222377d8c6244c9535fd493b83/packages/nvim/nvim/lua/rootblack45/configs/lsp/null-ls.lua#L18
-local project_node_bin = "node_modules/.bin"
-local local_eslint = project_node_bin .. "/eslint"
+local stylua_root_files = { "stylua.toml", ".stylua.toml" }
+local eslint_root_files = { ".eslintrc", ".eslintrc.js", ".eslintrc.cjs", ".eslintrc.json" }
+local prettier_root_files = { ".prettierrc", ".prettierrc.js", ".prettierrc.json" }
 
 require("null-ls").setup({
-    debug = true, -- :NullLsLog && :NullLsInfo
-    sources = {
-        code_actions.eslint_d,
-        diagnostics.eslint_d.with({
-            condition = with_root_file(local_eslint),
-            -- ignore prettier warnings from eslint-plugin-prettier
-            filter = function(diagnostic)
-                return diagnostic.code ~= "prettier/prettier"
-            end,
-        }),
-        formatting.eslint_d.with({
-            condition = with_root_file(local_eslint),
-        }),
-        formatting.shfmt,
-        formatting.stylua,
-        --formatting.google_java_format
-    },
-    on_attach = require("lsp.keymaps").on_attach,
+  debug = true, -- :NullLsLog && :NullLsInfo
+  root_dir = require("null-ls.utils").root_pattern(".null-ls-root", "Makefile", ".git", "package.json"),
+  sources = {
+    code_actions.eslint_d.with({
+      condition = with_root_file(eslint_root_files),
+    }),
+    diagnostics.eslint_d.with({
+      condition = with_root_file(eslint_root_files),
+    }),
+    formatting.eslint_d.with({
+      condition = function(utils)
+        local has_eslint = with_root_file(eslint_root_files)(utils)
+        local has_prettier = with_root_file(prettier_root_files)(utils)
+        return has_eslint and not has_prettier
+      end,
+    }),
+    formatting.prettier.with({
+      condition = with_root_file(prettier_root_files),
+    }),
+    formatting.shfmt,
+    formatting.stylua.with({ condition = with_root_file(stylua_root_files) }),
+    --formatting.google_java_format
+  },
+  on_attach = require("lsp.keymaps").on_attach,
 })

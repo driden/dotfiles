@@ -6,7 +6,7 @@ local keymap = vim.api.nvim_set_keymap
 
 keymap("", "<Space>", "<Nop>", opts)
 vim.g.mapleader = " "
-vim.g.maplocalleader = " "
+vim.g.maplocalleader = ","
 
 keymap("n", "<C-h>", "<C-w>h", opts)
 keymap("n", "<C-j>", "<C-w>j", opts)
@@ -81,29 +81,29 @@ keymap("n", "<leader>gf", ":diffget //2<CR>", opts) -- left
 
 -- Telescope
 vim.keymap.set("n", "<leader>ff", function()
-    require("telescope.builtin").find_files({ hidden = true })
+  require("telescope.builtin").find_files({ hidden = true })
 end, opts)
 vim.keymap.set("n", "<leader>ft", function()
-    require("telescope.builtin").live_grep()
+  require("telescope.builtin").live_grep()
 end, opts)
 vim.keymap.set("n", "<leader>fk", function()
-    require("telescope.builtin").keymaps()
+  require("telescope.builtin").keymaps()
 end, opts)
 vim.keymap.set("n", "<leader>fb", function()
-    require("telescope.builtin").buffers()
+  require("telescope.builtin").buffers()
 end, opts)
 
 vim.keymap.set("n", "<leader>fh", function()
-    require("telescope.builtin").help_tags()
+  require("telescope.builtin").help_tags()
 end, opts)
 
 -- Quick Fix
 keymap("n", "<leader>qq", ":copen<CR>", opts) -- Open the quickfix window
-keymap("n", "<leader>qc", ":ccl<CR>", opts) --  Open it if there are "errors", close it otherwise
-keymap("n", "<leader>qe", ":cw<CR>", opts) --  Go to the next error in the window
-keymap("n", "q]", ":cn<CR>", opts) -- Go to the previous error in the window
-keymap("n", "q[", ":cp<CR>", opts) -- Go to the first error in the next file
-keymap("n", "<leader>qf", ":cnf<CR>", opts) --Go to error under cursor (if cursor is in quickfix window)
+keymap("n", "<leader>qc", ":ccl<CR>", opts)   --  Open it if there are "errors", close it otherwise
+keymap("n", "<leader>qe", ":cw<CR>", opts)    --  Go to the next error in the window
+keymap("n", "q]", ":cn<CR>", opts)            -- Go to the previous error in the window
+keymap("n", "q[", ":cp<CR>", opts)            -- Go to the first error in the next file
+keymap("n", "<leader>qf", ":cnf<CR>", opts)   --Go to error under cursor (if cursor is in quickfix window)
 keymap("n", "<leader>q.", ":.cc<CR>", opts)
 
 -- Misc
@@ -116,16 +116,16 @@ keymap("n", "<leader>tt", ":lua require('driden.themes').set_next_theme()<CR>", 
 
 -- HOP
 vim.api.nvim_set_keymap(
-    "n",
-    "s",
-    "<cmd>lua require'hop'.hint_char1({ direction = require'hop.hint'.HintDirection.AFTER_CURSOR, current_line_only = false })<cr>",
-    opts
+  "n",
+  "s",
+  "<cmd>lua require'hop'.hint_char1({ direction = require'hop.hint'.HintDirection.AFTER_CURSOR, current_line_only = false })<cr>",
+  opts
 )
 vim.api.nvim_set_keymap(
-    "n",
-    "S",
-    "<cmd>lua require'hop'.hint_char1({ direction = require'hop.hint'.HintDirection.BEFORE_CURSOR, current_line_only = false })<cr>",
-    opts
+  "n",
+  "S",
+  "<cmd>lua require'hop'.hint_char1({ direction = require'hop.hint'.HintDirection.BEFORE_CURSOR, current_line_only = false })<cr>",
+  opts
 )
 
 -- Terminal --
@@ -138,7 +138,7 @@ keymap("t", "<C-l>", "<C-\\><C-N><C-w>l", term_opts)
 keymap("t", "<leader>tc", "<C-><C-n>:q<CR>", term_opts)
 
 return {
-    nnoremap = function(lhs, rhs)
-        keymap("n", lhs, rhs, opts)
-    end,
+  nnoremap = function(lhs, rhs)
+    keymap("n", lhs, rhs, opts)
+  end,
 }
