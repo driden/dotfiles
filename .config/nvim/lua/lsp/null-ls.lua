@@ -5,7 +5,6 @@ local code_actions = require("null-ls").builtins.code_actions
 
 local with_root_file = function(files)
   return function(utils)
-    vim.print(utils)
     return utils.root_has_file(files)
   end
 end
