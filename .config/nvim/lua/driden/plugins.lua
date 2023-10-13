@@ -44,7 +44,7 @@ require("packer").startup(function(use)
     -- filetree
     "kyazdani42/nvim-web-devicons",
     -- Treesitter
-    "nvim-treesitter/nvim-treesitter",     --{do = 'TSUpdate',}},
+    "nvim-treesitter/nvim-treesitter", --{do = 'TSUpdate',}},
     "nvim-treesitter/nvim-treesitter-context",
 
     -- Indent
@@ -88,12 +88,12 @@ require("packer").startup(function(use)
 
   use({
     "nvim-telescope/telescope.nvim",
-    tag = "0.1.0",
+    branch = "0.1.x",
     requires = { { "nvim-lua/plenary.nvim" } },
   })
   use({
     "phaazon/hop.nvim",
-    branch = "v2",     -- optional but strongly recommended
+    branch = "v2", -- optional but strongly recommended
     config = function()
       -- you can configure Hop the way you like here; see :h hop-config
       require("hop").setup({ keys = "etovxqpdygfblzhckisuran" })
@@ -111,7 +111,7 @@ require("packer").startup(function(use)
 
   use({
     "kyazdani42/nvim-tree.lua",
-    commit = "874b7be5d053f1b31f545099d6fcbe8ae81e9e03",     -- TOO MANY API CHANGES !!! just pin i
+    commit = "874b7be5d053f1b31f545099d6fcbe8ae81e9e03", -- TOO MANY API CHANGES !!! just pin i
   })
 
   use({
