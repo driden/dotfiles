@@ -45,3 +45,11 @@ function gcob() {
 function gcm() {
 	git commit -m "$1"
 }
+
+last_commit() {
+	git --no-pager log --oneline | head -n1
+}
+
+file_history() {
+	git --no-pager log --oneline -- "$(eval $fzf)"
+}
