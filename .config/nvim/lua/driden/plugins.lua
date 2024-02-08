@@ -80,6 +80,7 @@ require("packer").startup(function(use)
 
     -- boludeces
     "xiyaowong/nvim-transparent",
+    "tpope/vim-unimpaired"
   }
 
   for _, plugin in ipairs(plugins) do

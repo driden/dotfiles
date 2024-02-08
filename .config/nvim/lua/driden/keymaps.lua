@@ -31,8 +31,8 @@ keymap("n", "<Left>", ":vertical resize +3<CR>", opts)
 keymap("n", "<Right>", ":vertical resize -3<CR>", opts)
 
 -- Navigate buffers
-keymap("n", "<S-l>", ":bnext<CR>", opts)
-keymap("n", "<S-h>", ":bprevious<CR>", opts)
+keymap("n", "<A-l>", ":bnext<CR>", opts)
+keymap("n", "<A-h>", ":bprevious<CR>", opts)
 
 -- Visual --
 -- Stay in indent mode
@@ -47,8 +47,6 @@ keymap("x", "p", '"_dP', opts)
 
 -- Visual Block --
 -- Move text up and down
-keymap("x", "J", ":move '>+1<CR>gv-gv", opts)
-keymap("x", "K", ":move '<-2<CR>gv-gv", opts)
 keymap("x", "<A-j>", ":move '>+1<CR>gv-gv", opts)
 keymap("x", "<A-k>", ":move '<-2<CR>gv-gv", opts)
 
@@ -101,9 +99,9 @@ end, opts)
 keymap("n", "<leader>qq", ":copen<CR>", opts) -- Open the quickfix window
 keymap("n", "<leader>qc", ":ccl<CR>", opts)   --  Open it if there are "errors", close it otherwise
 keymap("n", "<leader>qe", ":cw<CR>", opts)    --  Go to the next error in the window
-keymap("n", "q]", ":cn<CR>", opts)            -- Go to the previous error in the window
-keymap("n", "q[", ":cp<CR>", opts)            -- Go to the first error in the next file
-keymap("n", "<leader>qf", ":cnf<CR>", opts)   --Go to error under cursor (if cursor is in quickfix window)
+-- keymap("n", "q]", ":cn<CR>", opts)            -- Go to the previous error in the window
+-- keymap("n", "q[", ":cp<CR>", opts)            -- Go to the first error in the next file
+keymap("n", "<leader>qf", ":cnf<CR>", opts) --Go to error under cursor (if cursor is in quickfix window)
 keymap("n", "<leader>q.", ":.cc<CR>", opts)
 
 -- Misc
