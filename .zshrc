@@ -16,6 +16,7 @@ else
 fi
 
 export PATH=$BREW_PREFIX/sbin:$BREW_PREFIX/bin:$PATH
+# export PATH="/opt/homebrew/sbin:$PATH"
 
 export MANPATH="/usr/local/man:$MANPATH"
 export LANG=en_US.UTF-8
@@ -28,7 +29,6 @@ export TERMINAL='kitty'
 
 # GO
 export GOPATH=$HOME/go
-export GOPROXY=direct
 export PATH=$PATH:$GOPATH/bin
 
 if [[ -n $SSH_CONNECTION ]]; then
@@ -53,17 +53,18 @@ fi
  [ -f ~/workscripts/aliases.zsh ] && source ~/workscripts/aliases.zsh
 
 alias zshconfig="nvim ~/.zshrc"
-alias srcz="source $ZSH/oh-my-zsh.sh"
 alias refreshenv='source $HOME/.zshrc && source $HOME/.zshenv'
-alias dot='cd $HOME/code/dotfiles && vim .'
+alias dot="cd $HOME/code/dotfiles && $EDITOR ."
 alias ll="exa --long --all"
-alias vimc="$EDITOR $HOME/.config/nvim/init.lua"
 alias vim="$EDITOR"
 alias vi="$EDITOR"
 alias v="$EDITOR"
 alias emacsc="emacsclient --create-frame"
+alias lg=lazygit
 
 # Git aliases
+alias gs="git status"
+alias gc="git commit"
 alias gcm="git commit -m"
 alias gap="git add -p"
 alias gp="git pull"
@@ -80,10 +81,8 @@ alias twc="terraform workspace list | grep '*' | tr -d '*'| tr -d '[:space:]'"
 
 alias pip='pip3'
 
-
 [ -f "$HOME/.ghcup/env" ] && source "$HOME/.ghcup/env" # ghcup-env
 
-export PATH="/opt/homebrew/sbin:$PATH"
 
 #Plugin manager
 # Download Znap, if it's not there yet.
@@ -103,9 +102,9 @@ znap source zsh-users/zsh-syntax-highlighting
 znap source Aloxaf/fzf-tab
 znap source romkatv/zsh-defer
 
-export SDKMAN_DIR="$HOME/.sdkman"
 if [[ -s "$SDKMAN_DIR/bin/sdkman-init.sh" ]]
 then
+  export SDKMAN_DIR="$HOME/.sdkman"
   zsh-defer source "$SDKMAN_DIR/bin/sdkman-init.sh"
 fi
 
