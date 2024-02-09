@@ -80,16 +80,8 @@ alias twc="terraform workspace list | grep '*' | tr -d '*'| tr -d '[:space:]'"
 
 alias pip='pip3'
 
-function init_fzf() {
-  [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-  [ -f ~/.fzf/completion.zsh ] && source ~/.fzf/completion.zsh
-  [ -f ~/.fzf/key-bindings.zsh ] && source ~/.fzf/key-bindings.zsh
-}
 
 [ -f "$HOME/.ghcup/env" ] && source "$HOME/.ghcup/env" # ghcup-env
-
-export SDKMAN_DIR="$HOME/.sdkman"
-[[ -s "$SDKMAN_DIR/bin/sdkman-init.sh" ]] && source "$SDKMAN_DIR/bin/sdkman-init.sh"
 
 export PATH="/opt/homebrew/sbin:$PATH"
 
@@ -105,8 +97,25 @@ local ZNAP_FOLDER=$PLUGINS_BASE/znap
 source $ZNAP_FOLDER/znap.zsh  # Start Znap
 
 zstyle ':znap:*' repos-dir $PLUGINS_FOLDER
-znap source zsh-users/zsh-autosuggestions
 znap source marlonrichert/zsh-autocomplete
+znap source chitoku-k/fzf-zsh-completions
+znap source zsh-users/zsh-syntax-highlighting
+znap source Aloxaf/fzf-tab
+znap source romkatv/zsh-defer
+
+export SDKMAN_DIR="$HOME/.sdkman"
+if [[ -s "$SDKMAN_DIR/bin/sdkman-init.sh" ]]
+then
+  zsh-defer source "$SDKMAN_DIR/bin/sdkman-init.sh"
+fi
+
+function init_fzf() {
+  [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+  [ -f ~/.fzf/completion.zsh ] && source ~/.fzf/completion.zsh
+  [ -f ~/.fzf/key-bindings.zsh ] && source ~/.fzf/key-bindings.zsh
+}
+
+init_fzf
 
 eval "$(fnm env --use-on-cd)"
 eval "$(starship init zsh)"
