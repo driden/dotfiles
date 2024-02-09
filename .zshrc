@@ -94,13 +94,12 @@ local ZNAP_FOLDER=$PLUGINS_BASE/znap
     git clone --depth 1 -- \
         https://github.com/marlonrichert/zsh-snap.git $ZNAP_FOLDER
 source $ZNAP_FOLDER/znap.zsh  # Start Znap
-
 zstyle ':znap:*' repos-dir $PLUGINS_FOLDER
 znap source marlonrichert/zsh-autocomplete
 znap source chitoku-k/fzf-zsh-completions
-znap source zsh-users/zsh-syntax-highlighting
-znap source Aloxaf/fzf-tab
 znap source romkatv/zsh-defer
+znap source zsh-users/zsh-syntax-highlighting
+znap source zsh-users/zsh-autosuggestions
 
 if [[ -s "$SDKMAN_DIR/bin/sdkman-init.sh" ]]
 then
@@ -118,4 +117,3 @@ init_fzf
 
 eval "$(fnm env --use-on-cd)"
 eval "$(starship init zsh)"
-
