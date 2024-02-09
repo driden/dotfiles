@@ -1,6 +1,3 @@
-#disable updates
-export DISABLE_AUTO_UPDATE=true
-
 # General
 export PATH="$HOME/neovim/bin:/usr/bin:/bin:${PATH}"
 export PATH="${PATH}:$HOME/.emacs.d/bin"
@@ -16,13 +13,10 @@ alias ibrew='arch -x86_64 /usr/local/bin/brew'
 else
   BREW_PREFIX=/usr/local
   HOMEBREW_CELLAR=/usr/local/Cellar
-
-
 fi
 
 export PATH=$BREW_PREFIX/sbin:$BREW_PREFIX/bin:$PATH
 
-export ZSH="$HOME/.oh-my-zsh"
 export MANPATH="/usr/local/man:$MANPATH"
 export LANG=en_US.UTF-8
 export BROWSER=$(which firefox)
@@ -58,28 +52,7 @@ fi
  [ -f ~/workscripts/jump.zsh ] && source  ~/workscripts/jump.zsh
  [ -f ~/workscripts/aliases.zsh ] && source ~/workscripts/aliases.zsh
 
-#
-# ZSH settings
-#
-ZSH_DISABLE_COMPFIX="true"
-ZSH_THEME="af-magic"
-CASE_SENSITIVE="true"
-HYPHEN_INSENSITIVE="true"
-ENABLE_CORRECTION="true"
-COMPLETION_WAITING_DOTS="%F{yellow}waiting...%f"
-COMPLETION_WAITING_DOTS="true"
-
-plugins=(git git-prompt fzf zsh-syntax-highlighting)
-
-source $HOME/.oh-my-zsh/oh-my-zsh.sh
-
-# User configuration
-#if command -v tmux &> /dev/null && [ -n "$PS1" ] && [[ ! "$TERM" =~ screen ]] && [[ ! "$TERM" =~ tmux ]] && [ -z "$TMUX" ]; then
-#  exec tmux
-#fi
-
 alias zshconfig="nvim ~/.zshrc"
-alias ohmyzsh="nvim ~/.oh-my-zsh"
 alias srcz="source $ZSH/oh-my-zsh.sh"
 alias refreshenv='source $HOME/.zshrc && source $HOME/.zshenv'
 alias dot='cd $HOME/code/dotfiles && vim .'
@@ -91,8 +64,6 @@ alias v="$EDITOR"
 alias emacsc="emacsclient --create-frame"
 
 # Git aliases
-alias gs="git status"
-alias gc="git commit"
 alias gcm="git commit -m"
 alias gap="git add -p"
 alias gp="git pull"
@@ -107,12 +78,6 @@ alias tap="terraform apply -auto-aprove"
 alias twl="terraform workspace list"
 alias twc="terraform workspace list | grep '*' | tr -d '*'| tr -d '[:space:]'"
 
-# default with ohmyzsh
-unalias ga
-unalias gco
-unalias gbd
-
-
 alias pip='pip3'
 
 function init_fzf() {
@@ -126,10 +91,23 @@ function init_fzf() {
 export SDKMAN_DIR="$HOME/.sdkman"
 [[ -s "$SDKMAN_DIR/bin/sdkman-init.sh" ]] && source "$SDKMAN_DIR/bin/sdkman-init.sh"
 
-
-zvm_before_init_commands=()
-zvm_after_init_commands+=(init_fzf)
-zvm_before_select_vi_mode_commands=()
-zvm_after_select_vi_mode_commands=()
-
 export PATH="/opt/homebrew/sbin:$PATH"
+
+#Plugin manager
+# Download Znap, if it's not there yet.
+local PLUGINS_BASE=$HOME/zsh-plugins/plugins
+local PLUGINS_FOLDER=$PLUGINS_BASE/plugins
+local ZNAP_FOLDER=$PLUGINS_BASE/znap
+
+[[ -r $ZNAP_FOLDER/znap.zsh ]] ||
+    git clone --depth 1 -- \
+        https://github.com/marlonrichert/zsh-snap.git $ZNAP_FOLDER
+source $ZNAP_FOLDER/znap.zsh  # Start Znap
+
+zstyle ':znap:*' repos-dir $PLUGINS_FOLDER
+znap source zsh-users/zsh-autosuggestions
+znap source marlonrichert/zsh-autocomplete
+
+eval "$(fnm env --use-on-cd)"
+eval "$(starship init zsh)"
+

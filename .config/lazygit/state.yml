@@ -1,10 +1,8 @@
 lastupdatecheck: 0
 recentrepos:
-- /home/driden/code/dotfiles
-- /home/driden/code/fidelite
-- /home/driden/crylia-theme
-- /home/driden/code/env_setup
+- /Users/lrrezend/code/dotfiles
 startuppopupversion: 5
 customcommandshistory:
 - q
 hidecommandlog: false
+ignorewhitespaceindiffview: false
