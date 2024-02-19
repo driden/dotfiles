@@ -115,5 +115,5 @@ function init_fzf() {
 
 init_fzf
 
-eval "$(fnm env --use-on-cd)"
+zsh-defer eval "$(fnm env --use-on-cd)"
 eval "$(starship init zsh)"
