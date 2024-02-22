@@ -31,9 +31,17 @@ gcr() {
 }
 
 ga() {
-	local changed_files files
 	selected_files=$(git status -s | awk '{print $2}' | eval "$fzf --header 'Select files to add' --multi")
 	echo "$selected_files" | xargs git add --
+}
+
+gdiff() {
+	if [[ -n "$1" ]]; then
+		git diff --name-only "$1" | eval "$fzf --multi --header 'select files to view'" | xargs -n1 git diff "$1" --
+	else
+		echo "provide branch name"
+		return 1
+	fi
 }
 
 function gcob() {

@@ -99,10 +99,12 @@ znap source chitoku-k/fzf-zsh-completions
 znap source romkatv/zsh-defer
 znap source zsh-users/zsh-syntax-highlighting
 
+export SDKMAN_DIR="$HOME/.sdkman"
 if [[ -s "$SDKMAN_DIR/bin/sdkman-init.sh" ]]
 then
-  export SDKMAN_DIR="$HOME/.sdkman"
   zsh-defer source "$SDKMAN_DIR/bin/sdkman-init.sh"
+else
+  echo "NO SDK"
 fi
 
 function init_fzf() {
