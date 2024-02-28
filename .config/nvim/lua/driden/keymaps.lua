@@ -77,24 +77,6 @@ keymap("n", "<leader>gf", ":diffget //2<CR>", opts) -- left
 -- keymap("n", "<leader>gP", ":Git push<CR>", opts)
 -- keymap("n", "<leader>gp", ":Git pull<CR>", opts)
 
--- Telescope
-vim.keymap.set("n", "<leader>ff", function()
-  require("telescope.builtin").find_files({ hidden = true })
-end, opts)
-vim.keymap.set("n", "<leader>ft", function()
-  require("telescope.builtin").live_grep()
-end, opts)
-vim.keymap.set("n", "<leader>fk", function()
-  require("telescope.builtin").keymaps()
-end, opts)
-vim.keymap.set("n", "<leader>fb", function()
-  require("telescope.builtin").buffers()
-end, opts)
-
-vim.keymap.set("n", "<leader>fh", function()
-  require("telescope.builtin").help_tags()
-end, opts)
-
 -- Quick Fix
 keymap("n", "<leader>qq", ":copen<CR>", opts) -- Open the quickfix window
 keymap("n", "<leader>qc", ":ccl<CR>", opts)   --  Open it if there are "errors", close it otherwise

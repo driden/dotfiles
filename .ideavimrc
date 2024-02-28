@@ -55,6 +55,8 @@ nnoremap <C-j> <C-W>j
 nnoremap <C-k> <C-W>k
 nnoremap H :bp<CR>
 nnoremap L :bn<CR>
+nnoremap [b :bp<CR>
+nnoremap ]b :bn<CR>
 
 nnoremap <leader>ff :NERDTreeFind<CR>
 
