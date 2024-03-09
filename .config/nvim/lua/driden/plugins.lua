@@ -76,7 +76,7 @@ require("packer").startup(function(use)
     "saadparwaiz1/cmp_luasnip",
 
     "numToStr/Comment.nvim",
-    -- "ThePrimeagen/harpoon",
+    "ThePrimeagen/harpoon",
 
     -- boludeces
     "xiyaowong/nvim-transparent",
