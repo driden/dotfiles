@@ -80,7 +80,9 @@ require("packer").startup(function(use)
 
     -- boludeces
     "xiyaowong/nvim-transparent",
-    "tpope/vim-unimpaired"
+    "tpope/vim-unimpaired",
+    "Exafunction/codeium.vim"
+
   }
 
   for _, plugin in ipairs(plugins) do
@@ -125,25 +127,6 @@ require("packer").startup(function(use)
   use({ "bluz71/vim-nightfly-colors", as = "nightfly" })
 
   use({ "nvim-neorg/neorg", run = ":Neorg sync-parsers" })
-
-  use({
-    "zbirenbaum/copilot.lua",
-    cmd = "Copilot",
-    event = "InsertEnter",
-    config = function()
-      require("copilot").setup({
-        panel = { auto_refresh = true },
-        suggestion = {
-          keymap = {
-            accept = "<M-l>",
-            next = "<M-]>",
-            prev = "<M-[>",
-            dismiss = "<C-]>",
-          },
-        },
-      })
-    end,
-  })
 
   use({
     "nvim-treesitter/nvim-treesitter-textobjects",
