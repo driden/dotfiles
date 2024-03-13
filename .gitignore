@@ -9,3 +9,4 @@ vscode-java-test
 .config/nvim/plugin/packer_compiled.lua
 
 *.zwc
+.config/lazygit/state.yml
