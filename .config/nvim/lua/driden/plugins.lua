@@ -78,6 +78,7 @@ require("packer").startup(function(use)
     "numToStr/Comment.nvim",
     "ThePrimeagen/harpoon",
 
+
     -- boludeces
     "xiyaowong/nvim-transparent",
     "tpope/vim-unimpaired",
@@ -130,6 +131,15 @@ require("packer").startup(function(use)
     "nvim-treesitter/nvim-treesitter-textobjects",
     after = "nvim-treesitter",
     requires = "nvim-treesitter/nvim-treesitter",
+  })
+
+  use({
+    "nvim-orgmode/orgmode",
+    after = "nvim-treesitter",
+    requires = "nvim-treesitter/nvim-treesitter",
+    config = function()
+      require('orgmode').setup_ts_grammar();
+    end,
   })
 
   if Packer_bootstrap then
