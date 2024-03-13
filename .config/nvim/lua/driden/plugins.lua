@@ -126,8 +126,6 @@ require("packer").startup(function(use)
 
   use({ "bluz71/vim-nightfly-colors", as = "nightfly" })
 
-  use({ "nvim-neorg/neorg", run = ":Neorg sync-parsers" })
-
   use({
     "nvim-treesitter/nvim-treesitter-textobjects",
     after = "nvim-treesitter",
