@@ -14,6 +14,26 @@ assume() {
 		))
 }
 
-select_role() {
-	rg --pcre2 -N -o -e '(?<=\[)\S+(?=\])' ~/.aws/credentials | fzf --no-multi --reverse --header 'Select a profile'
+aws_select_role() {
+	rg --pcre2 -N -o -e '(?<=\[)\S+(?=\])' ~/.aws/credentials | sort | fzf --no-multi --reverse --header 'Select a profile'
+}
+
+aws_select_region() {
+	read -r -d '\n' regions <<EndOfText
+us-east-1
+us-east-2
+us-west-1
+us-west-2
+EndOfText
+
+	echo "$regions" | fzf --header 'Region'
+}
+
+ssm_log_in() {
+	if [ -z "$1" ]; then
+		echo >&2 "Please provide instance id"
+		return 1
+	fi
+
+	aws ssm start-session --target "$1" --region us-east-1 --profile "$(aws_select_role)"
 }
