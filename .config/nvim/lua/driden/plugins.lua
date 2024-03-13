@@ -56,7 +56,6 @@ require("packer").startup(function(use)
     "onsails/lspkind-nvim",
     "williamboman/mason.nvim",
     "williamboman/mason-lspconfig.nvim",
-    "nvimtools/none-ls.nvim",
     "hrsh7th/nvim-cmp",
     "hrsh7th/cmp-cmdline",
     "hrsh7th/cmp-nvim-lua",
@@ -140,6 +139,13 @@ require("packer").startup(function(use)
     config = function()
       require('orgmode').setup_ts_grammar();
     end,
+  })
+
+  use({
+    "nvimtools/none-ls.nvim",
+    requires = {
+      "nvimtools/none-ls-extras.nvim",
+    },
   })
 
   if Packer_bootstrap then
