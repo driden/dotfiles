@@ -70,6 +70,7 @@ alias gap="git add -p"
 alias gp="git pull"
 alias gP="git push"
 alias gtree="git log --oneline --decorate --all --graph"
+alias glog="git log --oneline --decorate --all -n 10"
 alias lg="lazygit"
 
 # Terraform
