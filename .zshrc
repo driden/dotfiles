@@ -5,6 +5,11 @@ export PATH="${PATH}:$HOME/.cargo/bin"
 export PATH="${PATH}:$HOME/.ghcup/bin/"
 export PATH="${PATH}:$GOPATH"
 
+# Binaries in case we have the folder
+ if [ -d $HOME/.bin ]; then
+  export PATH="${PATH}:$HOME/.bin"
+ fi
+
 BREW_PREFIX=
 if [[ $(uname -p) == "arm" ]]; then
   BREW_PREFIX=/opt/homebrew
@@ -51,6 +56,7 @@ fi
 #
  [ -f ~/workscripts/jump.zsh ] && source  ~/workscripts/jump.zsh
  [ -f ~/workscripts/aliases.zsh ] && source ~/workscripts/aliases.zsh
+
 
 alias zshconfig="nvim ~/.zshrc"
 alias refreshenv='source $HOME/.zshrc && source $HOME/.zshenv'

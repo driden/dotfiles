@@ -37,10 +37,6 @@ require("packer").startup(function(use)
 
     "tpope/vim-surround",
 
-    -- statusbar
-    "vim-airline/vim-airline",
-    "vim-airline/vim-airline-themes",
-
     -- filetree
     "kyazdani42/nvim-web-devicons",
     -- Treesitter
