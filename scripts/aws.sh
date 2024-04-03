@@ -29,7 +29,7 @@ EndOfText
 	echo "$regions" | fzf --header 'Region'
 }
 
-ssm_log_in() {
+aws_ssm_log_in() {
 	if [ -z "$1" ]; then
 		echo >&2 "Please provide instance id"
 		return 1
