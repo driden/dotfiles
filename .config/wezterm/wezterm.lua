@@ -3,6 +3,10 @@ local config = wezterm.config_builder()
 
 config.automatically_reload_config = true
 config.window_background_opacity = 0.7
+config.hide_tab_bar_if_only_one_tab = true
+
+-- For readline to work on macos, will probably need to query for the os beforehand
+config.send_composed_key_when_right_alt_is_pressed = false
 
 config.keys = {
   -- CTRL-SHIFT-l activates the debug overlay
