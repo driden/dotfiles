@@ -22,6 +22,7 @@ set ReplaceWithRegister
 set easymotion
 
 "" Easy Motion
+map s <Plug>(easymotion-s)
 map <leader>j <Plug>(easymotion-s)
 
 """ Common settings -------------------------

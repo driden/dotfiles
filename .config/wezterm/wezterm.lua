@@ -60,11 +60,17 @@ config.keys = {
   }
 }
 
+config.window_decorations = 'INTEGRATED_BUTTONS|TITLE|RESIZE'
+config.tab_bar_at_bottom = true
+config.enable_tab_bar = true
+config.use_fancy_tab_bar = false
+
 config.window_padding = {
   left = 2,
   right = 2,
   top = 0,
   bottom = 0,
 }
+
 
 return config
