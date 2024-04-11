@@ -1,6 +1,8 @@
 local wezterm = require("wezterm")
 local config = wezterm.config_builder()
 
+config.font_size = 14
+config.tab_max_width = 35
 config.color_scheme = 'Catppuccin Mocha'
 config.automatically_reload_config = true
 config.window_background_opacity = 0.7
@@ -72,5 +74,78 @@ config.window_padding = {
   bottom = 0,
 }
 
+-- https://github.com/danielcopper/dotfiles/blob/6e8318354c62ab7bb2b2708afc0cf8ee54f2dc22/.wezterm.lua
+-- Functions
+local get_last_folder_segment = function(cwd)
+  if cwd == '' then
+    return "N/A" -- or some default value you prefer
+  end
+
+  -- Strip off 'file:///' if present
+  local pathStripped = cwd:match("^file:///(.+)") or cwd
+  -- Normalize backslashes to slashes for Windows paths
+  pathStripped = pathStripped:gsub("\\", "/")
+  -- Split the path by '/'
+  local path = {}
+  for segment in string.gmatch(pathStripped, "[^/]+") do
+    table.insert(path, segment)
+  end
+  return path[#path] -- returns the last segment
+end
+
+local function get_current_working_dir(tab)
+  local current_dir = tab.active_pane.current_working_dir.file_path or ''
+  wezterm.log_info('cwd: ' .. current_dir)
+  return get_last_folder_segment(current_dir)
+end
+
+local process_icons = {
+  ['docker'] = wezterm.nerdfonts.linux_docker,
+  ['docker-compose'] = wezterm.nerdfonts.linux_docker,
+  ['psql'] = wezterm.nerdfonts.dev_postgresql,
+  ['kuberlr'] = wezterm.nerdfonts.linux_docker,
+  ['kubectl'] = wezterm.nerdfonts.linux_docker,
+  ['stern'] = wezterm.nerdfonts.linux_docker,
+  ['nvim'] = wezterm.nerdfonts.custom_vim,
+  ['make'] = wezterm.nerdfonts.seti_makefile,
+  ['vim'] = wezterm.nerdfonts.dev_vim,
+  ['go'] = wezterm.nerdfonts.seti_go,
+  ['zsh'] = wezterm.nerdfonts.dev_terminal,
+  ['bash'] = wezterm.nerdfonts.cod_terminal_bash,
+  ['btm'] = wezterm.nerdfonts.mdi_chart_donut_variant,
+  ['htop'] = wezterm.nerdfonts.mdi_chart_donut_variant,
+  ['cargo'] = wezterm.nerdfonts.dev_rust,
+  ['sudo'] = wezterm.nerdfonts.fa_hashtag,
+  ['lazydocker'] = wezterm.nerdfonts.linux_docker,
+  ['git'] = wezterm.nerdfonts.dev_git,
+  ['lua'] = wezterm.nerdfonts.seti_lua,
+  ['wget'] = wezterm.nerdfonts.mdi_arrow_down_box,
+  ['curl'] = wezterm.nerdfonts.mdi_flattr,
+  ['gh'] = wezterm.nerdfonts.dev_github_badge,
+  ['ruby'] = wezterm.nerdfonts.cod_ruby,
+  ['pwsh'] = wezterm.nerdfonts.seti_powershell,
+  ['node'] = wezterm.nerdfonts.dev_nodejs_small,
+  ['dotnet'] = wezterm.nerdfonts.md_language_csharp,
+}
+
+local function get_process(tab)
+  local process_name = tab.active_pane.foreground_process_name:match("([^/\\]+)%.exe$") or
+      tab.active_pane.foreground_process_name:match("([^/\\]+)$")
+
+  -- local icon = process_icons[process_name] or string.format('[%s]', process_name)
+  local icon = process_icons[process_name] or wezterm.nerdfonts.seti_checkbox_unchecked
+
+  return icon
+end
+
+wezterm.on('format-tab-title', function(tab, tabs, panes, conf, hover, max_width)
+  local is_zoomed = false
+  local cwd = get_current_working_dir(tab)
+  local process = get_process(tab)
+  local zoom_icon = is_zoomed and wezterm.nerdfonts.cod_zoom_in or ""
+
+  local title = string.format(' %s ~ %s %s ', process, cwd, zoom_icon) -- Add placeholder for zoom_icon
+  return title
+end)
 
 return config
