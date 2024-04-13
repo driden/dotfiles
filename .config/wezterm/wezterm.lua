@@ -15,7 +15,7 @@ config.keys = {
   -- CTRL-SHIFT-l activates the debug overlay
   { key = 'L', mods = 'CTRL', action = wezterm.action.ShowDebugOverlay },
   {
-    key = 'v',
+    key = 'p',
     mods = 'CTRL|SHIFT',
     action = wezterm.action.SplitPane {
       direction = 'Right',
@@ -30,6 +30,12 @@ config.keys = {
       size = { Percent = 50 },
     },
   },
+  {
+    key = 'w',
+    mods = 'CTRL|SHIFT',
+    action = wezterm.action.CloseCurrentPane { confirm = true },
+  },
+
   {
     key = 'j',
     mods = 'CTRL|SHIFT|CMD',
