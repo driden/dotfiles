@@ -95,14 +95,26 @@ if ! shopt -oq posix; then
   fi
 fi
 
+# Aliases 
+alias zshconfig="nvim ~/.bashrc"
+alias refreshenv='source $HOME/.bashrc && source $HOME/.bashrc'
+alias dot="cd $HOME/dotfiles && $EDITOR ."
+alias ll="eza --long --all"
+alias vim="$EDITOR"
+alias vi="$EDITOR"
+alias v="$EDITOR"
+alias lg=lazygit
+
+alias ..='cd ..'
+alias ...='cd ../..'
+alias ....='cd ../../..'
+alias .....='cd ../../../..'
+
 # Variables
 export EDITOR="nvim"
 
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
 
-export PATH=$HOME/.toolbox/bin:$PATH
 source "$HOME/.cargo/env"
+
+[[ -d "/opt/nvim-linux64/bin" ]] && export PATH="$PATH:/opt/nvim-linux64/bin"
