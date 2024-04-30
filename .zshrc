@@ -67,6 +67,10 @@ alias vi="$EDITOR"
 alias v="$EDITOR"
 alias emacsc="emacsclient --create-frame"
 alias lg=lazygit
+alias ..='cd ..'
+alias ...='cd ../..'
+alias ....='cd ../../..'
+alias .....='cd ../../../..'
 
 # Git aliases
 alias gs="git status"
@@ -122,5 +126,6 @@ function init_fzf() {
 
 init_fzf
 
+eval "$(zoxide init zsh)"
 zsh-defer eval "$(fnm env --use-on-cd)"
 eval "$(starship init zsh)"
