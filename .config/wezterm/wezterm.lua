@@ -5,11 +5,13 @@ config.font_size = 14
 
 config.font = wezterm.font_with_fallback({
   { family = "Monaco" },
-  { family = "Comic Code",      weight = "Medium" },
-  { family = "Hack Nerd Font",  weight = "Regular" },
-  { family = "Comic Mono",      weight = "Regular" },
-  { family = 'JetBrains Mono',  weight = 'Medium' },
-  { family = 'CodeNewRoman NF', weight = 'Medium' },
+  { family = "Courier Prime Code", weight = "Regular" },
+  { family = "Courier New",        weight = "Bold" },
+  { family = "Comic Code",         weight = "Medium" },
+  { family = "Hack Nerd Font",     weight = "Regular" },
+  { family = "Comic Mono",         weight = "Regular" },
+  { family = 'JetBrains Mono',     weight = 'Medium' },
+  { family = 'CodeNewRoman NF',    weight = 'Medium' },
 })
 
 config.tab_max_width = 35
