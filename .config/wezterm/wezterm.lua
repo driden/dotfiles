@@ -2,6 +2,16 @@ local wezterm = require("wezterm")
 local config = wezterm.config_builder()
 
 config.font_size = 14
+
+config.font = wezterm.font_with_fallback({
+  { family = "Monaco" },
+  { family = "Comic Code",      weight = "Medium" },
+  { family = "Hack Nerd Font",  weight = "Regular" },
+  { family = "Comic Mono",      weight = "Regular" },
+  { family = 'JetBrains Mono',  weight = 'Medium' },
+  { family = 'CodeNewRoman NF', weight = 'Medium' },
+})
+
 config.tab_max_width = 35
 config.color_scheme = 'Catppuccin Mocha'
 config.automatically_reload_config = true
