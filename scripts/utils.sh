@@ -6,3 +6,11 @@ function random_alpha() {
 
 	printf "%s\n" "$rand_string"
 }
+
+function date_iso8601() {
+	date -u +%Y-%m-%dT%H:%M:%SZ
+}
+
+function date_timestamp() {
+	date -u +%s
+}
