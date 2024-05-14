@@ -20,9 +20,7 @@ $haskell\
 $python\
 [](fg:teal bg:blue)\
 $docker_context\
-[](fg:blue bg:purple)\
-$time\
-[ ](fg:purple)\
+[ ](fg:blue)\
 $line_break$character"""
 
 palette = 'catppuccin_mocha'
