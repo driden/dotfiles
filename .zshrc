@@ -20,8 +20,14 @@ else
   HOMEBREW_CELLAR=/usr/local/Cellar
 fi
 
+if type brew &>/dev/null; then
+  FPATH=$(brew --prefix)/share/zsh-completions:$FPATH
+
+  autoload -Uz compinit
+  compinit
+fi
+
 export PATH=$BREW_PREFIX/sbin:$BREW_PREFIX/bin:$PATH
-# export PATH="/opt/homebrew/sbin:$PATH"
 
 export MANPATH="/usr/local/man:$MANPATH"
 export LANG=en_US.UTF-8
