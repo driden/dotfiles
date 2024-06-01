@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+main() {
+  local file="$1"
+  local filename="${file%.*}"
+
+  pandoc "$file" -o "$filename.pdf" --pdf-engine=xelatex --toc=true --embed-resources --standalone
+}
+
+if [[ "${#@}" -ne 1 ]]; then
+  echo "Usage: $0 <file>"
+  exit 1
+fi
+
+main "$@"

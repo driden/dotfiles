@@ -1,4 +1,5 @@
 # General
+export PATH="$HOME/.local/bin"
 export PATH="$HOME/neovim/bin:/usr/bin:/bin:${PATH}"
 export PATH="${PATH}:$HOME/.emacs.d/bin"
 export PATH="${PATH}:$HOME/.cargo/bin"
