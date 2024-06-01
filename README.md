@@ -1,6 +1,4 @@
-# Dotfiles
+# Linking files
 
-These are my dotfiles. They are always changing and probably broken.
-
-All the `~/.config/awesome` and `~/.config/rofi` where stolen from https://github.com/Crylia/crylia-theme
-Thanks Crylia!
+cd ~/.local/bin
+ln -s ~/code/dotfiles/.local/bin/export-pdf .
