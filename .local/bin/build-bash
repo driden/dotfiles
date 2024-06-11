@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+(
+mkdir -p $HOME/bash_source
+cd "$HOME/bash_source"
+wget https://ftp.gnu.org/gnu/bash/bash-5.2.tar.gz
+tar -xvf bash-5.2.tar.gz
+cd bash-5.2
+./configure
+sudo make
+sudo make install
+)

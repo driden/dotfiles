@@ -4,6 +4,7 @@ export PATH="${PATH}:$HOME/.emacs.d/bin"
 export PATH="${PATH}:$HOME/.cargo/bin"
 export PATH="${PATH}:$HOME/.ghcup/bin/"
 export PATH="${PATH}:$GOPATH"
+export PATH="${PATH}:.local/bin"
 
 # Binaries in case we have the folder
  if [ -d $HOME/.bin ]; then
