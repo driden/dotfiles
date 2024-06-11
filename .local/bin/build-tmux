@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+set -o nounset -o pipefail -o errexit
+
+sudo yum install ncurses-devel libevent-devel
+
+(
+cd "$(mktemp -d)"
+git clone --depth 1 https://github.com/tmux/tmux.git
+cd tmux
+sh autogen.sh
+./configure
+make && sudo make install
+)
