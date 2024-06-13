@@ -37,7 +37,7 @@ export FZF_DEFAULT_COMMAND='rg --hidden -l ""'
 export EDITOR='nvim'
 export MANPAGER='nvim +Man!'
 export MANWIDTH=999
-export TERMINAL='kitty'
+export TERMINAL='WezTerm'
 
 # GO
 export GOPATH=$HOME/go
