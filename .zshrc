@@ -134,5 +134,7 @@ eval "$(fzf --zsh)"
 # init_fzf
 
 eval "$(zoxide init zsh)"
-zsh-defer eval "$(fnm env --use-on-cd)"
+zsh-defer eval "$(fnm env --use-on-cd --fnm-dir $HOME/.local/share/fnm)"
 eval "$(starship init zsh)"
+
+. /usr/local/opt/asdf/libexec/asdf.sh
