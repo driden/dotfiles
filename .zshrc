@@ -113,16 +113,14 @@ local ZNAP_FOLDER=$PLUGINS_BASE/znap
         https://github.com/marlonrichert/zsh-snap.git $ZNAP_FOLDER
 source $ZNAP_FOLDER/znap.zsh  # Start Znap
 zstyle ':znap:*' repos-dir $PLUGINS_FOLDER
-znap source chitoku-k/fzf-zsh-completions
 znap source romkatv/zsh-defer
+znap source chitoku-k/fzf-zsh-completions
 znap source zsh-users/zsh-syntax-highlighting
 
 export SDKMAN_DIR="$HOME/.sdkman"
 if [[ -s "$SDKMAN_DIR/bin/sdkman-init.sh" ]]
 then
   zsh-defer source "$SDKMAN_DIR/bin/sdkman-init.sh"
-else
-  echo "NO SDK"
 fi
 
 eval "$(fzf --zsh)"
@@ -133,8 +131,12 @@ eval "$(fzf --zsh)"
 # }
 # init_fzf
 
-eval "$(zoxide init zsh)"
+zsh-defer eval "$(zoxide init zsh)"
 zsh-defer eval "$(fnm env --use-on-cd --fnm-dir $HOME/.local/share/fnm)"
 eval "$(starship init zsh)"
 
-. /usr/local/opt/asdf/libexec/asdf.sh
+if [[ $(uname) -eq "Linux" ]]; then
+  . "$HOME/.asdf/asdf.sh"
+else 
+  . /usr/local/opt/asdf/libexec/asdf.sh
+fi
