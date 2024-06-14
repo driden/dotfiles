@@ -11,6 +11,7 @@ export PATH="${PATH}:.local/bin"
   export PATH="${PATH}:$HOME/.bin"
  fi
 
+OS=$(uname)
 BREW_PREFIX=
 if [[ $(uname -p) == "arm" ]]; then
   BREW_PREFIX=/opt/homebrew
@@ -129,14 +130,17 @@ eval "$(fzf --zsh)"
 #   [ -f ~/.fzf/completion.zsh ] && source ~/.fzf/completion.zsh
 #   [ -f ~/.fzf/key-bindings.zsh ] && source ~/.fzf/key-bindings.zsh
 # }
-# init_fzf
+# [[ -d "$HOME/.fzf" ]] && init_fzf
 
 zsh-defer eval "$(zoxide init zsh)"
 zsh-defer eval "$(fnm env --use-on-cd --fnm-dir $HOME/.local/share/fnm)"
 eval "$(starship init zsh)"
 
-if [[ $(uname) -eq "Linux" ]]; then
-  . "$HOME/.asdf/asdf.sh"
-else 
-  . /usr/local/opt/asdf/libexec/asdf.sh
-fi
+case "$OS" in
+  Linux)
+    . "$HOME/.asdf/asdf.sh"
+    ;;
+  Darwin)
+    . /usr/local/opt/asdf/libexec/asdf.sh
+    ;;
+esac
