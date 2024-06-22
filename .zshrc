@@ -14,7 +14,7 @@ export PATH="${PATH}:$GOPATH"
 BREW_PREFIX=
 if [[ $(uname -p) == "arm" ]]; then
   BREW_PREFIX=/opt/homebrew
-# Important for mac M1
+# Important for mac M1, in case i want x64 apps for some reason
 alias ibrew='arch -x86_64 /usr/local/bin/brew'
 else
   BREW_PREFIX=/usr/local
@@ -133,6 +133,7 @@ eval "$(fzf --zsh)"
 # }
 # init_fzf
 
+eval "$(/usr/libexec/path_helper)"
 eval "$(zoxide init zsh)"
 zsh-defer eval "$(fnm env --use-on-cd)"
 eval "$(starship init zsh)"

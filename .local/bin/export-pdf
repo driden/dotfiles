@@ -1,15 +1,17 @@
 #!/usr/bin/env bash
 
 main() {
-  local file="$1"
-  local filename="${file%.*}"
+	local file="$1"
+	local filename="${file%.*}"
 
-  pandoc "$file" -o "$filename.pdf" --pdf-engine=xelatex --toc=true --embed-resources --standalone
+	pandoc "$file" -o "$filename.pdf" \
+		--from=markdown+wikilinks_title_after_pipe+mark+autolink_bare_uris+lists_without_preceding_blankline \
+		--pdf-engine=xelatex --toc=true --embed-resources --standalone
 }
 
 if [[ "${#@}" -ne 1 ]]; then
-  echo "Usage: $0 <file>"
-  exit 1
+	echo "Usage: $0 <file>"
+	exit 1
 fi
 
 main "$@"
