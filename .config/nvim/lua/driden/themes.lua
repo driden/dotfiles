@@ -4,7 +4,7 @@ if not ok then
 end
 
 local M = {}
-M.theme = "nightfly"
+M.theme = "kanagawa"
 M.available_themes = {
   {
     name = "tokyonight-night",
