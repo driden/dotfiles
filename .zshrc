@@ -124,3 +124,12 @@ eval "$(/usr/libexec/path_helper)"
 eval "$(zoxide init zsh)"
 eval "$(fnm env --use-on-cd)"
 eval "$(starship init zsh)"
+
+if [[ $(uname) -eq "Linux" ]]; then
+  . "$HOME/.asdf/asdf.sh"
+else 
+  . /usr/local/opt/asdf/libexec/asdf.sh
+fi
+
+[[ -d "$PATH:/opt/nvim-linux64" ]] && export PATH="$PATH:/opt/nvim-linux64/bin"
+[[ -f "$HOME/.fzf.zsh" ]] && source "$HOME/.fzf.zsh"
