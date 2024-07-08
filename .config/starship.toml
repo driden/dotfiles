@@ -1,5 +1,14 @@
 "$schema" = 'https://starship.rs/config-schema.json'
 
+command_timeout=100
+#$c\
+#$rust\
+#$golang\
+#$nodejs\
+#$php\
+#$kotlin\
+#$haskell\
+#$python\
 format = """
 [](surface0)\
 $os\
@@ -10,14 +19,6 @@ $directory\
 $git_branch\
 $git_status\
 [](fg:green bg:teal)\
-$c\
-$rust\
-$golang\
-$nodejs\
-$php\
-$kotlin\
-$haskell\
-$python\
 [](fg:teal bg:blue)\
 $docker_context\
 [ ](fg:blue)\
