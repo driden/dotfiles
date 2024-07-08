@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+set -o nounset -o pipefail -o errexit
+
+(
+cd "$(mktemp -d)"
+git clone --depth 1 https://github.com/BurntSushi/ripgrep.git
+cd ripgrep
+cargo build --release
+)

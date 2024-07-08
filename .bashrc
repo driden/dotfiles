@@ -8,6 +8,9 @@ case $- in
       *) return;;
 esac
 
+# Variables
+export EDITOR="nvim"
+
 # don't put duplicate lines or lines starting with space in the history.
 # See bash(1) for more options
 HISTCONTROL=ignoreboth
@@ -110,8 +113,6 @@ alias ...='cd ../..'
 alias ....='cd ../../..'
 alias .....='cd ../../../..'
 
-# Variables
-export EDITOR="nvim"
 
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
 

@@ -1,0 +1,44 @@
+autoload -Uz vcs_info
+autoload -Uz compinit && compinit
+
+precmd() { vcs_info }
+
+zstyle ':vcs_info:git:*' formats '%b '
+setopt PROMPT_SUBST
+
+# History in cache directory:
+HISTSIZE=10000
+SAVEHIST=10000
+HISTFILE=~/.zsh_history
+setopt inc_append_history
+
+export PATH=$PATH:$HOME/.local/bin
+export PATH=$PATH:/usr/local/go/bin
+export PATH=$PATH:$HOME/go/bin
+
+PROMPT='%F{blue}%~%f %F{green}${vcs_info_msg_0_}%f %(?.%F{blue}.%F{red})$%f '
+
+alias zedit="nvim ~/.zshrc"
+alias refreshenv='source $HOME/.zshrc'
+
+
+alias v=nvim
+alias lg=lazygit
+alias ..='cd ..'
+alias ...='cd ../..'
+alias ....='cd ../../..'
+alias .....='cd ../../../..'
+alias ll='ls -alh'
+
+export PATH=$HOME/.toolbox/bin:$PATH
+
+SCRIPTS=$HOME/scripts
+if [[ -d  "$SCRIPTS" ]]
+then
+  for file in $SCRIPTS/*.sh
+  do
+    source "$file"
+  done
+fi
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
