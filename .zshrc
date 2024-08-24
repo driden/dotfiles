@@ -1,24 +1,21 @@
 # General
-export PATH="$HOME/.local/bin"
-export PATH="$HOME/neovim/bin:/usr/bin:/bin:${PATH}"
-export PATH="${PATH}:$HOME/.emacs.d/bin"
-export PATH="${PATH}:$HOME/.cargo/bin"
-export PATH="${PATH}:$HOME/.ghcup/bin/"
-export PATH="${PATH}:$GOPATH"
+export PATH="$HOME/bin:$PATH"
+export PATH="$HOME/.local/bin:$PATH"
+# export PATH="$HOME/neovim/bin:/usr/bin:/bin:${PATH}"
+export PATH="$HOME/neovim/bin:$PATH"
+export PATH="$HOME/.emacs.d/bin:$PATH"
+export PATH="$HOME/.cargo/bin:$PATH"
+export PATH="$HOME/.ghcup/bin:$PATH"
 
 # Binaries in case we have the folder
  if [ -d $HOME/.bin ]; then
-  export PATH="${PATH}:$HOME/.bin"
+  export PATH="$HOME/.bin:$PATH"
  fi
 
-BREW_PREFIX=
 if [[ $(uname -p) == "arm" ]]; then
-  BREW_PREFIX=/opt/homebrew
-# Important for mac M1, in case i want x64 apps for some reason
-alias ibrew='arch -x86_64 /usr/local/bin/brew'
+  eval "$(/opt/homebrew/bin/brew shellenv)"
 else
-  BREW_PREFIX=/usr/local
-  HOMEBREW_CELLAR=/usr/local/Cellar
+  eval "$(/usr/local/homebrew/bin/brew shellenv)"
 fi
 
 if type brew &>/dev/null; then
@@ -27,8 +24,6 @@ if type brew &>/dev/null; then
   autoload -Uz compinit
   compinit
 fi
-
-export PATH=$BREW_PREFIX/sbin:$BREW_PREFIX/bin:$PATH
 
 export MANPATH="/usr/local/man:$MANPATH"
 export LANG=en_US.UTF-8
@@ -39,9 +34,6 @@ export MANPAGER='nvim +Man!'
 export MANWIDTH=999
 export TERMINAL='kitty'
 
-# GO
-export GOPATH=$HOME/go
-export PATH=$PATH:$GOPATH/bin
 
 if [[ -n $SSH_CONNECTION ]]; then
   export EDITOR='vim'
