@@ -6,6 +6,7 @@ export PATH="$HOME/neovim/bin:$PATH"
 export PATH="$HOME/.emacs.d/bin:$PATH"
 export PATH="$HOME/.cargo/bin:$PATH"
 export PATH="$HOME/.ghcup/bin:$PATH"
+export GOPATH="$HOME/go"
 
 # Binaries in case we have the folder
  if [ -d $HOME/.bin ]; then
