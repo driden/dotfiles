@@ -4,6 +4,7 @@ local config = wezterm.config_builder()
 config.font_size = 14
 
 config.font = wezterm.font_with_fallback({
+  { family = "Comic Code" },
   { family = "Comic Code",      weight = "Medium" },
   { family = "Iosevka" },
   { family = "Hack" },
