@@ -18,8 +18,8 @@ keymap("n", "<leader>bk", ":bdelete<CR>", opts)
 keymap("n", "<leader>bK", ":bdelete!<CR>", opts)
 
 -- Windows
-keymap("n", "<leader>wq", ":wincmd q<CR>", opts)
-keymap("n", "<leader>wc", ":wincmd c<CR>", opts)
+-- keymap("n", "<leader>wq", ":wincmd q<CR>", opts)
+-- keymap("n", "<leader>wc", ":wincmd c<CR>", opts)
 
 -- Finding Files
 keymap("n", "<leader>e", ":NvimTreeToggle<CR>", opts)
@@ -42,6 +42,8 @@ keymap("v", ">", ">gv", opts)
 -- Move text up and down
 keymap("v", "<A-j>", ":m .+1<CR>==", opts)
 keymap("v", "<A-k>", ":m .-2<CR>==", opts)
+
+-- Paste without saving deleted text to register
 keymap("v", "p", '"_dP', opts)
 keymap("x", "p", '"_dP', opts)
 
