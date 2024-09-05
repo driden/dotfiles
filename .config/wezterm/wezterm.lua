@@ -45,7 +45,7 @@ config.keys = {
   {
     key = 'w',
     mods = 'CTRL|SHIFT',
-    action = wezterm.action.CloseCurrentPane { confirm = true },
+    action = wezterm.action.CloseCurrentPane { confirm = false },
   },
 
   {
@@ -166,5 +166,7 @@ wezterm.on('format-tab-title', function(tab, tabs, panes, conf, hover, max_width
   local title = string.format(' %s ~ %s %s ', process, cwd, zoom_icon) -- Add placeholder for zoom_icon
   return title
 end)
+
+config.window_close_confirmation = 'NeverPrompt'
 
 return config
