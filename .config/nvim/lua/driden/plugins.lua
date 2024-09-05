@@ -33,7 +33,6 @@ require("packer").startup(function(use)
     "sainnhe/gruvbox-material",
     "NLKNguyen/papercolor-theme",
     "rktjmp/lush.nvim",
-    "rebelot/kanagawa.nvim",
 
     "tpope/vim-surround",
 
@@ -77,7 +76,7 @@ require("packer").startup(function(use)
     -- boludeces
     "xiyaowong/nvim-transparent",
     "tpope/vim-unimpaired",
-    "Exafunction/codeium.vim"
+    -- "Exafunction/codeium.vim"
 
   }
 
@@ -142,6 +141,16 @@ require("packer").startup(function(use)
     requires = {
       "nvimtools/none-ls-extras.nvim",
     },
+  })
+
+  use({
+    "rebelot/kanagawa.nvim",
+    config = function()
+      require('kanagawa').setup({
+        commentStyle = { italic = false },
+        keywordStyle = { italic = false },
+      })
+    end
   })
 
   if Packer_bootstrap then

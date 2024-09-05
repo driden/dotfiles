@@ -1,25 +1,22 @@
 # General
-export PATH="$HOME/neovim/bin:/usr/bin:/bin:${PATH}"
-export PATH="${PATH}:$HOME/.emacs.d/bin"
-export PATH="${PATH}:$HOME/.cargo/bin"
-export PATH="${PATH}:$HOME/.ghcup/bin/"
-export PATH="${PATH}:$GOPATH"
-export PATH="${PATH}:.local/bin"
+export PATH="$HOME/bin:$PATH"
+export PATH="$HOME/.local/bin:$PATH"
+# export PATH="$HOME/neovim/bin:/usr/bin:/bin:${PATH}"
+export PATH="$HOME/neovim/bin:$PATH"
+export PATH="$HOME/.emacs.d/bin:$PATH"
+export PATH="$HOME/.cargo/bin:$PATH"
+export PATH="$HOME/.ghcup/bin:$PATH"
+export GOPATH="$HOME/go"
 
 # Binaries in case we have the folder
  if [ -d $HOME/.bin ]; then
-  export PATH="${PATH}:$HOME/.bin"
+  export PATH="$HOME/.bin:$PATH"
  fi
 
-OS=$(uname)
-BREW_PREFIX=
 if [[ $(uname -p) == "arm" ]]; then
-  BREW_PREFIX=/opt/homebrew
-# Important for mac M1
-alias ibrew='arch -x86_64 /usr/local/bin/brew'
+  eval "$(/opt/homebrew/bin/brew shellenv)"
 else
-  BREW_PREFIX=/usr/local
-  HOMEBREW_CELLAR=/usr/local/Cellar
+  eval "$(/usr/local/homebrew/bin/brew shellenv)"
 fi
 
 if type brew &>/dev/null; then
@@ -29,8 +26,6 @@ if type brew &>/dev/null; then
   compinit
 fi
 
-export PATH=$BREW_PREFIX/sbin:$BREW_PREFIX/bin:$PATH
-
 export MANPATH="/usr/local/man:$MANPATH"
 export LANG=en_US.UTF-8
 export BROWSER=$(which firefox)
@@ -38,11 +33,8 @@ export FZF_DEFAULT_COMMAND='rg --hidden -l ""'
 export EDITOR='nvim'
 export MANPAGER='nvim +Man!'
 export MANWIDTH=999
-export TERMINAL='WezTerm'
+export TERMINAL='kitty'
 
-# GO
-export GOPATH=$HOME/go
-export PATH=$PATH:$GOPATH/bin
 
 if [[ -n $SSH_CONNECTION ]]; then
   export EDITOR='vim'
@@ -114,14 +106,16 @@ local ZNAP_FOLDER=$PLUGINS_BASE/znap
         https://github.com/marlonrichert/zsh-snap.git $ZNAP_FOLDER
 source $ZNAP_FOLDER/znap.zsh  # Start Znap
 zstyle ':znap:*' repos-dir $PLUGINS_FOLDER
-znap source romkatv/zsh-defer
 znap source chitoku-k/fzf-zsh-completions
+znap source romkatv/zsh-defer
 znap source zsh-users/zsh-syntax-highlighting
 
 export SDKMAN_DIR="$HOME/.sdkman"
 if [[ -s "$SDKMAN_DIR/bin/sdkman-init.sh" ]]
 then
   zsh-defer source "$SDKMAN_DIR/bin/sdkman-init.sh"
+else
+  echo "NO SDK"
 fi
 
 eval "$(fzf --zsh)"
@@ -130,17 +124,9 @@ eval "$(fzf --zsh)"
 #   [ -f ~/.fzf/completion.zsh ] && source ~/.fzf/completion.zsh
 #   [ -f ~/.fzf/key-bindings.zsh ] && source ~/.fzf/key-bindings.zsh
 # }
-# [[ -d "$HOME/.fzf" ]] && init_fzf
+# init_fzf
 
-zsh-defer eval "$(zoxide init zsh)"
-zsh-defer eval "$(fnm env --use-on-cd --fnm-dir $HOME/.local/share/fnm)"
+eval "$(/usr/libexec/path_helper)"
+eval "$(zoxide init zsh)"
+zsh-defer eval "$(fnm env --use-on-cd)"
 eval "$(starship init zsh)"
-
-case "$OS" in
-  Linux)
-    . "$HOME/.asdf/asdf.sh"
-    ;;
-  Darwin)
-    . /usr/local/opt/asdf/libexec/asdf.sh
-    ;;
-esac
