@@ -24,6 +24,8 @@ vim.api.nvim_buf_create_user_command(0, "Get2Params", function(args)
   vim.api.nvim_buf_set_lines(0, line - 1, line, false, lines)
 end, {})
 
+-- JDTLS
+--
 local status, _ = pcall(require, "jdtls")
 if not status then
   return
@@ -59,8 +61,8 @@ local launcher = vim.fn.glob(plugins_dir .. "/org.eclipse.equinox.launcher_*.jar
 local sdk_dir = home .. "/.sdkman/candidates"
 local java_dir = sdk_dir .. "/java/17.0.6-amzn"
 local java_bin = java_dir .. "/bin/java"
--- local lombok_jar = vim.fn.expand(jdtls_dir .. "/lombok.jar")
-local lombok_jar = "/Users/lrrezend/Downloads/lombok-1.18.24.jar"
+local lombok_jar = vim.fn.expand(jdtls_dir .. "/lombok.jar")
+-- local lombok_jar = "/Users/lrrezend/Downloads/lombok-1.18.24.jar"
 
 local config = {
   cmd = {
