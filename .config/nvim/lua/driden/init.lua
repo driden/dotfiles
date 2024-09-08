@@ -1,8 +1,0 @@
-require("utils.general")
-require("driden.plugins")
-require("driden.options").setup()
-require("driden.themes").set_colorscheme()
-require("driden.keymaps")
-require("driden.user_commands").load_commands()
-require("driden.highlight")
-require("driden.autocommands")
