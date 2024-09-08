@@ -57,7 +57,6 @@ fi
  [ -f ~/workscripts/jump.zsh ] && source  ~/workscripts/jump.zsh
  [ -f ~/workscripts/aliases.zsh ] && source ~/workscripts/aliases.zsh
 
-
 alias zshconfig="nvim ~/.zshrc"
 alias refreshenv='source $HOME/.zshrc && source $HOME/.zshenv'
 alias dot="cd $HOME/code/dotfiles && $EDITOR ."
