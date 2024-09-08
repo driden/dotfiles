@@ -11,7 +11,9 @@ return {
       -- BEGIN_DEFAULT_OPTS
       hijack_cursor = true,
       on_attach = function()
+        vim.keymap.set({ 'n' }, '<Tab>', api.node.open.preview, { silent = true })
         vim.keymap.set({ 'n' }, '<Enter>', api.node.open.preview, { silent = true })
+        vim.keymap.set({ 'n' }, '-', api.tree.change_root_to_parent, { silent = true })
       end,
       prefer_startup_root = true,
       sync_root_with_cwd = true,
