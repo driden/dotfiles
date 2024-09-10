@@ -80,10 +80,10 @@ vim.keymap.set('n', '<leader>tp', ':tabprevious<CR>', { desc = 'Prev tab', silen
 vim.keymap.set('n', '<leader>tc', ':tabclose<CR>', { desc = 'close tab', silent = true })
 
 -- Quick Fix
-vim.keymap.set('n', '<leader>qq', ':copen<CR>', { desc = '[Q]uickfix open', silent = true })                -- Open the quickfix window
-vim.keymap.set('n', '<leader>qc', ':ccl<CR>', { desc = '[Q]uickfix [C]lose', silent = true })               --  Open it if there are "errors", close it otherwise
+vim.keymap.set('n', '<leader>qq', ':copen<CR>', { desc = '[Q]uickfix open', silent = true }) -- Open the quickfix window
+vim.keymap.set('n', '<leader>qc', ':ccl<CR>', { desc = '[Q]uickfix [C]lose', silent = true }) --  Open it if there are "errors", close it otherwise
 vim.keymap.set('n', '<leader>qe', ':cw<CR>', { desc = '[Q]uickfix next error in [W]indow', silent = true }) --  Go to the next error in the window
-vim.keymap.set('n', '<leader>qf', ':cnf<CR>', { desc = '[Q]uickfix error under cursor', silent = true })    --Go to error under cursor (if cursor is in quickfix window)
+vim.keymap.set('n', '<leader>qf', ':cnf<CR>', { desc = '[Q]uickfix error under cursor', silent = true }) --Go to error under cursor (if cursor is in quickfix window)
 vim.keymap.set('n', '<leader>q.', ':.cc<CR>', { desc = 'close tab', silent = true })
 
 --  See `:help lua-guide-autocommands`
@@ -161,8 +161,8 @@ require('lazy').setup({
 
       -- Document existing key chains
       spec = {
-        { '<leader>c', group = '[C]ode',     mode = { 'n', 'x' } },
-        { '<leader>b', group = '[B]uffer',   mode = { 'n', 'x' } },
+        { '<leader>c', group = '[C]ode', mode = { 'n', 'x' } },
+        { '<leader>b', group = '[B]uffer', mode = { 'n', 'x' } },
         { '<leader>d', group = '[D]ocument' },
         { '<leader>g', group = '[G]o' },
         { '<leader>f', group = '[F]ind' },
@@ -195,7 +195,7 @@ require('lazy').setup({
       { 'nvim-telescope/telescope-ui-select.nvim' },
 
       -- Useful for getting pretty icons, but requires a Nerd Font.
-      { 'nvim-tree/nvim-web-devicons',            enabled = vim.g.have_nerd_font },
+      { 'nvim-tree/nvim-web-devicons', enabled = vim.g.have_nerd_font },
     },
     config = function()
       -- Telescope is a fuzzy finder that comes with a lot of different things that
@@ -294,7 +294,7 @@ require('lazy').setup({
       },
     },
   },
-  { 'Bilal2453/luvit-meta',     lazy = true },
+  { 'Bilal2453/luvit-meta', lazy = true },
   {
     -- Main LSP Configuration
     'neovim/nvim-lspconfig',
@@ -304,7 +304,7 @@ require('lazy').setup({
       'williamboman/mason-lspconfig.nvim',
       'WhoIsSethDaniel/mason-tool-installer.nvim',
 
-      { 'j-hui/fidget.nvim',       opts = {} },
+      { 'j-hui/fidget.nvim', opts = {} },
 
       -- Allows extra capabilities provided by nvim-cmp
       'hrsh7th/cmp-nvim-lsp',
@@ -317,19 +317,13 @@ require('lazy').setup({
           vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, { buffer = true, silent = true, desc = '' })
           vim.keymap.set('n', 'gh', vim.lsp.buf.hover, { buffer = true, silent = true, desc = '[G]o [h]over' })
           vim.keymap.set('n', 'ga', vim.lsp.buf.code_action, { buffer = true, silent = true, desc = '[G]o [a]ctions' })
-          vim.keymap.set('n', 'gD', require('telescope.builtin').lsp_type_definitions,
-            { buffer = true, silent = true, desc = '[G]o Type [D]efinition' })
-          vim.keymap.set('n', 'gd', require('telescope.builtin').lsp_definitions,
-            { buffer = true, silent = true, desc = '[G]oto [d]efinition' })
-          vim.keymap.set('n', 'gi', require('telescope.builtin').lsp_implementations,
-            { buffer = true, silent = true, desc = '[G]o [i]mplementation' })
-          vim.keymap.set('n', 'gr', require('telescope.builtin').lsp_references,
-            { buffer = true, silent = true, desc = '[G]o [r]references' })
+          vim.keymap.set('n', 'gD', require('telescope.builtin').lsp_type_definitions, { buffer = true, silent = true, desc = '[G]o Type [D]efinition' })
+          vim.keymap.set('n', 'gd', require('telescope.builtin').lsp_definitions, { buffer = true, silent = true, desc = '[G]oto [d]efinition' })
+          vim.keymap.set('n', 'gi', require('telescope.builtin').lsp_implementations, { buffer = true, silent = true, desc = '[G]o [i]mplementation' })
+          vim.keymap.set('n', 'gr', require('telescope.builtin').lsp_references, { buffer = true, silent = true, desc = '[G]o [r]references' })
           vim.keymap.set('n', 'ge', vim.diagnostic.setqflist, { buffer = true, silent = true, desc = '[G]o [e]rrors' })
-          vim.keymap.set('n', 'gs', require('telescope.builtin').lsp_document_symbols,
-            { buffer = true, silent = true, desc = '[G]o [S]ymbols' })
-          vim.keymap.set('n', 'gE', vim.lsp.buf.declaration,
-            { buffer = true, silent = true, desc = '[G]o d[E]claration' })
+          vim.keymap.set('n', 'gs', require('telescope.builtin').lsp_document_symbols, { buffer = true, silent = true, desc = '[G]o [S]ymbols' })
+          vim.keymap.set('n', 'gE', vim.lsp.buf.declaration, { buffer = true, silent = true, desc = '[G]o d[E]claration' })
 
           vim.keymap.set(
             'n',
@@ -423,6 +417,7 @@ require('lazy').setup({
             },
           },
         },
+        ts_ls = {},
       }
 
       -- Ensure the servers and tools above are installed
