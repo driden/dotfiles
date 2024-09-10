@@ -5,8 +5,10 @@ sudo pip-3 install neovim --upgrade
 (
 cd "$(mktemp -d)"
 git clone https://github.com/neovim/neovim.git
+git checkout stable
 cd neovim
 git checkout stable
 make CMAKE_BUILD_TYPE=Release
+# this installs Neovim to /usr/local 
 sudo make install
 )

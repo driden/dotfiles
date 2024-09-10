@@ -118,14 +118,7 @@ else
 fi
 
 eval "$(fzf --zsh)"
-# function init_fzf() {
-#   [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-#   [ -f ~/.fzf/completion.zsh ] && source ~/.fzf/completion.zsh
-#   [ -f ~/.fzf/key-bindings.zsh ] && source ~/.fzf/key-bindings.zsh
-# }
-# init_fzf
-
 eval "$(/usr/libexec/path_helper)"
 eval "$(zoxide init zsh)"
-zsh-defer eval "$(fnm env --use-on-cd)"
+eval "$(fnm env --use-on-cd)"
 eval "$(starship init zsh)"
