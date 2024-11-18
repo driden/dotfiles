@@ -113,11 +113,11 @@ vim.opt.rtp:prepend(lazypath)
 -- NOTE: Here is where you install your plugins.
 require('lazy').setup({
   'tpope/vim-unimpaired',
-  'tpope/vim-sleuth', -- Detect tabstop and shiftwidth automatically
+  -- 'tpope/vim-sleuth', -- Detect tabstop and shiftwidth automatically
 
   { import = 'plugins.themes' },
   { import = 'plugins' },
-  install = { colorscheme = { 'habamax', 'minischeme' } },
+  -- install = { colorscheme = { 'habamax', 'minischeme' } },
   {
     'folke/which-key.nvim',
     event = 'VimEnter', -- Sets the loading event to 'VimEnter'
@@ -715,10 +715,33 @@ require('lazy').setup({
     end,
   },
   'mfussenegger/nvim-jdtls',
-  'mfussenegger/nvim-jdtls',
   -- require 'kickstart.plugins.debug',
+  {
+    'miikanissi/modus-themes.nvim',
+    priority = 1000,
+    config = function()
+      -- Default options
+      require('modus-themes').setup {
+        -- Theme comes in two styles `modus_operandi` and `modus_vivendi`
+        -- `auto` will automatically set style based on background set with vim.o.background
+        style = 'auto',
+        variant = 'default', -- Theme comes in four variants `default`, `tinted`, `deuteranopia`, and `tritanopia`
+        transparent = false, -- Transparent background (as supported by the terminal)
+        dim_inactive = false, -- "non-current" windows are dimmed
+        hide_inactive_statusline = false, -- Hide statuslines on inactive windows. Works with the standard **StatusLine**, **LuaLine** and **mini.statusline**
+        styles = {
+          -- Style to be applied to different syntax groups
+          -- Value is any valid attr-list value for `:help nvim_set_hl`
+          comments = { italic = false },
+          keywords = { italic = false },
+          functions = {},
+          variables = {},
+        },
+      }
+    end,
+  },
   require 'plugins.indent',
-  require 'plugins.lint',
+  -- require 'plugins.lint',
   require 'plugins.tree',
 }, {
   ui = {
