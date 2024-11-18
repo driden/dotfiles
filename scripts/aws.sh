@@ -3,6 +3,7 @@
 assume() {
 	local sess="sess_$(date +%s)"
 	local profile="${2:=default}"
+	local region="${3:=us-east-1}"
 	export $(printf "AWS_ACCESS_KEY_ID=%s AWS_SECRET_ACCESS_KEY=%s AWS_SESSION_TOKEN=%s" \
 		$(
 			aws sts assume-role \
@@ -10,6 +11,7 @@ assume() {
 				--role-session-name "$sess" \
 				--profile "$profile" \
 				--query "Credentials.[AccessKeyId,SecretAccessKey,SessionToken]" \
+				--region "$region" \
 				--output text
 		))
 }
