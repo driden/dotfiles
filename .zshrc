@@ -1,3 +1,5 @@
+export HISTSIZE=10000
+
 # General
 export PATH="$HOME/bin:$PATH"
 export PATH="$HOME/.local/bin:$PATH"
