@@ -71,8 +71,8 @@ vim.keymap.set({ 'v', 'x' }, 'p', '"_dP', { desc = 'Paste without copying', sile
 vim.keymap.set({ 'x', 'n' }, 'Y', 'y$', { desc = 'Yank until eol', silent = true })
 
 -- Yank and paste from OS
-vim.keymap.set({ 'v', 'x' }, '<leader>y', '"+y', { desc = 'Yank to OS clipboard', silent = true })
-vim.keymap.set({ 'v', 'x' }, '<leader>p', '"+p', { desc = 'Paste from OS clipboard', silent = true })
+vim.keymap.set({ 'v', 'x' }, '<leader>y', '"*y', { desc = 'Yank to OS clipboard', silent = true })
+vim.keymap.set({ 'v', 'x' }, '<leader>p', '"*p', { desc = 'Paste from OS clipboard', silent = true })
 
 -- Tab
 vim.keymap.set('n', '<leader>tn', ':tabNext<CR>', { desc = 'Next tab', silent = true })
