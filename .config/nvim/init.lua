@@ -12,13 +12,18 @@ vim.opt.showmode = false
 vim.opt.splitright = true
 vim.opt.splitbelow = true
 vim.opt.list = true
-vim.opt.listchars = { lead = '-', tab = '» ', trail = '·', nbsp = '␣' }
+-- vim.opt.listchars = { lead = '-', tab = '» ', trail = '·', nbsp = '␣' }
+vim.opt.listchars = { tab = '» ', trail = '·', nbsp = '␣' }
 vim.opt.inccommand = 'split'
 vim.opt.cursorline = true
 vim.opt.scrolloff = 5
 vim.opt.termguicolors = true
 vim.opt.wrap = false
 vim.opt.ignorecase = true
+
+vim.opt.shiftwidth = 4
+vim.opt.tabstop = 4
+vim.opt.expandtab = true
 
 --  [[ Basic Keymaps ]]
 vim.keymap.set('n', '<leader><leader>s', '<cmd>source ~/.config/kickstart/init.lua<CR>')
@@ -113,6 +118,7 @@ vim.opt.rtp:prepend(lazypath)
 -- NOTE: Here is where you install your plugins.
 require('lazy').setup({
   'tpope/vim-unimpaired',
+  'tpope/vim-surround',
   -- 'tpope/vim-sleuth', -- Detect tabstop and shiftwidth automatically
 
   { import = 'plugins.themes' },
@@ -507,7 +513,7 @@ require('lazy').setup({
         -- Disable "format_on_save lsp_fallback" for languages that don't
         -- have a well standardized coding style. You can add additional
         -- languages here or re-enable it for the disabled ones.
-        local disable_filetypes = { c = true, cpp = true, java = true }
+        local disable_filetypes = { c = true, cpp = true, java = true, typecript = true }
         local lsp_format_opt
         if disable_filetypes[vim.bo[bufnr].filetype] then
           lsp_format_opt = 'never'
