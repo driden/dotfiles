@@ -49,6 +49,18 @@ config.keys = {
 		}),
 	},
 	{
+		key = "r",
+		mods = "CTRL|SHIFT",
+		action = wezterm.action.PromptInputLine({
+			description = "Tab",
+			action = wezterm.action_callback(function(window, pane, line)
+				if window then
+					window:active_tab():set_title(line)
+				end
+			end),
+		}),
+	},
+	{
 		key = "w",
 		mods = "CTRL|SHIFT",
 		action = wezterm.action.CloseCurrentPane({ confirm = false }),
