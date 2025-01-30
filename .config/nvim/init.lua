@@ -12,8 +12,7 @@ vim.opt.showmode = false
 vim.opt.splitright = true
 vim.opt.splitbelow = true
 vim.opt.list = true
--- vim.opt.listchars = { lead = '-', tab = '» ', trail = '·', nbsp = '␣' }
-vim.opt.listchars = { tab = "» ", trail = "·", nbsp = "␣" }
+vim.opt.listchars = { lead = "-", tab = "» ", trail = "·", nbsp = "␣" }
 vim.opt.inccommand = "split"
 vim.opt.cursorline = true
 vim.opt.scrolloff = 5
@@ -24,6 +23,14 @@ vim.opt.ignorecase = true
 vim.opt.shiftwidth = 4
 vim.opt.tabstop = 4
 vim.opt.expandtab = true
+
+toggle_meta_chars = function()
+  vim.o.list = not vim.o.list
+end
+
+vim.keymap.set("n", "<leader>tm", function()
+  toggle_meta_chars()
+end)
 
 --  [[ Basic Keymaps ]]
 vim.keymap.set("n", "<leader><leader>s", "<cmd>source ~/.config/kickstart/init.lua<CR>")
