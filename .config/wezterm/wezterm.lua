@@ -96,6 +96,16 @@ config.keys = {
 		mods = "CTRL|SHIFT",
 		action = wezterm.action.ActivateTabRelative(1),
 	},
+	{
+		key = "h",
+		mods = "SUPER",
+		action = wezterm.action.MoveTabRelative(1),
+	},
+	{
+		key = "l",
+		mods = "SUPER",
+		action = wezterm.action.MoveTabRelative(0),
+	},
 }
 
 -- config.window_decorations = 'INTEGRATED_BUTTONS|TITLE|RESIZE'
