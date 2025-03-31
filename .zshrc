@@ -15,6 +15,7 @@ export GOPATH="$HOME/go"
   export PATH="$HOME/.bin:$PATH"
  fi
 
+if [[ $(uname) != "Linux" ]]; then
 if [[ $(uname -p) == "arm" ]]; then
   eval "$(/opt/homebrew/bin/brew shellenv)"
 else
@@ -27,7 +28,7 @@ if type brew &>/dev/null; then
   autoload -Uz compinit
   compinit
 fi
-
+fi
 export MANPATH="/usr/local/man:$MANPATH"
 export LANG=en_US.UTF-8
 export BROWSER=$(which firefox)
@@ -120,7 +121,7 @@ else
 fi
 
 eval "$(fzf --zsh)"
-eval "$(/usr/libexec/path_helper)"
+#eval "$(/usr/libexec/path_helper)"
 eval "$(zoxide init zsh)"
 eval "$(fnm env --use-on-cd)"
 eval "$(starship init zsh)"

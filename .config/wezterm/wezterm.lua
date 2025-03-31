@@ -17,7 +17,7 @@ config.font = wezterm.font_with_fallback({
 	{ family = "Hack Nerd Font", weight = "Regular" },
 	{ family = "Comic Mono", weight = "Regular" },
 	{ family = "JetBrains Mono", weight = "Medium" },
-	{ family = "CodeNewRoman NF", weight = "Medium" },
+	{ family = "CodeNewRoman NF", weight = "Medium" }
 })
 
 config.tab_max_width = 35
