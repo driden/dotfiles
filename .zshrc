@@ -120,10 +120,9 @@ else
   echo "NO SDK"
 fi
 
-eval "$(fzf --zsh)"
-#eval "$(/usr/libexec/path_helper)"
-eval "$(zoxide init zsh)"
-eval "$(fnm env --use-on-cd)"
+zsh-defer eval "$(fzf --zsh)"
+zsh-defer eval "$(zoxide init zsh)"
+zsh-defer eval "$(fnm env --use-on-cd --fnm-dir $HOME/.local/share/fnm)"
 eval "$(starship init zsh)"
 
 if [[ $(uname) -eq "Linux" ]]; then
@@ -132,5 +131,5 @@ else
   . /usr/local/opt/asdf/libexec/asdf.sh
 fi
 
-[[ -d "$PATH:/opt/nvim-linux64" ]] && export PATH="$PATH:/opt/nvim-linux64/bin"
+[[ -d "/opt/nvim-linux64" ]] && export PATH="$PATH:/opt/nvim-linux64/bin"
 [[ -f "$HOME/.fzf.zsh" ]] && source "$HOME/.fzf.zsh"
