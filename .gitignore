@@ -10,3 +10,8 @@ vscode-java-test
 
 *.zwc
 .config/lazygit/state.yml
+.local/bin/virtualenv
+.local/bin/pip3.10
+.local/bin/pip3
+.local/bin/pip
+zsh-snap
