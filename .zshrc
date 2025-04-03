@@ -108,7 +108,6 @@ local ZNAP_FOLDER=$PLUGINS_BASE/znap
         https://github.com/marlonrichert/zsh-snap.git $ZNAP_FOLDER
 source $ZNAP_FOLDER/znap.zsh  # Start Znap
 zstyle ':znap:*' repos-dir $PLUGINS_FOLDER
-znap source chitoku-k/fzf-zsh-completions
 znap source romkatv/zsh-defer
 znap source zsh-users/zsh-syntax-highlighting
 
@@ -120,7 +119,12 @@ else
   echo "NO SDK"
 fi
 
-zsh-defer eval "$(fzf --zsh)"
+if ! command -v fzf 2>&1 >/dev/null
+then
+    eval "$(fzf --zsh)"
+    znap source chitoku-k/fzf-zsh-completions
+fi
+
 zsh-defer eval "$(zoxide init zsh)"
 zsh-defer eval "$(fnm env --use-on-cd --fnm-dir $HOME/.local/share/fnm)"
 eval "$(starship init zsh)"
