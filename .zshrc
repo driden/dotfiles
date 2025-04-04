@@ -15,20 +15,18 @@ export GOPATH="$HOME/go"
   export PATH="$HOME/.bin:$PATH"
  fi
 
-if [[ $(uname) != "Linux" ]]; then
-if [[ $(uname -p) == "arm" ]]; then
-  eval "$(/opt/homebrew/bin/brew shellenv)"
-else
-  eval "$(/usr/local/homebrew/bin/brew shellenv)"
-fi
+# if [[ $(uname -p) == "arm" ]]; then
+#   eval "$(/opt/homebrew/bin/brew shellenv)"
+# else
+#   eval "$(/usr/local/homebrew/bin/brew shellenv)"
+# fi
 
 if type brew &>/dev/null; then
   FPATH=$(brew --prefix)/share/zsh-completions:$FPATH
-
   autoload -Uz compinit
   compinit
 fi
-fi
+
 export MANPATH="/usr/local/man:$MANPATH"
 export LANG=en_US.UTF-8
 export BROWSER=$(which firefox)
@@ -36,8 +34,7 @@ export FZF_DEFAULT_COMMAND='rg --hidden -l ""'
 export EDITOR='nvim'
 export MANPAGER='nvim +Man!'
 export MANWIDTH=999
-export TERMINAL='kitty'
-
+export TERMINAL='wezterm'
 
 if [[ -n $SSH_CONNECTION ]]; then
   export EDITOR='vim'
@@ -108,6 +105,7 @@ local ZNAP_FOLDER=$PLUGINS_BASE/znap
         https://github.com/marlonrichert/zsh-snap.git $ZNAP_FOLDER
 source $ZNAP_FOLDER/znap.zsh  # Start Znap
 zstyle ':znap:*' repos-dir $PLUGINS_FOLDER
+znap source chitoku-k/fzf-zsh-completions
 znap source romkatv/zsh-defer
 znap source zsh-users/zsh-syntax-highlighting
 
@@ -119,21 +117,15 @@ else
   echo "NO SDK"
 fi
 
-if ! command -v fzf 2>&1 >/dev/null
-then
-    eval "$(fzf --zsh)"
-    znap source chitoku-k/fzf-zsh-completions
-fi
+# if ! command -v fzf 2>&1 >/dev/null
+# then
+#     eval "$(fzf --zsh)"
+# fi
 
+eval "$(fzf --zsh)"
 zsh-defer eval "$(zoxide init zsh)"
 zsh-defer eval "$(fnm env --use-on-cd --fnm-dir $HOME/.local/share/fnm)"
 eval "$(starship init zsh)"
 
-if [[ $(uname) -eq "Linux" ]]; then
-  . "$HOME/.asdf/asdf.sh"
-else 
-  . /usr/local/opt/asdf/libexec/asdf.sh
-fi
-
 [[ -d "/opt/nvim-linux64" ]] && export PATH="$PATH:/opt/nvim-linux64/bin"
-[[ -f "$HOME/.fzf.zsh" ]] && source "$HOME/.fzf.zsh"
+# [[ -f "$HOME/.fzf.zsh" ]] && source "$HOME/.fzf.zsh"
