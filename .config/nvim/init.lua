@@ -492,6 +492,11 @@ require("lazy").setup({
             server.capabilities = vim.tbl_deep_extend("force", {}, capabilities, server.capabilities or {})
             require("lspconfig")[server_name].setup(server)
           end,
+          csharp_ls = function()
+            local csharp = require("lspconfig").csharp_ls.config_def.default_config
+            csharp.cmd = { "csharpls" }
+            require("lspconfig").csharp_ls.setup(csharp)
+          end,
           jdtls = function()
             require("lspconfig").jdtls.setup({
               on_attach = function()
