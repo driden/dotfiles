@@ -66,6 +66,7 @@ map <leader>rn :action RenameElement<CR>
 nnoremap gR :action FindUsages<CR>
 nnoremap gh :action QuickJavaDoc<cr>
 nnoremap ge :action ShowErrorDescription<cr>
+nnoremap ga :action ProblemsView.QuickFixes
 
 nnoremap Y y$
 xnoremap p "_dP
