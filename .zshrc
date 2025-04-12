@@ -15,11 +15,11 @@ export GOPATH="$HOME/go"
   export PATH="$HOME/.bin:$PATH"
  fi
 
-# if [[ $(uname -p) == "arm" ]]; then
-#   eval "$(/opt/homebrew/bin/brew shellenv)"
+if [[ $(uname -p) == "arm" ]]; then
+  eval "$(/opt/homebrew/bin/brew shellenv)"
 # else
-#   eval "$(/usr/local/homebrew/bin/brew shellenv)"
-# fi
+  # eval "$(/usr/local/homebrew/bin/brew shellenv)"
+fi
 
 if type brew &>/dev/null; then
   FPATH=$(brew --prefix)/share/zsh-completions:$FPATH
