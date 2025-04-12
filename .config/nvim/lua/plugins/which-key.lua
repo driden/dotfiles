@@ -49,6 +49,7 @@ return {
     },
     -- Document existing key chains
     spec = {
+      { "<leader>a", group = "Avante", mode = { "n", "x" } },
       { "<leader>c", group = "Code", mode = { "n", "x" } },
       { "<leader>b", group = "Buffer", mode = { "n", "x" } },
       { "<leader>d", group = "Debug" },
