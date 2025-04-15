@@ -8,6 +8,7 @@ return {
     provider = "copilot",
   },
   build = "make",
+  cond = vim.fn.isdirectory(vim.fn.expand("~/brazil-pkg-cache")) == 0,
   dependencies = {
     "nvim-treesitter/nvim-treesitter",
     "stevearc/dressing.nvim",
