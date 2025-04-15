@@ -1,3 +1,4 @@
+---@type "cyberdream"|"gruvbox"|"kanagawa"|"tokyonight"
 local theme = "cyberdream"
 
 return {
@@ -13,6 +14,7 @@ return {
   {
     "ellisonleao/gruvbox.nvim",
     priority = 1000,
+    lazy = false,
     enabled = theme == "gruvbox",
     config = function()
       require("gruvbox").setup({
@@ -30,6 +32,7 @@ return {
   {
     "rebelot/kanagawa.nvim",
     enabled = theme == "kanagawa",
+    lazy = false,
     config = function()
       require("kanagawa").setup({
         commentStyle = { italic = false },
@@ -42,8 +45,9 @@ return {
   {
     "folke/tokyonight.nvim",
     enalbed = theme == "tokyonight",
+    lazy = false,
     config = function()
-      vim.cmd.colorscheme("tokyonight")
+      vim.cmd.colorscheme("tokyonight-moon")
     end,
   },
 }
