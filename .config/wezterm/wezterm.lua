@@ -1,6 +1,9 @@
 local wezterm = require("wezterm")
 local config = wezterm.config_builder()
 
+config.color_scheme = "Cyberdyne"
+-- config.color_scheme = "cyberpunk"
+-- config.color_scheme = "CutiePro"
 config.font_size = 14
 
 config.font = wezterm.font_with_fallback({
@@ -17,13 +20,13 @@ config.font = wezterm.font_with_fallback({
 	{ family = "Hack Nerd Font", weight = "Regular" },
 	{ family = "Comic Mono", weight = "Regular" },
 	{ family = "JetBrains Mono", weight = "Medium" },
-	{ family = "CodeNewRoman NF", weight = "Medium" }
+	{ family = "CodeNewRoman NF", weight = "Medium" },
 })
 
 config.tab_max_width = 35
 config.color_scheme = "Catppuccin Mocha"
 config.automatically_reload_config = true
-config.window_background_opacity = 0.7
+config.window_background_opacity = 0.9
 config.hide_tab_bar_if_only_one_tab = true
 
 -- For readline to work on macos, will probably need to query for the os beforehand

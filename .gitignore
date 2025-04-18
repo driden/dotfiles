@@ -16,3 +16,4 @@ vscode-java-test
 .local/bin/pip
 zsh-snap
 .config/discord
+.config/fish/fish_variables
