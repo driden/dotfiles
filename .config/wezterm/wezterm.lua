@@ -111,8 +111,10 @@ config.keys = {
 	},
 }
 
-config.window_decorations = "INTEGRATED_BUTTONS|TITLE|RESIZE"
--- config.window_decorations = "TITLE|RESIZE"
+-- TODO: Use this for linux
+-- config.window_decorations = "INTEGRATED_BUTTONS|TITLE|RESIZE"
+-- TODO: Use this for macos
+config.window_decorations = "TITLE|RESIZE"
 config.tab_bar_at_bottom = true
 config.enable_tab_bar = true
 config.use_fancy_tab_bar = false
