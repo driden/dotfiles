@@ -68,7 +68,7 @@ fi
 alias zshconfig="nvim ~/.zshrc"
 alias refreshenv='source $HOME/.zshrc && source $HOME/.zshenv'
 alias dot="cd $HOME/code/dotfiles && $EDITOR ."
-alias ll="eza --long --all"
+alias ll="eza --long --all --icons always"
 alias vim="$EDITOR"
 alias vi="$EDITOR"
 alias v="$EDITOR"
