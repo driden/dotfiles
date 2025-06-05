@@ -57,12 +57,12 @@ automatically-unhide-macos-hidden-apps = false
 #                 See:
 #                 https://nikitabobko.github.io/AeroSpace/guide#assign-workspaces-to-monitors
 [gaps]
-    inner.horizontal = 5
-    inner.vertical =   5
-    outer.left =       5
-    outer.bottom =     5
-    outer.top =        5
-    outer.right =      5
+    inner.horizontal = 10
+    inner.vertical =   10
+    outer.left =       10
+    outer.bottom =     10
+    outer.top =        10
+    outer.right =      10
 
 # 'main' binding mode declaration
 # See: https://nikitabobko.github.io/AeroSpace/guide#binding-modes
@@ -130,7 +130,6 @@ automatically-unhide-macos-hidden-apps = false
     alt-b = 'workspace B'
     alt-d = 'workspace D'
     alt-m = 'workspace M'
-    alt-n = 'workspace N'
     alt-t = 'workspace T'
 
     # See: https://nikitabobko.github.io/AeroSpace/commands#move-node-to-workspace
@@ -148,7 +147,6 @@ automatically-unhide-macos-hidden-apps = false
     alt-shift-b = 'move-node-to-workspace B'
     alt-shift-d = 'move-node-to-workspace D'
     alt-shift-m = 'move-node-to-workspace M'
-    alt-shift-n = 'move-node-to-workspace N'
     alt-shift-t = 'move-node-to-workspace T'
 
     alt-shift-f = 'fullscreen'
@@ -180,3 +178,8 @@ automatically-unhide-macos-hidden-apps = false
     down = 'volume down'
     up = 'volume up'
     shift-down = ['volume set 0', 'mode main']
+
+
+[[on-window-detected]]
+    if.window-title-regex-substring = 'Bitwarden'
+    run = ['layout floating']
