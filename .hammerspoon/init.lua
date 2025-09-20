@@ -6,7 +6,6 @@ local hyper = { "cmd", "alt", "ctrl" }
 local hypershift = { "cmd", "alt", "ctrl", "shift" }
 local log = hs.logger.new("log", 4)
 
-
 local function h_bind(key, func)
   hs.hotkey.bind(hyper, key, func)
 end
@@ -160,17 +159,17 @@ h_bind("m", function()
   end
 end)
 
-h_bind("e", function()
-  local output, success, type, code = hs.execute("emacsclient --reuse-frame &", false)
-  if success then
-    local emacs = hs.application.get("Emacs")
-    if emacs ~= nil then
-      emacs:activate()
-    end
-  else
-    log:d("Cloud not load Emacs ")
-    log:d(hs.inspect {output, success, type, code } )
-  end
-end)
+-- h_bind("e", function()
+--   local output, success, type, code = hs.execute("emacsclient --reuse-frame &", false)
+--   if success then
+--     local emacs = hs.application.get("Emacs")
+--     if emacs ~= nil then
+--       emacs:activate()
+--     end
+--   else
+--     log:d("Cloud not load Emacs ")
+--     log:d(hs.inspect {output, success, type, code } )
+--   end
+-- end)
 
 hs.alert.show("Hammerspoon started")

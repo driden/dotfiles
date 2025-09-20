@@ -21,7 +21,7 @@ enable-normalization-opposite-orientation-for-nested-containers = true
 # See: https://nikitabobko.github.io/AeroSpace/guide#layouts
 # The 'accordion-padding' specifies the size of accordion padding
 # You can set 0 to disable the padding feature
-accordion-padding = 30
+accordion-padding = 7
 
 # Possible values: tiles|accordion
 default-root-container-layout = 'tiles'
@@ -91,7 +91,7 @@ automatically-unhide-macos-hidden-apps = false
     # You can uncomment the following lines to open up terminal with alt + enter shortcut
     # (like in i3)
     alt-enter = '''exec-and-forget osascript -e '
-    tell application "com.github.wez.wezter"
+    tell application "com.github.wez.wezterm"
         do script
         activate
     end tell'
@@ -127,8 +127,7 @@ automatically-unhide-macos-hidden-apps = false
     alt-7 = 'workspace 7'
     alt-8 = 'workspace 8'
     alt-9 = 'workspace 9'
-    alt-b = 'workspace B'
-    alt-d = 'workspace D'
+    alt-i = 'workspace I'
     alt-m = 'workspace M'
     alt-t = 'workspace T'
 
@@ -144,8 +143,7 @@ automatically-unhide-macos-hidden-apps = false
     alt-shift-7 = 'move-node-to-workspace 7'
     alt-shift-8 = 'move-node-to-workspace 8'
     alt-shift-9 = 'move-node-to-workspace 9'
-    alt-shift-b = 'move-node-to-workspace B'
-    alt-shift-d = 'move-node-to-workspace D'
+    alt-shift-i = 'move-node-to-workspace I'
     alt-shift-m = 'move-node-to-workspace M'
     alt-shift-t = 'move-node-to-workspace T'
 
@@ -175,11 +173,19 @@ automatically-unhide-macos-hidden-apps = false
     alt-shift-k = ['join-with up', 'mode main']
     alt-shift-l = ['join-with right', 'mode main']
 
-    down = 'volume down'
-    up = 'volume up'
     shift-down = ['volume set 0', 'mode main']
 
 
+# Ref: https://nikitabobko.github.io/AeroSpace/guide#on-window-detected-callback
 [[on-window-detected]]
     if.window-title-regex-substring = 'Bitwarden'
     run = ['layout floating']
+
+[[on-window-detected]]
+    if.app-id = 'com.github.wez.wezterm'
+    run = ['move-node-to-workspace T']
+
+[[on-window-detected]]
+    if.app-id = 'org.mozilla.floorp'
+    run = ['move-node-to-workspace I']
+
