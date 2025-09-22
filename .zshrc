@@ -117,11 +117,11 @@ znap source chitoku-k/fzf-zsh-completions
 znap source romkatv/zsh-defer
 znap source zsh-users/zsh-syntax-highlighting
 
-if [[ -s "$SDKMAN_DIR/bin/sdkman-init.sh" ]]
-then
-  export SDKMAN_DIR="$HOME/.sdkman"
-  zsh-defer source "$SDKMAN_DIR/bin/sdkman-init.sh"
-fi
+# if [[ -s "$SDKMAN_DIR/bin/sdkman-init.sh" ]]
+# then
+#   export SDKMAN_DIR="$HOME/.sdkman"
+#   zsh-defer source "$SDKMAN_DIR/bin/sdkman-init.sh"
+# fi
 
 # if ! command -v fzf 2>&1 >/dev/null
 # then
@@ -134,3 +134,7 @@ zsh-defer eval "$(fnm env --use-on-cd --fnm-dir $HOME/.local/share/fnm)"
 eval "$(starship init zsh)"
 
 [[ -d "/opt/nvim-linux64" ]] && export PATH="$PATH:/opt/nvim-linux64/bin"
+
+if type mise &>/dev/null; then
+   eval "$(mise activate zsh)"
+fi

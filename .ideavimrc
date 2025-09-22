@@ -1,7 +1,7 @@
-Plug 'easymotion/vim-esymotion'
 Plug 'peservim/nerdtree'
 Plug 'vim-scripts/ReplaceWithRegister'
 Plug 'machakann/vim-highlightedyank'
+Plug 'tpope/vim-surround'
 
 " Map leader to space ---------------------
 let mapleader=" "
@@ -19,11 +19,8 @@ let g:argtextobj_pairs="[:],(:),<:>"
 set highlightedyank
 set NERDTree
 set ReplaceWithRegister
-set easymotion
-
-"" Easy Motion
-map s <Plug>(easymotion-s)
-map <leader>j <Plug>(easymotion-s)
+set mini-ai
+set which-key
 
 """ Common settings -------------------------
 set showmode
@@ -41,9 +38,6 @@ set ideastatusicon=purple
 set idearefactormode=keep
 
 """ Mappings -------------------------------
-nnoremap <leader>f :action(easymotion-s)
-nnoremap <leader><S-f> :action(easymotion-f)
-
 map <leader>z :action ToggleDistractionFreeMode<CR>
 
 nnoremap <leader>wh <C-W>h
@@ -59,14 +53,14 @@ nnoremap L :bn<CR>
 nnoremap [b :bp<CR>
 nnoremap ]b :bn<CR>
 
-nnoremap <leader>ff :NERDTreeFind<CR>
-
 map <leader>e :NERDTreeToggle<CR>
 map <leader>rn :action RenameElement<CR>
+map <leader>ff :action GotoClass<CR>
 nnoremap gR :action FindUsages<CR>
 nnoremap gh :action QuickJavaDoc<cr>
 nnoremap ge :action ShowErrorDescription<cr>
-nnoremap ga :action ProblemsView.QuickFixes
+nnoremap ga :action ProblemsView.QuickFixes<CR>
+nnoremap gI :action GotoImplementation<CR>
 
 nnoremap Y y$
 xnoremap p "_dP
