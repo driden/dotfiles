@@ -38,7 +38,8 @@ set ideastatusicon=purple
 set idearefactormode=keep
 
 """ Mappings -------------------------------
-map <leader>z :action ToggleDistractionFreeMode<CR>
+nnoremap <leader>rr :action IdeaVim.ReloadVimRc.reload<CR>
+rap <leader>z :action ToggleDistractionFreeMode<CR>
 
 nnoremap <leader>wh <C-W>h
 nnoremap <leader>wl <C-W>l
@@ -59,8 +60,13 @@ map <leader>ff :action GotoClass<CR>
 nnoremap gR :action FindUsages<CR>
 nnoremap gh :action QuickJavaDoc<cr>
 nnoremap ge :action ShowErrorDescription<cr>
-nnoremap ga :action ProblemsView.QuickFixes<CR>
+nnoremap ga :action ShowIntentionActions<CR>
 nnoremap gI :action GotoImplementation<CR>
+
+""" debugging
+map <leader>so :action StepOver<CR>
+
+
 
 nnoremap Y y$
 xnoremap p "_dP
