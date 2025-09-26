@@ -39,7 +39,7 @@ set idearefactormode=keep
 
 """ Mappings -------------------------------
 nnoremap <leader>rr :action IdeaVim.ReloadVimRc.reload<CR>
-rap <leader>z :action ToggleDistractionFreeMode<CR>
+nnoremap <leader>z :action ToggleDistractionFreeMode<CR>
 
 nnoremap <leader>wh <C-W>h
 nnoremap <leader>wl <C-W>l
@@ -53,6 +53,7 @@ nnoremap H :bp<CR>
 nnoremap L :bn<CR>
 nnoremap [b :bp<CR>
 nnoremap ]b :bn<CR>
+nnoremap <C-w>o :action CloseAllEditorsButActive<CR>
 
 map <leader>e :NERDTreeToggle<CR>
 map <leader>rn :action RenameElement<CR>
@@ -65,8 +66,10 @@ nnoremap gI :action GotoImplementation<CR>
 
 """ debugging
 map <leader>so :action StepOver<CR>
+map <leader>sr :action Resume<CR>
 
-
+""" SQL
+nnoremap <leader>x :action Console.Jdbc.Execute<CR>
 
 nnoremap Y y$
 xnoremap p "_dP
