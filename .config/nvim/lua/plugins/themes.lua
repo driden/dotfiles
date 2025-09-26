@@ -44,7 +44,7 @@ return {
   },
   {
     "folke/tokyonight.nvim",
-    enalbed = theme == "tokyonight",
+    enabled = theme == "tokyonight",
     lazy = false,
     config = function()
       vim.cmd.colorscheme("tokyonight-moon")
