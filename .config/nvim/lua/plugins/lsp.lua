@@ -185,43 +185,44 @@ return {
           local csharp = require("lspconfig").csharp_ls.document_config.default_config
           csharp.cmd = { "csharpls" }
           require("lspconfig").csharp_ls.setup(csharp)
+          vim.lsp.config("csharp_ls", csharp)
         end,
-        jdtls = function()
-          require("lspconfig").jdtls.setup({
-            on_attach = function()
-              local bemol_dir = vim.fs.find({ ".bemol" }, { upward = true, type = "directory" })[1]
-              local ws_folders_lsp = {}
-              if bemol_dir then
-                local file = io.open(bemol_dir .. "/ws_root_folders", "r")
-                if file then
-                  for line in file:lines() do
-                    table.insert(ws_folders_lsp, line)
-                  end
-                  file:close()
-                end
-              end
-              for _, line in ipairs(ws_folders_lsp) do
-                vim.lsp.buf.add_workspace_folder(line)
-              end
-            end,
-            -- -XX:+UseParallelGC
-            -- -XX:GCTimeRatio=4
-            -- -XX:AdaptiveSizePolicyWeight=90
-            -- -Dsun.zip.disableMemoryMapping=true
-            -- -Xmx2G
-            -- -Xms100m
-            cmd = {
-              "jdtls",
-              "--jvm-arg=-javaagent:"
-                .. require("mason-registry").get_package("jdtls"):get_install_path()
-                .. "/lombok.jar",
-            },
-            format = {
-              enabled = false,
-              tabSize = 4,
-            },
-          })
-        end,
+        -- jdtls = function()
+        --   require("lspconfig").jdtls.setup({
+        --     on_attach = function()
+        --       local bemol_dir = vim.fs.find({ ".bemol" }, { upward = true, type = "directory" })[1]
+        --       local ws_folders_lsp = {}
+        --       if bemol_dir then
+        --         local file = io.open(bemol_dir .. "/ws_root_folders", "r")
+        --         if file then
+        --           for line in file:lines() do
+        --             table.insert(ws_folders_lsp, line)
+        --           end
+        --           file:close()
+        --         end
+        --       end
+        --       for _, line in ipairs(ws_folders_lsp) do
+        --         vim.lsp.buf.add_workspace_folder(line)
+        --       end
+        --     end,
+        --     -- -XX:+UseParallelGC
+        --     -- -XX:GCTimeRatio=4
+        --     -- -XX:AdaptiveSizePolicyWeight=90
+        --     -- -Dsun.zip.disableMemoryMapping=true
+        --     -- -Xmx2G
+        --     -- -Xms100m
+        --     cmd = {
+        --       "jdtls",
+        --       "--jvm-arg=-javaagent:"
+        --         .. require("mason-registry").get_package("jdtls"):get_install_path()
+        --         .. "/lombok.jar",
+        --     },
+        --     format = {
+        --       enabled = false,
+        --       tabSize = 4,
+        --     },
+        --   })
+        -- end,
       },
     })
   end,
