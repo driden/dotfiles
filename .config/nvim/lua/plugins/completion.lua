@@ -109,7 +109,7 @@ return { -- Autocompletion
     cmp.setup.filetype({ "markdown" }, {
       sources = {
         { name = "render-markdown" },
-        { name = "buffer" },
+        -- { name = "buffer" },
         { name = "luasnip" },
       },
     })
