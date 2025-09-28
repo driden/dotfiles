@@ -13,17 +13,28 @@ return { -- Autocompletion
         end
         return "make install_jsregexp"
       end)(),
-      dependencies = {},
+      config = function()
+        require("luasnip.loaders.from_vscode").lazy_load({ paths = { "~/.config/nvim/snippets" } })
+      end,
+      dependencies = {
+        {
+          "rafamadriz/friendly-snippets",
+          config = function()
+            require("luasnip.loaders.from_vscode").lazy_load()
+          end,
+        },
+      },
     },
     "saadparwaiz1/cmp_luasnip",
     "hrsh7th/cmp-nvim-lsp",
     "hrsh7th/cmp-path",
+    "hrsh7th/cmp-buffer",
   },
   config = function()
     -- See `:help cmp`
+    require("driden.snippets")
     local cmp = require("cmp")
     local luasnip = require("luasnip")
-    luasnip.config.setup({})
 
     cmp.setup({
       snippet = {
@@ -100,6 +111,14 @@ return { -- Autocompletion
       sources = {
         { name = "vim-dadbod-completion" },
         { name = "buffer" },
+      },
+    })
+
+    cmp.setup.filetype({ "markdown" }, {
+      sources = {
+        { name = "LuaSnip" },
+        { name = "buffer" },
+        { name = "render-markdown" },
       },
     })
   end,
