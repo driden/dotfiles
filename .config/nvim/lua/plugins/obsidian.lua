@@ -3,23 +3,11 @@ local notes_dirs = { "~/Documents/Notes", "~/Documents/Notes/personal", "~/notes
 local workspaces = vim
   .iter(notes_dirs)
   :map(function(dir)
-    return vim.fn.expand(dir)
+    return { name = dir, path = vim.fn.expand(dir) }
   end)
-  :map(function(curr_dir)
-    for dir, type in vim.fs.dir(curr_dir) do
-      if type == "directory" then
-        -- https://www.lua.org/manual/5.1/manual.html
-        -- 5.4.1 patterns
-        -- filter out hidden folders
-        if not dir:match("%p") then
-          local candidate = curr_dir .. "/" .. dir
-          -- if candidate has an `.obsidian` folder then we can add it
-          if vim.uv.fs_stat(candidate .. "/.obsidian") then
-            local name = candidate:match("([^/]+)$")
-            return { name = name, path = candidate }
-          end
-        end
-      end
+  :map(function(data)
+    if vim.uv.fs_stat(data.path .. "/.obsidian") then
+      return data
     end
   end)
   :totable()
