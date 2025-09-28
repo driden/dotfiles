@@ -106,19 +106,11 @@ return { -- Autocompletion
       },
     })
 
-    -- Setup up vim-dadbod
-    cmp.setup.filetype({ "sql" }, {
-      sources = {
-        { name = "vim-dadbod-completion" },
-        { name = "buffer" },
-      },
-    })
-
     cmp.setup.filetype({ "markdown" }, {
       sources = {
-        { name = "LuaSnip" },
-        { name = "buffer" },
         { name = "render-markdown" },
+        { name = "buffer" },
+        { name = "luasnip" },
       },
     })
   end,
