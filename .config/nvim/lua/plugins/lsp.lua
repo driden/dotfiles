@@ -71,7 +71,7 @@ return {
         --
         -- When you move your cursor, the highlights will be cleared (the second autocommand).
         local client = vim.lsp.get_client_by_id(event.data.client_id)
-        if client and client.supports_method(vim.lsp.protocol.Methods.textDocument_documentHighlight) then
+        if client and client:supports_method(vim.lsp.protocol.Methods.textDocument_documentHighlight) then
           local highlight_augroup = vim.api.nvim_create_augroup("kickstart-lsp-highlight", { clear = false })
           vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
             buffer = event.buf,
@@ -98,12 +98,41 @@ return {
         -- code, if the language server you are using supports them
         --
         -- This may be unwanted, since they displace some of your code
-        if client and client.supports_method(vim.lsp.protocol.Methods.textDocument_inlayHint) then
+        if client and client:supports_method(vim.lsp.protocol.Methods.textDocument_inlayHint, event.buf) then
           vim.keymap.set("n", "<leader>th", function()
             vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({ bufnr = event.buf }))
           end, { desc = "[T]oggle Inlay [H]ints", silent = true })
         end
       end,
+    })
+
+    -- Diagnostic Config
+    -- See :help vim.diagnostic.Opts
+    vim.diagnostic.config({
+      severity_sort = true,
+      float = { border = "rounded", source = "if_many" },
+      underline = { severity = vim.diagnostic.severity.ERROR },
+      signs = vim.g.have_nerd_font and {
+        text = {
+          [vim.diagnostic.severity.ERROR] = "󰅚 ",
+          [vim.diagnostic.severity.WARN] = "󰀪 ",
+          [vim.diagnostic.severity.INFO] = "󰋽 ",
+          [vim.diagnostic.severity.HINT] = "󰌶 ",
+        },
+      } or {},
+      virtual_text = {
+        source = "if_many",
+        spacing = 2,
+        format = function(diagnostic)
+          local diagnostic_message = {
+            [vim.diagnostic.severity.ERROR] = diagnostic.message,
+            [vim.diagnostic.severity.WARN] = diagnostic.message,
+            [vim.diagnostic.severity.INFO] = diagnostic.message,
+            [vim.diagnostic.severity.HINT] = diagnostic.message,
+          }
+          return diagnostic_message[diagnostic.severity]
+        end,
+      },
     })
 
     -- LSP servers and clients are able to communicate to each other what features they support.
@@ -136,7 +165,6 @@ return {
       -- tsserver = {},
       --,
       bashls = {},
-
       lua_ls = {
         -- cmd = {...},
         -- filetypes = { ...},
@@ -154,22 +182,16 @@ return {
       ts_ls = {},
     }
 
-    -- Ensure the servers and tools above are installed
-    --  To check the current status of installed tools and/or manually install
-    --  other tools, you can run
-    --    :Mason
-    --
-    --  You can press `g?` for help in this menu.
-    require("mason").setup()
-
     -- You can add other tools here that you want Mason to install
     -- for you, so that they are available from within Neovim.
     local ensure_installed = vim.tbl_keys(servers or {})
     vim.list_extend(ensure_installed, {
       "stylua", -- Used to format Lua code
+      "kotlin-lsp", -- v0.252.17811
     })
     require("mason-tool-installer").setup({ ensure_installed = ensure_installed })
 
+    -- Ideally this won't be needed once I update nvim and it's plugins.
     require("mason-lspconfig").setup({
       -- :h mason-lspconfig.setup_handlers()
       handlers = {
@@ -225,5 +247,21 @@ return {
         -- end,
       },
     })
+
+    -- This is the new way of setting lsp up, will need to look into why nvim-lspconfig is not working, might be an update thing
+    vim.lsp.config("kotlin_lsp", {
+      filetypes = { "kotlin" },
+      cmd = { "kotlin-lsp", "--stdio" },
+      root_markers = {
+        "settings.gradle", -- Gradle (multi-project)
+        "settings.gradle.kts", -- Gradle (multi-project)
+        "pom.xml", -- Maven
+        "build.gradle", -- Gradle
+        "build.gradle.kts", -- Gradle
+        "workspace.json", -- Used to integrate your own build system
+      },
+    })
+
+    vim.lsp.enable("kotlin_lsp")
   end,
 }
