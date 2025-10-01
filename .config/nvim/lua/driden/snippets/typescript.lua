@@ -15,19 +15,6 @@ local c = ls.choice_node
 local d = ls.dynamic_nodek
 local fmt = require("luasnip.extras.fmt").fmt
 
--- available in all languages.
--- ls.add_snippets("all", {
---   s(
---     "<?",
---     fmt("{} ? {}: {}", {
---       -- equivalent to "${1:cond} ? ${2:then} : ${3:else}"
---       i(1, "cond"),
---       i(2, "then"),
---       i(3, "else"),
---     })
---   ),
--- })
-
 ls.add_snippets("typescript", {
   s(
     "<ita",
@@ -44,13 +31,3 @@ ls.add_snippets("typescript", {
     )
   ),
 })
--- vim.keymap.set({ "i", "s" }, "<C-E>", function()
---   if ls.choice_active() then
---     ls.change_choice(1)
---   end
--- end, { silent = true })
--- require("driden.snippets.python")
--- require("driden.snippets.typescript")
-for _, ft_path in ipairs(vim.api.nvim_get_runtime_file("lua/driden/snippets/*.lua", true)) do
-  loadfile(ft_path)()
-end

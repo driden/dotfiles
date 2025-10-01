@@ -264,4 +264,6 @@ return {
 
     vim.lsp.enable("kotlin_lsp")
   end,
+
+  require("mason-nvim-dap").setup(),
 }
