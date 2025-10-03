@@ -63,6 +63,10 @@ nnoremap gh :action QuickJavaDoc<cr>
 nnoremap ge :action ShowErrorDescription<cr>
 nnoremap ga :action ShowIntentionActions<CR>
 nnoremap gI :action GotoImplementation<CR>
+nnoremap gq :action ReformatCode<CR>
+vnoremap gq :action ReformatCode<CR>
+xnoremap gq :action ReformatCode<CR>
+inoremap <C-y> :action EditorChooseLookupItem<CR>
 
 """ debugging
 map <leader>so :action StepOver<CR>
@@ -80,3 +84,5 @@ map <leader>y "+y
 
 xmap > >gv
 xmap < <gv
+
+command! CopyPath :action CopyAbsolutePath
