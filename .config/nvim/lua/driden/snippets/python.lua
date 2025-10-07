@@ -1,12 +1,4 @@
 local ls = require("luasnip")
-ls.config.setup({
-  history = true,
-  updateevents = "TextChanged,TextChangedI",
-  enable_autosnippets = true,
-})
-
-ls.cleanup()
-
 local s = ls.snippet
 local sn = ls.snippet_node
 local isn = ls.indent_snippet_node

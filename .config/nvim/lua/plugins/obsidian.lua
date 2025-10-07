@@ -24,6 +24,7 @@ return {
   ---@module 'obsidian'
   ---@type obsidian.config
   opts = {
+    legacy_commands = false,
     workspaces = workspaces,
     note_path_func = function(spec)
       return spec.title .. ".md"
@@ -31,6 +32,9 @@ return {
     completion = {
       nvim_cmp = true,
       min_chars = 2,
+    },
+    footer = {
+      enabled = false,
     },
   },
   enabled = true,

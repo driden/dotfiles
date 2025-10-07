@@ -13,9 +13,6 @@ return { -- Autocompletion
         end
         return "make install_jsregexp"
       end)(),
-      config = function()
-        require("luasnip.loaders.from_vscode").lazy_load({ paths = { "~/.config/nvim/snippets" } })
-      end,
       dependencies = {
         {
           "rafamadriz/friendly-snippets",
