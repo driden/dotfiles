@@ -23,9 +23,12 @@ return {
   },
   opts = {
     workspaces = workspaces,
-  },
-  completion = {
-    nvim_cmp = true,
-    min_chars = 2,
+    note_path_func = function(spec)
+      return spec.title .. ".md"
+    end,
+    completion = {
+      nvim_cmp = true,
+      min_chars = 2,
+    },
   },
 }
