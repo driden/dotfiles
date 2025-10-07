@@ -13,7 +13,7 @@ local workspaces = vim
   :totable()
 
 return {
-  "epwalsh/obsidian.nvim",
+  "obsidian-nvim/obsidian.nvim",
   version = "*", -- recommended, use latest release instead of latest commit
   lazy = true,
   ft = "markdown",
@@ -21,6 +21,8 @@ return {
   dependencies = {
     "nvim-lua/plenary.nvim",
   },
+  ---@module 'obsidian'
+  ---@type obsidian.config
   opts = {
     workspaces = workspaces,
     note_path_func = function(spec)
@@ -31,4 +33,5 @@ return {
       min_chars = 2,
     },
   },
+  enabled = true,
 }
