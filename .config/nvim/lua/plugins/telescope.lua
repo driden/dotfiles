@@ -32,7 +32,9 @@ return { -- Fuzzy Finder (files, lsp, etc)
         grep_previewer = require("telescope.previewers").vim_buffer_vimgrep.new,
         qflist_previewer = require("telescope.previewers").vim_buffer_qflist.new,
       },
-      pickers = {},
+      pickers = {
+        find_files = { hidden = true },
+      },
       extensions = {
         ["ui-select"] = {
           require("telescope.themes").get_dropdown(),
