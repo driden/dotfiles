@@ -36,7 +36,16 @@ return {
       cmd = "Copilot",
       event = "InsertEnter",
       config = function()
-        require("copilot").setup({})
+        require("copilot").setup({
+          server_opts_overrides = {
+            settings = {
+              -- offset_encoding = "utf-16",
+              telemetry = {
+                telemetryLevel = "none",
+              },
+            },
+          },
+        })
       end,
     },
   },
