@@ -263,6 +263,18 @@ return {
     })
 
     vim.lsp.enable("kotlin_lsp")
+
+    local ruffc = vim.deepcopy(capabilities)
+    ruffc.general.positionEncodings = { "utf-16" }
+    -- ruffc.offsetEncoding = "utf-16"
+    vim.lsp.config("ruff", {
+      capabilities = ruffc,
+      cmd = { "ruff", "server" },
+      filetypes = { "python" },
+      root_markers = { "pyproject.toml", "ruff.toml", ".ruff.toml", ".git" },
+      settings = {},
+    })
+    vim.lsp.enable("ruff")
   end,
 
   require("mason-nvim-dap").setup(),
