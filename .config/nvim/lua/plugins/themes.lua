@@ -1,21 +1,20 @@
----@type "cyberdream"|"gruvbox"|"kanagawa"|"tokyonight"
-local theme = "cyberdream"
+local theme = require("driden.theme").theme
 
 return {
   {
     "scottmckendry/cyberdream.nvim",
     lazy = false,
     priority = 1000,
-    enabled = theme == "cyberdream",
     config = function()
-      vim.cmd.colorscheme("cyberdream")
+      if theme == "cyberdream" then
+        vim.cmd.colorscheme("cyberdream")
+      end
     end,
   },
   {
     "ellisonleao/gruvbox.nvim",
     priority = 1000,
     lazy = false,
-    enabled = theme == "gruvbox",
     config = function()
       require("gruvbox").setup({
         italic = {
@@ -26,12 +25,14 @@ return {
           emphasis = false,
         },
       })
-      vim.cmd.colorscheme("gruvbox")
+
+      if theme == "gruvbox" then
+        vim.cmd.colorscheme("gruvbox")
+      end
     end,
   },
   {
     "rebelot/kanagawa.nvim",
-    enabled = theme == "kanagawa",
     lazy = false,
     config = function()
       require("kanagawa").setup({
@@ -39,15 +40,18 @@ return {
         keywordStyle = { italic = false },
       })
 
-      vim.cmd.colorscheme("kanagawa-dragon")
+      if theme == "kanagawa" then
+        vim.cmd.colorscheme("kanagawa-dragon")
+      end
     end,
   },
   {
     "folke/tokyonight.nvim",
-    enabled = theme == "tokyonight",
     lazy = false,
     config = function()
-      vim.cmd.colorscheme("tokyonight-moon")
+      if theme == "tokyonight" then
+        vim.cmd.colorscheme("tokyonight-moon")
+      end
     end,
   },
 }
