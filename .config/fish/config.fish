@@ -61,7 +61,7 @@ alias twc="terraform workspace list | grep '*' | tr -d '*'| tr -d '[:space:]'"
 
 fzf --fish | source
 zoxide init fish | source
-fnm env --use-on-cd --fnm-dir $HOME/.local/share/fnm | source
+mise activate fish | source
 
 if status is-interactive
     # Commands to run in interactive sessions can go here
