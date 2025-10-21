@@ -31,6 +31,7 @@ return { -- Fuzzy Finder (files, lsp, etc)
         file_previewer = require("telescope.previewers").vim_buffer_cat.new,
         grep_previewer = require("telescope.previewers").vim_buffer_vimgrep.new,
         qflist_previewer = require("telescope.previewers").vim_buffer_qflist.new,
+        path_display = { "smart", "shorten" },
       },
       pickers = {
         find_files = { hidden = true },
