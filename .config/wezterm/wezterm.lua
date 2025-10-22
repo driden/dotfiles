@@ -33,8 +33,6 @@ config.hide_tab_bar_if_only_one_tab = true
 config.send_composed_key_when_right_alt_is_pressed = false
 
 config.keys = {
-	-- CTRL-SHIFT-l activates the debug overlay
-	{ key = "L", mods = "CTRL", action = wezterm.action.ShowDebugOverlay },
 	{
 		key = "p",
 		mods = "CTRL|SHIFT",
