@@ -26,6 +26,7 @@ set which-key
 set showmode
 set so=5
 set incsearch
+set hlsearch
 set noh
 set ignorecase
 set relativenumber
@@ -38,7 +39,7 @@ set ideastatusicon=purple
 set idearefactormode=keep
 
 """ Mappings -------------------------------
-nnoremap <leader>rr :action IdeaVim.ReloadVimRc.reload<CR>
+nmap <leader>rr <Action>(IdeaVim.ReloadVimRc.reload)<CR>
 nnoremap <leader>z :action ToggleDistractionFreeMode<CR>
 
 nnoremap <leader>wh <C-W>h
@@ -58,6 +59,7 @@ nnoremap <C-w>o :action CloseAllEditorsButActive<CR>
 map <leader>e :NERDTreeToggle<CR>
 map <leader>rn :action RenameElement<CR>
 map <leader>ff :action GotoClass<CR>
+nmap <leader>fa <D-A>
 nnoremap gR :action FindUsages<CR>
 nnoremap gh :action QuickJavaDoc<cr>
 nnoremap ge :action ShowErrorDescription<cr>
@@ -85,4 +87,5 @@ map <leader>y "+y
 xmap > >gv
 xmap < <gv
 
+nmap <leader>pr <Action>(ExternalSystem.RefreshAllProjects)
 command! CopyPath :action CopyAbsolutePath
