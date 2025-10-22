@@ -39,6 +39,17 @@ export MANPATH="/usr/local/man:$MANPATH"
 export LANG=en_US.UTF-8
 export BROWSER=$(which firefox)
 export FZF_DEFAULT_COMMAND='rg --hidden -l ""'
+export FZF_ALT_C_COMMAND='fd --absolute-path --type d --max-depth 5 -E Library -E Pictures -E Music -E Applications -E zsh-plugins -E go . "$HOME"'
+export FZF_ALT_C_OPTS=" \
+--preview 'eza --icons --color=always --tree --level=1 {}' \
+--preview-window=right:50%:wrap \
+--layout=reverse \
+--border=rounded \
+--color=bg+:#313244,bg:#1e1e2e,preview-bg:#181825 \
+--color=fg+:#cdd6f4,fg:#cdd6f4,hl+:#f38ba8,hl:#f38ba8 \
+--color=info:#cba6f7,prompt:#cba6f7,pointer:#f5e0dc,marker:#f5e0dc \
+--color=spinner:#f5e0dc,header:#94e2d5,border:#b4befe"
+
 export EDITOR='nvim'
 export MANPAGER='nvim +Man!'
 export MANWIDTH=999
