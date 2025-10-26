@@ -2,6 +2,16 @@ local theme = require("driden.theme").theme
 
 return {
   {
+    "ribru17/bamboo.nvim",
+    lazy = false,
+    priority = 1000,
+    config = function()
+      if theme == "bamboo" then
+        vim.cmd.colorscheme("bamboo")
+      end
+    end,
+  },
+  {
     "scottmckendry/cyberdream.nvim",
     lazy = false,
     priority = 1000,
