@@ -2,11 +2,36 @@ return {
   "yetone/avante.nvim",
   event = "VeryLazy",
   version = false, -- Never set this value to "*"! Never!
-  opts = {
-    -- add any opts here
-    -- for example
-    provider = "copilot",
-  },
+  config = function()
+    require("avante").setup({
+      -- add any opts here
+      -- for example
+      input = {
+        provider = "native",
+      },
+      provider = "ollama",
+      providers = {
+        ollama = {
+          model = "qwen/qwen3-4b-thinking-2507",
+          is_env_set = require("avante.providers.ollama").check_endpoint_alive,
+        },
+      },
+    })
+  end,
+  -- opts = {
+  --   -- add any opts here
+  --   -- for example
+  --   input = {
+  --     provider = "native",
+  --   },
+  --   provider = "ollama",
+  --   providers = {
+  --     ollama = {
+  --       model = "qwen/qwen3-4b-thinking-2507",
+  --       is_env_set = require("avante.providers.ollama").check_endpoint_alive,
+  --     },
+  --   },
+  -- },
   build = "make",
   cond = vim.fn.isdirectory(vim.fn.expand("~/brazil-pkg-cache")) == 0,
   dependencies = {
