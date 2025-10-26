@@ -9,6 +9,9 @@ return {
       input = {
         provider = "native",
       },
+      windows = {
+        width = 70,
+      },
       provider = "ollama",
       providers = {
         ollama = {
