@@ -1,3 +1,4 @@
 [tools]
+java = "latest"
 lua = "5.1"
 node = "latest"
