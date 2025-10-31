@@ -6,6 +6,11 @@ if vim.version().minor < 10 then
   return
 end
 
+if vim.fn.executable("jq") == 0 then
+  vim.notify("jq executable not found in PATH.", vim.log.levels.ERROR)
+  return
+end
+
 ---@class FloatView
 ---@field win number window handle
 ---@field buf number buffer number
@@ -86,39 +91,61 @@ local function run_jq()
   local json_lines = vim.api.nvim_buf_get_lines(state.source_buf, 0, -1, false)
   local json_input = table.concat(json_lines, "\n")
 
-  if state.last_query == "" then
-    vim.api.nvim_buf_set_lines(state.results.buf, 0, -1, false, { "<empty query>" })
-    return
-  end
+  vim.system(
+    { "jq", state.last_query },
+    {
+      stdin = json_input,
+      text = true,
+    },
+    vim.schedule_wrap(function(result)
+      if not state.results or not vim.api.nvim_buf_is_valid(state.results.buf) then
+        return -- User closed the playground, do nothing
+      end
 
-  local result = vim.system({ "jq", state.last_query }, { stdin = json_input }):wait()
+      if result.code ~= 0 then
+        local err_msg = vim.trim(result.stderr)
+        local err_lines = vim.split("Error: " .. err_msg, "\n", { plain = true })
+        vim.api.nvim_buf_set_lines(state.results.buf, 0, -1, false, err_lines)
+      else
+        local output = vim.split(vim.trim(result.stdout), "\n")
+        vim.api.nvim_buf_set_lines(state.results.buf, 0, -1, false, output)
+      end
+    end)
+  )
+end
 
-  if result.code ~= 0 then
-    local err_msg = vim.trim(result.stderr)
-    -- Split the error message into lines
-    local err_lines = vim.split("Error: " .. err_msg, "\n", { plain = true })
-    vim.api.nvim_buf_set_lines(state.results.buf, 0, -1, false, err_lines)
-  else
-    local output = vim.split(vim.trim(result.stdout), "\n")
-    vim.api.nvim_buf_set_lines(state.results.buf, 0, -1, false, output)
-  end
+---Escapes regex magic characters in a string
+---@param s string
+---@return string
+local function escape_regex(s)
+  return s:gsub("([%(%)%.%%%+%-%*%?%[%^%$])", "%%%1")
 end
 
 ---Gets the query written in the input buffer
 ---@return string The query without input prefix
 local function parse_query()
-  local query = vim.api.nvim_get_current_line():gsub(string.format("^%s*", state.prompt), "")
+  local escaped_prompt = escape_regex(state.prompt)
+  -- Match the exact prompt, followed by zero or more spaces
+  local pattern = string.format("^(%s) *", escaped_prompt)
+  local query = vim.api.nvim_get_current_line():gsub(pattern, "")
   return query
 end
 
 ---Calls jq with the input query in case it's required
 local function schedule_update()
   local query = parse_query()
-  if query ~= state.last_query then
-    state.last_query = query
-    vim.print("calling jq...")
-    run_jq()
+
+  if query == state.last_query then
+    return
   end
+
+  if state.last_query == "" then
+    vim.api.nvim_buf_set_lines(state.results.buf, 0, -1, false, { "<empty query>" })
+    return
+  end
+
+  state.last_query = query
+  run_jq()
 end
 
 ---Inits the windows and buffers, creates the timer and sets up the keybinds
@@ -127,6 +154,7 @@ local function init()
   if state.input then
     return
   end
+
   state.input = create_floatview({
     row = 2,
     height = 1,
