@@ -1,4 +1,5 @@
 [tools]
+go = "latest"
 java = "latest"
 lua = "5.1"
 node = "latest"
