@@ -139,7 +139,7 @@ local function schedule_update()
     return
   end
 
-  if state.last_query == "" then
+  if query == "" then
     vim.api.nvim_buf_set_lines(state.results.buf, 0, -1, false, { "<empty query>" })
     return
   end
