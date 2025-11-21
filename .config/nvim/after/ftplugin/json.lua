@@ -199,9 +199,12 @@ local function init()
   end, { buffer = state.input.buf })
 end
 
-vim.keymap.set("n", "<localleader>q", function()
+local function start_playground()
   local ok, err = pcall(init)
   if not ok then
     vim.notify("jq_query.nvim error: " .. err, vim.log.levels.ERROR)
   end
-end, { buffer = 0 })
+end
+vim.keymap.set("n", "<localleader>q", start_playground, { buffer = 0 })
+
+vim.api.nvim_buf_create_user_command(0, "JqPlayground", start_playground, {})
