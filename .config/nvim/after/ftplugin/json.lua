@@ -89,6 +89,18 @@ local state = {
   timer = nil,
 }
 
+---Scrolls the results window
+---@param keys string The vim normal mode keys to execute (e.g. "<C-d>")
+local function scroll_results(keys)
+  if state.results and vim.api.nvim_win_is_valid(state.results.win) then
+    vim.api.nvim_win_call(state.results.win, function()
+      -- Convert "<C-d>" into the actual Control+D byte code
+      local term_codes = vim.api.nvim_replace_termcodes(keys, true, false, true)
+      vim.cmd("normal! " .. term_codes)
+    end)
+  end
+end
+
 ---Closes every window
 local function shut_down()
   close_floatview(state.input)
@@ -215,6 +227,24 @@ local function init()
     local query = parse_query()
     vim.fn.setreg("+", query)
     vim.notify("Copied query!")
+  end, { buffer = state.input.buf })
+
+  -- Scrolling keymaps
+
+  vim.keymap.set({ "n", "i" }, "<C-d>", function()
+    scroll_results("<C-d>")
+  end, { buffer = state.input.buf })
+
+  vim.keymap.set({ "n", "i" }, "<C-u>", function()
+    scroll_results("<C-u>")
+  end, { buffer = state.input.buf })
+
+  vim.keymap.set({ "n", "i" }, "<C-e>", function()
+    scroll_results("<C-e>")
+  end, { buffer = state.input.buf })
+
+  vim.keymap.set({ "n", "i" }, "<C-k>", function()
+    scroll_results("<C-k>")
   end, { buffer = state.input.buf })
 end
 
