@@ -14,6 +14,10 @@ end
 ---@class FloatView
 ---@field win number window handle
 ---@field buf number buffer number
+---@field row number buffer #row it starts
+---@field col number buffer #column it starts
+---@field height number buffer height
+---@field width number buffer height
 
 ---@class win_config
 ---@field height integer | nil
@@ -26,19 +30,31 @@ end
 ---@return FloatView floatView
 local function create_floatview(opts)
   local buf = vim.api.nvim_create_buf(false, true)
+
+  local width = opts.width or math.floor(vim.o.columns * 0.8)
+  local height = opts.height or math.floor(vim.o.lines * 0.8)
+
+  -- 2. Calculate Centering (Total - Size) / 2
+  local center_col = math.floor((vim.o.columns - width) / 2)
+  local center_row = math.floor((vim.o.lines - height) / 2)
+
+  -- 3. Use provided opts or fallback to calculated center
+  local col = opts.col or math.max(0, center_col)
+  local row = opts.row or math.max(0, center_row)
+
   local win = vim.api.nvim_open_win(buf, true, {
     relative = "editor",
     style = "minimal",
     border = "rounded",
-    width = opts.width or math.floor(vim.o.columns * 0.8),
-    height = opts.height or math.floor(vim.o.lines * 0.8),
-    row = opts.row or math.floor(vim.o.lines * 0.1),
-    col = opts.col or math.floor(vim.o.columns * 0.1),
+    width = width,
+    height = height,
+    row = row,
+    col = col,
     title = opts.title or nil,
     title_pos = "center",
     focusable = true,
   })
-  return { buf = buf, win = win }
+  return { buf = buf, win = win, row = row, col = col, width = width, height = height }
 end
 
 ---Closes window and deletes buffer
@@ -148,20 +164,25 @@ local function schedule_update()
   run_jq()
 end
 
----Inits the windows and buffers, creates the timer and sets up the keybinds
 local function init()
   -- prevent re-entry
   if state.input then
     return
   end
 
+  state.results = create_floatview({
+    title = "Query Results",
+    width = math.floor(vim.o.columns * 0.9),
+    height = math.floor(vim.o.lines * 0.9),
+  })
+
   state.input = create_floatview({
-    row = 2,
+    row = state.results.row - 3, -- we need 3 rows (1 for height + 2 for borders)
+    col = state.results.col,
+    width = state.results.width, -- Match the width of the results
     height = 1,
     title = "Jq Playground",
   })
-
-  state.results = create_floatview({ row = 5, title = "Query Results" })
 
   vim.api.nvim_set_option_value("buftype", "prompt", { buf = state.input.buf })
   vim.fn.prompt_setprompt(state.input.buf, state.prompt)
@@ -181,7 +202,6 @@ local function init()
   vim.api.nvim_set_current_win(state.input.win)
   vim.cmd("startinsert")
 
-  -- Callback on input change (live update)
   local timer = vim.uv.new_timer()
   vim.api.nvim_create_autocmd("TextChangedI", {
     buffer = state.input.buf,
@@ -191,7 +211,6 @@ local function init()
     end,
   })
 
-  -- Set up clipboard copy (<localleader>c)
   vim.keymap.set({ "n", "i" }, "<Enter>", function()
     local query = parse_query()
     vim.fn.setreg("+", query)
