@@ -15,8 +15,7 @@ return {
       provider = "ollama",
       providers = {
         ollama = {
-          model = "qwen/qwen3-4b-thinking-2507",
-          is_env_set = require("avante.providers.ollama").check_endpoint_alive,
+          model = "qwen3:4b",
         },
       },
     })
