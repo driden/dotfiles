@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+NOTES_REPO=$HOME/Documents/Notes
+rsync -avzn --exclude ".git/*" "$NOTES_REPO"/ /Users/driden/Library/Mobile\ Documents/iCloud\~md\~obsidian/Documents/Notes/

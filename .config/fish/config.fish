@@ -20,6 +20,7 @@ set TERMINAL wezterm
 set EDITOR nvim
 set -x MANPAGER "nvim +Man!"
 set -x AWS_PAGER ""
+set HOMEBREW_NO_AUTO_UPDATE 1
 
 function fish_user_key_bindings
   fish_vi_key_bindings
