@@ -1,3 +1,3 @@
 #!/bin/sh
 
-stow --dotfiles --stow --target="/Users/$(whoami)" .
+stow --dotfiles --stow --target="$HOME" .
