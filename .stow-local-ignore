@@ -2,3 +2,8 @@ README.md
 .git
 .gitignore
 simple_zshrc
+link.sh
+unlink.sh
+picom.conf
+.bashrc
+.bash_aliases
