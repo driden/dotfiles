@@ -2,7 +2,7 @@ export HISTSIZE=10000
 
 # General
 export PATH="$HOME/bin:$PATH"
-export PATH="$HOME/bin:$PATH"
+export PATH="$HOME/.local/bin:$PATH"
 # export PATH="$HOME/neovim/bin:/usr/bin:/bin:${PATH}"
 export PATH="$HOME/neovim/bin:$PATH"
 export PATH="$HOME/.emacs.d/bin:$PATH"

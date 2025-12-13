@@ -8,13 +8,12 @@ function add_dir_to_path
 end
 
 add_dir_to_path $HOME/bin
+add_dir_to_path $HOME/.local/bin
 add_dir_to_path $HOME/.local/share/nvim/mason/bin
-add_dir_to_path $HOME/neovim/bin
-add_dir_to_path $HOME/.config/emacs/bin
 add_dir_to_path /opt/homebrew/{bin,sbin}
 add_dir_to_path $HOME/.cargo/bin
 add_dir_to_path $HOME/.ghcup/bin
-add_dir_to_path /opt/nvim-linux64/bin
+# add_dir_to_path $HOME/.config/emacs/bin
 
 set TERMINAL wezterm
 set EDITOR nvim
@@ -26,6 +25,7 @@ function fish_user_key_bindings
   fish_vi_key_bindings
 end
 
+alias v="nvim"
 
 alias zshconfig="nvim ~/.zshrc"
 alias refreshenv='source $HOME/.zshrc && source $HOME/.zshenv'
