@@ -28,7 +28,7 @@ end
 alias v="nvim"
 
 alias zshconfig="nvim ~/.zshrc"
-alias refreshenv='source $HOME/.zshrc && source $HOME/.zshenv'
+alias refreshenv='source ~/.config/fish/config.fish'
 alias dot="cd $HOME/code/dotfiles"
 alias ll="eza --color always --long --all"
 alias ls="eza --color always"
