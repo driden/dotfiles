@@ -1,3 +1,3 @@
 #!/bin/sh
 
-stow --dotfiles --delete --target="/Users/$(whoami)" .
+stow --dotfiles --delete --target="$HOME" .
