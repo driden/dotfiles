@@ -1,3 +1,3 @@
 #!/bin/sh
 
-stow --dotfiles --stow --target="$HOME" .
+stow --dotfiles --stow --verbose 2 --target="$HOME" .
