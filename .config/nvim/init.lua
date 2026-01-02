@@ -96,7 +96,6 @@ vim.keymap.set("n", "<leader>qq", ":copen<CR>", { desc = "[Q]uickfix open", sile
 vim.keymap.set("n", "<leader>qc", ":ccl<CR>", { desc = "[Q]uickfix [C]lose", silent = true }) --  Open it if there are "errors", close it otherwise
 vim.keymap.set("n", "<leader>qe", ":cw<CR>", { desc = "[Q]uickfix next error in [W]indow", silent = true }) --  Go to the next error in the window
 vim.keymap.set("n", "<leader>qf", ":cnf<CR>", { desc = "[Q]uickfix error under cursor", silent = true }) --Go to error under cursor (if cursor is in quickfix window)
-vim.keymap.set("n", "<leader>q.", ":.cc<CR>", { desc = "close tab", silent = true })
 
 --  See `:help lua-guide-autocommands`
 -- Highlight when yanking (copying) text
@@ -106,7 +105,7 @@ vim.api.nvim_create_autocmd("TextYankPost", {
   desc = "Highlight when yanking (copying) text",
   group = vim.api.nvim_create_augroup("kickstart-highlight-yank", { clear = true }),
   callback = function()
-    vim.highlight.on_yank()
+    vim.hl.on_yank()
   end,
 })
 
@@ -150,14 +149,14 @@ require("lazy").setup({
     event = { "BufWritePre" },
     cmd = { "ConformInfo" },
     keys = {
-      {
-        "<leader>f",
-        function()
-          require("conform").format({ async = true, lsp_format = "fallback" })
-        end,
-        mode = "",
-        desc = "[F]ormat buffer",
-      },
+      -- {
+      --   "<leader>f",
+      --   function()
+      --     require("conform").format({ async = true, lsp_format = "fallback" })
+      --   end,
+      --   mode = "",
+      --   desc = "[F]ormat buffer",
+      -- },
     },
     opts = {
       notify_on_error = false,
