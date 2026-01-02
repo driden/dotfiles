@@ -61,7 +61,7 @@ alias twl="terraform workspace list"
 alias twc="terraform workspace list | grep '*' | tr -d '*'| tr -d '[:space:]'"
 
 fzf --fish | source
-zoxide init fish | source
+# zoxide init fish | source
 mise activate fish | source
 
 if status is-interactive

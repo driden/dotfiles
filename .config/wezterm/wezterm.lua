@@ -66,6 +66,11 @@ config.keys = {
 		mods = "CTRL|SHIFT",
 		action = wezterm.action.CloseCurrentPane({ confirm = false }),
 	},
+	{
+		key = "o",
+		mods = "CTRL|SHIFT",
+		action = wezterm.action.TogglePaneZoomState,
+	},
 
 	{
 		key = "j",
