@@ -87,9 +87,8 @@ vim.keymap.set({ "v", "x" }, "<leader>y", '"*y', { desc = "Yank to OS clipboard"
 vim.keymap.set({ "v", "x" }, "<leader>p", '"*p', { desc = "Paste from OS clipboard", silent = true })
 
 -- Tab
-vim.keymap.set("n", "<leader>tn", ":tabNext<CR>", { desc = "Next tab", silent = true })
-vim.keymap.set("n", "<leader>tp", ":tabprevious<CR>", { desc = "Prev tab", silent = true })
-vim.keymap.set("n", "<leader>tc", ":tabclose<CR>", { desc = "close tab", silent = true })
+vim.keymap.set("n", "t]", ":tabNext<CR>", { desc = "Next tab", silent = true })
+vim.keymap.set("n", "t[", ":tabprevious<CR>", { desc = "Prev tab", silent = true })
 
 -- Quick Fix
 vim.keymap.set("n", "<leader>qq", ":copen<CR>", { desc = "[Q]uickfix open", silent = true }) -- Open the quickfix window

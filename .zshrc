@@ -78,7 +78,7 @@ fi
 
 alias zshconfig="nvim ~/.zshrc"
 alias refreshenv='source $HOME/.zshrc && source $HOME/.zshenv'
-alias dot="cd $HOME/code/dotfiles && $EDITOR ."
+alias dot="cd $HOME/code/dotfiles"
 alias ll="eza --long --all --icons always"
 alias vim="$EDITOR"
 alias vi="$EDITOR"
@@ -147,4 +147,5 @@ eval "$(starship init zsh)"
 
 if type mise &>/dev/null; then
    eval "$(mise activate zsh)"
+   mise settings add idiomatic_version_file_enable_tools node
 fi
