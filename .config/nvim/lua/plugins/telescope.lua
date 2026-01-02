@@ -39,7 +39,7 @@ return { -- Fuzzy Finder (files, lsp, etc)
       },
       extensions = {
         ["ui-select"] = {
-          require("telescope.themes").get_dropdown(),
+          require("telescope.themes").get_dropdown({}),
         },
         fzf = {},
       },
@@ -61,5 +61,8 @@ return { -- Fuzzy Finder (files, lsp, etc)
     vim.keymap.set("n", "<leader>fr", builtin.resume, { desc = "[F]ind [R]esume" })
     vim.keymap.set("n", "<leader>fr", builtin.oldfiles, { desc = "[F]ind [R]ecent Files" })
     vim.keymap.set("n", "<leader>fb", builtin.buffers, { desc = "[F]ind [B]uffer" })
+    vim.keymap.set("n", "<space>fc", function()
+      builtin.find_files({ cwd = vim.fn.stdpath("config") })
+    end, { desc = "[F]ind [C]onfiguration" })
   end,
 }
