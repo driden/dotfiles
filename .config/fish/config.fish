@@ -8,6 +8,7 @@ function add_dir_to_path
 end
 
 add_dir_to_path $HOME/bin
+add_dir_to_path $HOME/.fzf/bin
 add_dir_to_path $HOME/.local/bin
 add_dir_to_path $HOME/.local/share/nvim/mason/bin
 add_dir_to_path /opt/homebrew/{bin,sbin}
