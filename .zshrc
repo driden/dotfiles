@@ -140,7 +140,7 @@ znap source zsh-users/zsh-syntax-highlighting
 # fi
 
 eval "$(fzf --zsh)"
-zsh-defer eval "$(zoxide init zsh)"
+# zsh-defer eval "$(zoxide init zsh)"
 eval "$(starship init zsh)"
 
 [[ -d "/opt/nvim-linux64" ]] && export PATH="$PATH:/opt/nvim-linux64/bin"
