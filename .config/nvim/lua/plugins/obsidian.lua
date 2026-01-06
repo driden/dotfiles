@@ -26,9 +26,10 @@ return {
   opts = {
     legacy_commands = false,
     workspaces = workspaces,
-    note_path_func = function(spec)
-      return spec.title .. ".md"
+    note_id_func = function(title, path)
+      return title
     end,
+
     completion = {
       nvim_cmp = true,
       min_chars = 2,
