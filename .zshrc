@@ -62,19 +62,16 @@ fi
 #AWS
 export AWS_PAGER=
 
-SCRIPTS=$HOME/scripts
-if [[ -d  "$SCRIPTS" ]]
-then
-  for file in $(ls $SCRIPTS/*.{zsh,sh})
-  do
-    source "$file"
-  done
-fi
+for SCRIPTS in $HOME/scripts $HOME/workscripts; do
+    if [[ -d  "$SCRIPTS" ]]; then
+        for file in $SCRIPTS/*.{zsh,sh}(.N) # (.N) sets the null glob option and will expand only to files that match
+      do
+        [[ -f "$file" ]] && source "$file"
+      done
+    fi
+done
 
-# Scripts
-#
- [ -f ~/workscripts/jump.zsh ] && source  ~/workscripts/jump.zsh
- [ -f ~/workscripts/aliases.zsh ] && source ~/workscripts/aliases.zsh
+
 
 alias zshconfig="nvim ~/.zshrc"
 alias refreshenv='source $HOME/.zshrc && source $HOME/.zshenv'
