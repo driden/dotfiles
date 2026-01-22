@@ -1,7 +1,9 @@
 local wezterm = require("wezterm")
 local config = wezterm.config_builder()
 
-config.color_scheme = "Cyberdyne"
+-- config.color_scheme = "Cyberdyne"
+-- config.color_scheme = "Bamboo"
+config.color_scheme = "Belafonte Day"
 -- config.color_scheme = "cyberpunk"
 -- config.color_scheme = "CutiePro"
 config.font_size = 14
@@ -24,7 +26,69 @@ config.font = wezterm.font_with_fallback({
 })
 
 config.tab_max_width = 35
-config.color_scheme = "Catppuccin Mocha"
+
+-- Custom Bamboo color scheme
+config.colors = {
+	-- Bamboo.nvim vulgaris palette
+	foreground = "#f1e9d2",
+	background = "#252623",
+	cursor_bg = "#f1e9d2",
+	cursor_fg = "#252623",
+	cursor_border = "#8fb573",
+	selection_fg = "#f1e9d2",
+	selection_bg = "#383b35",
+
+	scrollbar_thumb = "#5b5e5a",
+
+	split = "#5b5e5a",
+
+	ansi = {
+		"#1c1e1b", -- black (bg_d)
+		"#e75a7c", -- red
+		"#8fb573", -- green
+		"#dbb651", -- yellow
+		"#57a5e5", -- blue
+		"#aaaaff", -- purple
+		"#70c2be", -- cyan
+		"#f1e9d2", -- white (fg)
+	},
+	brights = {
+		"#5b5e5a", -- bright black (grey)
+		"#e75a7c", -- bright red
+		"#8fb573", -- bright green
+		"#e2c792", -- bright yellow (bg_yellow)
+		"#96c7ef", -- bright blue (light_blue)
+		"#df73ff", -- bright purple
+		"#70c2be", -- bright cyan
+		"#ffffff", -- bright white
+	},
+
+	tab_bar = {
+		background = "#1c1e1b",
+		active_tab = {
+			bg_color = "#8fb573",
+			fg_color = "#252623",
+			intensity = "Bold",
+		},
+		inactive_tab = {
+			bg_color = "#2f312c",
+			fg_color = "#838781",
+		},
+		inactive_tab_hover = {
+			bg_color = "#383b35",
+			fg_color = "#f1e9d2",
+		},
+		new_tab = {
+			bg_color = "#2f312c",
+			fg_color = "#8fb573",
+		},
+		new_tab_hover = {
+			bg_color = "#383b35",
+			fg_color = "#8fb573",
+		},
+	},
+}
+
 config.automatically_reload_config = true
 config.window_background_opacity = 0.9
 config.hide_tab_bar_if_only_one_tab = true

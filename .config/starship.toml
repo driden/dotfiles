@@ -10,16 +10,18 @@ command_timeout=100
 #$haskell\
 #$python\
 format = """
-[](surface0)\
+[](lavender)\
 $os\
 $username\
-[](bg:peach fg:surface0)\
+[](bg:blue fg:lavender)\ 
+[](fg:blue bg:teal)\
 $directory\
-[](fg:peach bg:green)\
+[](fg:teal bg:yellow)\
+[](fg:yellow bg:orange)\
 $git_branch\
 $git_status\
-[](fg:green bg:teal)\
-[](fg:teal bg:blue)\
+[](fg:orange bg:green)\
+[](fg:green bg:blue)\
 $docker_context\
 [ ](fg:blue)\
 $line_break$character"""
@@ -85,7 +87,7 @@ crust = "#111210"
 
 [os]
 disabled = false
-style = "bg:surface0 fg:text"
+style = "bg:lavender fg:base"
 
 [os.symbols]
 Windows = "󰍲"
@@ -110,12 +112,12 @@ RedHatEnterprise = "󱄛"
 
 [username]
 show_always = true
-style_user = "bg:surface0 fg:text"
-style_root = "bg:surface0 fg:text"
+style_user = "bg:lavender fg:base"
+style_root = "bg:lavender fg:base"
 format = '[ $user ]($style)'
 
 [directory]
-style = "fg:mantle bg:peach"
+style = "fg:mantle bg:teal"
 format = "[ $path ]($style)"
 truncation_length = 3
 truncation_symbol = "…/"
@@ -130,11 +132,11 @@ truncation_symbol = "…/"
 [git_branch]
 symbol = ""
 style = "bg:teal"
-format = '[[ $symbol $branch ](fg:base bg:green)]($style)'
+format = '[[ $symbol $branch ](fg:base bg:orange)]($style)'
 
 [git_status]
 style = "bg:teal"
-format = '[[($all_status$ahead_behind )](fg:base bg:green)]($style)'
+format = '[[($all_status$ahead_behind )](fg:base bg:orange)]($style)'
 
 [nodejs]
 symbol = ""
@@ -189,7 +191,7 @@ format = '[[ $symbol( $context) ](fg:#83a598 bg:color_bg3)]($style)'
 [time]
 disabled = false
 time_format = "%R"
-style = "bg:peach"
+style = "bg:lavender"
 format = '[[  $time ](fg:mantle bg:purple)]($style)'
 
 [line_break]
