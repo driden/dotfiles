@@ -40,15 +40,76 @@ export LANG=en_US.UTF-8
 export BROWSER=$(which firefox)
 export FZF_DEFAULT_COMMAND='rg --hidden -l ""'
 export FZF_ALT_C_COMMAND='fd --absolute-path --type d --max-depth 2 -E Library -E Pictures -E Music -E Applications -E zsh-plugins -E go . "$HOME"'
+
+# FZF Theme Configuration - Define color palettes
+typeset -A fzf_bamboo_colors=(
+  bg "#252623"
+  bg_plus "#383b35"
+  preview_bg "#1c1e1b"
+  fg "#f1e9d2"
+  fg_plus "#f1e9d2"
+  hl "#e75a7c"
+  hl_plus "#e75a7c"
+  info "#aaaaff"
+  prompt "#8fb573"
+  pointer "#dbb651"
+  marker "#70c2be"
+  spinner "#57a5e5"
+  header "#8fb573"
+  border "#8fb573"
+)
+
+typeset -A fzf_catppuccin_colors=(
+  bg "#1e1e2e"
+  bg_plus "#313244"
+  preview_bg "#181825"
+  fg "#cdd6f4"
+  fg_plus "#cdd6f4"
+  hl "#f38ba8"
+  hl_plus "#f38ba8"
+  info "#cba6f7"
+  prompt "#cba6f7"
+  pointer "#f5e0dc"
+  marker "#f5e0dc"
+  spinner "#f5e0dc"
+  header "#94e2d5"
+  border "#b4befe"
+)
+
+# Function to build FZF color options from theme
+function _fzf_build_colors() {
+  local theme=$1
+  local array_name="fzf_${theme}_colors"
+  
+  # Use parameter expansion to access the associative array
+  local bg="${${(P)array_name}[bg]}"
+  local bg_plus="${${(P)array_name}[bg_plus]}"
+  local preview_bg="${${(P)array_name}[preview_bg]}"
+  local fg="${${(P)array_name}[fg]}"
+  local fg_plus="${${(P)array_name}[fg_plus]}"
+  local hl="${${(P)array_name}[hl]}"
+  local hl_plus="${${(P)array_name}[hl_plus]}"
+  local info="${${(P)array_name}[info]}"
+  local prompt="${${(P)array_name}[prompt]}"
+  local pointer="${${(P)array_name}[pointer]}"
+  local marker="${${(P)array_name}[marker]}"
+  local spinner="${${(P)array_name}[spinner]}"
+  local header="${${(P)array_name}[header]}"
+  local border="${${(P)array_name}[border]}"
+  
+  echo "--color=bg+:${bg_plus},bg:${bg},preview-bg:${preview_bg} \
+--color=fg+:${fg_plus},fg:${fg},hl+:${hl_plus},hl:${hl} \
+--color=info:${info},prompt:${prompt},pointer:${pointer},marker:${marker} \
+--color=spinner:${spinner},header:${header},border:${border}"
+}
+
+# Build FZF options with theme colors
 export FZF_ALT_C_OPTS=" \
 --preview 'eza --icons --color=always --tree --level=1 {}' \
 --preview-window=right:50%:wrap \
 --layout=reverse \
 --border=rounded \
---color=bg+:#313244,bg:#1e1e2e,preview-bg:#181825 \
---color=fg+:#cdd6f4,fg:#cdd6f4,hl+:#f38ba8,hl:#f38ba8 \
---color=info:#cba6f7,prompt:#cba6f7,pointer:#f5e0dc,marker:#f5e0dc \
---color=spinner:#f5e0dc,header:#94e2d5,border:#b4befe"
+$(_fzf_build_colors ${THEME:-bamboo})"
 
 export EDITOR='nvim'
 export MANPAGER='nvim +Man!'
@@ -61,6 +122,9 @@ fi
 
 #AWS
 export AWS_PAGER=
+
+# Theme configuration - change this to switch themes
+export THEME="bamboo"  # Options: "bamboo", "catppuccin"
 
 for SCRIPTS in $HOME/scripts $HOME/workscripts; do
     if [[ -d  "$SCRIPTS" ]]; then
