@@ -24,7 +24,7 @@ $docker_context\
 [ ](fg:blue)\
 $line_break$character"""
 
-palette = 'catppuccin_mocha'
+palette = 'bamboo'
 
 [palettes.catppuccin_mocha]
 rosewater = "#f5e0dc"
@@ -53,6 +53,35 @@ surface0 = "#313244"
 base = "#1e1e2e"
 mantle = "#181825"
 crust = "#11111b"
+
+[palettes.bamboo]
+# Bamboo.nvim vulgaris color palette
+rosewater = "#f1e9d2"
+flamingo = "#f08080"
+pink = "#e75a7c"
+orange = "#ff9966"
+red = "#e75a7c"
+maroon = "#f08080"
+peach = "#ff9966"
+yellow = "#dbb651"
+green = "#8fb573"
+teal = "#70c2be"
+sky = "#70c2be"
+sapphire = "#57a5e5"
+blue = "#57a5e5"
+lavender = "#aaaaff"
+text = "#f1e9d2"
+subtext1 = "#838781"
+subtext0 = "#5b5e5a"
+overlay2 = "#5b5e5a"
+overlay1 = "#5b5e5a"
+overlay0 = "#3a3d37"
+surface2 = "#383b35"
+surface1 = "#2f312c"
+surface0 = "#252623"
+base = "#252623"
+mantle = "#1c1e1b"
+crust = "#111210"
 
 [os]
 disabled = false
