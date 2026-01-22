@@ -111,6 +111,7 @@ Redhat = "󱄛"
 RedHatEnterprise = "󱄛"
 
 [username]
+disabled = true
 show_always = true
 style_user = "bg:lavender fg:base"
 style_root = "bg:lavender fg:base"
