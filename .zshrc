@@ -104,12 +104,13 @@ function _fzf_build_colors() {
 }
 
 # Build FZF options with theme colors
-export FZF_ALT_C_OPTS=" \
---preview 'eza --icons --color=always --tree --level=1 {}' \
---preview-window=right:50%:wrap \
---layout=reverse \
---border=rounded \
-$(_fzf_build_colors ${THEME:-bamboo})"
+FZF_THEME_COLORS="$(_fzf_build_colors ${THEME:-bamboo})"
+
+# Apply theme to all FZF commands
+export FZF_DEFAULT_OPTS="--layout=reverse --border=rounded ${FZF_THEME_COLORS}"
+
+# Alt-C: Directory navigation
+export FZF_ALT_C_OPTS="--preview 'eza --icons --color=always --tree --level=1 {}' --preview-window=right:50%:wrap"
 
 export EDITOR='nvim'
 export MANPAGER='nvim +Man!'
