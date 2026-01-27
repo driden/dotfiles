@@ -109,7 +109,7 @@ local config = {
 }
 
 config.on_init = function(client, _)
-  client.notify("workspace/didChangeConfiguration", { settings = config.settings })
+  client:notify("workspace/didChangeConfiguration", { settings = config.settings })
 end
 
 require("jdtls").start_or_attach(config)
