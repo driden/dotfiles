@@ -103,8 +103,8 @@ automatically-unhide-macos-hidden-apps = true
     alt-k = 'focus up'
     alt-l = 'focus right'
 
-    alt-u = 'exec-and-forget aerospace list-workspaces --monitor focused --empty no | aerospace workspace prev --wrap-around'
-    alt-o = 'exec-and-forget aerospace list-workspaces --monitor focused --empty no | aerospace workspace next --wrap-around'
+    alt-u = 'exec-and-forget aerospace list-workspaces --monitor focused --empty no | aerospace workspace prev --wrap-around --stdin'
+    alt-o = 'exec-and-forget aerospace list-workspaces --monitor focused --empty no | aerospace workspace next --wrap-around --stdin'
 
     # See: https://nikitabobko.github.io/AeroSpace/commands#move
     alt-shift-h = 'move left'

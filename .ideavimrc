@@ -56,7 +56,7 @@ nnoremap [b :bp<CR>
 nnoremap ]b :bn<CR>
 nnoremap <C-w>o :action CloseAllEditorsButActive<CR>
 
-map <leader>e :NERDTreeToggle<CR>
+nnoremap <leader>e <action>(ActivateProjectToolWindow)<CR>
 map <leader>rn :action RenameElement<CR>
 map <leader>ff :action GotoClass<CR>
 nmap <leader>fa <D-A>
