@@ -119,16 +119,11 @@ format = '[ $user ]($style)'
 
 [directory]
 style = "fg:mantle bg:teal"
-format = "[ $path ]($style)"
-truncation_length = 3
-truncation_symbol = "…/"
-
-[directory.substitutions]
-"Documents" = "󰈙 "
-"Downloads" = " "
-"Music" = "󰝚 "
-"Pictures" = " "
-"Developer" = "󰲋 "
+format = "[$path]($style)"
+truncation_length = 1
+fish_style_pwd_dir_length = 1
+truncation_symbol = ""
+truncate_to_repo = false
 
 [git_branch]
 symbol = ""
