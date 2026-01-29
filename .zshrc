@@ -147,6 +147,7 @@ alias vi="$EDITOR"
 alias v="$EDITOR"
 alias emacsc="emacsclient --create-frame"
 alias lg=lazygit
+alias lzd=lazydocker
 alias ..='cd ..'
 alias ...='cd ../..'
 alias ....='cd ../../..'
