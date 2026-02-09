@@ -88,196 +88,198 @@ local function on_attach(event)
 end
 
 return {
-  -- Main LSP Configuration
-  "neovim/nvim-lspconfig",
-  dependencies = {
-    -- Automatically install LSPs and related tools to stdpath for Neovim
-    { "williamboman/mason.nvim", config = true }, -- NOTE: Must be loaded before dependants
-    "williamboman/mason-lspconfig.nvim",
-    "WhoIsSethDaniel/mason-tool-installer.nvim",
+  {
+    -- Main LSP Configuration
+    "neovim/nvim-lspconfig",
+    dependencies = {
+      -- Automatically install LSPs and related tools to stdpath for Neovim
+      { "williamboman/mason.nvim", config = true }, -- NOTE: Must be loaded before dependants
+      "williamboman/mason-lspconfig.nvim",
+      "WhoIsSethDaniel/mason-tool-installer.nvim",
 
-    { "j-hui/fidget.nvim", opts = {} },
+      { "j-hui/fidget.nvim", opts = {} },
 
-    -- Allows extra capabilities provided by nvim-cmp
-    "hrsh7th/cmp-nvim-lsp",
-  },
-  config = function()
-    vim.api.nvim_create_autocmd("LspAttach", {
-      group = vim.api.nvim_create_augroup("lsp-attach", { clear = true }),
-      callback = on_attach,
-    })
+      -- Allows extra capabilities provided by nvim-cmp
+      "hrsh7th/cmp-nvim-lsp",
+    },
+    config = function()
+      vim.api.nvim_create_autocmd("LspAttach", {
+        group = vim.api.nvim_create_augroup("lsp-attach", { clear = true }),
+        callback = on_attach,
+      })
 
-    -- Diagnostic Config
-    -- See :help vim.diagnostic.Opts
-    vim.diagnostic.config({
-      severity_sort = true,
-      float = { border = "rounded", source = "if_many" },
-      underline = { severity = vim.diagnostic.severity.ERROR },
-      signs = vim.g.have_nerd_font and {
-        text = {
-          [vim.diagnostic.severity.ERROR] = "󰅚 ",
-          [vim.diagnostic.severity.WARN] = "󰀪 ",
-          [vim.diagnostic.severity.INFO] = "󰋽 ",
-          [vim.diagnostic.severity.HINT] = "󰌶 ",
+      -- Diagnostic Config
+      -- See :help vim.diagnostic.Opts
+      vim.diagnostic.config({
+        severity_sort = true,
+        float = { border = "rounded", source = "if_many" },
+        underline = { severity = vim.diagnostic.severity.ERROR },
+        signs = vim.g.have_nerd_font and {
+          text = {
+            [vim.diagnostic.severity.ERROR] = "󰅚 ",
+            [vim.diagnostic.severity.WARN] = "󰀪 ",
+            [vim.diagnostic.severity.INFO] = "󰋽 ",
+            [vim.diagnostic.severity.HINT] = "󰌶 ",
+          },
+        } or {},
+        virtual_text = {
+          source = "if_many",
+          spacing = 2,
+          format = function(diagnostic)
+            local diagnostic_message = {
+              [vim.diagnostic.severity.ERROR] = diagnostic.message,
+              [vim.diagnostic.severity.WARN] = diagnostic.message,
+              [vim.diagnostic.severity.INFO] = diagnostic.message,
+              [vim.diagnostic.severity.HINT] = diagnostic.message,
+            }
+            return diagnostic_message[diagnostic.severity]
+          end,
         },
-      } or {},
-      virtual_text = {
-        source = "if_many",
-        spacing = 2,
-        format = function(diagnostic)
-          local diagnostic_message = {
-            [vim.diagnostic.severity.ERROR] = diagnostic.message,
-            [vim.diagnostic.severity.WARN] = diagnostic.message,
-            [vim.diagnostic.severity.INFO] = diagnostic.message,
-            [vim.diagnostic.severity.HINT] = diagnostic.message,
-          }
-          return diagnostic_message[diagnostic.severity]
-        end,
-      },
-    })
+      })
 
-    -- LSP servers and clients are able to communicate to each other what features they support.
-    --  By default, Neovim doesn't support everything that is in the LSP specification.
-    --  When you add nvim-cmp, luasnip, etc. Neovim now has *more* capabilities.
-    --  So, we create new capabilities with nvim cmp, and then broadcast that to the servers.
-    local capabilities = vim.lsp.protocol.make_client_capabilities()
-    capabilities = vim.tbl_deep_extend("force", capabilities, require("cmp_nvim_lsp").default_capabilities())
+      -- LSP servers and clients are able to communicate to each other what features they support.
+      --  By default, Neovim doesn't support everything that is in the LSP specification.
+      --  When you add nvim-cmp, luasnip, etc. Neovim now has *more* capabilities.
+      --  So, we create new capabilities with nvim cmp, and then broadcast that to the servers.
+      local capabilities = vim.lsp.protocol.make_client_capabilities()
+      capabilities = vim.tbl_deep_extend("force", capabilities, require("cmp_nvim_lsp").default_capabilities())
 
-    -- Enable the following language servers
-    --  Feel free to add/remove any LSPs that you want here. They will automatically be installed.
-    --
-    --  Add any additional override configuration in the following tables. Available keys are:
-    --  - cmd (table): Override the default command used to start the server
-    --  - filetypes (table): Override the default list of associated filetypes for the server
-    --  - capabilities (table): Override fields in capabilities. Can be used to disable certain LSP features.
-    --  - settings (table): Override the default settings passed when initializing the server.
-    --        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
-    local servers = {
-      clangd = {},
-      gopls = {},
-      -- pyright = {},
-      -- rust_analyzer = {},
-      -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
+      -- Enable the following language servers
+      --  Feel free to add/remove any LSPs that you want here. They will automatically be installed.
       --
-      -- Some languages (like typescript) have entire language plugins that can be useful:
-      --    https://github.com/pmizio/typescript-tools.nvim
-      --
-      -- But for many setups, the LSP (`tsserver`) will work just fine
-      -- tsserver = {},
-      --,
-      bashls = {},
-      lua_ls = {
-        -- cmd = {...},
-        -- filetypes = { ...},
-        -- capabilities = {},
-        settings = {
-          Lua = {
-            completion = {
-              callSnippet = "Replace",
+      --  Add any additional override configuration in the following tables. Available keys are:
+      --  - cmd (table): Override the default command used to start the server
+      --  - filetypes (table): Override the default list of associated filetypes for the server
+      --  - capabilities (table): Override fields in capabilities. Can be used to disable certain LSP features.
+      --  - settings (table): Override the default settings passed when initializing the server.
+      --        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
+      local servers = {
+        clangd = {},
+        gopls = {},
+        -- pyright = {},
+        -- rust_analyzer = {},
+        -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
+        --
+        -- Some languages (like typescript) have entire language plugins that can be useful:
+        --    https://github.com/pmizio/typescript-tools.nvim
+        --
+        -- But for many setups, the LSP (`tsserver`) will work just fine
+        -- tsserver = {},
+        --,
+        bashls = {},
+        lua_ls = {
+          -- cmd = {...},
+          -- filetypes = { ...},
+          -- capabilities = {},
+          settings = {
+            Lua = {
+              completion = {
+                callSnippet = "Replace",
+              },
+              -- You can toggle below to ignore Lua_LS's noisy `missing-fields` warnings
+              -- diagnostics = { disable = { 'missing-fields' } },
             },
-            -- You can toggle below to ignore Lua_LS's noisy `missing-fields` warnings
-            -- diagnostics = { disable = { 'missing-fields' } },
           },
         },
-      },
-      ts_ls = {},
-    }
+        ts_ls = {},
+      }
 
-    -- You can add other tools here that you want Mason to install
-    -- for you, so that they are available from within Neovim.
-    local ensure_installed = vim.tbl_keys(servers or {})
-    vim.list_extend(ensure_installed, {
-      "stylua", -- Used to format Lua code
-      "kotlin-lsp", -- v0.252.17811
-    })
-    require("mason-tool-installer").setup({ ensure_installed = ensure_installed })
+      -- You can add other tools here that you want Mason to install
+      -- for you, so that they are available from within Neovim.
+      local ensure_installed = vim.tbl_keys(servers or {})
+      vim.list_extend(ensure_installed, {
+        "stylua", -- Used to format Lua code
+        "kotlin-lsp", -- v0.252.17811
+      })
+      require("mason-tool-installer").setup({ ensure_installed = ensure_installed })
 
-    -- Ideally this won't be needed once I update nvim and it's plugins.
-    require("mason-lspconfig").setup({
-      -- :h mason-lspconfig.setup_handlers()
-      handlers = {
-        function(server_name)
-          local server = servers[server_name] or {}
-          -- This handles overriding only values explicitly passed
-          -- by the server configuration above. Useful when disabling
-          -- certain features of an LSP (for example, turning off formatting for tsserver)
-          server.capabilities = vim.tbl_deep_extend("force", {}, capabilities, server.capabilities or {})
-          require("lspconfig")[server_name].setup(server)
-        end,
-        csharp_ls = function()
-          local csharp = require("lspconfig").csharp_ls.document_config.default_config
-          csharp.cmd = { "csharpls" }
-          require("lspconfig").csharp_ls.setup(csharp)
-          vim.lsp.config("csharp_ls", csharp)
-        end,
-        -- jdtls = function()
-        --   require("lspconfig").jdtls.setup({
-        --     on_attach = function()
-        --       local bemol_dir = vim.fs.find({ ".bemol" }, { upward = true, type = "directory" })[1]
-        --       local ws_folders_lsp = {}
-        --       if bemol_dir then
-        --         local file = io.open(bemol_dir .. "/ws_root_folders", "r")
-        --         if file then
-        --           for line in file:lines() do
-        --             table.insert(ws_folders_lsp, line)
-        --           end
-        --           file:close()
-        --         end
-        --       end
-        --       for _, line in ipairs(ws_folders_lsp) do
-        --         vim.lsp.buf.add_workspace_folder(line)
-        --       end
-        --     end,
-        --     -- -XX:+UseParallelGC
-        --     -- -XX:GCTimeRatio=4
-        --     -- -XX:AdaptiveSizePolicyWeight=90
-        --     -- -Dsun.zip.disableMemoryMapping=true
-        --     -- -Xmx2G
-        --     -- -Xms100m
-        --     cmd = {
-        --       "jdtls",
-        --       "--jvm-arg=-javaagent:"
-        --         .. require("mason-registry").get_package("jdtls"):get_install_path()
-        --         .. "/lombok.jar",
-        --     },
-        --     format = {
-        --       enabled = false,
-        --       tabSize = 4,
-        --     },
-        --   })
-        -- end,
-      },
-    })
+      -- Ideally this won't be needed once I update nvim and it's plugins.
+      require("mason-lspconfig").setup({
+        -- :h mason-lspconfig.setup_handlers()
+        handlers = {
+          function(server_name)
+            local server = servers[server_name] or {}
+            -- This handles overriding only values explicitly passed
+            -- by the server configuration above. Useful when disabling
+            -- certain features of an LSP (for example, turning off formatting for tsserver)
+            server.capabilities = vim.tbl_deep_extend("force", {}, capabilities, server.capabilities or {})
+            vim.print(server_name, server)
+            require("lspconfig")[server_name].setup(server)
+          end,
+          csharp_ls = function()
+            local csharp = require("lspconfig").csharp_ls.document_config.default_config
+            csharp.cmd = { "csharpls" }
+            require("lspconfig").csharp_ls.setup(csharp)
+            vim.lsp.config("csharp_ls", csharp)
+          end,
+          -- jdtls = function()
+          --   require("lspconfig").jdtls.setup({
+          --     on_attach = function()
+          --       local bemol_dir = vim.fs.find({ ".bemol" }, { upward = true, type = "directory" })[1]
+          --       local ws_folders_lsp = {}
+          --       if bemol_dir then
+          --         local file = io.open(bemol_dir .. "/ws_root_folders", "r")
+          --         if file then
+          --           for line in file:lines() do
+          --             table.insert(ws_folders_lsp, line)
+          --           end
+          --           file:close()
+          --         end
+          --       end
+          --       for _, line in ipairs(ws_folders_lsp) do
+          --         vim.lsp.buf.add_workspace_folder(line)
+          --       end
+          --     end,
+          --     -- -XX:+UseParallelGC
+          --     -- -XX:GCTimeRatio=4
+          --     -- -XX:AdaptiveSizePolicyWeight=90
+          --     -- -Dsun.zip.disableMemoryMapping=true
+          --     -- -Xmx2G
+          --     -- -Xms100m
+          --     cmd = {
+          --       "jdtls",
+          --       "--jvm-arg=-javaagent:"
+          --         .. require("mason-registry").get_package("jdtls"):get_install_path()
+          --         .. "/lombok.jar",
+          --     },
+          --     format = {
+          --       enabled = false,
+          --       tabSize = 4,
+          --     },
+          --   })
+          -- end,
+        },
+      })
 
-    -- This is the new way of setting lsp up, will need to look into why nvim-lspconfig is not working, might be an update thing
-    vim.lsp.config("kotlin_lsp", {
-      filetypes = { "kotlin" },
-      cmd = { "kotlin-lsp", "--stdio" },
-      root_markers = {
-        "settings.gradle", -- Gradle (multi-project)
-        "settings.gradle.kts", -- Gradle (multi-project)
-        "pom.xml", -- Maven
-        "build.gradle", -- Gradle
-        "build.gradle.kts", -- Gradle
-        "workspace.json", -- Used to integrate your own build system
-      },
-    })
+      -- This is the new way of setting lsp up, will need to look into why nvim-lspconfig is not working, might be an update thing
+      vim.lsp.config("kotlin_lsp", {
+        filetypes = { "kotlin" },
+        cmd = { "kotlin-lsp", "--stdio" },
+        root_markers = {
+          "settings.gradle", -- Gradle (multi-project)
+          "settings.gradle.kts", -- Gradle (multi-project)
+          "pom.xml", -- Maven
+          "build.gradle", -- Gradle
+          "build.gradle.kts", -- Gradle
+          "workspace.json", -- Used to integrate your own build system
+        },
+      })
 
-    vim.lsp.enable("kotlin_lsp")
+      vim.lsp.enable("kotlin_lsp")
 
-    local ruffc = vim.deepcopy(capabilities)
-    ruffc.general.positionEncodings = { "utf-16" }
-    -- ruffc.offsetEncoding = "utf-16"
-    vim.lsp.config("ruff", {
-      capabilities = ruffc,
-      cmd = { "ruff", "server" },
-      filetypes = { "python" },
-      root_markers = { "pyproject.toml", "ruff.toml", ".ruff.toml", ".git" },
-      settings = {},
-    })
-    vim.lsp.enable("ruff")
-  end,
-
+      local ruffc = vim.deepcopy(capabilities)
+      ruffc.general.positionEncodings = { "utf-16" }
+      -- ruffc.offsetEncoding = "utf-16"
+      vim.lsp.config("ruff", {
+        capabilities = ruffc,
+        cmd = { "ruff", "server" },
+        filetypes = { "python" },
+        root_markers = { "pyproject.toml", "ruff.toml", ".ruff.toml", ".git" },
+        settings = {},
+      })
+      vim.lsp.enable("ruff")
+    end,
+  },
   {
     "scalameta/nvim-metals",
     ft = { "scala", "sbt", "java" },
