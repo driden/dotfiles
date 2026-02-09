@@ -25,7 +25,7 @@ return { -- Fuzzy Finder (files, lsp, etc)
   config = function()
     require("telescope").setup({
       defaults = {
-        file_ignore_patterns = { "vendor", "node_modules" },
+        file_ignore_patterns = { "node_modules" },
         file_sorter = require("telescope.sorters").get_fzy_sorter,
         color_devicons = true,
         file_previewer = require("telescope.previewers").vim_buffer_cat.new,
