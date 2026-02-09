@@ -1,5 +1,15 @@
 export HISTSIZE=10000
 
+# Load the edit-command-line widget
+autoload -Uz edit-command-line
+
+# Create a user-defined widget
+zle -N edit-command-line
+
+# Bind the widget to a key combination (Ctrl+X Ctrl+E is standard)
+bindkey '^X^E' edit-command-line
+
+
 # General
 export PATH="$HOME/bin:$PATH"
 export PATH="$HOME/.local/bin:$PATH"
