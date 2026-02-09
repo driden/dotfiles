@@ -3,6 +3,7 @@ go = "latest"
 java = "latest"
 lua = "5.1"
 node = "latest"
+opencode = "latest"
 uv = "latest"
 
 [settings]
