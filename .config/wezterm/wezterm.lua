@@ -2,8 +2,8 @@ local wezterm = require("wezterm")
 local config = wezterm.config_builder()
 
 -- config.color_scheme = "Cyberdyne"
--- config.color_scheme = "Bamboo"
-config.color_scheme = "Belafonte Day"
+config.color_scheme = "Bamboo"
+-- config.color_scheme = "Belafonte Day"
 -- config.color_scheme = "cyberpunk"
 -- config.color_scheme = "CutiePro"
 config.font_size = 14
