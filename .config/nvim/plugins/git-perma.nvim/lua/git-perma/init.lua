@@ -17,11 +17,7 @@ local function is_git_dir()
 end
 
 function M.setup(opts)
-  vim.print("Hello from setup")
-
   if not is_git_dir() then
-    -- TODO: Proper logging
-    vim.print("Not in a git dir, exiting")
     return
   end
 
@@ -31,7 +27,7 @@ function M.setup(opts)
     local action = args.args == "open" and "open" or "copy"
     local ok, err = pcall(require("git-perma.core").generate_link, mode, action)
     if not ok then
-      require("git-perma.util").notify_error(err or "ERRROR")
+      require("git-perma.util").notify_error(err or "ERROR")
     end
   end, {
     desc = "Generate Git permalink (copy to clipboard or open in browser)",
@@ -47,21 +43,57 @@ function M.setup(opts)
     -- pcall ensures any synchronous error is caught [18]
     local ok, err = pcall(require("git-perma.core").generate_link, "normal", "copy")
     if not ok then
-      require("git-perma.util").notify_error(err or "ERRROR")
+      require("git-perma.util").notify_error(err or "ERROR")
     end
   end, {
     desc = "GitLink: Copy permalink for current line",
     buffer = 0, -- Buffer-local keymap
   })
 
-  -- Define keymap to open in browser
-  vim.keymap.set("v", "<leader>gL", function()
+  -- Define keymap to open in browser (normal mode)
+  vim.keymap.set("n", "<leader>gL", function()
     local ok, err = pcall(require("git-perma.core").generate_link, "normal", "open")
     if not ok then
-      require("git-perma.util").notify_error(err or "ERRROR")
+      require("git-perma.util").notify_error(err or "ERROR")
     end
   end, {
     desc = "GitLink: Open permalink in browser",
+    buffer = 0, -- Buffer-local keymap
+  })
+
+  -- Define keymap to copy permalink (visual mode)
+  vim.keymap.set("v", "<leader>gl", function()
+    -- Capture visual selection boundaries while still in visual mode
+    local start_pos = vim.fn.getpos("'<")
+    local end_pos = vim.fn.getpos("'>")
+
+    -- Exit visual mode
+    vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<Esc>', true, false, true), 'n', false)
+
+    local ok, err = pcall(require("git-perma.core").generate_link_with_positions, start_pos, end_pos, "copy")
+    if not ok then
+      require("git-perma.util").notify_error(err or "ERROR")
+    end
+  end, {
+    desc = "GitLink: Copy permalink for selection",
+    buffer = 0, -- Buffer-local keymap
+  })
+
+  -- Define keymap to open in browser (visual mode)
+  vim.keymap.set("v", "<leader>gL", function()
+    -- Capture visual selection boundaries while still in visual mode
+    local start_pos = vim.fn.getpos("'<")
+    local end_pos = vim.fn.getpos("'>")
+
+    -- Exit visual mode
+    vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<Esc>', true, false, true), 'n', false)
+
+    local ok, err = pcall(require("git-perma.core").generate_link_with_positions, start_pos, end_pos, "open")
+    if not ok then
+      require("git-perma.util").notify_error(err or "ERROR")
+    end
+  end, {
+    desc = "GitLink: Open permalink for selection in browser",
     buffer = 0, -- Buffer-local keymap
   })
 end
