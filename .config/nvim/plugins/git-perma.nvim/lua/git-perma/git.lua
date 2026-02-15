@@ -130,7 +130,7 @@ function M.get_git_data(file_path, callback)
       end
 
       local cmd = commands[idx]
-      run_git_cmd(cwd, cmd.args, function(stdout, err)
+      run_git_cmd(cwd, cmd.args, function(stdout, _)
         if err then
           callback(nil, err)
           return
