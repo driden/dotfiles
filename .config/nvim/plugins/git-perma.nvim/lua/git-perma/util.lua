@@ -15,6 +15,7 @@ function M.notify_error(msg)
 end
 
 -- Fallback clipboard copy using system tools
+---@param text string text to copy
 ---@return boolean success
 function M.copy_to_clipboard_fallback(text)
   local cmd
@@ -33,9 +34,9 @@ function M.copy_to_clipboard_fallback(text)
     or vim.fn.has("win32") == 1 and "win32"
 
   if os_type == "unix" then
-    for tool, cmd in pairs(clipboard_tools.unix) do
+    for tool, tool_cmd in pairs(clipboard_tools.unix) do
       if vim.fn.executable(tool) == 1 then
-        cmd = cmd
+        cmd = tool_cmd
         break
       end
     end
@@ -53,7 +54,7 @@ function M.copy_to_clipboard_fallback(text)
     return true
   end
 
-  M.notify_error("Couldn't copy link for " .. os_type .. "with " .. cmd)
+  M.notify_error("Couldn't copy link for " .. os_type)
   return false
 end
 
