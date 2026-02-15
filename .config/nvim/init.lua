@@ -120,8 +120,21 @@ if not (vim.uv or vim.loop).fs_stat(lazypath) then
 end ---@diagnostic disable-next-line: undefined-field
 vim.opt.rtp:prepend(lazypath)
 
--- NOTE: Here is where you install your plugins.
 require("lazy").setup({
+  -- git perma
+  {
+    dir = vim.fn.stdpath("config") .. "/plugins/git-perma.nvim",
+    event = "BufReadPre",
+    config = function()
+      -- Setup is called, but keymaps only registered if in git repo
+      require("git-perma").setup({
+        -- Optional: Add custom hosts or override defaults
+        hosts = {
+          -- Add custom host formatters here
+        },
+      })
+    end,
+  },
   "tpope/vim-unimpaired",
   "tpope/vim-surround",
   -- 'tpope/vim-sleuth', -- Detect tabstop and shiftwidth automatically
@@ -284,6 +297,20 @@ require("lazy").setup({
 })
 
 require("usercommands")
+
+-- Add this AFTER the return statement or in your init.lua
+vim.keymap.set("n", "<leader>rr", function()
+  -- Unload all git-perma modules
+  for name, _ in pairs(package.loaded) do
+    if name:match("^git%-perma") then
+      package.loaded[name] = nil
+    end
+  end
+
+  -- Reload and setup
+  require("git-perma").setup()
+  vim.notify("git-perma reloaded!", vim.log.levels.INFO)
+end, { desc = "Reload git-perma plugin" })
 
 -- vim.cmd("source utils.vim")
 -- The line beneath this is called `modeline`. See `:help modeline`
