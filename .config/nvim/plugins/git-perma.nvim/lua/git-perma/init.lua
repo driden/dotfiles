@@ -31,7 +31,7 @@ function M.setup(opts)
     local action = args.args == "open" and "open" or "copy"
     local ok, err = pcall(require("git-perma.core").generate_link, mode, action)
     if not ok then
-      require("git-perma.util").notify_error(err)
+      require("git-perma.util").notify_error(err or "ERRROR")
     end
   end, {
     desc = "Generate Git permalink (copy to clipboard or open in browser)",
@@ -47,7 +47,7 @@ function M.setup(opts)
     -- pcall ensures any synchronous error is caught [18]
     local ok, err = pcall(require("git-perma.core").generate_link, "normal", "copy")
     if not ok then
-      require("git-perma.util").notify_error(err)
+      require("git-perma.util").notify_error(err or "ERRROR")
     end
   end, {
     desc = "GitLink: Copy permalink for current line",
@@ -55,10 +55,10 @@ function M.setup(opts)
   })
 
   -- Define keymap to open in browser
-  vim.keymap.set("n", "<leader>gL", function()
+  vim.keymap.set("v", "<leader>gL", function()
     local ok, err = pcall(require("git-perma.core").generate_link, "normal", "open")
     if not ok then
-      require("git-perma.util").notify_error(err)
+      require("git-perma.util").notify_error(err or "ERRROR")
     end
   end, {
     desc = "GitLink: Open permalink in browser",
