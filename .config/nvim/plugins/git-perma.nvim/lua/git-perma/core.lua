@@ -100,10 +100,10 @@ function M.generate_link(mode, action)
   do_generate_link(file_path, line_range, action)
 end
 
--- This function is called from visual mode keymaps with pre-captured positions
--- @param start_pos: position table from getpos("'<")
--- @param end_pos: position table from getpos("'>")
--- @param action: 'copy' or 'open'
+---This function is called from visual mode keymaps with pre-captured positions
+---@param start_pos number visual range line start
+---@param end_pos number visual range line end
+---@param action 'copy'|'open'
 function M.generate_link_with_positions(start_pos, end_pos, action)
   -- 1. Get the current file path
   local file_path = vim.fn.expand("%:p")
@@ -114,8 +114,8 @@ function M.generate_link_with_positions(start_pos, end_pos, action)
   -- 2. Build line range from captured positions
   -- start_pos[2] and end_pos[2] are line numbers
   local line_range = {
-    start_line = math.min(start_pos[2], end_pos[2]),
-    end_line = math.max(start_pos[2], end_pos[2]),
+    start_line = math.min(start_pos, end_pos),
+    end_line = math.max(start_pos, end_pos),
   }
 
   do_generate_link(file_path, line_range, action)

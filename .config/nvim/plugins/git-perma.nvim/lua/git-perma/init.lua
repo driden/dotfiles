@@ -1,5 +1,7 @@
 local M = {}
 
+local util = require("git-perma.util")
+
 ---@class GitPermaLink.config
 ---@field hosts string[]
 M.config = {
@@ -50,6 +52,18 @@ function M.setup(opts)
     buffer = 0, -- Buffer-local keymap
   })
 
+  -- Define keymap to copy permalink (visual mode)
+  vim.keymap.set("v", "<leader>gl", function()
+    local start_line, end_line = util.get_visual_range()
+    local ok, err = pcall(require("git-perma.core").generate_link_with_positions, start_line, end_line, "copy")
+    if not ok then
+      require("git-perma.util").notify_error(err or "ERROR")
+    end
+  end, {
+    desc = "GitLink: Copy permalink for selection",
+    buffer = 0, -- Buffer-local keymap
+  })
+
   -- Define keymap to open in browser (normal mode)
   vim.keymap.set("n", "<leader>gL", function()
     local ok, err = pcall(require("git-perma.core").generate_link, "normal", "open")
@@ -61,34 +75,11 @@ function M.setup(opts)
     buffer = 0, -- Buffer-local keymap
   })
 
-  -- Define keymap to copy permalink (visual mode)
-  vim.keymap.set("v", "<leader>gl", function()
-    -- Capture visual selection boundaries while still in visual mode
-    local start_pos = vim.fn.getpos("'<")
-    local end_pos = vim.fn.getpos("'>")
-
-    -- Exit visual mode
-    vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<Esc>', true, false, true), 'n', false)
-
-    local ok, err = pcall(require("git-perma.core").generate_link_with_positions, start_pos, end_pos, "copy")
-    if not ok then
-      require("git-perma.util").notify_error(err or "ERROR")
-    end
-  end, {
-    desc = "GitLink: Copy permalink for selection",
-    buffer = 0, -- Buffer-local keymap
-  })
-
   -- Define keymap to open in browser (visual mode)
   vim.keymap.set("v", "<leader>gL", function()
-    -- Capture visual selection boundaries while still in visual mode
-    local start_pos = vim.fn.getpos("'<")
-    local end_pos = vim.fn.getpos("'>")
+    local start_line, end_line = util.get_visual_range()
 
-    -- Exit visual mode
-    vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<Esc>', true, false, true), 'n', false)
-
-    local ok, err = pcall(require("git-perma.core").generate_link_with_positions, start_pos, end_pos, "open")
+    local ok, err = pcall(require("git-perma.core").generate_link_with_positions, start_line, end_line, "open")
     if not ok then
       require("git-perma.util").notify_error(err or "ERROR")
     end
