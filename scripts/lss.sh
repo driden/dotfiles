@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
 
 tt() {
-	exa --tree --level="${1:=1}"
+    eza --tree --level="${1:=1}"
 }
