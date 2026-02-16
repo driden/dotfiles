@@ -58,4 +58,17 @@ function M.copy_to_clipboard_fallback(text)
   return false
 end
 
+--- Gets the selected visual range
+--- @return number,number # start and end line numbers
+function M.get_visual_range()
+  -- **Note**: the reason we do it like this is because '< and '> marks are only updated AFTER exiting visual mode
+  local start_pos = vim.fn.getpos("v") -- visual start
+  local end_pos = vim.fn.getpos(".") -- current cursor position
+
+  -- Exit visual mode
+  vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Esc>", true, false, true), "n", false)
+
+  return start_pos[2], end_pos[2]
+end
+
 return M
