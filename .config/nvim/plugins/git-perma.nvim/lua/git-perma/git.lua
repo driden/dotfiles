@@ -84,7 +84,7 @@ function M.get_git_data(file_path, callback)
     -- Define the git commands we need to run sequentially
     local commands = {
       { args = { "rev-parse", "--show-toplevel" }, name = "root" }, -- 1. Repository root
-      { args = { "rev-parse", "HEAD" }, name = "sha" }, -- 2. Current commit SHA
+      { args = { "log", "-1", "--format=%H", "--", file_path }, name = "sha" }, -- 2. Last commit that touched this file
       { args = { "remote", "get-url", selected_remote }, name = "remote_url" }, -- 3. Remote URL (dynamically selected)
       { args = { "ls-files", "--full-name", file_path }, name = "relative_path" }, -- 4. Relative file path
     }
