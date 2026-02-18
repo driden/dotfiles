@@ -1,52 +1,26 @@
 local M = {}
 
--- Helper to run a single git command asynchronously using vim.uv
+--- Helper to run a single git command asynchronously using vim.system
+--- 
+--- Uses vim.system() which wraps uv.spawn() without using a shell
 ---@param cwd string working directory for the command
 ---@param args string[] command arguments (e.g., {"rev-parse", "HEAD"})
----@param callback fun(stdout: string?, err:string?) text to write to each file descriptor
+---@param callback fun(stdout: string?, err:string?) callback invoked with result or error
 local function run_git_cmd(cwd, args, callback)
-  -- Create pipes for capturing stdout and stderr
-  local stdout = vim.uv.new_pipe(false)
-  local stderr = vim.uv.new_pipe(false)
-  local io = { stdout = {}, stderr = {} }
-
-  -- Spawn the git process
-  local handle, _ = vim.uv.spawn("git", {
-    args = vim.list_extend({ "-C", cwd }, args),
-    stdio = { nil, stdout, stderr },
-  }, function(code, _)
-    -- Process exit callback - schedule to main thread for API safety
+  local full_cmd = vim.list_extend({ "git", "-C", cwd }, args)
+  
+  vim.system(full_cmd, {
+    text = true,
+  }, function(obj)
+    -- Schedule callback to avoid "fast event context" errors
     vim.schedule(function()
-      -- Close pipes
-      stdout:close()
-      stderr:close()
-
-      if code ~= 0 then
-        local err_msg = table.concat(io.stderr, "")
-        callback(nil, string.format("Git failed (exit %d): %s", code, err_msg))
+      if obj.code ~= 0 then
+        local err_msg = obj.stderr or ""
+        callback(nil, string.format("Git failed (exit %d): %s", obj.code, err_msg))
       else
-        callback(table.concat(io.stdout, ""), nil)
+        callback(obj.stdout or "", nil)
       end
     end)
-  end)
-
-  if not handle then
-    callback(nil, "Failed to spawn git process. Is git installed?")
-    return
-  end
-
-  vim.uv.read_start(stdout, function(err, data)
-    if err then
-      -- Error reading stdout
-    elseif data then
-      table.insert(io.stdout, data)
-    end
-  end)
-
-  vim.uv.read_start(stderr, function(_, data)
-    if data then
-      table.insert(io.stderr, data)
-    end
   end)
 end
 
