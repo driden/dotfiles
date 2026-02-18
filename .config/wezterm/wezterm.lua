@@ -269,4 +269,9 @@ end)
 
 config.window_close_confirmation = "NeverPrompt"
 
+-- Wait for child processes to exit cleanly before closing pane/tab
+-- This ensures nvim has time to shut down LSP servers properly
+config.exit_behavior = "Close"
+config.exit_behavior_messaging = "None"
+
 return config

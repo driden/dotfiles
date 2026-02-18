@@ -275,6 +275,18 @@ return {
         vim.lsp.enable("kotlin_language_server")
       end
 
+      -- Setup LSP cleanup on exit to prevent dangling processes
+      vim.api.nvim_create_autocmd("VimLeavePre", {
+        group = vim.api.nvim_create_augroup("lsp-cleanup", { clear = true }),
+        callback = function()
+          -- Stop all LSP clients gracefully before Neovim exits
+          local clients = vim.lsp.get_clients()
+          for _, client in ipairs(clients) do
+            vim.lsp.stop_client(client.id, true) -- true = force stop
+          end
+        end,
+      })
+
       local lua_root_markers1 = {
         ".emmyrc.json",
         ".luarc.json",
