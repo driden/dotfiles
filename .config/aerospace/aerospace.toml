@@ -171,6 +171,19 @@ automatically-unhide-macos-hidden-apps = true
     if.window-title-regex-substring = 'Bitwarden'
     run = ['layout floating']
 
+[[on-window-detected]]
+    if.app-id = "com.proxyman.NSProxy"
+    run = 'move-node-to-workspace 6'
+
+[[on-window-detected]]
+    if.app-id = "com.apple.iCal"
+    run = 'move-node-to-workspace 8'
+
+[[on-window-detected]]
+    if.app-id = "com.tinyspeck.slackmacgap"
+    run = 'move-node-to-workspace 9'
+
+
 [workspace-to-monitor-force-assignment]
     1 = 1
     2 = 1
