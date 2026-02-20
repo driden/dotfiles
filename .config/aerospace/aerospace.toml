@@ -173,7 +173,7 @@ automatically-unhide-macos-hidden-apps = true
 
 [[on-window-detected]]
     if.app-id = "com.proxyman.NSProxy"
-    run = 'move-node-to-workspace 6'
+    run = 'move-node-to-workspace 7'
 
 [[on-window-detected]]
     if.app-id = "com.apple.iCal"
