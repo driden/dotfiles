@@ -1,14 +1,6 @@
 font-family = "Comic Code"
-font-size = 14
+font-size = 16
 background-opacity = 0.9
 background-blur = true
 
-
-keybind=ctrl+shift+l=next_tab
-keybind=ctrl+shift+h=previous_tab
-
-keybind=ctrl+super+alt+j=goto_split:down
-keybind=ctrl+super+alt+h=goto_split:left
-keybind=ctrl+super+alt+l=goto_split:right
-keybind=ctrl+super+alt+k=goto_split:up
 keybind=ctrl+super+alt+enter=toggle_split_zoom
