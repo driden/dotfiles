@@ -10,10 +10,7 @@ local function get_mise_bin_path_sync(tool)
 
   -- Check for errors
   if result.code ~= 0 then
-    vim.notify(
-      string.format("Error running mise bin-paths %s (Code: %d)", tool, result.code),
-      vim.log.levels.ERROR
-    )
+    vim.notify(string.format("Error running mise bin-paths %s (Code: %d)", tool, result.code), vim.log.levels.ERROR)
     return nil
   end
 
@@ -40,10 +37,10 @@ local function get_mise_install_path_sync(tool)
 
   -- Check for errors
   if result.code ~= 0 then
-    vim.notify(
-      string.format("Error running mise where %s (Code: %d)", tool, result.code),
-      vim.log.levels.ERROR
-    )
+    -- vim.notify(
+    --   string.format("Error running mise where %s (Code: %d)", tool, result.code),
+    --   vim.log.levels.ERROR
+    -- )
     return nil
   end
 
