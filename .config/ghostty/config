@@ -3,7 +3,10 @@ font-codepoint-map = U+E000-U+E0FF=Hack Nerd Font Mono
 font-codepoint-map = U+F8FF=Monaco
 
 font-size = 16
-background-opacity = 0.9
+background-opacity = 0.8
 background-blur = true
 
-keybind=ctrl+super+alt+enter=toggle_split_zoom
+window-decoration = none
+custom-shader = ./cursor.glsl
+
+keybind=super+alt+r=reload_config
