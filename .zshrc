@@ -11,7 +11,6 @@ bindkey '^X^E' edit-command-line
 
 
 # General
-export PATH="$HOME/bin:$PATH"
 export PATH="$HOME/.local/bin:$PATH"
 # export PATH="$HOME/neovim/bin:/usr/bin:/bin:${PATH}"
 export PATH="$HOME/neovim/bin:$PATH"
