@@ -9,6 +9,9 @@ zle -N edit-command-line
 # Bind the widget to a key combination (Ctrl+X Ctrl+E is standard)
 bindkey '^X^E' edit-command-line
 
+# Force emacs mode (disable vi mode)
+bindkey -e
+
 
 # General
 export PATH="$HOME/.local/bin:$PATH"
