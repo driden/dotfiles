@@ -180,6 +180,7 @@ require("lazy").setup({
           c = true,
           cpp = true,
           java = true,
+          kotlin = true,
           typecript = true,
           python = true,
         }
