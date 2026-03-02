@@ -200,22 +200,12 @@ local ZNAP_FOLDER=$PLUGINS_BASE/znap
 source $ZNAP_FOLDER/znap.zsh  # Start Znap
 zstyle ':znap:*' repos-dir $PLUGINS_FOLDER
 znap source chitoku-k/fzf-zsh-completions
-znap source romkatv/zsh-defer
 znap source zsh-users/zsh-syntax-highlighting
+znap source zsh-users/zsh-autosuggestions
 
-# if [[ -s "$SDKMAN_DIR/bin/sdkman-init.sh" ]]
-# then
-#   export SDKMAN_DIR="$HOME/.sdkman"
-#   zsh-defer source "$SDKMAN_DIR/bin/sdkman-init.sh"
-# fi
-
-# if ! command -v fzf 2>&1 >/dev/null
-# then
-#     eval "$(fzf --zsh)"
-# fi
+source $PLUGINS_FOLDER/zsh-users/zsh-autosuggestions/zsh-autosuggestions.zsh
 
 eval "$(fzf --zsh)"
-# zsh-defer eval "$(zoxide init zsh)"
 eval "$(starship init zsh)"
 
 [[ -d "/opt/nvim-linux64" ]] && export PATH="$PATH:/opt/nvim-linux64/bin"
