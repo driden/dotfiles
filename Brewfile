@@ -41,7 +41,6 @@ brew "pkgconf"
 brew "plantuml"
 brew "pnpm"
 brew "ripgrep"
-brew "rust"
 brew "shellcheck"
 brew "shfmt"
 brew "starship"
@@ -66,5 +65,3 @@ cask "spotify", args: { appdir: "/Applications" }
 cask "vesktop"
 cask "visual-studio-code", args: { appdir: "/Applications" }
 cask "wezterm"
-go "cmd/go"
-go "cmd/gofmt"
