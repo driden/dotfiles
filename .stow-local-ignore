@@ -4,6 +4,8 @@ README.md
 simple_zshrc
 link.sh
 unlink.sh
+bootstrap.sh
+setup
 picom.conf
 .bashrc
 .bash_aliases
