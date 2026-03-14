@@ -10,7 +10,9 @@ log()  { printf "\n%s==> %s%s\n" "$BLUE" "$*" "$RESET"; }
 ok()   { printf "%s  ✔ %s%s\n" "$GREEN" "$*" "$RESET"; }
 warn() { printf "%s  ! %s%s\n" "$YELLOW" "$*" "$RESET"; }
 
-# ─── Dock ────────────────────────────────────────────────────────────────────
+# Ask for sudo upfront and keep the token alive
+sudo -v
+while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
 
 setup_dock() {
     log "Configuring Dock"
@@ -22,19 +24,46 @@ setup_dock() {
     # No recent apps in Dock
     defaults write com.apple.dock show-recents -bool false
 
+    # Auto-hide
+    defaults write com.apple.dock autohide -bool true
+
+    # Remove auto-hide delay
+    defaults write com.apple.dock autohide-delay -float 0
+
     # Faster animations
     defaults write com.apple.dock autohide-time-modifier -float 0.2
     defaults write com.apple.dock expose-animation-duration -float 0.1
 
+
     # Disable window minimize animation
     defaults write com.apple.dock mineffect -string "scale"
-    defaults write com.apple.Dock showhidden -bool true
+    defaults write com.apple.dock showhidden -bool true
+
+    defaults write com.apple.dock persistent-apps -array-add \
+        '<dict><key>tile-data</key><dict><key>file-data</key><dict><key>_CFURLString</key><string>/Applications/Floorp.app</string><key>_CFURLStringType</key><integer>0</integer></dict></dict></dict>'
+
+    defaults write com.apple.dock persistent-apps -array-add \
+        '<dict><key>tile-data</key><dict><key>file-data</key><dict><key>_CFURLString</key><string>/Applications/Ghostty.app</string><key>_CFURLStringType</key><integer>0</integer></dict></dict></dict>'
+
+    # This is for aerospace https://nikitabobko.github.io/AeroSpace/guide#a-note-on-mission-control
+    defaults write com.apple.dock expose-group-apps -bool true
 
     killall Dock
     ok "Dock configured"
 }
 
-# ─── Keyboard & Text Input ───────────────────────────────────────────────────
+setup_locale() {
+    log "Configuring locale"
+
+    defaults write NSGlobalDomain AppleLanguages -array "en-UY"
+    defaults write NSGlobalDomain AppleLocale -string "en_UY"
+    defaults write NSGlobalDomain AppleMeasurementUnits -string "Centimeters"
+    defaults write NSGlobalDomain AppleMetricUnits -bool true
+    defaults write NSGlobalDomain AppleTemperatureUnit -string "Celsius"
+    defaults write NSGlobalDomain AppleICUForce24HourTime -bool true
+
+    ok "Locale configured"
+}
 
 setup_keyboard() {
     log "Configuring Keyboard & Text Input"
@@ -51,11 +80,11 @@ setup_keyboard() {
 
     # Disable period on double-space
     defaults write NSGlobalDomain NSAutomaticPeriodSubstitutionEnabled -bool false
+    defaults write NSGlobalDomain KeyRepeat -int 1
+    defaults write NSGlobalDomain InitialKeyRepeat -int 10
 
-    ok "Keyboard & Text Input configured"
+    ok "Keyboard configured"
 }
-
-# ─── Finder ──────────────────────────────────────────────────────────────────
 
 setup_finder() {
     log "Configuring Finder"
@@ -82,8 +111,6 @@ setup_finder() {
     ok "Finder configured"
 }
 
-# ─── Animations ──────────────────────────────────────────────────────────────
-
 setup_animations() {
     log "Disabling animations"
 
@@ -109,8 +136,6 @@ setup_animations() {
     ok "Animations disabled"
 }
 
-# ─── Transparency ─────────────────────────────────────────────────────────────
-
 setup_transparency() {
     log "Disabling transparency"
 
@@ -120,27 +145,37 @@ setup_transparency() {
     ok "Transparency disabled"
 }
 
-run_postinstall() {
-    local postinstall_script="$DOTFILES_DIR/postinstall/$PLATFORM.sh"
+setup_ui() {
+    log "Configuring UI"
 
-    if [ -f "$postinstall_script" ]; then
-        log "Running post-install for $PLATFORM"
-        bash "$postinstall_script"
-        ok "Post-install complete"
-    else
-        warn "No post-install script found for $PLATFORM — skipping"
-    fi
+    defaults write NSGlobalDomain AppleInterfaceStyle -string "Dark"
+    defaults write NSGlobalDomain AppleWindowTabbingMode -string "manual"
+    defaults write NSGlobalDomain NSCloseAlwaysConfirmsChanges -bool true
+
+    ok "UI configured"
 }
 
-# ─── Main ─────────────────────────────────────────────────────────────────────
+setup_mission_control() {
+    log "Configuring Mission Control"
+
+    defaults write com.apple.dock expose-group-apps -bool true
+    defaults write NSGlobalDomain AppleSpacesSwitchOnActivate -bool true
+
+    killall Dock
+    ok "Mission Control configured"
+}
 
 main() {
     setup_dock
+    setup_locale
     setup_keyboard
     setup_finder
+    setup_animations
     setup_transparency
+    setup_ui
+    setup_mission_control
+
     warn "Some changes may require a logout or restart to take full effect"
 }
 
 main
-

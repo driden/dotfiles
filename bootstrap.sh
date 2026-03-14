@@ -1,8 +1,15 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+# This script is step [2/2] for bootstrapping a new machine
+# This script will:
+#   1. Install mise and all the tools
+#   2. Set the default shell
+#   3. Link dotfiles
+#   4. Install Comic Code
+#   5. Post install steps (set OS level options, etc)
+
 DOTFILES_DIR="$HOME/code/dotfiles"
-SSH_KEY="$HOME/.ssh/id_driden_gh"
 SETUP_DIR="$DOTFILES_DIR/setup"
 
 BLUE=$'\033[1;34m'
@@ -11,10 +18,10 @@ YELLOW=$'\033[1;33m'
 RED=$'\033[1;31m'
 RESET=$'\033[0m'
 
-log() { printf "\n%s==> %s%s\n" "$BLUE" "$*" "$RESET"; }
-ok()  { printf "%s  ✔ %s%s\n" "$GREEN" "$*" "$RESET"; }
-warn(){ printf "%s  ! %s%s\n" "$YELLOW" "$*" "$RESET"; }
-die() { printf "%sERROR: %s%s\n" "$RED" "$*" "$RESET" >&2; exit 1; }
+log()  { printf "\n%s==> %s%s\n" "$BLUE" "$*" "$RESET"; }
+ok()   { printf "%s  ✔ %s%s\n" "$GREEN" "$*" "$RESET"; }
+warn() { printf "%s  ! %s%s\n" "$YELLOW" "$*" "$RESET"; }
+die()  { printf "%sERROR: %s%s\n" "$RED" "$*" "$RESET" >&2; exit 1; }
 confirm() {
     printf "\n%s [y/N] " "$1"
     read -r reply
@@ -22,6 +29,13 @@ confirm() {
 }
 
 detect_platform() {
+
+    if [ -n "${BOOTSTRAP_PLATFORM:-}" ]; then
+        PLATFORM="$BOOTSTRAP_PLATFORM"  
+        ok "Found platform $PLATFORM from 'init.sh' script"
+        return
+    fi
+
     log "Detecting OS"
     local os
     os="$(uname -s)"
@@ -106,6 +120,18 @@ link_dotfiles() {
 
 install_fonts() {
     log "Installing fonts"
+
+    if [ "$PLATFORM" = "macos" ]; then
+        local font_dir="$HOME/Library/Fonts"
+    else
+        local font_dir="$HOME/.local/share/fonts"
+    fi
+
+    if [ -f "$font_dir/Comic Code.otf" ]; then
+        ok "Fonts already installed — skipping"
+        return
+    fi
+
     local font_url="https://drive.google.com/uc?export=download&id=1pt6a93d_XRULz9DBIrRu03ESfSNScbjN"
     local font_tmp
     local font_zip
@@ -127,8 +153,25 @@ install_fonts() {
     ok "Fonts installed"
 }
 
+run_postinstall() {
+    local postinstall_script="$DOTFILES_DIR/postinstall/$PLATFORM.sh"
+
+    if [ -f "$postinstall_script" ]; then
+        log "Running post-install for $PLATFORM"
+        bash "$postinstall_script"
+        ok "Post-install complete"
+    else
+        warn "No post-install script found for $PLATFORM — skipping"
+    fi
+}
+
 summary() {
-    printf "%sBootstrap complete!%s\n" "$GREEN" "$RESET"
+    log "done"
+    ok "\nBootstrap complete!\n\n"
+    warn "Manual steps remaining:"
+    printf "  - Sign into iCloud: System Settings → Apple ID\n"
+    printf "  - Set keyboard input source to U.S.: System Settings → Keyboard → Input Sources\n"
+    printf "  - Log back in if Dock/Finder look different after macOS settings\n"
 }
 
 main() {
@@ -140,6 +183,7 @@ main() {
     set_default_shell
     link_dotfiles
     install_fonts
+    run_postinstall
     summary
 }
 
