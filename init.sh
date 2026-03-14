@@ -1,5 +1,12 @@
 #!/usr/bin/env bash
+
 set -euo pipefail
+
+# This script is step [1/2] for bootstrapping a new machine
+# This script will:
+#   1. Create a new ssh key
+#   2. Clone the dotfiles repo
+#   3. Hand off the rest of the setup to the bootstrap.sh script in dotfiles
 
 DOTFILES_REPO="git@github.com:driden/dotfiles.git"
 DOTFILES_DIR="$HOME/code/dotfiles"
@@ -11,10 +18,10 @@ YELLOW=$'\033[1;33m'
 RED=$'\033[1;31m'
 RESET=$'\033[0m'
 
-log() { printf "\n%s==> %s%s\n" "$BLUE" "$*" "$RESET"; }
-ok()  { printf "%s  ✔ %s%s\n" "$GREEN" "$*" "$RESET"; }
-warn(){ printf "%s  ! %s%s\n" "$YELLOW" "$*" "$RESET"; }
-die() { printf "%sERROR: %s%s\n" "$RED" "$*" "$RESET" >&2; exit 1; }
+log()  { printf "\n%s==> %s%s\n" "$BLUE" "$*" "$RESET"; }
+ok()   { printf "%s  ✔ %s%s\n" "$GREEN" "$*" "$RESET"; }
+warn() { printf "%s  ! %s%s\n" "$YELLOW" "$*" "$RESET"; }
+die()  { printf "%sERROR: %s%s\n" "$RED" "$*" "$RESET" >&2; exit 1; }
 confirm() {
     printf "\n%s [y/N] " "$1"
     read -r reply
@@ -44,12 +51,27 @@ detect_platform() {
 
 install_git() {
     log "Installing git"
+
+    if [ "$PLATFORM" = "macos" ]; then
+        if ! xcode-select -p &>/dev/null; then
+            log "Installing Xcode Command Line Tools"
+            xcode-select --install
+            until xcode-select -p &>/dev/null; do
+                sleep 5
+            done
+            ok "Xcode Command Line Tools installed"
+        else
+            ok "Xcode Command Line Tools already installed"
+        fi
+        return
+    fi
+
     if command -v git &>/dev/null; then
         ok "git already installed"
         return
     fi
+
     case "$PLATFORM" in
-        macos)   xcode-select --install ;;
         debian)  sudo apt-get update && sudo apt-get install -y git ;;
         arch)    sudo pacman -Sy --noconfirm git ;;
         fedora)  sudo dnf install -y git ;;
@@ -70,8 +92,8 @@ setup_ssh_key() {
     ssh-add "$SSH_KEY"
 
     printf "\n%sAdd the following public key to GitHub before continuing:%s\n\n" "$YELLOW" "$RESET"
-    cat "${SSH_KEY}.pub" | pbcopy
-    printf "\nGitHub → Settings → SSH and GPG keys → New SSH key\nAnd paste your key"
+    cat "${SSH_KEY}.pub"
+    printf "\nGitHub → Settings → SSH and GPG keys → New SSH key\n"
 
     confirm "Have you added the key to GitHub?" || die "Re-run the script after adding the key."
 }
@@ -89,13 +111,13 @@ clone_dotfiles() {
 
 main() {
     detect_platform
-    confirm "This will install git, set up your SSH key, and clone your dotfiles. Continue?" || exit 0
     install_git
     setup_ssh_key
     clone_dotfiles
 
     log "Handing off to bootstrap"
-    bash "$DOTFILES_DIR/bootstrap.sh"
+    BOOTSTRAP_INIT=1 BOOTSTRAP_PLATFORM="$PLATFORM" bash "$DOTFILES_DIR/bootstrap.sh"
+
 }
 
 main
