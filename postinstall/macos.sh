@@ -38,6 +38,7 @@ setup_dock() {
     defaults write com.apple.dock autohide-time-modifier -float 0.2
     defaults write com.apple.dock expose-animation-duration -float 0.1
 
+
     # Disable window minimize animation
     defaults write com.apple.dock mineffect -string "scale"
     defaults write com.apple.dock showhidden -bool true
@@ -88,6 +89,8 @@ setup_keyboard() {
 
     # Disable period on double-space
     defaults write NSGlobalDomain NSAutomaticPeriodSubstitutionEnabled -bool false
+    defaults write NSGlobalDomain KeyRepeat -int 1
+    defaults write NSGlobalDomain InitialKeyRepeat -int 10
 
     ok "Keyboard configured"
 }
