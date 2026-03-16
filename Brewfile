@@ -1,5 +1,4 @@
 tap "nikitabobko/tap"
-tap "wez/wezterm"
 brew "automake"
 brew "openssl@3"
 brew "awscli"
@@ -64,4 +63,3 @@ cask "slack"
 cask "spotify", args: { appdir: "/Applications" }
 cask "vesktop"
 cask "visual-studio-code", args: { appdir: "/Applications" }
-cask "wezterm"
