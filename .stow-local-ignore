@@ -9,3 +9,4 @@ setup
 picom.conf
 .bashrc
 .bash_aliases
+init.sh

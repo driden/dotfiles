@@ -3,11 +3,11 @@ set -euo pipefail
 
 DOTFILES_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 
-BLUE='\033[1;34m'
-GREEN='\033[1;32m'
-YELLOW='\033[1;33m'
-RED='\033[1;31m'
-RESET='\033[0m'
+BLUE=$'\033[1;34m'
+GREEN=$'\033[1;32m'
+YELLOW=$'\033[1;33m'
+RESET=$'\033[0m'
+RED=$'\033[1;31m'
 
 log() { printf "\n${BLUE}==> %s${RESET}\n" "$*"; }
 ok() { printf "${GREEN}  ✔ %s${RESET}\n" "$*"; }
