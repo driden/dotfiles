@@ -163,6 +163,17 @@ setup_mission_control() {
     ok "Mission Control configured"
 }
 
+setup_wm() {
+    # Turn off the setting that causes windows to hide when clicking the desktop
+    defaults write com.apple.WindowManager EnableStandardClickToShowDesktop -bool false
+}
+
+setup_taskbar() {
+    # Show Sound in menu bar always
+    defaults write com.apple.controlcenter Sound -int 18
+    killall ControlCenter
+}
+
 main() {
     setup_dock
     setup_locale
@@ -172,6 +183,8 @@ main() {
     setup_transparency
     setup_ui
     setup_mission_control
+    setup_wm
+    setup_taskbar
 
     warn "Some changes may require a logout or restart to take full effect"
 }
