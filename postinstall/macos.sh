@@ -80,8 +80,6 @@ setup_keyboard() {
 
     # Disable period on double-space
     defaults write NSGlobalDomain NSAutomaticPeriodSubstitutionEnabled -bool false
-    defaults write NSGlobalDomain KeyRepeat -int 1
-    defaults write NSGlobalDomain InitialKeyRepeat -int 10
 
     ok "Keyboard configured"
 }
