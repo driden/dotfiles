@@ -53,7 +53,7 @@ setup_dock() {
 }
 
 setup_locale() {
-    log "Configuring locale"
+    log "Configuring Keyboard"
 
     defaults write NSGlobalDomain AppleLanguages -array "en-UY"
     defaults write NSGlobalDomain AppleLocale -string "en_UY"
@@ -63,6 +63,11 @@ setup_locale() {
     defaults write NSGlobalDomain AppleICUForce24HourTime -bool true
 
     ok "Locale configured"
+
+    defaults write NSGlobalDomain KeyRepeat -int 30
+    defaults write NSGlobalDomain InitialKeyRepeat -int 65
+
+    ok "Configured key repeat rate"
 }
 
 setup_keyboard() {
@@ -164,13 +169,20 @@ setup_mission_control() {
 }
 
 setup_wm() {
+    log "Window management"
     # Turn off the setting that causes windows to hide when clicking the desktop
     defaults write com.apple.WindowManager EnableStandardClickToShowDesktop -bool false
+
+    log "Disabled 'click to show desktop'"
 }
 
 setup_taskbar() {
+    log "Taskbar"
+
     # Show Sound in menu bar always
     defaults write com.apple.controlcenter Sound -int 18
+    ok "Added sound"
+
     killall ControlCenter
 }
 
