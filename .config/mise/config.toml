@@ -2,8 +2,10 @@
 go = "latest"
 java = "latest"
 lua = "5.1"
+lua-language-server = "latest"
 node = "latest"
 opencode = "latest"
+ruff = "latest"
 uv = "latest"
 
 [settings]
