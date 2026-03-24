@@ -101,7 +101,7 @@ fi
 # Aliases 
 alias zshconfig="nvim ~/.bashrc"
 alias refreshenv='source $HOME/.bashrc && source $HOME/.bashrc'
-alias dot="cd $HOME/dotfiles && $EDITOR ."
+alias dot="cd $HOME/code/dotfiles"
 alias ll="eza --long --all"
 alias vim="$EDITOR"
 alias vi="$EDITOR"
