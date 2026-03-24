@@ -43,6 +43,12 @@ on-focused-monitor-changed = ['move-mouse monitor-lazy-center']
 # Also see: https://nikitabobko.github.io/AeroSpace/goodies#disable-hide-app
 automatically-unhide-macos-hidden-apps = true
 
+# Configure exec environment
+[exec]
+    inherit-env-vars = true
+[exec.env-vars]
+    PATH = '/Users/nacho/.local/bin:/usr/local/bin:/opt/homebrew/bin:/opt/homebrew/sbin:${PATH}'
+
 # Possible values: (qwerty|dvorak|colemak)
 # See https://nikitabobko.github.io/AeroSpace/guide#key-mapping
 [key-mapping]
@@ -103,8 +109,8 @@ automatically-unhide-macos-hidden-apps = true
     alt-k = 'focus up'
     alt-l = 'focus right'
 
-    alt-u = 'exec-and-forget /bin/bash -c aerospace list-workspaces --monitor focused --empty no | aerospace workspace prev --wrap-around --stdin'
-    alt-o = 'exec-and-forget /bin/bash -c aerospace list-workspaces --monitor focused --empty no | aerospace workspace next --wrap-around --stdin'
+    alt-u = 'exec-and-forget aerospace list-workspaces --monitor focused --empty no | aerospace workspace --stdin --wrap-around prev'
+    alt-o = 'exec-and-forget aerospace list-workspaces --monitor focused --empty no | aerospace workspace --stdin --wrap-around next'
 
     # See: https://nikitabobko.github.io/AeroSpace/commands#move
     alt-shift-h = 'move left'
