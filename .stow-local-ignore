@@ -7,6 +7,4 @@ unlink.sh
 bootstrap.sh
 setup
 picom.conf
-.bashrc
-.bash_aliases
 init.sh
