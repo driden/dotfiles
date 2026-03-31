@@ -6,13 +6,17 @@ GREEN=$'\033[1;32m'
 YELLOW=$'\033[1;33m'
 RESET=$'\033[0m'
 
-log()  { printf "\n%s==> %s%s\n" "$BLUE" "$*" "$RESET"; }
-ok()   { printf "%s  ✔ %s%s\n" "$GREEN" "$*" "$RESET"; }
+log() { printf "\n%s==> %s%s\n" "$BLUE" "$*" "$RESET"; }
+ok() { printf "%s  ✔ %s%s\n" "$GREEN" "$*" "$RESET"; }
 warn() { printf "%s  ! %s%s\n" "$YELLOW" "$*" "$RESET"; }
 
 # Ask for sudo upfront and keep the token alive
 sudo -v
-while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
+while true; do
+    sudo -n true
+    sleep 60
+    kill -0 "$$" || exit
+done 2>/dev/null &
 
 setup_dock() {
     log "Configuring Dock"
@@ -33,7 +37,6 @@ setup_dock() {
     # Faster animations
     defaults write com.apple.dock autohide-time-modifier -float 0.2
     defaults write com.apple.dock expose-animation-duration -float 0.1
-
 
     # Disable window minimize animation
     defaults write com.apple.dock mineffect -string "scale"
@@ -64,8 +67,8 @@ setup_locale() {
 
     ok "Locale configured"
 
-    defaults write NSGlobalDomain KeyRepeat -int 30
-    defaults write NSGlobalDomain InitialKeyRepeat -int 65
+    defaults write NSGlobalDomain KeyRepeat -int 5
+    defaults write NSGlobalDomain InitialKeyRepeat -int 30
 
     ok "Configured key repeat rate"
 }
