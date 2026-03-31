@@ -237,6 +237,27 @@ return {
       --   },
       -- })
 
+      -- bash
+      vim.lsp.config("bashls", {
+        cmd = { "bash-language-server", "start" },
+        settings = {
+          bashIde = {
+            -- Glob pattern for finding and parsing shell script files in the workspace.
+            -- Used by the background analysis features across files.
+
+            -- Prevent recursive scanning which will cause issues when opening a file
+            -- directly in the home directory (e.g. ~/foo.sh).
+            --
+            -- Default upstream pattern is "**/*@(.sh|.inc|.bash|.command)".
+            globPattern = vim.env.GLOB_PATTERN or "*@(.sh|.inc|.bash|.command)",
+          },
+        },
+        filetypes = { "bash", "sh" },
+        root_markers = { ".git" },
+      })
+
+      vim.lsp.enable("bashls")
+
       local kotlin_root_markers = {
         "settings.gradle", -- Gradle (multi-project)
         "settings.gradle.kts", -- Gradle (multi-project)
@@ -257,7 +278,7 @@ return {
       -- Setup Kotlin language server (requires Java 21 from mise)
       local mise = require("driden.mise")
       local java_home = mise.get_mise_install_path_sync("java@corretto-21")
-      
+
       if java_home then
         vim.lsp.config("kotlin_language_server", {
           filetypes = { "kotlin" },
@@ -329,7 +350,32 @@ return {
         root_markers = { "pyproject.toml", "ruff.toml", ".ruff.toml", ".git" },
         settings = {},
       })
-      vim.lsp.enable("ruff")
+
+      vim.lsp.config("basedpyright", {
+        capabilities = vim.deepcopy(capabilities),
+        cmd = { "basedpyright-langserver", "--stdio" },
+        filetypes = { "python" },
+        root_markers = {
+          "pyproject.toml",
+          "setup.py",
+          "setup.cfg",
+          "requirements.txt",
+          "Pipfile",
+          "pyrightconfig.json",
+          ".git",
+        },
+        settings = {
+          basedpyright = {
+            analysis = {
+              autoSearchPaths = true,
+              useLibraryCodeForTypes = true,
+              diagnosticMode = "openFilesOnly",
+            },
+          },
+        },
+      })
+
+      vim.lsp.enable("basedpyright")
     end,
   },
   {
