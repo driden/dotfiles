@@ -351,21 +351,21 @@ return {
         settings = {},
       })
 
-      vim.lsp.config("basedpyright", {
+      vim.lsp.config("pyright", {
         capabilities = vim.deepcopy(capabilities),
-        cmd = { "basedpyright-langserver", "--stdio" },
+        cmd = { "pyright-langserver", "--stdio" },
         filetypes = { "python" },
         root_markers = {
+          "pyrightconfig.json",
           "pyproject.toml",
           "setup.py",
           "setup.cfg",
           "requirements.txt",
           "Pipfile",
-          "pyrightconfig.json",
           ".git",
         },
         settings = {
-          basedpyright = {
+          python = {
             analysis = {
               autoSearchPaths = true,
               useLibraryCodeForTypes = true,
@@ -375,7 +375,33 @@ return {
         },
       })
 
-      vim.lsp.enable("basedpyright")
+      vim.lsp.enable("pyright")
+
+      -- vim.lsp.config("basedpyright", {
+      --   capabilities = vim.deepcopy(capabilities),
+      --   cmd = { "basedpyright-langserver", "--stdio" },
+      --   filetypes = { "python" },
+      --   root_markers = {
+      --     "pyproject.toml",
+      --     "setup.py",
+      --     "setup.cfg",
+      --     "requirements.txt",
+      --     "Pipfile",
+      --     "pyrightconfig.json",
+      --     ".git",
+      --   },
+      --   settings = {
+      --     basedpyright = {
+      --       analysis = {
+      --         autoSearchPaths = true,
+      --         useLibraryCodeForTypes = true,
+      --         diagnosticMode = "openFilesOnly",
+      --       },
+      --     },
+      --   },
+      -- })
+      --
+      -- vim.lsp.enable("basedpyright")
     end,
   },
   {
