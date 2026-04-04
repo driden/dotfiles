@@ -9,7 +9,9 @@ after-login-command = []
 # You can use it to add commands that run after AeroSpace startup.
 # 'after-startup-command' is run after 'after-login-command'
 # Available commands : https://nikitabobko.github.io/AeroSpace/commands
-after-startup-command = []
+after-startup-command = [
+"exec-and-forget borders width=10.0 hidpi=off active_color=0xffaaaaff inactive_color=0xff5b5e5a"
+]
 
 # Start AeroSpace at login
 start-at-login = true
@@ -47,7 +49,7 @@ automatically-unhide-macos-hidden-apps = true
 [exec]
     inherit-env-vars = true
 [exec.env-vars]
-    PATH = '/Users/nacho/.local/bin:/usr/local/bin:/opt/homebrew/bin:/opt/homebrew/sbin:${PATH}'
+    PATH = '~/.local/bin:/usr/local/bin:/opt/homebrew/bin:/opt/homebrew/sbin:${PATH}'
 
 # Possible values: (qwerty|dvorak|colemak)
 # See https://nikitabobko.github.io/AeroSpace/guide#key-mapping
