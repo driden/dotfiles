@@ -237,6 +237,7 @@ return {
       -- })
       --
       require("driden.lsp.html").setup(vim.deepcopy(capabilities))
+      require("driden.lsp.typescript").setup(vim.deepcopy(capabilities))
 
       -- bash
       vim.lsp.config("bashls", {
