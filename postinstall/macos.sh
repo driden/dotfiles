@@ -205,6 +205,10 @@ main() {
     setup_taskbar
 
     warn "Some changes may require a logout or restart to take full effect"
+    warn "Manual steps remaining:"
+    printf "  - Sign into iCloud: System Settings → Apple ID\n"
+    printf "  - Set keyboard input source to U.S.: System Settings → Keyboard → Input Sources\n"
+    printf "  - Log back in if Dock/Finder look different after macOS settings\n"
 }
 
 main

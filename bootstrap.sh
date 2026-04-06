@@ -18,10 +18,13 @@ YELLOW=$'\033[1;33m'
 RED=$'\033[1;31m'
 RESET=$'\033[0m'
 
-log()  { printf "\n%s==> %s%s\n" "$BLUE" "$*" "$RESET"; }
-ok()   { printf "%s  ✔ %s%s\n" "$GREEN" "$*" "$RESET"; }
+log() { printf "\n%s==> %s%s\n" "$BLUE" "$*" "$RESET"; }
+ok() { printf "%s  ✔ %s%s\n" "$GREEN" "$*" "$RESET"; }
 warn() { printf "%s  ! %s%s\n" "$YELLOW" "$*" "$RESET"; }
-die()  { printf "%sERROR: %s%s\n" "$RED" "$*" "$RESET" >&2; exit 1; }
+die() {
+    printf "%sERROR: %s%s\n" "$RED" "$*" "$RESET" >&2
+    exit 1
+}
 confirm() {
     printf "\n%s [y/N] " "$1"
     read -r reply
@@ -31,7 +34,7 @@ confirm() {
 detect_platform() {
 
     if [ -n "${BOOTSTRAP_PLATFORM:-}" ]; then
-        PLATFORM="$BOOTSTRAP_PLATFORM"  
+        PLATFORM="$BOOTSTRAP_PLATFORM"
         ok "Found platform $PLATFORM from 'init.sh' script"
         return
     fi
@@ -40,18 +43,18 @@ detect_platform() {
     local os
     os="$(uname -s)"
     case "$os" in
-        Darwin) PLATFORM="macos" ;;
-        Linux)
-            [ -f /etc/os-release ] || die "Cannot detect Linux distro"
-            . /etc/os-release
-            case "${ID:-}" in
-                ubuntu|debian|*ubuntu*|*debian*) PLATFORM="debian" ;;
-                arch|manjaro|*arch*)             PLATFORM="arch" ;;
-                fedora|rhel|centos|*fedora*)     PLATFORM="fedora" ;;
-                *) die "Unsupported Linux distro: ${ID:-unknown}" ;;
-            esac
-            ;;
-        *) die "Unsupported OS: $os" ;;
+    Darwin) PLATFORM="macos" ;;
+    Linux)
+        [ -f /etc/os-release ] || die "Cannot detect Linux distro"
+        . /etc/os-release
+        case "${ID:-}" in
+        ubuntu | debian | *ubuntu* | *debian*) PLATFORM="debian" ;;
+        arch | manjaro | *arch*) PLATFORM="arch" ;;
+        fedora | rhel | centos | *fedora*) PLATFORM="fedora" ;;
+        *) die "Unsupported Linux distro: ${ID:-unknown}" ;;
+        esac
+        ;;
+    *) die "Unsupported OS: $os" ;;
     esac
     ok "Platform: $PLATFORM"
 }
@@ -69,7 +72,7 @@ run_platform_setup() {
     bash "$SETUP_DIR/$PLATFORM.sh"
 
     [ -f "$HOME/.zprofile" ] && source "$HOME/.zprofile" 2>/dev/null || true
-    [ -f "$HOME/.profile"  ] && source "$HOME/.profile"  2>/dev/null || true
+    [ -f "$HOME/.profile" ] && source "$HOME/.profile" 2>/dev/null || true
     export PATH="$HOME/.local/bin:$PATH"
 }
 
@@ -172,6 +175,12 @@ summary() {
     printf "  - Sign into iCloud: System Settings → Apple ID\n"
     printf "  - Set keyboard input source to U.S.: System Settings → Keyboard → Input Sources\n"
     printf "  - Log back in if Dock/Finder look different after macOS settings\n"
+}
+
+setup_tmux_tpm() {
+    if command -v tmux >/dev/null; then
+        git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+    fi
 }
 
 main() {
