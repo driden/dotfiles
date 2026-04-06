@@ -1,5 +1,4 @@
 function add_dir_to_path
-    set length (count $argv)
     for dir in $argv
         if test -d $dir
             fish_add_path $dir
@@ -16,7 +15,7 @@ add_dir_to_path $HOME/.cargo/bin
 add_dir_to_path $HOME/.ghcup/bin
 # add_dir_to_path $HOME/.config/emacs/bin
 
-set TERMINAL wezterm
+set TERMINAL ghostty
 set EDITOR nvim
 set -x MANPAGER "nvim +Man!"
 set -x AWS_PAGER ""
@@ -51,15 +50,6 @@ alias gtree="git log --oneline --decorate --all --graph"
 alias glog="git log --oneline --decorate --all -n 10"
 alias lg="lazygit"
 
-# Terraform
-alias tp="terraform plan"
-alias ta="terraform apply"
-alias tap="terraform apply -auto-aprove"
-alias twl="terraform workspace list"
-alias twc="terraform workspace list | grep '*' | tr -d '*'| tr -d '[:space:]'"
-
-fzf --fish | source
-
 set -gx FZF_DEFAULT_COMMAND 'rg --hidden -l ""'
 set -gx FZF_ALT_C_COMMAND 'fd --absolute-path --type d --max-depth 2 -E Library -E Pictures -E Music -E Applications -E zsh-plugins -E go . "$HOME"'
 
@@ -72,6 +62,7 @@ end
 
 set -gx FZF_ALT_C_OPTS "--preview 'eza --icons --color=always --tree --level=1 {}' --preview-window=right:50%:wrap"
 
+fzf --fish | source
 mise activate fish | source
 
 if status is-interactive
