@@ -55,6 +55,11 @@ return { -- Autocompletion
         ["<C-b>"] = cmp.mapping.scroll_docs(-4),
         ["<C-f>"] = cmp.mapping.scroll_docs(4),
 
+        -- Trigger cmp-path for file path completion
+        ["<C-x><C-f>"] = cmp.mapping.complete({
+          sources = { { name = "path" } }
+        }),
+
         -- Accept ([y]es) the completion.
         --  This will auto-import if your LSP supports it.
         --  This will expand snippets if the LSP sent a snippet.
