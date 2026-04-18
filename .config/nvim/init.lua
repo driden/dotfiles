@@ -181,18 +181,17 @@ require("lazy").setup({
           cpp = true,
           java = true,
           kotlin = true,
-          typecript = true,
+          typescript = true,
           python = true,
+          html = true,
         }
-        local lsp_format_opt
         if disable_filetypes[vim.bo[bufnr].filetype] then
-          lsp_format_opt = "never"
-        else
-          lsp_format_opt = "fallback"
+          -- Don't format these filetypes at all
+          return nil
         end
         return {
           timeout_ms = 500,
-          lsp_format = lsp_format_opt,
+          lsp_format = "fallback",
         }
       end,
       formatters_by_ft = {
@@ -202,6 +201,7 @@ require("lazy").setup({
         --
         -- You can use 'stop_after_first' to run the first available formatter from the list
         -- javascript = { "prettierd", "prettier", stop_after_first = true },
+        -- html = { "prettier" },  -- Disabled to prevent automatic formatting on save
       },
     },
   },
