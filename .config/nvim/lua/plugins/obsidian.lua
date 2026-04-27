@@ -1,4 +1,4 @@
-local notes_dirs = { "~/Documents/Notes", "~/Documents/Notes/personal", "~/notes" }
+local notes_dirs = { "~/Documents/Notes", "~/Documents/Notes/personal", "~/notes", "~/work/docs/" }
 
 local workspaces = vim
   .iter(notes_dirs)
