@@ -12,75 +12,18 @@ if vim.fn.executable("jq") == 0 then
   return
 end
 
----@class FloatView
----@field win number window handle
----@field buf number buffer number
----@field row number buffer #row it starts
----@field col number buffer #column it starts
----@field height number buffer height
----@field width number buffer height
+local ui = require("driden.ui")
+local util = require("driden.util")
 
----@class win_config
----@field height integer | nil
----@field width integer | nil
----@field row integer | nil
----@field col integer | nil
----@field title string | nil
-
----@param opts win_config
----@return FloatView floatView
-local function create_floatview(opts)
-  local buf = vim.api.nvim_create_buf(false, true)
-
-  local width = opts.width or math.floor(vim.o.columns * 0.8)
-  local height = opts.height or math.floor(vim.o.lines * 0.8)
-
-  -- 2. Calculate Centering (Total - Size) / 2
-  local center_col = math.floor((vim.o.columns - width) / 2)
-  local center_row = math.floor((vim.o.lines - height) / 2)
-
-  -- 3. Use provided opts or fallback to calculated center
-  local col = opts.col or math.max(0, center_col)
-  local row = opts.row or math.max(0, center_row)
-
-  local win = vim.api.nvim_open_win(buf, true, {
-    relative = "editor",
-    style = "minimal",
-    border = "rounded",
-    width = width,
-    height = height,
-    row = row,
-    col = col,
-    title = opts.title or nil,
-    title_pos = "center",
-    focusable = true,
-  })
-  return { buf = buf, win = win, row = row, col = col, width = width, height = height }
-end
-
----Closes window and deletes buffer
----@param fv FloatView view
-local function close_floatview(fv)
-  if not fv then
-    return
-  end
-  if vim.api.nvim_win_is_valid(fv.win) then
-    vim.api.nvim_win_close(fv.win, true)
-  end
-  if vim.api.nvim_buf_is_valid(fv.buf) then
-    vim.api.nvim_buf_delete(fv.buf, { force = true })
-  end
-end
-
----@class State
+---@class JqState
 ---@field source_buf number the source buffer
----@field input FloatView | nil the input view & buffer
----@field results FloatView | nil the results view & buffer
+---@field input FloatView? the input view & buffer
+---@field results FloatView? the results view & buffer
 ---@field prompt string the prompt used in the input buffer
 ---@field last_query string the jq query
 ---@field timer uv_timer_t | nil timer used to schedule jq calls
 
----@type State
+---@type JqState
 local state = {
   input = nil,
   results = nil,
@@ -104,8 +47,8 @@ end
 
 ---Closes every window
 local function shut_down()
-  close_floatview(state.input)
-  close_floatview(state.results)
+  ui.close_floatview(state.input)
+  ui.close_floatview(state.results)
   state.input = nil
   state.results = nil
   if state.timer then
@@ -143,17 +86,10 @@ local function run_jq()
   )
 end
 
----Escapes regex magic characters in a string
----@param s string
----@return string
-local function escape_regex(s)
-  return s:gsub("([%(%)%.%%%+%-%*%?%[%^%$])", "%%%1")
-end
-
 ---Gets the query written in the input buffer
 ---@return string The query without input prefix
 local function parse_query()
-  local escaped_prompt = escape_regex(state.prompt)
+  local escaped_prompt = util.escape_regex(state.prompt)
   -- Match the exact prompt, followed by zero or more spaces
   local pattern = string.format("^(%s) *", escaped_prompt)
   local query = vim.api.nvim_get_current_line():gsub(pattern, "")
@@ -183,13 +119,13 @@ local function init()
     return
   end
 
-  state.results = create_floatview({
+  state.results = ui.create_floatview({
     title = "Query Results",
     width = math.floor(vim.o.columns * 0.9),
     height = math.floor(vim.o.lines * 0.9),
   })
 
-  state.input = create_floatview({
+  state.input = ui.create_floatview({
     row = state.results.row - 3, -- we need 3 rows (1 for height + 2 for borders)
     col = state.results.col,
     width = state.results.width, -- Match the width of the results
