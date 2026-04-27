@@ -1,11 +1,6 @@
 return {
   "MeanderingProgrammer/render-markdown.nvim",
   dependencies = { "nvim-treesitter/nvim-treesitter", "nvim-tree/nvim-web-devicons" },
-  config = function()
-    -- require("obsidian").ui.enable = false
-    -- vim.api.nvim_buf_clear_namespace(0, vim.api.nvim_get_namespaces()["ObsidianUI"], 0, -1)
-    -- require("render-markdown").setup({})
-  end,
   opts = {
     file_types = { "Avante", "markdown" },
     render_modes = { "n", "c", "t" },
@@ -45,6 +40,16 @@ return {
         "RenderMarkdownH6",
       },
       custom = {},
+    },
+    win_options = {
+      concealcursor = { rendered = "nvic" },
+    },
+    anti_conceal = {
+      enabled = false,
+    },
+    bullet = {
+      icons = { "● " },
+      highlight = "@markup.list",
     },
   },
   ft = { "Avante", "markdown" },
