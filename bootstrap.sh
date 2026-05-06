@@ -49,7 +49,7 @@ detect_platform() {
         . /etc/os-release
         case "${ID:-}" in
         ubuntu | debian | *ubuntu* | *debian*) PLATFORM="debian" ;;
-        arch | manjaro | *arch*) PLATFORM="arch" ;;
+        arch | manjaro | cachyos | *arch*) PLATFORM="arch" ;;
         fedora | rhel | centos | *fedora*) PLATFORM="fedora" ;;
         *) die "Unsupported Linux distro: ${ID:-unknown}" ;;
         esac
