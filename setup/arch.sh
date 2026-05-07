@@ -23,6 +23,50 @@ ok "Base tools ready"
 # Pacman packages
 PACMAN_PACKAGES=(
 	# Add packages here as needed
+	    # Shell & terminal
+    zsh
+    tmux
+    starship
+ 
+    # File & search utilities
+    eza
+    fd
+    fzf
+    ripgrep
+    tree
+ 
+    # Git
+    lazygit
+ 
+    # Editor
+    neovim
+ 
+    # Data & serialization
+    jq
+    yq
+ 
+    # Build tools
+    cmake
+ 
+    # JS/TS tooling
+    pnpm
+ 
+    # Dev tooling
+    mise
+ 
+    # Container (Linux-native, rootless)
+    podman
+    podman-compose
+ 
+    # Media
+    imagemagick
+    imv
+ 
+    # Fonts
+    ttf-jetbrains-mono-nerd
+    ttf-hack-nerd
+
+	
 )
 
 log "Installing pacman packages"
@@ -48,6 +92,14 @@ fi
 
 # AUR packages
 AUR_PACKAGES=(
+    lazydocker
+    git-delta
+    ghostty
+    obsidian
+    bitwarden
+    vesktop
+    floorp-bin
+    youtube-music-bin
 )
 
 log "Installing AUR packages"
