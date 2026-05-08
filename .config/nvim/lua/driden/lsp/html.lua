@@ -8,6 +8,13 @@ function M.setup(capabilities)
   ---
   capabilities.textDocument.completion.completionItem.snippetSupport = true
 
+  -- Triggering completion on space is horrible dx
+  if capabilities.textDocument.completion.completionItem.triggerCharacters then
+    capabilities.textDocument.completion.completionItem.triggerCharacters = vim.tbl_filter(function(c)
+      return c ~= " "
+    end, capabilities.textDocument.completion.completionItem.triggerCharacters)
+  end
+
   vim.lsp.config("html", {
     cmd = { "superhtml", "lsp" },
     filetypes = { "html", "shtml", "htm" },
