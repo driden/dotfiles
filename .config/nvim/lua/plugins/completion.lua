@@ -57,7 +57,7 @@ return { -- Autocompletion
 
         -- Trigger cmp-path for file path completion
         ["<C-x><C-f>"] = cmp.mapping.complete({
-          sources = { { name = "path" } }
+          sources = { { name = "path" } },
         }),
 
         -- Accept ([y]es) the completion.
