@@ -297,3 +297,9 @@ vim.keymap.set(
   ":Obsidian workspace<CR>",
   { silent = true, buffer = true, desc = "Open workspace" }
 )
+vim.keymap.set(
+  "n",
+  "<localleader>x",
+  ":Obsidian toggle_checkbox<CR>",
+  { silent = true, buffer = true, desc = "Toggle checkbox" }
+)

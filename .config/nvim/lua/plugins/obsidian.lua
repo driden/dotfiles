@@ -37,6 +37,12 @@ return {
     footer = {
       enabled = false,
     },
+    ui = {
+      enable = false,
+    },
+    checkbox = {
+      order = { " ", "x" },
+    },
   },
   enabled = true,
 }
