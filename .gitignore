@@ -17,3 +17,4 @@ vscode-java-test
 zsh-snap
 .config/discord
 .config/fish/fish_variables
+*/.claude
