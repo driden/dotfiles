@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-BLUE='\033[1;34m'
-GREEN='\033[1;32m'
-YELLOW='\033[1;33m'
-RED='\033[1;31m'
-RESET='\033[0m'
+BLUE=$'\033[1;34m'
+GREEN=$'\033[1;32m'
+YELLOW=$'\033[1;33m'
+RED=$'\033[1;31m'
+RESET=$'\033[0m'
 
 log() { printf "\n%s==> %s%s\n" "$BLUE" "$*" "$RESET"; }
 ok() { printf "%s  ✔ %s%s\n" "$GREEN" "$*" "$RESET"; }
@@ -22,6 +22,8 @@ ok "Base tools ready"
 
 # Pacman packages
 PACMAN_PACKAGES=(
+    wl-clipboard # wayland clipboard manager
+
 	# Add packages here as needed
 	    # Shell & terminal
     zsh
@@ -66,28 +68,39 @@ PACMAN_PACKAGES=(
     ttf-jetbrains-mono-nerd
     ttf-hack-nerd
 
-	
+    # Gaming
+    steam
+    gamemode
+    lib32-gamemode
+    wine
+    winetricks
+    vulkan-icd-loader
+    lib32-vulkan-icd-loader
+
+    # System
+    speech-dispatcher
+    keyd
 )
 
 log "Installing pacman packages"
 if [ ${#PACMAN_PACKAGES[@]} -gt 0 ]; then
-	sudo pacman -S --noconfirm "${PACMAN_PACKAGES[@]}"
-	ok "Pacman packages installed"
+    sudo pacman -S --noconfirm "${PACMAN_PACKAGES[@]}"
+    ok "Pacman packages installed"
 else
-	warn "No pacman packages defined — edit setup/arch.sh to add them"
+    warn "No pacman packages defined — edit setup/arch.sh to add them"
 fi
 
 # yay (AUR helper)
 log "Installing yay"
 if command -v yay &>/dev/null; then
-	ok "yay already installed"
+    ok "yay already installed"
 else
-	sudo pacman -S --noconfirm base-devel
-	local_yay_dir="$(mktemp -d)"
-	git clone https://aur.archlinux.org/yay.git "$local_yay_dir"
-	(cd "$local_yay_dir" && makepkg -si --noconfirm)
-	rm -rf "$local_yay_dir"
-	ok "yay installed"
+    sudo pacman -S --noconfirm base-devel
+    local_yay_dir="$(mktemp -d)"
+    git clone https://aur.archlinux.org/yay.git "$local_yay_dir"
+    (cd "$local_yay_dir" && makepkg -si --noconfirm)
+    rm -rf "$local_yay_dir"
+    ok "yay installed"
 fi
 
 # AUR packages
@@ -99,7 +112,11 @@ AUR_PACKAGES=(
     bitwarden
     vesktop
     floorp-bin
-    youtube-music-bin
+    youtube-music-for-desktop-bin
+    #games
+    heroic-games-launcher-bin
+    mangohud
+    protonup-qt
 )
 
 log "Installing AUR packages"

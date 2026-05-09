@@ -148,7 +148,7 @@ install_fonts() {
         cp "$font_tmp"/**/*.{ttf,otf} "$HOME/Library/Fonts/" 2>/dev/null || true
     else
         mkdir -p "$HOME/.local/share/fonts"
-        cp "$font_tmp"/**/*.{ttf,otf} "$HOME/.local/share/fonts/"
+        cp "$font_tmp"/**/*.{ttf,otf} "$HOME/.local/share/fonts/" 2>/dev/null || true
         fc-cache -f "$HOME/.local/share/fonts"
     fi
 

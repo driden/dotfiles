@@ -8,3 +8,5 @@ bootstrap.sh
 setup
 picom.conf
 init.sh
+keyd
+postinstal
