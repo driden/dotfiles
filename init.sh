@@ -9,7 +9,7 @@ set -euo pipefail
 #   3. Hand off the rest of the setup to the bootstrap.sh script in dotfiles
 
 DOTFILES_REPO="git@github.com:driden/dotfiles.git"
-DOTFILES_DIR="$HOME/code/dotfiles"
+export DOTFILES_DIR="$HOME/code/dotfiles"
 SSH_KEY="$HOME/.ssh/id_driden_gh"
 
 BLUE=$'\033[1;34m'
