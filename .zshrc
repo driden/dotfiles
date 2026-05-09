@@ -1,4 +1,7 @@
-export HISTSIZE=10000
+HISTSIZE=10000
+HISTFILE=~/.zsh_history
+SAVEHIST=10000
+setopt INC_APPEND_HISTORY
 
 # Load the edit-command-line widget
 autoload -Uz edit-command-line
@@ -151,7 +154,7 @@ done
 
 
 alias zshconfig="nvim ~/.zshrc"
-alias refreshenv='source $HOME/.zshrc && source $HOME/.zshenv'
+alias refreshenv='source $HOME/.zshrc && [[ -f $HOME/.zshenv ]] && source $HOME/.zshenv'
 alias dot="cd $HOME/code/dotfiles"
 alias ll="eza --long --all --icons always"
 alias vim="$EDITOR"
@@ -208,9 +211,13 @@ source $PLUGINS_FOLDER/zsh-users/zsh-autosuggestions/zsh-autosuggestions.zsh
 eval "$(fzf --zsh)"
 eval "$(starship init zsh)"
 
-[[ -d "/opt/nvim-linux64" ]] && export PATH="$PATH:/opt/nvim-linux64/bin"
-
 if type mise &>/dev/null; then
    eval "$(mise activate zsh)"
    mise settings add idiomatic_version_file_enable_tools node
 fi
+
+# Start SSH agent if not already running
+if [ -z "$SSH_AUTH_SOCK" ]; then
+    eval "$(ssh-agent -s)"
+fi
+

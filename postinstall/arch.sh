@@ -132,6 +132,39 @@ setup_gamemode() {
     ok "User added to gamemode group"
 }
 
+setup_keyboard_layout() {
+    log "Setting keyboard layout to be Us intl with AltGr Dead keys"
+    # Sets up the intl with altgr dead keys
+    localectl set-keymap us-acentos
+    localectl set-x11-keymap us "" alt-intl
+    ok "Keyboard layout done"
+}
+
+setup_kde() {
+    if command -v kreadconfig6 &>/dev/null; then
+        log "Setting dolphin settings"
+        kwriteconfig6 --file dolphinrc --group "DetailsMode" --key "ExpandableFolders" --type bool false
+        kwriteconfig6 --file dolphinrc --group "General" --key "RememberOpenedTabs" --type bool false
+        kwriteconfig6 --file dolphinrc --group "General" --key "ShowFullPathInTitlebar" --type bool true
+        kwriteconfig6 --file dolphinrc --group "MainWindow" --key "MenuBar" --type string "Disabled"
+
+        log "Setting up ss shortcut"
+        mkdir -p ~/.local/share/applications
+        cat > ~/.local/share/applications/net.local.ss.desktop << EOF
+[Desktop Entry]
+Exec=$HOME/.local/bin/ss
+Name=Screenshot Region
+NoDisplay=true
+StartupNotify=false
+Type=Application
+X-KDE-GlobalAccel-CommandShortcut=true
+EOF
+
+        kwriteconfig6 --file kglobalshortcutsrc --group "services" --group "net.local.ss.desktop" --key "_launch" "Meta+Shift+S"
+        log "Finished updating KDE settings"
+    fi
+}
+
 # ---------------------------------------------------------------------------
 # Main
 # ---------------------------------------------------------------------------
@@ -141,6 +174,8 @@ main() {
     setup_keyd
     setup_podman
     setup_gamemode
+    setup_keyboard_layout
+    setup_kde
 
     log "Post-install complete"
     warn "Log out and back in for group changes (gamemode) to take effect"

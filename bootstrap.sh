@@ -168,6 +168,11 @@ run_postinstall() {
     fi
 }
 
+install_tpm() {
+    log "Installing tpm"
+    git clone --depth 1 https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm >/dev/null
+}
+
 summary() {
     log "done"
     ok "\nBootstrap complete!\n\n"
