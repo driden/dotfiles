@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+if command -v spectacle &>/dev/null; then
+    spectacle --region -b -c
+fi
+
