@@ -6,25 +6,23 @@ return {
     lazy = false,
     priority = 1000,
     config = function()
-      if theme == "bamboo" then
-        vim.cmd.colorscheme("bamboo")
-      end
+      vim.cmd.colorscheme("bamboo")
     end,
   },
   {
     "scottmckendry/cyberdream.nvim",
     lazy = false,
     priority = 1000,
+    enabled = theme == "cyberdream",
     config = function()
-      if theme == "cyberdream" then
-        vim.cmd.colorscheme("cyberdream")
-      end
+      vim.cmd.colorscheme("cyberdream")
     end,
   },
   {
     "ellisonleao/gruvbox.nvim",
     priority = 1000,
     lazy = false,
+    enabled = theme == "gruvbox",
     config = function()
       require("gruvbox").setup({
         italic = {
@@ -35,33 +33,27 @@ return {
           emphasis = false,
         },
       })
-
-      if theme == "gruvbox" then
-        vim.cmd.colorscheme("gruvbox")
-      end
+      vim.cmd.colorscheme("gruvbox")
     end,
   },
   {
     "rebelot/kanagawa.nvim",
     lazy = false,
+    enabled = theme == "kanagawa",
     config = function()
       require("kanagawa").setup({
         commentStyle = { italic = false },
         keywordStyle = { italic = false },
       })
-
-      if theme == "kanagawa" then
-        vim.cmd.colorscheme("kanagawa-dragon")
-      end
+      vim.cmd.colorscheme("kanagawa-dragon")
     end,
   },
   {
     "folke/tokyonight.nvim",
     lazy = false,
+    enabled = theme == "tokyonight",
     config = function()
-      if theme == "tokyonight" then
-        vim.cmd.colorscheme("tokyonight-moon")
-      end
+      vim.cmd.colorscheme("tokyonight-moon")
     end,
   },
 }
