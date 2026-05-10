@@ -135,8 +135,8 @@ require("lazy").setup({
       })
     end,
   },
-  "tpope/vim-unimpaired",
-  "tpope/vim-surround",
+  { "tpope/vim-unimpaired", event = "VeryLazy" },
+  { "tpope/vim-surround", event = "VeryLazy" },
   -- 'tpope/vim-sleuth', -- Detect tabstop and shiftwidth automatically
 
   { import = "plugins" },
@@ -252,26 +252,7 @@ require("lazy").setup({
     --    - Show your current context: https://github.com/nvim-treesitter/nvim-treesitter-context
     --    - Treesitter + textobjects: https://github.com/nvim-treesitter/nvim-treesitter-textobjects
   },
-  {
-    "xiyaowong/transparent.nvim",
-    config = function()
-      require("transparent").setup({
-        extra_groups = { -- table/string: additional groups that should be cleared
-          -- In particular, when you set it to 'all', that means all available groups
-
-          -- example of akinsho/nvim-bufferline.lua
-          "BufferLineTabClose",
-          "BufferlineBufferSelected",
-          "BufferLineFill",
-          "BufferLineBackground",
-          "BufferLineSeparator",
-          "BufferLineIndicatorSelected",
-        },
-        exclude_groups = {}, -- table: groups you don't want to clear
-      })
-    end,
-  },
-  "mfussenegger/nvim-jdtls",
+  { "mfussenegger/nvim-jdtls", ft = { "java" } },
   -- require 'kickstart.plugins.debug',
   -- require("plugins.indent"),
   -- require 'plugins.lint',
