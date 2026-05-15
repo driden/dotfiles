@@ -32,6 +32,14 @@ vim.keymap.set("n", "<leader>tm", function()
   toggle_meta_chars()
 end)
 
+vim.keymap.set("n", "<leader>tg", function()
+  local ok, ibl = pcall(require, "ibl")
+  if ok then
+    local config = require("ibl.config")
+    ibl.update({ enabled = not config.get_config(0).enabled })
+  end
+end)
+
 --  [[ Basic Keymaps ]]
 vim.keymap.set("n", "<leader><leader>s", "<cmd>source ~/.config/kickstart/init.lua<CR>")
 -- Clear highlights on search when pressing <Esc> in normal mode
