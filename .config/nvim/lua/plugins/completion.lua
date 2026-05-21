@@ -67,7 +67,13 @@ return { -- Autocompletion
 
         -- If you prefer more traditional completion keymaps,
         -- you can uncomment the following lines
-        ["<CR>"] = cmp.mapping.confirm({ select = true }),
+        ["<CR>"] = cmp.mapping(function(fallback)
+          if cmp.visible() and cmp.get_active_entry() then
+            cmp.confirm({ select = false })
+          else
+            fallback()
+          end
+        end, { "i", "s" }),
 
         -- Manually trigger a completion from nvim-cmp.
         --  Generally you don't need this, because nvim-cmp will display
@@ -110,8 +116,10 @@ return { -- Autocompletion
 
     cmp.setup.filetype({ "markdown" }, {
       sources = {
+        { name = "obsidian" },
+        { name = "obsidian_new" },
+        { name = "obsidian_tags" },
         { name = "render-markdown" },
-        -- { name = "buffer" },
         { name = "luasnip" },
       },
     })

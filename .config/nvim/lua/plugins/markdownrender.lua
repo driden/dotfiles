@@ -51,6 +51,7 @@ return {
       icons = { "● " },
       highlight = "@markup.list",
     },
+    yaml = { enabled = false },
   },
   ft = { "Avante", "markdown" },
 }
