@@ -1,3 +1,4 @@
+.claude
 .dotfiles
 .config/nvim/plugged/
 .emacs.d/elpa
@@ -14,7 +15,14 @@ vscode-java-test
 .local/bin/pip3.10
 .local/bin/pip3
 .local/bin/pip
+.local/bin/pants
 zsh-snap
 .config/discord
 .config/fish/fish_variables
 */.claude
+
+
+# Braintrust
+.config/bt
+.local/bin/bt
+
