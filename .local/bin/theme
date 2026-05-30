@@ -116,9 +116,256 @@ build_theme() {
   done
 }
 
+# Spawn a headless nvim with the named colorscheme and print a colors.toml
+# to stdout. If --write and --name are given, write to themes/<name>/colors.toml
+# instead and run `build_theme <name>`.
+cmd_extract() {
+  local colorscheme=""
+  local out_name=""
+  local write=0
+  local plugin_dir=""
+
+  while (( $# > 0 )); do
+    case "$1" in
+      --name)        out_name="$2"; shift 2 ;;
+      --write)       write=1; shift ;;
+      --plugin-dir)  plugin_dir="$2"; shift 2 ;;
+      -*)            die "unknown flag: $1" ;;
+      *)             colorscheme="$1"; shift ;;
+    esac
+  done
+  [[ -n "$colorscheme" ]] || die "usage: theme extract <nvim-colorscheme> [--name <name>] [--write] [--plugin-dir <path>]"
+
+  # Auto-locate the plugin under lazy.nvim if --plugin-dir wasn't given.
+  if [[ -z "$plugin_dir" ]]; then
+    local lazy_dir="$HOME/.local/share/nvim/lazy"
+    if [[ -d "$lazy_dir" ]]; then
+      # First exact match: lazy/<colorscheme>.nvim or lazy/<colorscheme>
+      for cand in "$lazy_dir/$colorscheme.nvim" "$lazy_dir/$colorscheme"; do
+        [[ -d "$cand" ]] && { plugin_dir="$cand"; break; }
+      done
+      # Otherwise grep for a plugin whose colors/ dir contains the colorscheme name.
+      if [[ -z "$plugin_dir" ]]; then
+        for cand in "$lazy_dir"/*; do
+          [[ -d "$cand/colors" ]] || [[ -d "$cand/lua/$colorscheme" ]] || continue
+          plugin_dir="$cand"
+          break
+        done
+      fi
+    fi
+  fi
+
+  local lua_extract
+  lua_extract="$(cat <<'LUA'
+local function hex(x)
+  if type(x) == "number" then return string.format("#%06x", x) end
+  return x or ""
+end
+
+local function fb(group, attr, fallback)
+  local hl = vim.api.nvim_get_hl(0, { name = group })
+  if hl and hl[attr] then return hex(hl[attr]) end
+  return fallback
+end
+
+local normal = vim.api.nvim_get_hl(0, { name = "Normal" })
+local fg = hex(normal.fg)
+local bg = hex(normal.bg)
+
+local terminal_colors = {}
+local missing = {}
+for i = 0, 15 do
+  local v = vim.g["terminal_color_" .. i]
+  if not v then
+    table.insert(missing, "color" .. i)
+  end
+  terminal_colors[i] = v or "#000000"
+end
+if #missing > 0 then
+  io.stderr:write("theme extract: colorscheme is missing g:terminal_color_* for: "
+    .. table.concat(missing, ", ") .. "\n")
+  os.exit(1)
+end
+
+local out = {}
+table.insert(out, "[meta]")
+table.insert(out, 'name = "PLACEHOLDER"')
+table.insert(out, 'appearance = "dark"')
+table.insert(out, "")
+table.insert(out, "[palette]")
+table.insert(out, 'accent               = "' .. terminal_colors[5] .. '"')
+table.insert(out, 'cursor               = "' .. fb("Cursor", "bg", fg) .. '"')
+table.insert(out, 'foreground           = "' .. fg .. '"')
+table.insert(out, 'background           = "' .. bg .. '"')
+table.insert(out, 'selection_background = "' .. fb("Visual", "bg", bg) .. '"')
+table.insert(out, 'selection_foreground = "' .. fb("Visual", "fg", fg) .. '"')
+for i = 0, 15 do
+  table.insert(out, string.format('color%-2d = "%s"', i, terminal_colors[i]))
+end
+
+print(table.concat(out, "\n"))
+LUA
+)"
+
+  local tmp_lua
+  tmp_lua="$(mktemp -t theme-extract.XXXXXX.lua)"
+  printf '%s\n' "$lua_extract" > "$tmp_lua"
+
+  local extracted
+  if [[ -n "$plugin_dir" ]]; then
+    extracted="$(nvim --headless --noplugin \
+      -c "set rtp+=$plugin_dir" \
+      -c "colorscheme $colorscheme" \
+      -c "luafile $tmp_lua" \
+      -c "qa!" 2>&1)" || die "headless nvim failed:\n$extracted"
+  else
+    extracted="$(nvim --headless \
+      -c "colorscheme $colorscheme" \
+      -c "luafile $tmp_lua" \
+      -c "qa!" 2>&1)" || die "headless nvim failed:\n$extracted"
+  fi
+
+  rm -f "$tmp_lua"
+
+  # The lua script may have printed to stderr (e.g., "theme extract: missing ..."),
+  # which we surfaced via die above. Strip any nvim noise: take only lines that
+  # look like TOML keys or section headers.
+  local toml_only
+  toml_only="$(printf '%s\n' "$extracted" | awk '/^\[|^[a-z_0-9]+[[:space:]]*=/')"
+
+  if [[ -z "$toml_only" ]]; then
+    die "extraction produced no output. Raw nvim output:\n$extracted"
+  fi
+
+  # Patch the name field if --name was given.
+  if [[ -n "$out_name" ]]; then
+    toml_only="${toml_only//name = \"PLACEHOLDER\"/name = \"$out_name\"}"
+  fi
+
+  if (( write )); then
+    [[ -n "$out_name" ]] || die "--write requires --name"
+    mkdir -p "$THEMES_DIR/$out_name"
+    printf '%s\n' "$toml_only" > "$THEMES_DIR/$out_name/colors.toml"
+    log "wrote themes/$out_name/colors.toml"
+    # Also create the name file.
+    printf '%s\n' "$out_name" > "$THEMES_DIR/$out_name/name"
+    log "wrote themes/$out_name/name"
+    # If nvim.lua doesn't exist, scaffold one pointing at the colorscheme.
+    if [[ ! -f "$THEMES_DIR/$out_name/nvim.lua" ]]; then
+      cat > "$THEMES_DIR/$out_name/nvim.lua" <<NVIMLUA
+-- themes/$out_name/nvim.lua
+return {
+  plugin = "${colorscheme}.nvim",
+  colorscheme = "${colorscheme}",
+  setup = function() end,
+}
+NVIMLUA
+      log "wrote themes/$out_name/nvim.lua (you may want to adjust plugin/setup)"
+    fi
+    build_theme "$out_name"
+  else
+    printf '%s\n' "$toml_only"
+  fi
+}
+
+cmd_init() {
+  local name=""
+  local from=""
+  while (( $# > 0 )); do
+    case "$1" in
+      --from) from="$2"; shift 2 ;;
+      -*)     die "unknown flag: $1" ;;
+      *)      name="$1"; shift ;;
+    esac
+  done
+  [[ -n "$name" ]] || die "usage: theme init <name> [--from <nvim-colorscheme>]"
+
+  local dir="$THEMES_DIR/$name"
+  [[ ! -d "$dir" ]] || die "themes/$name already exists"
+
+  if [[ -n "$from" ]]; then
+    cmd_extract "$from" --name "$name" --write
+    return
+  fi
+
+  mkdir -p "$dir"
+  cat > "$dir/colors.toml" <<TOML
+# themes/$name/colors.toml
+# Fill in every key below. Run \`theme build $name\` after editing.
+[meta]
+name = "$name"
+appearance = "dark"
+
+[palette]
+accent               = "#000000"
+cursor               = "#000000"
+foreground           = "#000000"
+background           = "#000000"
+selection_foreground = "#000000"
+selection_background = "#000000"
+color0  = "#000000"
+color1  = "#000000"
+color2  = "#000000"
+color3  = "#000000"
+color4  = "#000000"
+color5  = "#000000"
+color6  = "#000000"
+color7  = "#000000"
+color8  = "#000000"
+color9  = "#000000"
+color10 = "#000000"
+color11 = "#000000"
+color12 = "#000000"
+color13 = "#000000"
+color14 = "#000000"
+color15 = "#000000"
+TOML
+  printf '%s\n' "$name" > "$dir/name"
+  cat > "$dir/nvim.lua" <<NVIMLUA
+-- themes/$name/nvim.lua
+-- TODO: point at the nvim plugin/colorscheme for this theme.
+return {
+  plugin = "$name.nvim",
+  colorscheme = "$name",
+  setup = function() end,
+}
+NVIMLUA
+  log "scaffolded themes/$name/ — edit colors.toml, then run \`theme build $name\`"
+}
+
 cmd_build() {
   if [[ "${1:-}" == "--check" ]]; then
-    die "TODO: --check not implemented yet (see Task 11)"
+    local drift=0
+    for dir in "$THEMES_DIR"/*/; do
+      local name
+      name="$(basename "$dir")"
+      [[ "$name" == "templates" ]] && continue
+      validate_palette "$name"
+      local palette_pairs
+      palette_pairs="$(parse_palette "$THEMES_DIR/$name/colors.toml")"
+      local pairs_list=(
+        "ghostty.conf.tmpl:ghostty.conf"
+        "borders.sh.tmpl:borders.sh"
+        "fzf.sh.tmpl:fzf.sh"
+        "tmux.conf.tmpl:tmux.conf"
+        "starship.toml.tmpl:starship.toml"
+      )
+      for entry in "${pairs_list[@]}"; do
+        local tmpl="$TEMPLATES_DIR/${entry%%:*}"
+        local out_path="$THEMES_DIR/$name/${entry##*:}"
+        local rendered
+        rendered="$(render_template "$tmpl" "$palette_pairs")"
+        if ! diff -q <(printf '%s' "$rendered") "$out_path" >/dev/null 2>&1; then
+          log "drift: $name/${entry##*:}"
+          drift=1
+        fi
+      done
+    done
+    if (( drift )); then
+      die "theme build --check: drift detected — run \`theme build\`"
+    fi
+    log "theme build --check: all generated files in sync"
+    return
   fi
   if [[ -n "${1:-}" ]]; then
     build_theme "$1"
@@ -139,7 +386,9 @@ main() {
     list)    cmd_list "$@" ;;
     current) cmd_current "$@" ;;
     build)   cmd_build "$@" ;;
-    "")      die "usage: theme {list|current|build [<name>]}" ;;
+    init)    cmd_init "$@" ;;
+    extract) cmd_extract "$@" ;;
+    "")      die "usage: theme {list|current|build [<name>]|init <name>|extract <colorscheme>}" ;;
     *)       die "unknown subcommand: $subcommand" ;;
   esac
 }
