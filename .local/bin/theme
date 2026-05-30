@@ -1,0 +1,147 @@
+#!/usr/bin/env bash
+# theme — manage and switch the dotfiles theme.
+# See docs/superpowers/specs/2026-05-30-theming-design.md.
+
+set -euo pipefail
+
+REPO_DIR="$(cd "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")/../../" && pwd)"
+THEMES_DIR="$REPO_DIR/themes"
+TEMPLATES_DIR="$THEMES_DIR/templates"
+CURRENT_LINK="$HOME/.config/themes/current"
+
+die() { printf 'theme: %s\n' "$*" >&2; exit 1; }
+log() { printf 'theme: %s\n' "$*"; }
+
+cmd_list() {
+  local current_name=""
+  if [[ -L "$CURRENT_LINK" ]]; then
+    current_name="$(basename "$(readlink "$CURRENT_LINK")")"
+  fi
+  for dir in "$THEMES_DIR"/*/; do
+    local name
+    name="$(basename "$dir")"
+    [[ "$name" == "templates" ]] && continue
+    if [[ "$name" == "$current_name" ]]; then
+      printf '* %s\n' "$name"
+    else
+      printf '  %s\n' "$name"
+    fi
+  done
+}
+
+cmd_current() {
+  if [[ ! -L "$CURRENT_LINK" ]]; then
+    die "no current theme (symlink missing at $CURRENT_LINK)"
+  fi
+  basename "$(readlink "$CURRENT_LINK")"
+}
+
+# Reads colors.toml and emits `key=value` pairs on stdout, one per line,
+# for everything under [palette]. Whitespace and quotes stripped.
+parse_palette() {
+  local file="$1"
+  awk '
+    /^\[palette\]/   { in_palette=1; next }
+    /^\[/            { in_palette=0; next }
+    in_palette && /^[a-zA-Z_0-9]+[[:space:]]*=/ {
+      key=$1
+      sub(/[[:space:]]*=.*/, "", key)
+      val=$0
+      sub(/^[^=]*=[[:space:]]*"?/, "", val)
+      sub(/"?[[:space:]]*$/, "", val)
+      print key "=" val
+    }
+  ' "$file"
+}
+
+# Validate that every required key is present in the palette.
+REQUIRED_KEYS=(
+  accent cursor foreground background
+  selection_foreground selection_background
+  color0 color1 color2 color3 color4 color5 color6 color7
+  color8 color9 color10 color11 color12 color13 color14 color15
+)
+
+validate_palette() {
+  local theme="$1"
+  local colors_file="$THEMES_DIR/$theme/colors.toml"
+  [[ -f "$colors_file" ]] || die "themes/$theme/colors.toml not found"
+  local pairs
+  pairs="$(parse_palette "$colors_file")"
+  for key in "${REQUIRED_KEYS[@]}"; do
+    grep -q "^$key=" <<<"$pairs" || die "themes/$theme/colors.toml is missing key: $key"
+  done
+}
+
+# Render a single template with the given palette.
+# Substitutes ${palette.NAME} and ${palette.NAME#} (the latter strips the leading #).
+render_template() {
+  local tmpl="$1"
+  local palette_pairs="$2"
+  local content
+  content="$(cat "$tmpl")"
+  while IFS='=' read -r key val; do
+    [[ -z "$key" ]] && continue
+    local val_nohash="${val#\#}"
+    # Order matters: replace the "#"-stripped form first so the plain form doesn't eat it.
+    content="${content//\$\{palette.${key}#\}/$val_nohash}"
+    content="${content//\$\{palette.${key}\}/$val}"
+  done <<<"$palette_pairs"
+  printf '%s' "$content"
+}
+
+build_theme() {
+  local theme="$1"
+  validate_palette "$theme"
+  local palette_pairs
+  palette_pairs="$(parse_palette "$THEMES_DIR/$theme/colors.toml")"
+  local out_dir="$THEMES_DIR/$theme"
+
+  # template-name → output-name mapping
+  local pairs=(
+    "ghostty.conf.tmpl:ghostty.conf"
+    "borders.sh.tmpl:borders.sh"
+    "fzf.sh.tmpl:fzf.sh"
+    "tmux.conf.tmpl:tmux.conf"
+    "starship.toml.tmpl:starship.toml"
+  )
+
+  for entry in "${pairs[@]}"; do
+    local tmpl_name="${entry%%:*}"
+    local out_name="${entry##*:}"
+    local tmpl="$TEMPLATES_DIR/$tmpl_name"
+    [[ -f "$tmpl" ]] || die "template not found: $tmpl"
+    render_template "$tmpl" "$palette_pairs" > "$out_dir/$out_name"
+    log "rendered $theme/$out_name"
+  done
+}
+
+cmd_build() {
+  if [[ "${1:-}" == "--check" ]]; then
+    die "TODO: --check not implemented yet (see Task 11)"
+  fi
+  if [[ -n "${1:-}" ]]; then
+    build_theme "$1"
+    return
+  fi
+  for dir in "$THEMES_DIR"/*/; do
+    local name
+    name="$(basename "$dir")"
+    [[ "$name" == "templates" ]] && continue
+    build_theme "$name"
+  done
+}
+
+main() {
+  local subcommand="${1:-}"
+  shift || true
+  case "$subcommand" in
+    list)    cmd_list "$@" ;;
+    current) cmd_current "$@" ;;
+    build)   cmd_build "$@" ;;
+    "")      die "usage: theme {list|current|build [<name>]}" ;;
+    *)       die "unknown subcommand: $subcommand" ;;
+  esac
+}
+
+main "$@"
