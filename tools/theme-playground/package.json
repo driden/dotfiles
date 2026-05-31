@@ -1,0 +1,26 @@
+{
+  "name": "theme-playground",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "bun run dev:server & bun run dev:web",
+    "dev:server": "bun --hot server.ts",
+    "dev:web": "vite",
+    "build": "tsc --noEmit && vite build",
+    "test": "bun test"
+  },
+  "dependencies": {
+    "@iarna/toml": "^2.2.5",
+    "ansi_up": "^6.0.2",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "@vitejs/plugin-react": "^4.3.4",
+    "bun-types": "latest",
+    "typescript": "^5.6.3",
+    "vite": "^5.4.11"
+  }
+}
