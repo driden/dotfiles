@@ -5,6 +5,17 @@ import { PaletteStrip } from "./components/PaletteStrip";
 import { ColorSlotTable } from "./components/ColorSlotTable";
 import { ThemeSelector } from "./components/ThemeSelector";
 
+// Modules `$foo` referenced anywhere in the top-level `format` string —
+// the "actually visible in your prompt" set. Used to put untouched language
+// modules (nodejs, rust, etc.) below the fold.
+function activeModules(fileRaw: string): Set<string> {
+  const active = new Set<string>(["format"]);
+  const m = fileRaw.match(/^format\s*=\s*(?:"""([\s\S]*?)"""|"([^"]*)"|'([^']*)')/m);
+  const content = m ? (m[1] ?? m[2] ?? m[3] ?? "") : "";
+  for (const r of content.matchAll(/\$\{?([A-Za-z_]\w*)/g)) active.add(r[1]);
+  return active;
+}
+
 export default function App() {
   const [themes, setThemes] = useState<ThemeListing[]>([]);
   const [activeName, setActiveName] = useState<string | null>(null);
@@ -87,6 +98,7 @@ function AppSection({ theme, app, onEdit, onSlotDisappeared }: {
       <ColorSlotTable
         slots={app.colorSlots}
         palette={theme.palette}
+        activeModules={activeModules(app.fileRaw)}
         onEdit={onEdit}
         onSlotDisappeared={onSlotDisappeared}
       />
