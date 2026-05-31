@@ -6,6 +6,8 @@ export type AppState = {
   colorSlots: ColorSlot[];
   preview: { kind: "ansi"; data: string } | null;
   error: string | null;
+  dirty: boolean;
+  canUndo: boolean;
 };
 
 export type ThemeState = {
@@ -42,3 +44,14 @@ export async function editSlot(
   if (!res.ok) throw new Error(body.error ?? `edit failed (${res.status})`);
   return body as AppState;
 }
+
+async function postAction(themeName: string, action: "undo" | "save" | "discard"): Promise<AppState> {
+  const res = await fetch(`/api/themes/${themeName}/starship/${action}`, { method: "POST" });
+  const body = await res.json();
+  if (!res.ok) throw new Error(body.error ?? `${action} failed (${res.status})`);
+  return body as AppState;
+}
+
+export const undoEdit = (themeName: string) => postAction(themeName, "undo");
+export const saveDraft = (themeName: string) => postAction(themeName, "save");
+export const discardDraft = (themeName: string) => postAction(themeName, "discard");

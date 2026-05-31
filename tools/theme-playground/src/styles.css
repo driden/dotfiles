@@ -49,6 +49,32 @@ header.app-header {
   margin-bottom: 16px;
 }
 
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.dirty-marker {
+  color: #C0A36E;
+  font-size: 12px;
+  font-weight: 600;
+  margin-right: 4px;
+}
+
+button.primary {
+  background: #76946A;
+  color: #1f1f28;
+  border: 1px solid #76946A;
+  font-weight: 600;
+}
+button.primary:disabled {
+  background: transparent;
+  color: #4a4a55;
+  border-color: #2a2a36;
+  font-weight: 400;
+}
+
 .app-section {
   margin-bottom: 24px;
   padding: 16px;

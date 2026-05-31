@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { listThemes, getTheme, editSlot, type ThemeListing, type ThemeState, type AppState } from "./api";
+import { listThemes, getTheme, editSlot, undoEdit, saveDraft, discardDraft, type ThemeListing, type ThemeState, type AppState } from "./api";
 import { PromptPreview } from "./components/PromptPreview";
 import { PaletteStrip } from "./components/PaletteStrip";
 import { ColorSlotTable } from "./components/ColorSlotTable";
@@ -74,11 +74,34 @@ export default function App() {
     }
   }
 
+  async function applyAppAction(fn: (name: string) => Promise<AppState>, successMsg: string) {
+    if (!theme) return;
+    try {
+      const updated = await fn(theme.name);
+      setTheme(prev => prev ? { ...prev, apps: [updated] } : prev);
+      setToast(successMsg);
+      setTimeout(() => setToast(null), 1500);
+    } catch (e: any) {
+      setError(e.message);
+    }
+  }
+  const handleUndo = () => applyAppAction(undoEdit, "undone");
+  const handleSave = () => applyAppAction(saveDraft, "saved");
+  const handleDiscard = () => applyAppAction(discardDraft, "discarded");
+
+  const currentApp = theme?.apps[0];
+
   return (
     <div>
       <header className="app-header">
         <ThemeSelector themes={themes} active={activeName} onChange={setActiveName} />
-        <button onClick={handleReload}>reload</button>
+        <div className="header-actions">
+          {currentApp?.dirty && <span className="dirty-marker">● unsaved</span>}
+          <button onClick={handleUndo} disabled={!currentApp?.canUndo}>undo</button>
+          <button onClick={handleDiscard} disabled={!currentApp?.dirty}>discard</button>
+          <button onClick={handleSave} disabled={!currentApp?.dirty} className="primary">save</button>
+          <button onClick={handleReload}>reload</button>
+        </div>
       </header>
       {error && <div className="error-banner">{error}</div>}
       {theme && <PaletteStrip palette={theme.palette} />}
