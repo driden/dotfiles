@@ -10,3 +10,4 @@ picom.conf
 init.sh
 keyd
 postinstal
+^/tools$
