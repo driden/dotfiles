@@ -29,10 +29,11 @@ async function listThemes(): Promise<{ name: string; current: boolean }[]> {
     .sort();
 
   let current = "";
-  try {
-    const namePath = path.join(os.homedir(), ".config/themes/current/name");
-    current = (await fs.readFile(namePath, "utf8")).trim();
-  } catch { /* not configured */ }
+  const namePath = path.join(os.homedir(), ".config/themes/current/name");
+  const nameFile = Bun.file(namePath);
+  if (await nameFile.exists()) {
+    current = (await nameFile.text()).trim();
+  }
 
   return names.map(name => ({ name, current: name === current }));
 }
