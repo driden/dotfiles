@@ -60,11 +60,12 @@ export function ColorSlotTable({ slots, palette, activeModules, onEdit, onSlotDi
     return (
       <span className="slot-cell">
         <span
-          className="swatch inline"
+          className="swatch inline clickable"
           style={{ background: palette[slot.key.toLowerCase()] ?? "#000" }}
+          onClick={() => setOpenSlotId(slot.id)}
+          title="click to pick a new color"
         />
         <span className="slot-key">{slot.key}</span>
-        <button onClick={() => setOpenSlotId(slot.id)}>pick</button>
         {openSlotId === slot.id && (
           <PalettePicker
             palette={palette}

@@ -122,6 +122,15 @@ header.app-header {
   cursor: default;
 }
 
+.swatch.inline.clickable {
+  cursor: pointer;
+}
+
+.swatch.inline.clickable:hover {
+  outline: 2px solid #FFA066;
+  outline-offset: 1px;
+}
+
 .slot-key {
   font-family: monospace;
   font-size: 12px;
