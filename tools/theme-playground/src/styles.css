@@ -11,8 +11,15 @@
 }
 @font-face {
   font-family: "Hack Nerd Font Mono";
-  src: local("Hack Nerd Font Mono"), local("HackNFM-Regular");
+  src: local("Hack Nerd Font Mono"),
+       local("HackNerdFontMono-Regular"),
+       local("HackNFM-Regular"),
+       local("Hack Nerd Font"),
+       local("HackNerdFont-Regular");
   font-display: block;
+  /* Scope to the Powerline + Nerd Font icon ranges so the browser only
+     reaches for this family when rendering those glyphs. */
+  unicode-range: U+E000-E0FF, U+F000-F8FE, U+2500-25FF;
 }
 @font-face {
   font-family: "Monaco";
