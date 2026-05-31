@@ -48,7 +48,9 @@ header.app-header {
 }
 
 .prompt-preview {
-  font-family: "Comic Code", "JetBrainsMono NF", monospace;
+  /* Apple Symbols / system-ui catches macOS-specific PUA glyphs like the
+     apple logo (U+F8FF) that neither Comic Code nor a Nerd Font has. */
+  font-family: "Comic Code", "JetBrainsMono NF", "Apple Symbols", system-ui, monospace;
   font-size: 16px;
   white-space: pre;
   background: #1f1f28;
