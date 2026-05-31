@@ -50,7 +50,9 @@ async function renderStarship(configPath: string): Promise<{ ansi: string | null
     LANG: process.env.LANG ?? "en_US.UTF-8",
     TERM: "xterm-256color",
     STARSHIP_CONFIG: configPath,
-    STARSHIP_SHELL: "zsh",
+    // Intentionally no STARSHIP_SHELL — when set to zsh, starship wraps
+    // ANSI escapes in `%{...%}` markers for zsh's prompt-length counter.
+    // Real zsh strips them; our HTML preview shows them literally.
   };
   const proc = Bun.spawn(
     ["starship", "prompt",
