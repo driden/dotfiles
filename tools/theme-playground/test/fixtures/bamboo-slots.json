@@ -1,0 +1,596 @@
+[
+  {
+    "id": "os/style/bg/1@1074",
+    "section": "os",
+    "field": "style",
+    "role": "bg",
+    "key": "accent",
+    "start": 1074,
+    "end": 1080
+  },
+  {
+    "id": "os/style/fg/2@1084",
+    "section": "os",
+    "field": "style",
+    "role": "fg",
+    "key": "background",
+    "start": 1084,
+    "end": 1094
+  },
+  {
+    "id": "username/style_user/bg/1@1439",
+    "section": "username",
+    "field": "style_user",
+    "role": "bg",
+    "key": "accent",
+    "start": 1439,
+    "end": 1445
+  },
+  {
+    "id": "username/style_user/fg/2@1449",
+    "section": "username",
+    "field": "style_user",
+    "role": "fg",
+    "key": "background",
+    "start": 1449,
+    "end": 1459
+  },
+  {
+    "id": "username/style_root/bg/1@1478",
+    "section": "username",
+    "field": "style_root",
+    "role": "bg",
+    "key": "accent",
+    "start": 1478,
+    "end": 1484
+  },
+  {
+    "id": "username/style_root/fg/2@1488",
+    "section": "username",
+    "field": "style_root",
+    "role": "fg",
+    "key": "background",
+    "start": 1488,
+    "end": 1498
+  },
+  {
+    "id": "directory/style/fg/1@1554",
+    "section": "directory",
+    "field": "style",
+    "role": "fg",
+    "key": "background",
+    "start": 1554,
+    "end": 1564
+  },
+  {
+    "id": "directory/style/bg/2@1568",
+    "section": "directory",
+    "field": "style",
+    "role": "bg",
+    "key": "color6",
+    "start": 1568,
+    "end": 1574
+  },
+  {
+    "id": "git_branch/style/bg/1@1742",
+    "section": "git_branch",
+    "field": "style",
+    "role": "bg",
+    "key": "color6",
+    "start": 1742,
+    "end": 1748
+  },
+  {
+    "id": "git_status/style/bg/1@1842",
+    "section": "git_status",
+    "field": "style",
+    "role": "bg",
+    "key": "color6",
+    "start": 1842,
+    "end": 1848
+  },
+  {
+    "id": "nodejs/style/bg/1@1961",
+    "section": "nodejs",
+    "field": "style",
+    "role": "bg",
+    "key": "color6",
+    "start": 1961,
+    "end": 1967
+  },
+  {
+    "id": "c/style/bg/1@2069",
+    "section": "c",
+    "field": "style",
+    "role": "bg",
+    "key": "color6",
+    "start": 2069,
+    "end": 2075
+  },
+  {
+    "id": "rust/style/bg/1@2179",
+    "section": "rust",
+    "field": "style",
+    "role": "bg",
+    "key": "color6",
+    "start": 2179,
+    "end": 2185
+  },
+  {
+    "id": "golang/style/bg/1@2291",
+    "section": "golang",
+    "field": "style",
+    "role": "bg",
+    "key": "color6",
+    "start": 2291,
+    "end": 2297
+  },
+  {
+    "id": "php/style/bg/1@2400",
+    "section": "php",
+    "field": "style",
+    "role": "bg",
+    "key": "color6",
+    "start": 2400,
+    "end": 2406
+  },
+  {
+    "id": "java/style/bg/1@2511",
+    "section": "java",
+    "field": "style",
+    "role": "bg",
+    "key": "color6",
+    "start": 2511,
+    "end": 2517
+  },
+  {
+    "id": "kotlin/style/bg/1@2623",
+    "section": "kotlin",
+    "field": "style",
+    "role": "bg",
+    "key": "color6",
+    "start": 2623,
+    "end": 2629
+  },
+  {
+    "id": "haskell/style/bg/1@2736",
+    "section": "haskell",
+    "field": "style",
+    "role": "bg",
+    "key": "color6",
+    "start": 2736,
+    "end": 2742
+  },
+  {
+    "id": "python/style/bg/1@2848",
+    "section": "python",
+    "field": "style",
+    "role": "bg",
+    "key": "color6",
+    "start": 2848,
+    "end": 2854
+  },
+  {
+    "id": "docker_context/style/bg/1@2968",
+    "section": "docker_context",
+    "field": "style",
+    "role": "bg",
+    "key": "background",
+    "start": 2968,
+    "end": 2978
+  },
+  {
+    "id": "time/style/bg/1@3102",
+    "section": "time",
+    "field": "style",
+    "role": "bg",
+    "key": "accent",
+    "start": 3102,
+    "end": 3108
+  },
+  {
+    "id": "format/format (#1)/fg/1@205",
+    "section": "format",
+    "field": "format (#1)",
+    "role": "fg",
+    "key": "accent",
+    "start": 205,
+    "end": 211
+  },
+  {
+    "id": "format/format (#2)/bg/1@237",
+    "section": "format",
+    "field": "format (#2)",
+    "role": "bg",
+    "key": "color4",
+    "start": 237,
+    "end": 243
+  },
+  {
+    "id": "format/format (#2)/fg/2@247",
+    "section": "format",
+    "field": "format (#2)",
+    "role": "fg",
+    "key": "accent",
+    "start": 247,
+    "end": 253
+  },
+  {
+    "id": "format/format (#3)/fg/1@264",
+    "section": "format",
+    "field": "format (#3)",
+    "role": "fg",
+    "key": "color4",
+    "start": 264,
+    "end": 270
+  },
+  {
+    "id": "format/format (#3)/bg/2@274",
+    "section": "format",
+    "field": "format (#3)",
+    "role": "bg",
+    "key": "color6",
+    "start": 274,
+    "end": 280
+  },
+  {
+    "id": "format/format (#4)/fg/1@302",
+    "section": "format",
+    "field": "format (#4)",
+    "role": "fg",
+    "key": "color6",
+    "start": 302,
+    "end": 308
+  },
+  {
+    "id": "format/format (#4)/bg/2@312",
+    "section": "format",
+    "field": "format (#4)",
+    "role": "bg",
+    "key": "color3",
+    "start": 312,
+    "end": 318
+  },
+  {
+    "id": "format/format (#5)/fg/1@328",
+    "section": "format",
+    "field": "format (#5)",
+    "role": "fg",
+    "key": "color3",
+    "start": 328,
+    "end": 334
+  },
+  {
+    "id": "format/format (#5)/bg/2@338",
+    "section": "format",
+    "field": "format (#5)",
+    "role": "bg",
+    "key": "color9",
+    "start": 338,
+    "end": 344
+  },
+  {
+    "id": "format/format (#6)/fg/1@380",
+    "section": "format",
+    "field": "format (#6)",
+    "role": "fg",
+    "key": "color9",
+    "start": 380,
+    "end": 386
+  },
+  {
+    "id": "format/format (#6)/bg/2@390",
+    "section": "format",
+    "field": "format (#6)",
+    "role": "bg",
+    "key": "color2",
+    "start": 390,
+    "end": 396
+  },
+  {
+    "id": "format/format (#7)/fg/1@406",
+    "section": "format",
+    "field": "format (#7)",
+    "role": "fg",
+    "key": "color2",
+    "start": 406,
+    "end": 412
+  },
+  {
+    "id": "format/format (#7)/bg/2@416",
+    "section": "format",
+    "field": "format (#7)",
+    "role": "bg",
+    "key": "color4",
+    "start": 416,
+    "end": 422
+  },
+  {
+    "id": "format/format (#8)/fg/1@450",
+    "section": "format",
+    "field": "format (#8)",
+    "role": "fg",
+    "key": "color4",
+    "start": 450,
+    "end": 456
+  },
+  {
+    "id": "git_branch/format (#1)/fg/1@1784",
+    "section": "git_branch",
+    "field": "format (#1)",
+    "role": "fg",
+    "key": "background",
+    "start": 1784,
+    "end": 1794
+  },
+  {
+    "id": "git_branch/format (#1)/bg/2@1798",
+    "section": "git_branch",
+    "field": "format (#1)",
+    "role": "bg",
+    "key": "color9",
+    "start": 1798,
+    "end": 1804
+  },
+  {
+    "id": "git_status/format (#1)/fg/1@1894",
+    "section": "git_status",
+    "field": "format (#1)",
+    "role": "fg",
+    "key": "background",
+    "start": 1894,
+    "end": 1904
+  },
+  {
+    "id": "git_status/format (#1)/bg/2@1908",
+    "section": "git_status",
+    "field": "format (#1)",
+    "role": "bg",
+    "key": "color9",
+    "start": 1908,
+    "end": 1914
+  },
+  {
+    "id": "nodejs/format (#1)/fg/1@2006",
+    "section": "nodejs",
+    "field": "format (#1)",
+    "role": "fg",
+    "key": "background",
+    "start": 2006,
+    "end": 2016
+  },
+  {
+    "id": "nodejs/format (#1)/bg/2@2020",
+    "section": "nodejs",
+    "field": "format (#1)",
+    "role": "bg",
+    "key": "color6",
+    "start": 2020,
+    "end": 2026
+  },
+  {
+    "id": "c/format (#1)/fg/1@2114",
+    "section": "c",
+    "field": "format (#1)",
+    "role": "fg",
+    "key": "background",
+    "start": 2114,
+    "end": 2124
+  },
+  {
+    "id": "c/format (#1)/bg/2@2128",
+    "section": "c",
+    "field": "format (#1)",
+    "role": "bg",
+    "key": "color6",
+    "start": 2128,
+    "end": 2134
+  },
+  {
+    "id": "rust/format (#1)/fg/1@2224",
+    "section": "rust",
+    "field": "format (#1)",
+    "role": "fg",
+    "key": "background",
+    "start": 2224,
+    "end": 2234
+  },
+  {
+    "id": "rust/format (#1)/bg/2@2238",
+    "section": "rust",
+    "field": "format (#1)",
+    "role": "bg",
+    "key": "color6",
+    "start": 2238,
+    "end": 2244
+  },
+  {
+    "id": "golang/format (#1)/fg/1@2336",
+    "section": "golang",
+    "field": "format (#1)",
+    "role": "fg",
+    "key": "background",
+    "start": 2336,
+    "end": 2346
+  },
+  {
+    "id": "golang/format (#1)/bg/2@2350",
+    "section": "golang",
+    "field": "format (#1)",
+    "role": "bg",
+    "key": "color6",
+    "start": 2350,
+    "end": 2356
+  },
+  {
+    "id": "php/format (#1)/fg/1@2445",
+    "section": "php",
+    "field": "format (#1)",
+    "role": "fg",
+    "key": "background",
+    "start": 2445,
+    "end": 2455
+  },
+  {
+    "id": "php/format (#1)/bg/2@2459",
+    "section": "php",
+    "field": "format (#1)",
+    "role": "bg",
+    "key": "color6",
+    "start": 2459,
+    "end": 2465
+  },
+  {
+    "id": "java/format (#1)/fg/1@2556",
+    "section": "java",
+    "field": "format (#1)",
+    "role": "fg",
+    "key": "background",
+    "start": 2556,
+    "end": 2566
+  },
+  {
+    "id": "java/format (#1)/bg/2@2570",
+    "section": "java",
+    "field": "format (#1)",
+    "role": "bg",
+    "key": "color6",
+    "start": 2570,
+    "end": 2576
+  },
+  {
+    "id": "kotlin/format (#1)/fg/1@2668",
+    "section": "kotlin",
+    "field": "format (#1)",
+    "role": "fg",
+    "key": "background",
+    "start": 2668,
+    "end": 2678
+  },
+  {
+    "id": "kotlin/format (#1)/bg/2@2682",
+    "section": "kotlin",
+    "field": "format (#1)",
+    "role": "bg",
+    "key": "color6",
+    "start": 2682,
+    "end": 2688
+  },
+  {
+    "id": "haskell/format (#1)/fg/1@2781",
+    "section": "haskell",
+    "field": "format (#1)",
+    "role": "fg",
+    "key": "background",
+    "start": 2781,
+    "end": 2791
+  },
+  {
+    "id": "haskell/format (#1)/bg/2@2795",
+    "section": "haskell",
+    "field": "format (#1)",
+    "role": "bg",
+    "key": "color6",
+    "start": 2795,
+    "end": 2801
+  },
+  {
+    "id": "python/format (#1)/fg/1@2893",
+    "section": "python",
+    "field": "format (#1)",
+    "role": "fg",
+    "key": "background",
+    "start": 2893,
+    "end": 2903
+  },
+  {
+    "id": "python/format (#1)/bg/2@2907",
+    "section": "python",
+    "field": "format (#1)",
+    "role": "bg",
+    "key": "color6",
+    "start": 2907,
+    "end": 2913
+  },
+  {
+    "id": "docker_context/format (#1)/bg/1@3028",
+    "section": "docker_context",
+    "field": "format (#1)",
+    "role": "bg",
+    "key": "color8",
+    "start": 3028,
+    "end": 3034
+  },
+  {
+    "id": "time/format (#1)/fg/1@3136",
+    "section": "time",
+    "field": "format (#1)",
+    "role": "fg",
+    "key": "background",
+    "start": 3136,
+    "end": 3146
+  },
+  {
+    "id": "time/format (#1)/bg/2@3150",
+    "section": "time",
+    "field": "format (#1)",
+    "role": "bg",
+    "key": "accent",
+    "start": 3150,
+    "end": 3156
+  },
+  {
+    "id": "character/success_symbol (#1)/fg/1@3259",
+    "section": "character",
+    "field": "success_symbol (#1)",
+    "role": "fg",
+    "key": "color2",
+    "start": 3259,
+    "end": 3265
+  },
+  {
+    "id": "character/error_symbol (#1)/fg/1@3296",
+    "section": "character",
+    "field": "error_symbol (#1)",
+    "role": "fg",
+    "key": "color1",
+    "start": 3296,
+    "end": 3302
+  },
+  {
+    "id": "character/vimcmd_symbol (#1)/fg/1@3334",
+    "section": "character",
+    "field": "vimcmd_symbol (#1)",
+    "role": "fg",
+    "key": "color2",
+    "start": 3334,
+    "end": 3340
+  },
+  {
+    "id": "character/vimcmd_replace_one_symbol (#1)/fg/1@3384",
+    "section": "character",
+    "field": "vimcmd_replace_one_symbol (#1)",
+    "role": "fg",
+    "key": "accent",
+    "start": 3384,
+    "end": 3390
+  },
+  {
+    "id": "character/vimcmd_replace_symbol (#1)/fg/1@3430",
+    "section": "character",
+    "field": "vimcmd_replace_symbol (#1)",
+    "role": "fg",
+    "key": "accent",
+    "start": 3430,
+    "end": 3436
+  },
+  {
+    "id": "character/vimcmd_visual_symbol (#1)/fg/1@3475",
+    "section": "character",
+    "field": "vimcmd_visual_symbol (#1)",
+    "role": "fg",
+    "key": "accent",
+    "start": 3475,
+    "end": 3481
+  }
+]

@@ -237,7 +237,7 @@ export function discoverSlots(
 // dependence on @iarna/toml — keeps this lib pure.
 export function paletteKeysFromStarshipToml(text: string): Set<string> {
   const out = new Set<string>();
-  const re = /^\s*\[palettes\.([\w]+)\]([\s\S]*?)(?=^\s*\[|$)/gm;
+  const re = /^\[palettes\.([\w]+)\]\n([\s\S]+?)(?=^\[|$(?![\s\S]))/gm;
   const m = re.exec(text);
   if (!m) return out;
   const body = m[2];

@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test";
-import { discoverSlots } from "../src/lib/slot-discovery";
+import { discoverSlots, paletteKeysFromStarshipToml } from "../src/lib/slot-discovery";
 
 const PALETTE = new Set([
   "accent","cursor","foreground","background",
@@ -135,4 +135,22 @@ describe("discoverSlots (name-token mode)", () => {
     expect(() => discoverSlots("anything", PALETTE, "hex-literal"))
       .toThrow(/TODO\(v2\)/);
   });
+});
+
+import fs from "node:fs";
+import path from "node:path";
+
+describe("slot discovery — golden fixtures", () => {
+  const repo = "/Users/driden/code/dotfiles";
+  for (const theme of ["kanagawa", "bamboo"]) {
+    test(`${theme} discovery matches committed fixture`, () => {
+      const tomlPath = `${repo}/themes/${theme}/starship.toml`;
+      const fxPath = path.join(__dirname, "fixtures", `${theme}-slots.json`);
+      const text = fs.readFileSync(tomlPath, "utf8");
+      const palette = paletteKeysFromStarshipToml(text);
+      const slots = discoverSlots(text, palette, "name-token");
+      const expected = JSON.parse(fs.readFileSync(fxPath, "utf8"));
+      expect(slots).toEqual(expected);
+    });
+  }
 });
