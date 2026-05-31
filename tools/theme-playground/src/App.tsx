@@ -3,6 +3,7 @@ import { listThemes, getTheme, editSlot, type ThemeListing, type ThemeState, typ
 import { PromptPreview } from "./components/PromptPreview";
 import { PaletteStrip } from "./components/PaletteStrip";
 import { ColorSlotTable } from "./components/ColorSlotTable";
+import { ThemeSelector } from "./components/ThemeSelector";
 
 export default function App() {
   const [themes, setThemes] = useState<ThemeListing[]>([]);
@@ -73,10 +74,6 @@ export default function App() {
   );
 }
 
-// Placeholders — real components arrive in Tasks 9-12.
-function ThemeSelector(_: { themes: ThemeListing[]; active: string | null; onChange: (s: string) => void }) {
-  return <div>ThemeSelector (TODO)</div>;
-}
 function AppSection({ theme, app, onEdit, onSlotDisappeared }: {
   theme: ThemeState;
   app: AppState;
