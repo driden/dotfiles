@@ -33,13 +33,13 @@ function isStyleField(name: string): boolean {
 
 const { Parser, Language } = TreeSitter;
 await Parser.init();
-const _require = createRequire(import.meta.url);
-const _wasmPath = _require.resolve(
+const require = createRequire(import.meta.url);
+const wasmPath = require.resolve(
   "@tree-sitter-grammars/tree-sitter-toml/tree-sitter-toml.wasm",
 );
-const _lang = await Language.load(_wasmPath);
-const _parser = new Parser();
-_parser.setLanguage(_lang);
+const lang = await Language.load(wasmPath);
+const parser = new Parser();
+parser.setLanguage(lang);
 
 // ── helpers ──────────────────────────────────────────────────────────────────
 
@@ -49,10 +49,13 @@ function stringContent(node: TreeSitter.Node): [number, number] {
   return [node.startIndex + d, node.endIndex - d];
 }
 
+// Resolves the header key of a [table] or [[array-of-tables]] node.
+// Handles bare (`foo`), dotted (`foo.bar`), and quoted (`"foo"`) keys.
 function tableName(table: TreeSitter.Node): string {
   for (let i = 0; i < table.childCount; i++) {
     const c = table.child(i)!;
     if (c.type === "bare_key" || c.type === "dotted_key") return c.text;
+    if (c.type === "quoted_key") return c.text.replace(/^["']|["']$/g, "");
   }
   return "format";
 }
@@ -61,7 +64,7 @@ function tableName(table: TreeSitter.Node): string {
 function sectionOf(node: TreeSitter.Node): string {
   let cur: TreeSitter.Node | null = node.parent;
   while (cur) {
-    if (cur.type === "table") return tableName(cur);
+    if (cur.type === "table" || cur.type === "table_array_element") return tableName(cur);
     cur = cur.parent;
   }
   return "format";
@@ -69,18 +72,16 @@ function sectionOf(node: TreeSitter.Node): string {
 
 // ── stage 2: tokenize one style slice ────────────────────────────────────────
 
-const TOKEN_RE = /(fg:|bg:)?([A-Za-z_][A-Za-z0-9_]*)/g;
-
 function tokenizeSlice(
   source: string, sliceStart: number, sliceEnd: number,
   section: string, field: string, palette: Set<string>,
 ): ColorSlot[] {
+  const re = /(fg:|bg:)?([A-Za-z_][A-Za-z0-9_]*)/g;
   const text = source.slice(sliceStart, sliceEnd);
   const out: ColorSlot[] = [];
   let occ = 0;
-  TOKEN_RE.lastIndex = 0;
   let m: RegExpExecArray | null;
-  while ((m = TOKEN_RE.exec(text)) !== null) {
+  while ((m = re.exec(text)) !== null) {
     const prefix = m[1]; const name = m[2]; const lower = name.toLowerCase();
     if (MODIFIERS.has(lower) || !palette.has(lower)) continue;
     const role: SlotRole = prefix === "bg:" ? "bg" : "fg";
@@ -93,18 +94,20 @@ function tokenizeSlice(
 
 // ── stage 1b: [label](style) extractor ───────────────────────────────────────
 
-const BRACKET_RE = /\]\(([^)]*)\)/g;
-
+// `occ` is per string value, not per (section, field) across the file. Works
+// because each starship `format` is one string value, so per-value and
+// per-field counters agree. If a future codebase splits formats across pairs,
+// reconsider.
 function bracketSlots(
   source: string, sliceStart: number, sliceEnd: number,
   section: string, field: string, palette: Set<string>,
 ): ColorSlot[] {
+  const re = /\]\(([^)]*)\)/g;
   const text = source.slice(sliceStart, sliceEnd);
   const out: ColorSlot[] = [];
   let occ = 0;
-  BRACKET_RE.lastIndex = 0;
   let m: RegExpExecArray | null;
-  while ((m = BRACKET_RE.exec(text)) !== null) {
+  while ((m = re.exec(text)) !== null) {
     occ += 1;
     const innerStart = sliceStart + m.index + 2; // skip `](`
     out.push(...tokenizeSlice(source, innerStart, innerStart + m[1].length, section, `${field} (#${occ})`, palette));
@@ -117,12 +120,14 @@ function bracketSlots(
 export function discoverSlots(text: string, palette: Set<string>, mode: SlotMode): ColorSlot[] {
   if (mode === "hex-literal") throw new Error("TODO(v2): hex-literal mode not implemented yet");
 
-  const tree = _parser.parse(text)!;
+  const tree = parser.parse(text)!;
   const styleOut: ColorSlot[] = [];
   const bracketOut: ColorSlot[] = [];
 
-  // Walk pairs; accumulate style-field slots and bracket slots separately so
-  // final order matches the original: all style-field tokens then all bracket tokens.
+  // Walk every pair. Accumulate style-field slots and bracket slots separately
+  // so the final order is: all style-field tokens, then all bracket tokens.
+  // We don't early-return on pair so that inline_table values (which contain
+  // nested pairs) are recursed into.
   function visit(node: TreeSitter.Node) {
     if (node.type === "pair") {
       const keyNode = node.child(0)!;
@@ -136,7 +141,6 @@ export function discoverSlots(text: string, palette: Set<string>, mode: SlotMode
           bracketOut.push(...bracketSlots(text, cs, ce, section, keyName, palette));
         }
       }
-      return;
     }
     for (let i = 0; i < node.childCount; i++) visit(node.child(i)!);
   }
@@ -146,11 +150,12 @@ export function discoverSlots(text: string, palette: Set<string>, mode: SlotMode
 }
 
 export function paletteKeysFromStarshipToml(text: string): Set<string> {
-  const tree = _parser.parse(text)!;
+  const tree = parser.parse(text)!;
   const out = new Set<string>();
   for (let i = 0; i < tree.rootNode.childCount; i++) {
     const node = tree.rootNode.child(i)!;
     if (node.type !== "table") continue;
+    // table layout: child(0) is "[", child(1) is the header key node.
     const headerKey = node.child(1)!;
     if (headerKey.type !== "dotted_key") continue;
     const parts = headerKey.text.split(".");

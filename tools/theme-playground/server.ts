@@ -43,7 +43,7 @@ async function readPalette(themeName: string): Promise<Record<string, string>> {
   return parsed.palette ?? {};
 }
 
-async function renderStarship(themeName: string, configPath: string): Promise<{ ansi: string | null; error: string | null }> {
+async function renderStarship(configPath: string): Promise<{ ansi: string | null; error: string | null }> {
   const env = {
     PATH: process.env.PATH ?? "/usr/bin:/bin",
     HOME: process.env.HOME ?? os.homedir(),
@@ -85,7 +85,7 @@ async function buildAppState(themeName: string): Promise<AppState> {
   } catch (e: any) {
     stripError = e.message;
   }
-  const { ansi, error } = await renderStarship(themeName, configPath);
+  const { ansi, error } = await renderStarship(configPath);
   return {
     app: "starship",
     fileRaw,

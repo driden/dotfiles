@@ -135,6 +135,13 @@ describe("discoverSlots (name-token mode)", () => {
     expect(() => discoverSlots("anything", PALETTE, "hex-literal"))
       .toThrow(/TODO\(v2\)/);
   });
+
+  test("tracks section context for [[array-of-tables]] headers", () => {
+    const text = `[[git_commit]]\nstyle = "fg:color3"\n`;
+    const slots = discoverSlots(text, PALETTE, "name-token");
+    expect(slots.length).toBe(1);
+    expect(slots[0]).toMatchObject({ section: "git_commit", role: "fg", key: "color3" });
+  });
 });
 
 import fs from "node:fs";
