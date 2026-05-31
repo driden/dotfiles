@@ -1,7 +1,24 @@
 /* Mirrors ghostty's font stack so the preview matches the real terminal:
    Comic Code for text, Hack Nerd Font Mono for Powerline/Nerd glyphs
-   (U+E000-U+E0FF range), Monaco for Apple PUA glyphs (U+F8FF). All loaded
-   from the system. */
+   (U+E000-U+E0FF range), Monaco for Apple PUA glyphs (U+F8FF). All
+   loaded from the system. Modern browsers gate non-allowlisted system
+   fonts unless they're declared via @font-face + local(), so each is
+   explicitly named here. */
+@font-face {
+  font-family: "Comic Code";
+  src: local("Comic Code"), local("ComicCode");
+  font-display: block;
+}
+@font-face {
+  font-family: "Hack Nerd Font Mono";
+  src: local("Hack Nerd Font Mono"), local("HackNFM-Regular");
+  font-display: block;
+}
+@font-face {
+  font-family: "Monaco";
+  src: local("Monaco");
+  font-display: block;
+}
 
 * { box-sizing: border-box; }
 
