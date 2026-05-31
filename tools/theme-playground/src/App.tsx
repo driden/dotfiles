@@ -16,12 +16,15 @@ function activeModules(fileRaw: string): Set<string> {
   return active;
 }
 
+type HoverSlot = { hex: string; role: "fg" | "bg" } | null;
+
 export default function App() {
   const [themes, setThemes] = useState<ThemeListing[]>([]);
   const [activeName, setActiveName] = useState<string | null>(null);
   const [theme, setTheme] = useState<ThemeState | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [toast, setToast] = useState<string | null>(null);
+  const [hover, setHover] = useState<HoverSlot>(null);
 
   useEffect(() => {
     listThemes().then(list => {
@@ -73,7 +76,9 @@ export default function App() {
           key={app.app}
           theme={theme}
           app={app}
+          hover={hover}
           onEdit={handleEdit}
+          onHoverSlot={setHover}
           onSlotDisappeared={() => {
             setToast("slot moved — pick again");
             setTimeout(() => setToast(null), 1800);
@@ -85,22 +90,25 @@ export default function App() {
   );
 }
 
-function AppSection({ theme, app, onEdit, onSlotDisappeared }: {
+function AppSection({ theme, app, hover, onEdit, onSlotDisappeared, onHoverSlot }: {
   theme: ThemeState;
   app: AppState;
+  hover: HoverSlot;
   onEdit: (id: string, k: string) => void;
   onSlotDisappeared: () => void;
+  onHoverSlot: (h: HoverSlot) => void;
 }) {
   return (
     <section className="app-section">
       <h2>{app.app}</h2>
-      <PromptPreview ansi={app.preview?.data ?? null} />
+      <PromptPreview ansi={app.preview?.data ?? null} highlight={hover} />
       <ColorSlotTable
         slots={app.colorSlots}
         palette={theme.palette}
         activeModules={activeModules(app.fileRaw)}
         onEdit={onEdit}
         onSlotDisappeared={onSlotDisappeared}
+        onHoverSlot={onHoverSlot}
       />
     </section>
   );

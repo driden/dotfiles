@@ -8,6 +8,7 @@ type Props = {
   activeModules: Set<string>;
   onEdit: (slotId: string, newKey: string) => void;
   onSlotDisappeared: () => void;
+  onHoverSlot: (h: { hex: string; role: "fg" | "bg" } | null) => void;
 };
 
 type Group = {
@@ -35,7 +36,7 @@ function groupSlots(slots: ColorSlot[]): Group[] {
   return order.map(k => map.get(k)!);
 }
 
-export function ColorSlotTable({ slots, palette, activeModules, onEdit, onSlotDisappeared }: Props) {
+export function ColorSlotTable({ slots, palette, activeModules, onEdit, onSlotDisappeared, onHoverSlot }: Props) {
   const [openSlotId, setOpenSlotId] = useState<string | null>(null);
 
   useEffect(() => {
@@ -57,11 +58,16 @@ export function ColorSlotTable({ slots, palette, activeModules, onEdit, onSlotDi
 
   function renderCell(slot?: ColorSlot) {
     if (!slot) return <span className="empty-cell">—</span>;
+    const hex = (palette[slot.key.toLowerCase()] ?? "#000").toUpperCase();
     return (
-      <span className="slot-cell">
+      <span
+        className="slot-cell"
+        onMouseEnter={() => onHoverSlot({ hex, role: slot.role })}
+        onMouseLeave={() => onHoverSlot(null)}
+      >
         <span
           className="swatch inline clickable"
-          style={{ background: palette[slot.key.toLowerCase()] ?? "#000" }}
+          style={{ background: hex }}
           onClick={() => setOpenSlotId(slot.id)}
           title="click to pick a new color"
         />
