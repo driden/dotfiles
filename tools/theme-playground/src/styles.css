@@ -1,20 +1,7 @@
-/* Comic Code (system-installed; user's terminal font) first, then a bundled
-   Nerd Font so the Powerline glyphs / module icons render. The browser picks
-   per-glyph from the first family that has it. */
-@font-face {
-  font-family: "Comic Code";
-  src: local("Comic Code"), local("ComicCode");
-  font-weight: 400;
-  font-style: normal;
-  font-display: block;
-}
-@font-face {
-  font-family: "JetBrainsMono NF";
-  src: url("/fonts/JetBrainsMonoNerdFont-Regular.woff2") format("woff2");
-  font-weight: 400;
-  font-style: normal;
-  font-display: block;
-}
+/* Mirrors ghostty's font stack so the preview matches the real terminal:
+   Comic Code for text, Hack Nerd Font Mono for Powerline/Nerd glyphs
+   (U+E000-U+E0FF range), Monaco for Apple PUA glyphs (U+F8FF). All loaded
+   from the system. */
 
 * { box-sizing: border-box; }
 
@@ -48,9 +35,7 @@ header.app-header {
 }
 
 .prompt-preview {
-  /* Apple Symbols / system-ui catches macOS-specific PUA glyphs like the
-     apple logo (U+F8FF) that neither Comic Code nor a Nerd Font has. */
-  font-family: "Comic Code", "JetBrainsMono NF", "Apple Symbols", system-ui, monospace;
+  font-family: "Comic Code", "Hack Nerd Font Mono", Monaco, monospace;
   font-size: 16px;
   white-space: pre;
   background: #1f1f28;

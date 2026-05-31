@@ -32,7 +32,6 @@ src/components/
   PalettePicker.tsx                swatch popover
 test/slot-discovery.test.ts        18 unit tests + 2 fixture tests
 test/fixtures/                     golden discovery output per theme (locks behavior across changes)
-public/fonts/                      JetBrainsMono Nerd Font woff2 (icon-glyph fallback)
 ```
 
 ## How a click round-trips
@@ -59,7 +58,7 @@ Forward-compat: `mode: "hex-literal"` is stubbed (`throw TODO(v2)`) for the even
 
 ## Font stack
 
-The prompt preview uses `Comic Code, "JetBrainsMono NF", monospace`. Comic Code is loaded via `local()` (must be installed system-wide; not redistributable). JetBrainsMono Nerd Font is bundled as `public/fonts/*.woff2` so Powerline triangles and module icons render even if Comic Code lacks them — the browser falls back glyph by glyph.
+The prompt preview uses `Comic Code, "Hack Nerd Font Mono", Monaco, monospace`, mirroring `.config/ghostty/config`. All three are system-installed (none bundled). The browser falls back glyph by glyph: text from Comic Code, Powerline/Nerd icons from Hack, the apple logo (U+F8FF) from Monaco.
 
 ## Design / plan
 
