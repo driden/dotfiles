@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { listThemes, getTheme, editSlot, type ThemeListing, type ThemeState, type AppState } from "./api";
 import { PromptPreview } from "./components/PromptPreview";
+import { PaletteStrip } from "./components/PaletteStrip";
 
 export default function App() {
   const [themes, setThemes] = useState<ThemeListing[]>([]);
@@ -65,9 +66,6 @@ export default function App() {
 // Placeholders — real components arrive in Tasks 9-12.
 function ThemeSelector(_: { themes: ThemeListing[]; active: string | null; onChange: (s: string) => void }) {
   return <div>ThemeSelector (TODO)</div>;
-}
-function PaletteStrip(_: { palette: Record<string, string> }) {
-  return <div className="palette-strip">PaletteStrip (TODO)</div>;
 }
 function AppSection({ app }: { theme: ThemeState; app: AppState; onEdit: (id: string, k: string) => void }) {
   return (
