@@ -1,3 +1,13 @@
+/* Comic Code (system-installed; user's terminal font) first, then a bundled
+   Nerd Font so the Powerline glyphs / module icons render. The browser picks
+   per-glyph from the first family that has it. */
+@font-face {
+  font-family: "Comic Code";
+  src: local("Comic Code"), local("ComicCode");
+  font-weight: 400;
+  font-style: normal;
+  font-display: block;
+}
 @font-face {
   font-family: "JetBrainsMono NF";
   src: url("/fonts/JetBrainsMonoNerdFont-Regular.woff2") format("woff2");
@@ -38,7 +48,7 @@ header.app-header {
 }
 
 .prompt-preview {
-  font-family: "JetBrainsMono NF", monospace;
+  font-family: "Comic Code", "JetBrainsMono NF", monospace;
   font-size: 16px;
   white-space: pre;
   background: #1f1f28;
