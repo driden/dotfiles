@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { listThemes, getTheme, editSlot, type ThemeListing, type ThemeState, type AppState } from "./api";
 import { PromptPreview } from "./components/PromptPreview";
 import { PaletteStrip } from "./components/PaletteStrip";
+import { ColorSlotTable } from "./components/ColorSlotTable";
 
 export default function App() {
   const [themes, setThemes] = useState<ThemeListing[]>([]);
@@ -56,7 +57,16 @@ export default function App() {
       {error && <div className="error-banner">{error}</div>}
       {theme && <PaletteStrip palette={theme.palette} />}
       {theme?.apps.map(app => (
-        <AppSection key={app.app} theme={theme} app={app} onEdit={handleEdit} />
+        <AppSection
+          key={app.app}
+          theme={theme}
+          app={app}
+          onEdit={handleEdit}
+          onSlotDisappeared={() => {
+            setToast("slot moved — pick again");
+            setTimeout(() => setToast(null), 1800);
+          }}
+        />
       ))}
       {toast && <div className="toast">{toast}</div>}
     </div>
@@ -67,12 +77,22 @@ export default function App() {
 function ThemeSelector(_: { themes: ThemeListing[]; active: string | null; onChange: (s: string) => void }) {
   return <div>ThemeSelector (TODO)</div>;
 }
-function AppSection({ app }: { theme: ThemeState; app: AppState; onEdit: (id: string, k: string) => void }) {
+function AppSection({ theme, app, onEdit, onSlotDisappeared }: {
+  theme: ThemeState;
+  app: AppState;
+  onEdit: (id: string, k: string) => void;
+  onSlotDisappeared: () => void;
+}) {
   return (
     <section className="app-section">
       <h2>{app.app}</h2>
       <PromptPreview ansi={app.preview?.data ?? null} />
-      <div>{app.colorSlots.length} slot(s) — table TODO</div>
+      <ColorSlotTable
+        slots={app.colorSlots}
+        palette={theme.palette}
+        onEdit={onEdit}
+        onSlotDisappeared={onSlotDisappeared}
+      />
     </section>
   );
 }
