@@ -5,15 +5,26 @@ import { PaletteStrip } from "./components/PaletteStrip";
 import { ColorSlotTable } from "./components/ColorSlotTable";
 import { ThemeSelector } from "./components/ThemeSelector";
 
-// Modules `$foo` referenced anywhere in the top-level `format` string —
-// the "actually visible in your prompt" set. Used to put untouched language
-// modules (nodejs, rust, etc.) below the fold.
-function activeModules(fileRaw: string): Set<string> {
-  const active = new Set<string>(["format"]);
+// Walks the top-level `format` string and returns an ordered list of its
+// components: each `[](...)` transition and each `$module` reference, in
+// the order they render in the prompt. Lets the slot table show modules
+// interleaved with transitions instead of two opaque blocks.
+export type FormatToken = { type: "transition" } | { type: "module"; name: string };
+
+export function parseFormatTokens(fileRaw: string): FormatToken[] {
   const m = fileRaw.match(/^format\s*=\s*(?:"""([\s\S]*?)"""|"([^"]*)"|'([^']*)')/m);
-  const content = m ? (m[1] ?? m[2] ?? m[3] ?? "") : "";
-  for (const r of content.matchAll(/\$\{?([A-Za-z_]\w*)/g)) active.add(r[1]);
-  return active;
+  let content = m ? (m[1] ?? m[2] ?? m[3] ?? "") : "";
+  // Strip commented-out lines (e.g. `#$c\` left in templates) so they don't
+  // get counted as live module references.
+  content = content.replace(/^[ \t]*#[^\n]*/gm, "");
+  const tokens: FormatToken[] = [];
+  const re = /\]\([^)]*\)|\$\{?([A-Za-z_]\w*)/g;
+  let t: RegExpExecArray | null;
+  while ((t = re.exec(content)) !== null) {
+    if (t[0].startsWith("](")) tokens.push({ type: "transition" });
+    else tokens.push({ type: "module", name: t[1] });
+  }
+  return tokens;
 }
 
 type HoverSlot = { hex: string; role: "fg" | "bg" } | null;
@@ -105,7 +116,7 @@ function AppSection({ theme, app, hover, onEdit, onSlotDisappeared, onHoverSlot 
       <ColorSlotTable
         slots={app.colorSlots}
         palette={theme.palette}
-        activeModules={activeModules(app.fileRaw)}
+        formatTokens={parseFormatTokens(app.fileRaw)}
         onEdit={onEdit}
         onSlotDisappeared={onSlotDisappeared}
         onHoverSlot={onHoverSlot}

@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
 import type { ColorSlot } from "../lib/slot-discovery";
+import type { FormatToken } from "../App";
 import { PalettePicker } from "./PalettePicker";
 
 type Props = {
   slots: ColorSlot[];
   palette: Record<string, string>;
-  activeModules: Set<string>;
+  formatTokens: FormatToken[];
   onEdit: (slotId: string, newKey: string) => void;
   onSlotDisappeared: () => void;
   onHoverSlot: (h: { hex: string; role: "fg" | "bg" } | null) => void;
@@ -36,7 +37,49 @@ function groupSlots(slots: ColorSlot[]): Group[] {
   return order.map(k => map.get(k)!);
 }
 
-export function ColorSlotTable({ slots, palette, activeModules, onEdit, onSlotDisappeared, onHoverSlot }: Props) {
+// Order `groups` to match the visual order of the rendered prompt by walking
+// `formatTokens`: each transition pulls the next format-section group; each
+// module reference pulls all that section's groups. Anything left over is
+// "defined but unused".
+function orderByPrompt(groups: Group[], formatTokens: FormatToken[]): { active: Group[]; inactive: Group[] } {
+  const bySection = new Map<string, Group[]>();
+  for (const g of groups) {
+    if (!bySection.has(g.section)) bySection.set(g.section, []);
+    bySection.get(g.section)!.push(g);
+  }
+  const formatGroups = bySection.get("format") ?? [];
+  const active: Group[] = [];
+  const seen = new Set<string>();
+  const keyOf = (g: Group) => `${g.section}/${g.field}`;
+  let formatIdx = 0;
+
+  for (const tok of formatTokens) {
+    if (tok.type === "transition") {
+      if (formatIdx < formatGroups.length) {
+        const g = formatGroups[formatIdx++];
+        active.push(g);
+        seen.add(keyOf(g));
+      }
+    } else {
+      for (const g of (bySection.get(tok.name) ?? [])) {
+        if (!seen.has(keyOf(g))) {
+          active.push(g);
+          seen.add(keyOf(g));
+        }
+      }
+    }
+  }
+  while (formatIdx < formatGroups.length) {
+    const g = formatGroups[formatIdx++];
+    active.push(g);
+    seen.add(keyOf(g));
+  }
+
+  const inactive = groups.filter(g => !seen.has(keyOf(g)));
+  return { active, inactive };
+}
+
+export function ColorSlotTable({ slots, palette, formatTokens, onEdit, onSlotDisappeared, onHoverSlot }: Props) {
   const [openSlotId, setOpenSlotId] = useState<string | null>(null);
 
   useEffect(() => {
@@ -47,14 +90,7 @@ export function ColorSlotTable({ slots, palette, activeModules, onEdit, onSlotDi
   }, [slots, openSlotId, onSlotDisappeared]);
 
   const groups = groupSlots(slots);
-  const transitions: Group[] = [];
-  const activeGroups: Group[] = [];
-  const inactiveGroups: Group[] = [];
-  for (const g of groups) {
-    if (g.section === "format") transitions.push(g);
-    else if (activeModules.has(g.section)) activeGroups.push(g);
-    else inactiveGroups.push(g);
-  }
+  const { active: activeGroups, inactive: inactiveGroups } = orderByPrompt(groups, formatTokens);
 
   function renderCell(slot?: ColorSlot) {
     if (!slot) return <span className="empty-cell">—</span>;
@@ -110,8 +146,7 @@ export function ColorSlotTable({ slots, palette, activeModules, onEdit, onSlotDi
         <tr><th>Section</th><th>Field</th><th>BG</th><th>FG</th></tr>
       </thead>
       <tbody>
-        {renderGroup("prompt transitions", transitions, "t")}
-        {renderGroup("active modules", activeGroups, "a")}
+        {renderGroup("in your prompt", activeGroups, "a")}
         {renderGroup("defined but unused", inactiveGroups, "i")}
       </tbody>
     </table>
