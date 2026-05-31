@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { listThemes, getTheme, editSlot, type ThemeListing, type ThemeState, type AppState } from "./api";
+import { PromptPreview } from "./components/PromptPreview";
 
 export default function App() {
   const [themes, setThemes] = useState<ThemeListing[]>([]);
@@ -72,7 +73,7 @@ function AppSection({ app }: { theme: ThemeState; app: AppState; onEdit: (id: st
   return (
     <section className="app-section">
       <h2>{app.app}</h2>
-      <pre className="prompt-preview">{app.preview?.data ?? "(no preview)"}</pre>
+      <PromptPreview ansi={app.preview?.data ?? null} />
       <div>{app.colorSlots.length} slot(s) — table TODO</div>
     </section>
   );
