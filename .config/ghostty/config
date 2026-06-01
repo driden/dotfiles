@@ -2,7 +2,7 @@ font-family = "Comic Code"
 font-codepoint-map = U+E000-U+E0FF=Hack Nerd Font Mono
 font-codepoint-map = U+F8FF=Monaco
 
-font-size = 16
+font-size = 15
 background-opacity = 0.8
 background-blur = true
 
