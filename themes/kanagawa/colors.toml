@@ -1,37 +1,31 @@
-[meta]
-name = "kanagawa"
-appearance = "dark"
-[palette]
-accent               = "#FFA066"
-cursor               = "#dcd7ba"
-foreground           = "#dcd7ba"
-background           = "#1f1f28"
-selection_background = "#223249"
-selection_foreground = "#dcd7ba"
-color0  = "#16161D"
-color1  = "#C34043"
-color2  = "#76946A"
-color3  = "#C0A36E"
-color4  = "#7E9CD8"
-color5  = "#957FB8"
-color6  = "#6A9589"
-color7  = "#C8C093"
-color8  = "#727169"
-color9  = "#E82424"
-color10 = "#98BB6C"
-color11 = "#E6C384"
-color12 = "#7FB4CA"
-color13 = "#938AA9"
-color14 = "#7AA89F"
-color15 = "#DCD7BA"
+# Test theme: kanagawa-wave's palette under the bamboo prompt heuristic.
+# Generated 2026-06-01 to validate that the heuristic transfers across themes.
+# Hex values come from `themes/extract.lua` against kanagawa-wave.
 
-# Reference: the dominant kanagawa-wave named-palette colors as seen in the
-# editor. Kept here for future manual tweaks — templates don't read these.
-[palette.extras]
-orange     = "#FFA066"  # surimiOrange — keywords (= accent above)
-purple     = "#957FB8"  # oniViolet    — variables / identifiers (= color5)
-green      = "#98BB6C"  # springGreen  — strings (= color10)
-text       = "#DCD7BA"  # fujiWhite    — foreground (= foreground)
-pink       = "#D27E99"  # sakuraPink   — numbers
-blue       = "#7E9CD8"  # crystalBlue  — function names (= color4)
-red_soft   = "#E46876"  # waveRed      — variable highlights
+[meta]
+name = "kanagawa-wave (heuristic test)"
+appearance = "dark"
+
+[palette]
+background           = "#1F1F28"
+foreground           = "#DCD7BA"
+cursor               = "#DCD7BA"
+selection_background = "#223249"
+selection_foreground = "#DCD7BA"
+
+comment   = "#727169"
+keyword   = "#957FB8"
+string    = "#98BB6C"
+function  = "#7E9CD8"
+type      = "#7AA89F"
+number    = "#D27E99"
+variable  = "#DCD7BA"
+constant  = "#FFA066"
+operator  = "#C0A36E"
+property  = "#E6C384"
+parameter = "#B8B4D0"
+
+error   = "#E82424"
+warning = "#FF9E3B"
+info    = "#658594"
+hint    = "#6A9589"

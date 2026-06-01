@@ -10,84 +10,41 @@ command_timeout=100
 #$haskell\
 #$python\
 format = """
-[](lavender)\
+[](keyword)\
 $os\
 $username\
-[](bg:blue fg:lavender)\ 
-[](fg:blue bg:teal)\
+[](bg:function fg:keyword)\ 
+[](fg:function bg:property)\
 $directory\
-[](fg:teal bg:yellow)\
-[](fg:yellow bg:orange)\
+[](fg:property bg:type)\
+[](fg:type bg:number)\
 $git_branch\
 $git_status\
-[](fg:orange bg:green)\
-[](fg:green bg:blue)\
+[](fg:number bg:string)\
+[](fg:string bg:function)\
 $docker_context\
-[ ](fg:blue)\
+[ ](fg:function)\
 $line_break$character"""
 
-palette = 'bamboo'
+palette = 'theme'
 
-[palettes.catppuccin_mocha]
-rosewater = "#f5e0dc"
-flamingo = "#f2cdcd"
-pink = "#f5c2e7"
-orange = "#cba6f7"
-red = "#f38ba8"
-maroon = "#eba0ac"
-peach = "#fab387"
-yellow = "#f9e2af"
-green = "#a6e3a1"
-teal = "#94e2d5"
-sky = "#89dceb"
-sapphire = "#74c7ec"
-blue = "#89b4fa"
-lavender = "#b4befe"
-text = "#cdd6f4"
-subtext1 = "#bac2de"
-subtext0 = "#a6adc8"
-overlay2 = "#9399b2"
-overlay1 = "#7f849c"
-overlay0 = "#6c7086"
-surface2 = "#585b70"
-surface1 = "#45475a"
-surface0 = "#313244"
-base = "#1e1e2e"
-mantle = "#181825"
-crust = "#11111b"
-
-[palettes.bamboo]
-# Bamboo.nvim vulgaris color palette
-rosewater = "#f1e9d2"
-flamingo = "#f08080"
-pink = "#e75a7c"
-orange = "#ff9966"
-red = "#e75a7c"
-maroon = "#f08080"
-peach = "#ff9966"
-yellow = "#dbb651"
-green = "#8fb573"
-teal = "#70c2be"
-sky = "#70c2be"
-sapphire = "#57a5e5"
-blue = "#57a5e5"
-lavender = "#aaaaff"
-text = "#f1e9d2"
-subtext1 = "#838781"
-subtext0 = "#5b5e5a"
-overlay2 = "#5b5e5a"
-overlay1 = "#5b5e5a"
-overlay0 = "#3a3d37"
-surface2 = "#383b35"
-surface1 = "#2f312c"
-surface0 = "#252623"
-base = "#252623"
-mantle = "#1c1e1b"
-crust = "#111210"
+[palettes.theme]
+background = "#252623"
+foreground = "#F1E9D2"
+keyword    = "#AAAAFF"
+string     = "#8FB573"
+function   = "#57A5E5"
+type       = "#DBB651"
+number     = "#FF9966"
+constant   = "#FF9966"
+property   = "#70C2BE"
+error      = "#E75A7C"
+warning    = "#DBB651"
+info       = "#70C2BE"
 
 [os]
 disabled = false
-style = "bg:lavender fg:base"
+style = "bg:keyword fg:background"
 
 [os.symbols]
 Windows = "󰍲"
@@ -113,12 +70,12 @@ RedHatEnterprise = "󱄛"
 [username]
 disabled = true
 show_always = true
-style_user = "bg:lavender fg:base"
-style_root = "bg:lavender fg:base"
+style_user = "bg:keyword fg:background"
+style_root = "bg:keyword fg:background"
 format = '[ $user ]($style)'
 
 [directory]
-style = "fg:mantle bg:teal"
+style = "fg:background bg:property"
 format = "[$path]($style)"
 truncation_length = 1
 fish_style_pwd_dir_length = 1
@@ -127,77 +84,77 @@ truncate_to_repo = false
 
 [git_branch]
 symbol = ""
-style = "bg:teal"
-format = '[[ $symbol $branch ](fg:base bg:orange)]($style)'
+style = "bg:property"
+format = '[[ $symbol $branch ](fg:background bg:number)]($style)'
 
 [git_status]
-style = "bg:teal"
-format = '[[($all_status$ahead_behind )](fg:base bg:orange)]($style)'
+style = "bg:property"
+format = '[[($all_status$ahead_behind )](fg:background bg:number)]($style)'
 
 [nodejs]
 symbol = ""
-style = "bg:teal"
-format = '[[ $symbol( $version) ](fg:base bg:teal)]($style)'
+style = "bg:property"
+format = '[[ $symbol( $version) ](fg:background bg:property)]($style)'
 
 [c]
 symbol = " "
-style = "bg:teal"
-format = '[[ $symbol( $version) ](fg:base bg:teal)]($style)'
+style = "bg:property"
+format = '[[ $symbol( $version) ](fg:background bg:property)]($style)'
 
 [rust]
 symbol = ""
-style = "bg:teal"
-format = '[[ $symbol( $version) ](fg:base bg:teal)]($style)'
+style = "bg:property"
+format = '[[ $symbol( $version) ](fg:background bg:property)]($style)'
 
 [golang]
 symbol = ""
-style = "bg:teal"
-format = '[[ $symbol( $version) ](fg:base bg:teal)]($style)'
+style = "bg:property"
+format = '[[ $symbol( $version) ](fg:background bg:property)]($style)'
 
 [php]
 symbol = ""
-style = "bg:teal"
-format = '[[ $symbol( $version) ](fg:color_fg0 bg:teal)]($style)'
+style = "bg:property"
+format = '[[ $symbol( $version) ](fg:foreground bg:property)]($style)'
 
 [java]
 symbol = " "
-style = "bg:teal"
-format = '[[ $symbol( $version) ](fg:color_fg0 bg:teal)]($style)'
+style = "bg:property"
+format = '[[ $symbol( $version) ](fg:foreground bg:property)]($style)'
 
 [kotlin]
 symbol = ""
-style = "bg:teal"
-format = '[[ $symbol( $version) ](fg:color_fg0 bg:teal)]($style)'
+style = "bg:property"
+format = '[[ $symbol( $version) ](fg:foreground bg:property)]($style)'
 
 [haskell]
 symbol = ""
-style = "bg:teal"
-format = '[[ $symbol( $version) ](fg:color_fg0 bg:teal)]($style)'
+style = "bg:property"
+format = '[[ $symbol( $version) ](fg:foreground bg:property)]($style)'
 
 [python]
 symbol = ""
-style = "bg:teal"
-format = '[[ $symbol( $version) ](fg:color_fg0 bg:teal)]($style)'
+style = "bg:property"
+format = '[[ $symbol( $version) ](fg:foreground bg:property)]($style)'
 
 [docker_context]
 symbol = ""
-style = "bg:mantle"
-format = '[[ $symbol( $context) ](fg:#83a598 bg:color_bg3)]($style)'
+style = "bg:background"
+format = '[[ $symbol( $context) ](fg:info bg:background)]($style)'
 
 [time]
 disabled = false
 time_format = "%R"
-style = "bg:lavender"
-format = '[[  $time ](fg:mantle bg:purple)]($style)'
+style = "bg:keyword"
+format = '[[  $time ](fg:background bg:keyword)]($style)'
 
 [line_break]
 disabled = false
 
 [character]
 disabled = false
-success_symbol = '[](bold fg:green)'
-error_symbol = '[](bold fg:red)'
-vimcmd_symbol = '[](bold fg:creen)'
-vimcmd_replace_one_symbol = '[](bold fg:purple)'
-vimcmd_replace_symbol = '[](bold fg:purple)'
-vimcmd_visual_symbol = '[](bold fg:lavender)'
+success_symbol = '[](bold fg:string)'
+error_symbol = '[](bold fg:error)'
+vimcmd_symbol = '[](bold fg:string)'
+vimcmd_replace_one_symbol = '[](bold fg:keyword)'
+vimcmd_replace_symbol = '[](bold fg:keyword)'
+vimcmd_visual_symbol = '[](bold fg:keyword)'

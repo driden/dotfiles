@@ -85,66 +85,97 @@ Created by `theme set` on first run (or by bootstrap). Not stowed.
 
 ### How `colors.toml` gets populated
 
-You don't author 22 hex values by hand. The primary path is extraction from the matching Neovim colorscheme via `theme extract <nvim-colorscheme>` (see CLI below), which spawns headless nvim, loads the colorscheme, and emits a `colors.toml`. The extractor reads:
+You don't author hex values by hand. The primary path is extraction from the matching Neovim colorscheme via `theme extract <nvim-colorscheme>`, which spawns headless nvim, loads the colorscheme, queries highlight groups via `vim.api.nvim_get_hl(0, { name, link = false })`, and emits a `colors.toml`.
 
-| Target key | Source | Fallback chain |
-|---|---|---|
-| `color0` … `color15` | `g:terminal_color_0` … `g:terminal_color_15` | none — required; if missing, the extractor errors |
-| `background` | `Normal.bg` | none — required |
-| `foreground` | `Normal.fg` | none — required |
-| `selection_background` | `Visual.bg` | `Normal.bg` |
-| `selection_foreground` | `Visual.fg` | `Normal.fg` |
-| `cursor` | `Cursor.bg` | `Normal.fg` (`Cursor` is frequently unset by colorschemes) |
-| `accent` | `color5` by default | colorscheme has no canonical "signature accent" highlight group; the extractor picks `color5` as a convention, but **`accent` is always intended to be hand-tweaked in the resulting `colors.toml`** |
+**Why semantic, not X11.** Earlier drafts of this spec extracted `g:terminal_color_0..15` into a fixed 16-slot ANSI palette. That bridge is lossy — themes whose source palette has colors outside the standard ANSI vocabulary (bamboo's `orange`, kanagawa's `surimiOrange`) lose them in extraction, and every downstream template has to invent its own mapping from "color5" back to a meaningful concept. The redesign extracts by **semantic role** — every theme exports the same vocabulary keyed by what the color is *for* (`keyword`, `string`, `function`, `number`, ...). Templates then reference those roles directly. The lossy ANSI bridge is gone; tmux/fzf/ghostty templates pick semantic roles for their ANSI slots explicitly.
 
-A **dry-run validation** of this approach against `bamboo.nvim` was performed (2026-05-30):
+**The extractor** lives at `themes/extract.lua`. It is sourced (not run from PATH) by the `theme extract` subcommand of `.local/bin/theme` via `nvim --headless`. It is not on `$PATH` — it's an internal asset, not a user-facing command.
 
-- 14 of 16 ANSI slots matched the ground-truth bamboo hex scattered across the existing `.zshrc`, `.tmux.conf`, `bordersrc`, and `starship.toml` exactly.
-- `selection_background` drifted by 2 RGB units (`#3a3d37` from extraction vs `#383b35` in the legacy fzf array) — bamboo.nvim has been revised since the hex was copied into the dotfiles. Trust the extraction.
-- `Cursor` was nil — the documented fallback (`Normal.fg`) covers it.
-- `accent`: extractor's default of `color5` happened to be `#aaaaff` (lavender) for bamboo, which matches bamboo's signature in `bordersrc` and fzf's `info`. For other themes this won't be guaranteed; eyeball and override.
-- Colors that appear in the legacy dotfiles but **not** in bamboo.nvim's standard palette (`#ff9966` peach, `#f08080` flamingo) are dropped from `colors.toml`. If a template needs an extra color slot, the schema's `[palette.extras]` table (read by hand-written `nvim.lua` / `starship.toml` only, never by generated templates) is the escape hatch.
+**The vocabulary.** Twenty roles total, grouped:
 
-If you ever add a colorscheme that doesn't set `g:terminal_color_*` at all, the extractor will fail loudly and you'll fall back to hand-authoring `colors.toml`. A "derive ANSI from highlight groups" heuristic is **not** implemented in v1 (YAGNI — none of the themes you currently use need it).
+```
+chrome (editor surface — what the user always sees)
+  background, foreground, cursor,
+  selection_background, selection_foreground
+
+syntax (the visually dominant programming constructs)
+  comment, keyword, string, function, type,
+  number, variable, constant, operator,
+  property, parameter
+
+diagnostics (signal colors — used by status indicators / prompt segments)
+  error, warning, info, hint
+```
+
+**Fallback chains.** For each role, the extractor tries highlight groups in order and takes the first that has a non-nil resolution. `link = false` follows links to the resolved attrs, so a theme that defines `@keyword` only via `link = "Keyword"` still works.
+
+| Role | Lookup chain (group, channel) |
+|---|---|
+| `background` | `Normal.bg` |
+| `foreground` | `Normal.fg` |
+| `cursor` | `Cursor.bg` → `Normal.fg` |
+| `selection_background` | `Visual.bg` |
+| `selection_foreground` | `Visual.fg` → `Normal.fg` |
+| `comment` | `@comment.fg` → `Comment.fg` |
+| `keyword` | `@keyword.fg` → `Keyword.fg` → `Statement.fg` |
+| `string` | `@string.fg` → `String.fg` |
+| `function` | `@function.fg` → `Function.fg` |
+| `type` | `@type.fg` → `Type.fg` |
+| `number` | `@number.fg` → `Number.fg` → `Constant.fg` |
+| `variable` | `@variable.fg` → `Identifier.fg` |
+| `constant` | `@constant.fg` → `Constant.fg` |
+| `operator` | `@operator.fg` → `Operator.fg` |
+| `property` | `@property.fg` → `@field.fg` → `Identifier.fg` |
+| `parameter` | `@parameter.fg` → `@variable.parameter.fg` → `Identifier.fg` |
+| `error` | `DiagnosticError.fg` → `ErrorMsg.fg` |
+| `warning` | `DiagnosticWarn.fg` → `WarningMsg.fg` |
+| `info` | `DiagnosticInfo.fg` |
+| `hint` | `DiagnosticHint.fg` |
+
+**De-duping intentionally avoided.** Different roles legitimately share the same hex within one theme (bamboo's `number` = `constant` = `#FF9966`; that's a theme choice, not a bug). The extractor records both regardless.
+
+**No `accent` slot.** The old `accent` key was an artifact of the X11 schema — picked by convention as `color5` and intended for hand-tweak. With semantic extraction, `keyword` is usually the natural "accent" (it's the dominant on-screen color in most themes); templates that want a single "signature" color reference `${palette.keyword}` directly.
+
+**Validation against bamboo + kanagawa(-wave/dragon/lotus)** (2026-06-01): the extractor was run against all four colorschemes. Every role resolved (no MISSING) on every theme. `number = #FF9966` on bamboo, `constant = #FFA066` on kanagawa-wave — the bright accents are surfaced naturally without manual intervention. See `themes/extract.lua` for the canonical chain definitions.
 
 ### `colors.toml` schema
 
-22 keys total, modeled after omarchy. Standard X11 terminal vocabulary:
+20 keys, grouped semantically:
 
 ```toml
 [meta]
 name = "bamboo"
-appearance = "dark"        # "dark" | "light" — informs template choices; v1 = dark only
+appearance = "dark"        # "dark" | "light"
 
 [palette]
-accent               = "#aaaaff"
-cursor               = "#aaaaff"
-foreground           = "#f1e9d2"
+# chrome
 background           = "#252623"
-selection_foreground = "#f1e9d2"
-selection_background = "#383b35"
+foreground           = "#F1E9D2"
+cursor               = "#F1E9D2"
+selection_background = "#3A3D37"
+selection_foreground = "#F1E9D2"
 
-color0  = "#252623"   # black
-color1  = "#e75a7c"   # red
-color2  = "#8fb573"   # green
-color3  = "#dbb651"   # yellow
-color4  = "#57a5e5"   # blue
-color5  = "#e75a7c"   # magenta
-color6  = "#70c2be"   # cyan
-color7  = "#f1e9d2"   # white
-color8  = "#383b35"   # bright black
-color9  = "#f08080"   # bright red
-color10 = "#8fb573"   # bright green
-color11 = "#dbb651"   # bright yellow
-color12 = "#57a5e5"   # bright blue
-color13 = "#e75a7c"   # bright magenta
-color14 = "#70c2be"   # bright cyan
-color15 = "#f1e9d2"   # bright white
+# syntax
+comment   = "#E2C792"
+keyword   = "#AAAAFF"
+string    = "#8FB573"
+function  = "#57A5E5"
+type      = "#DBB651"
+number    = "#FF9966"
+variable  = "#F1E9D2"
+constant  = "#FF9966"
+operator  = "#C5C2EE"
+property  = "#70C2BE"
+parameter = "#F08080"
+
+# diagnostics
+error   = "#E75A7C"
+warning = "#DBB651"
+info    = "#70C2BE"
+hint    = "#AAAAFF"
 ```
 
-Themes with richer native palettes (e.g., kanagawa's `waveBlue`, `dragonRed`) are free to use those in their hand-written `nvim.lua`; they only need to honor these 22 slots for the templated files.
-
-`theme build` fails loudly if any key in `[palette]` is missing.
+`theme build` fails loudly if any key in `[palette]` is missing. (Lotus-style light themes still emit the same 20 keys; only the hex values differ.)
 
 ### Templates
 
