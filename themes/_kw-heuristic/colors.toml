@@ -1,0 +1,31 @@
+# Test theme: kanagawa-wave's palette under the bamboo prompt heuristic.
+# Generated 2026-06-01 to validate that the heuristic transfers across themes.
+# Hex values come from `themes/extract.lua` against kanagawa-wave.
+
+[meta]
+name = "kanagawa-wave (heuristic test)"
+appearance = "dark"
+
+[palette]
+background           = "#1F1F28"
+foreground           = "#DCD7BA"
+cursor               = "#DCD7BA"
+selection_background = "#223249"
+selection_foreground = "#DCD7BA"
+
+comment   = "#727169"
+keyword   = "#957FB8"
+string    = "#98BB6C"
+function  = "#7E9CD8"
+type      = "#7AA89F"
+number    = "#D27E99"
+variable  = "#DCD7BA"
+constant  = "#FFA066"
+operator  = "#C0A36E"
+property  = "#E6C384"
+parameter = "#B8B4D0"
+
+error   = "#E82424"
+warning = "#FF9E3B"
+info    = "#658594"
+hint    = "#6A9589"

@@ -1,0 +1,27 @@
+[meta]
+name = "kanagawa-dragon (heuristic test)"
+appearance = "dark"
+
+[palette]
+background           = "#181616"
+foreground           = "#C5C9C5"
+cursor               = "#C5C9C5"
+selection_background = "#223249"
+selection_foreground = "#C5C9C5"
+
+comment   = "#737C73"
+keyword   = "#8992A7"
+string    = "#8A9A7B"
+function  = "#8BA4B0"
+type      = "#8EA4A2"
+number    = "#A292A3"
+variable  = "#C5C9C5"
+constant  = "#B6927B"
+operator  = "#C4746E"
+property  = "#C4B28A"
+parameter = "#A6A69C"
+
+error   = "#E82424"
+warning = "#FF9E3B"
+info    = "#658594"
+hint    = "#6A9589"
