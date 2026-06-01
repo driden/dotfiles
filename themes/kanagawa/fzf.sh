@@ -3,5 +3,5 @@
 export FZF_DEFAULT_OPTS="--layout=reverse --border=rounded \
 --color=bg+:#223249,bg:#1f1f28,preview-bg:#16161D \
 --color=fg+:#dcd7ba,fg:#dcd7ba,hl+:#C34043,hl:#C34043 \
---color=info:#957FB8,prompt:#76946A,pointer:#C0A36E,marker:#6A9589 \
+--color=info:#FFA066,prompt:#76946A,pointer:#C0A36E,marker:#6A9589 \
 --color=spinner:#7E9CD8,header:#76946A,border:#727169"

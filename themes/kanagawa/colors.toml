@@ -2,7 +2,7 @@
 name = "kanagawa"
 appearance = "dark"
 [palette]
-accent               = "#957FB8"
+accent               = "#FFA066"
 cursor               = "#dcd7ba"
 foreground           = "#dcd7ba"
 background           = "#1f1f28"
@@ -24,3 +24,14 @@ color12 = "#7FB4CA"
 color13 = "#938AA9"
 color14 = "#7AA89F"
 color15 = "#DCD7BA"
+
+# Reference: the dominant kanagawa-wave named-palette colors as seen in the
+# editor. Kept here for future manual tweaks — templates don't read these.
+[palette.extras]
+orange     = "#FFA066"  # surimiOrange — keywords (= accent above)
+purple     = "#957FB8"  # oniViolet    — variables / identifiers (= color5)
+green      = "#98BB6C"  # springGreen  — strings (= color10)
+text       = "#DCD7BA"  # fujiWhite    — foreground (= foreground)
+pink       = "#D27E99"  # sakuraPink   — numbers
+blue       = "#7E9CD8"  # crystalBlue  — function names (= color4)
+red_soft   = "#E46876"  # waveRed      — variable highlights

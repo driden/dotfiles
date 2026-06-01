@@ -11,14 +11,13 @@ command_timeout=100
 #$haskell\
 #$python\
 format = """
-[](accent)\
+[](color12)\
 $os\
-$username\
-[](bg:color4 fg:accent)\ 
-[](fg:color4 bg:color6)\
+[](fg:color12 bg:accent)\ 
+[](fg:accent bg:color5)\
 $directory\
-[](fg:color6 bg:color3)\
-[](fg:color3 bg:color9)\
+[](fg:color5 bg:cursor)\
+[](fg:cursor bg:color13)\
 $git_branch\
 $git_status\
 [](fg:color9 bg:color2)\
@@ -30,7 +29,7 @@ $line_break$character"""
 palette = 'theme'
 
 [palettes.theme]
-accent               = "#957FB8"
+accent               = "#FFA066"
 cursor               = "#dcd7ba"
 foreground           = "#dcd7ba"
 background           = "#1f1f28"
@@ -55,7 +54,7 @@ color15 = "#DCD7BA"
 
 [os]
 disabled = false
-style = "bg:accent fg:background"
+style = "bg:color12 fg:foreground"
 
 [os.symbols]
 Windows = "󰍲"
@@ -78,15 +77,8 @@ Debian = "󰣚"
 Redhat = "󱄛"
 RedHatEnterprise = "󱄛"
 
-[username]
-disabled = true
-show_always = true
-style_user = "bg:accent fg:background"
-style_root = "bg:accent fg:background"
-format = '[ $user ]($style)'
-
 [directory]
-style = "fg:background bg:color6"
+style = "fg:background bg:color5"
 format = "[$path]($style)"
 truncation_length = 1
 fish_style_pwd_dir_length = 1
@@ -96,7 +88,7 @@ truncate_to_repo = false
 [git_branch]
 symbol = ""
 style = "bg:color6"
-format = '[[ $symbol $branch ](fg:background bg:color9)]($style)'
+format = '[[ $symbol $branch ](fg:cursor bg:color13)]($style)'
 
 [git_status]
 style = "bg:color6"
