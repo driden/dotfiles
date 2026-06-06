@@ -44,7 +44,28 @@ A personal dotfiles repo deployed to `$HOME` via GNU Stow. Files in this repo ar
 
 ## Theming
 
-`$THEME` (set in `.zshrc` and read by `.config/fish/config.fish`) selects between `bamboo` and `catppuccin` palettes — currently used to recolor fzf. Adding a theme means extending the `fzf_${theme}_colors` associative array in `.zshrc` and the matching `if/else` block in `config.fish`.
+Themes live in `themes/<name>/` — each dir has `colors.toml` (semantic palette) plus generated outputs: `borders.sh`, `fzf.sh`, `tmux.conf`, `starship.toml`. The active theme is a symlink at `~/.config/themes/current`.
+
+**CLI** (`.local/bin/theme`, stowed to `~/.local/bin/`):
+```sh
+theme list                                          # list themes, * = active
+theme extract <nvim-scheme> --name <name> --write  # extract from nvim + build
+theme build [<name>]                               # render templates → per-theme output files
+theme init <name>                                  # scaffold a blank theme dir
+```
+
+**Semantic palette** — `colors.toml` has 20 roles in three groups:
+- Chrome: `background foreground cursor selection_background selection_foreground`
+- Syntax: `comment keyword string function type number variable constant operator property parameter`
+- Diagnostics: `error warning info hint`
+
+**Templates** in `themes/templates/` use `${palette.ROLE}` substitution. `theme build` renders all four (`borders.sh.tmpl`, `fzf.sh.tmpl`, `tmux.conf.tmpl`, `starship.toml.tmpl`) into the theme dir.
+
+**Gotchas:**
+- `extract.lua` always emits `appearance = "dark"` — manually fix for light themes (e.g. kanagawa-lotus).
+- `theme build` overwrites `starship.toml`; theme-playground also writes it. Last writer wins.
+- Starship v1.25.1 does not support multi-file `STARSHIP_CONFIG` or native includes.
+- Colorscheme plugins are auto-located via `~/.local/share/nvim/lazy/`; use `--plugin-dir` to override.
 
 ## Shells
 

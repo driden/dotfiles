@@ -16,7 +16,7 @@ add_dir_to_path $HOME/.ghcup/bin
 # add_dir_to_path $HOME/.config/emacs/bin
 
 set TERMINAL ghostty
-set EDITOR nvim
+set -gx EDITOR nvim
 set -x MANPAGER "nvim +Man!"
 set -x AWS_PAGER ""
 set HOMEBREW_NO_AUTO_UPDATE 1
