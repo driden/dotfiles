@@ -1,14 +1,12 @@
 [meta]
-name = "bamboo (heuristic test)"
+name = "bamboo"
 appearance = "dark"
-
 [palette]
 background           = "#252623"
 foreground           = "#F1E9D2"
 cursor               = "#F1E9D2"
 selection_background = "#3A3D37"
 selection_foreground = "#F1E9D2"
-
 comment   = "#E2C792"
 keyword   = "#AAAAFF"
 string    = "#8FB573"
@@ -20,7 +18,6 @@ constant  = "#FF9966"
 operator  = "#C5C2EE"
 property  = "#70C2BE"
 parameter = "#F08080"
-
 error   = "#E75A7C"
 warning = "#DBB651"
 info    = "#70C2BE"

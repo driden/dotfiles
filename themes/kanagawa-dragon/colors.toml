@@ -1,14 +1,12 @@
 [meta]
-name = "kanagawa-dragon (heuristic test)"
+name = "kanagawa-dragon"
 appearance = "dark"
-
 [palette]
 background           = "#181616"
 foreground           = "#C5C9C5"
 cursor               = "#C5C9C5"
 selection_background = "#223249"
 selection_foreground = "#C5C9C5"
-
 comment   = "#737C73"
 keyword   = "#8992A7"
 string    = "#8A9A7B"
@@ -20,7 +18,6 @@ constant  = "#B6927B"
 operator  = "#C4746E"
 property  = "#C4B28A"
 parameter = "#A6A69C"
-
 error   = "#E82424"
 warning = "#FF9E3B"
 info    = "#658594"
