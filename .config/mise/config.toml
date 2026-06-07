@@ -12,6 +12,7 @@ shellcheck = "latest"
 shfmt = "latest"
 stylua = "latest"
 bun = "latest"
+tree-sitter = "latest"
 
 [settings]
 idiomatic_version_file_enable_tools = ["node"]
