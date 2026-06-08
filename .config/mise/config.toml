@@ -13,6 +13,7 @@ shfmt = "latest"
 stylua = "latest"
 bun = "latest"
 tree-sitter = "latest"
+"npm:typescript-language-server" = "latest"
 
 [settings]
 idiomatic_version_file_enable_tools = ["node"]
