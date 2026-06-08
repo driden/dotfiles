@@ -6,7 +6,7 @@ font-size = 15
 background-opacity = 0.8
 background-blur = true
 
-#window-decoration = none
-custom-shader = ./cursor.glsl
+# window-decoration = none
+# custom-shader = ./cursor.glsl
 
 keybind=super+alt+r=reload_config
