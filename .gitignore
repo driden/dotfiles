@@ -26,3 +26,4 @@ zsh-snap
 .config/bt
 .local/bin/bt
 
+/themes/*/.drafts/
