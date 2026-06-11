@@ -29,3 +29,4 @@ zsh-snap
 .local/bin/bt
 
 /themes/*/.drafts/
+/.config/homebrew/trust.json.lock
