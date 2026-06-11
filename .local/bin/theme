@@ -1,0 +1,350 @@
+#!/usr/bin/env bash
+# theme — manage and switch the dotfiles theme.
+
+set -euo pipefail
+
+# Resolve this (stow-symlinked) script back to the repo root — portable, since
+# macOS/BSD readlink has no -f.
+SOURCE="${BASH_SOURCE[0]}"
+while [ -L "$SOURCE" ]; do
+  DIR="$(cd -P "$(dirname "$SOURCE")" && pwd)"
+  SOURCE="$(readlink "$SOURCE")"
+  if [[ "$SOURCE" != /* ]]; then SOURCE="$DIR/$SOURCE"; fi
+done
+REPO_DIR="$(cd -P "$(dirname "$SOURCE")/../.." && pwd)"
+THEMES_DIR="$REPO_DIR/themes"
+TEMPLATES_DIR="$THEMES_DIR/templates"
+CURRENT_LINK="$HOME/.config/themes/current"
+
+die() { printf 'theme: %s\n' "$*" >&2; exit 1; }
+log() { printf 'theme: %s\n' "$*"; }
+
+cmd_help() {
+  cat <<'EOF'
+theme — manage and switch the dotfiles theme
+
+USAGE
+  theme <command> [args]
+
+COMMANDS
+  list                       List all themes (* marks the active one)
+  current                    Print the active theme name
+  set <name>                 Make <name> active (repoints ~/.config/themes/current)
+  build [<name>]             Render templates -> output files for <name>
+                             (all themes if <name> omitted)
+  build --check              Report drift between templates and output files;
+                             exit non-zero if any is found
+  init <name> [--from <nvim-scheme>]
+                             Scaffold a new theme dir, optionally seeding the
+                             palette from an nvim colorscheme
+  extract <nvim-scheme> [--name <name>] [--plugin-dir <path>]
+                             Extract a palette from an nvim colorscheme, then build
+  help, -h, --help           Show this help
+
+NOTES
+  - The active theme is the symlink ~/.config/themes/current.
+  - Only starship.toml is generated right now (tmux/fzf/borders are WIP).
+  - A theme dir containing a .do-not-build file is hand-maintained: it is
+    skipped by `build` and `build --check`. Delete the marker to re-enable.
+EOF
+}
+
+cmd_list() {
+  local current_name=""
+  current_name="$(cmd_current 2>/dev/null || true)"
+  for dir in "$THEMES_DIR"/*/; do
+    local name marker
+    name="$(basename "$dir")"
+    [[ "$name" == "templates" ]] && continue
+    [[ "$name" == "$current_name" ]] && marker="* " || marker="  "
+    printf '%s%s\n' "$marker" "$name"
+  done
+}
+
+cmd_current() {
+  [[ -L "$CURRENT_LINK" ]] || die "no current theme (symlink missing at $CURRENT_LINK)"
+  [[ -e "$CURRENT_LINK" ]] || die "current theme symlink is broken (-> $(readlink "$CURRENT_LINK"))"
+  basename "$(readlink "$CURRENT_LINK")"
+}
+
+# Point ~/.config/themes/current at the named theme (the active-theme contract).
+cmd_set() {
+  local name="${1:-}"
+  [[ -n "$name" ]] || die "usage: theme set <name>"
+  local dir="$THEMES_DIR/$name"
+  # A real theme has a colors.toml — this also rejects 'templates' and stray dirs.
+  [[ -f "$dir/colors.toml" ]] || die "not a theme: $name (see 'theme list')"
+  mkdir -p "$(dirname "$CURRENT_LINK")"
+  # -n so an existing current symlink is replaced, not followed into its target.
+  ln -sfn "$dir" "$CURRENT_LINK"
+  log "active theme → $name"
+}
+
+# Reads colors.toml and emits `key=value` pairs on stdout, one per line,
+# for everything under [palette]. Whitespace and quotes stripped.
+parse_palette() {
+  local file="$1"
+  awk '
+    /^\[palette\]/   { in_palette=1; next }
+    /^\[/            { in_palette=0; next }
+    in_palette && /^[a-zA-Z_0-9]+[[:space:]]*=/ {
+      key=$1
+      sub(/[[:space:]]*=.*/, "", key)
+      val=$0
+      sub(/^[^=]*=[[:space:]]*"?/, "", val)
+      sub(/"?[[:space:]]*$/, "", val)
+      print key "=" val
+    }
+  ' "$file"
+}
+
+# Validate that every required key is present in the palette.
+REQUIRED_KEYS=(
+  background foreground cursor selection_background selection_foreground
+  comment keyword string function type number variable constant
+  operator property parameter error warning info hint
+)
+
+validate_palette() {
+  local theme="$1"
+  local colors_file="$THEMES_DIR/$theme/colors.toml"
+  [[ -f "$colors_file" ]] || die "themes/$theme/colors.toml not found"
+  local pairs
+  pairs="$(parse_palette "$colors_file")"
+  for key in "${REQUIRED_KEYS[@]}"; do
+    grep -q "^$key=" <<<"$pairs" || die "themes/$theme/colors.toml is missing key: $key"
+  done
+}
+
+# Render a single template with the given palette.
+# Substitutes ${palette.NAME} and ${palette.NAME#} (the latter strips the leading #).
+render_template() {
+  local tmpl="$1"
+  local palette_pairs="$2"
+  local content
+  content="$(cat "$tmpl")"
+  while IFS='=' read -r key val; do
+    [[ -z "$key" ]] && continue
+    local val_nohash="${val#\#}"
+    # Order matters: replace the "#"-stripped form first so the plain form doesn't eat it.
+    content="${content//\$\{palette.${key}#\}/$val_nohash}"
+    content="${content//\$\{palette.${key}\}/$val}"
+  done <<<"$palette_pairs"
+  printf '%s' "$content"
+}
+
+build_theme() {
+  local theme="$1"
+  local out_dir="$THEMES_DIR/$theme"
+  # Opt out of regeneration: a theme dir with a .do-not-build marker is
+  # hand-maintained — never overwrite its generated files.
+  if [[ -f "$out_dir/.do-not-build" ]]; then
+    log "skipping $theme (.do-not-build present)"
+    return 0
+  fi
+  validate_palette "$theme"
+  local palette_pairs
+  palette_pairs="$(parse_palette "$THEMES_DIR/$theme/colors.toml")"
+
+  # template-name → output-name mapping.
+  # Only starship is wired up for now; tmux/fzf/borders come later.
+  local pairs=(
+    "starship.toml.tmpl:starship.toml"
+  )
+
+  for entry in "${pairs[@]}"; do
+    local tmpl_name="${entry%%:*}"
+    local out_name="${entry##*:}"
+    local tmpl="$TEMPLATES_DIR/$tmpl_name"
+    [[ -f "$tmpl" ]] || die "template not found: $tmpl"
+    render_template "$tmpl" "$palette_pairs" > "$out_dir/$out_name"
+    log "rendered $theme/$out_name"
+  done
+}
+
+# Spawn a headless nvim with the named colorscheme and print a colors.toml
+# Writes themes/<name>/colors.toml and runs `build_theme <name>`.
+cmd_extract() {
+  local colorscheme=""
+  local out_name=""
+  local plugin_dir=""
+
+  while (( $# > 0 )); do
+    case "$1" in
+      --name)        out_name="$2"; shift 2 ;;
+      --plugin-dir)  plugin_dir="$2"; shift 2 ;;
+      -*)            die "unknown flag: $1" ;;
+      *)             colorscheme="$1"; shift ;;
+    esac
+  done
+  [[ -n "$colorscheme" ]] || die "usage: theme extract <nvim-colorscheme> [--name <name>] [--plugin-dir <path>]"
+  [[ -n "$out_name" ]] || out_name="$colorscheme"
+
+  # Auto-locate the plugin under lazy.nvim if --plugin-dir wasn't given.
+  if [[ -z "$plugin_dir" ]]; then
+    local lazy_dir="$HOME/.local/share/nvim/lazy"
+    if [[ -d "$lazy_dir" ]]; then
+      # First exact match: lazy/<colorscheme>.nvim or lazy/<colorscheme>
+      for cand in "$lazy_dir/$colorscheme.nvim" "$lazy_dir/$colorscheme"; do
+        [[ -d "$cand" ]] && { plugin_dir="$cand"; break; }
+      done
+      # Otherwise grep for a plugin whose colors/ dir contains the colorscheme name.
+      if [[ -z "$plugin_dir" ]]; then
+        for cand in "$lazy_dir"/*; do
+          [[ -d "$cand/colors" ]] || [[ -d "$cand/lua/$colorscheme" ]] || continue
+          plugin_dir="$cand"
+          break
+        done
+      fi
+    fi
+  fi
+
+  local nvim_args=()
+  if [[ -n "$plugin_dir" ]]; then
+    nvim_args=(--noplugin -c "set rtp+=$plugin_dir")
+  fi
+  local extracted
+  extracted="$(nvim --headless "${nvim_args[@]}" \
+    -c "colorscheme $colorscheme" \
+    -c "luafile $THEMES_DIR/extract.lua" \
+    -c "qa!")" || die "headless nvim failed"
+
+  # Strip any nvim noise: take only lines that look like TOML keys or section headers.
+  local toml_only
+  toml_only="$(printf '%s\n' "$extracted" | awk '/^\[|^[a-z_0-9]+[[:space:]]*=/')"
+
+  if [[ -z "$toml_only" ]]; then
+    die "extraction produced no output"
+  fi
+
+  # Patch the name field if --name was given.
+  if [[ -n "$out_name" ]]; then
+    toml_only="${toml_only//name = \"PLACEHOLDER\"/name = \"$out_name\"}"
+  fi
+
+  mkdir -p "$THEMES_DIR/$out_name"
+  printf '%s\n' "$toml_only" > "$THEMES_DIR/$out_name/colors.toml"
+  log "wrote themes/$out_name/colors.toml"
+  build_theme "$out_name"
+}
+
+cmd_init() {
+  local name=""
+  local from=""
+  while (( $# > 0 )); do
+    case "$1" in
+      --from) from="$2"; shift 2 ;;
+      -*)     die "unknown flag: $1" ;;
+      *)      name="$1"; shift ;;
+    esac
+  done
+  [[ -n "$name" ]] || die "usage: theme init <name> [--from <nvim-colorscheme>]"
+
+  local dir="$THEMES_DIR/$name"
+  [[ ! -d "$dir" ]] || die "themes/$name already exists"
+
+  if [[ -n "$from" ]]; then
+    cmd_extract "$from" --name "$name"
+    return
+  fi
+
+  mkdir -p "$dir"
+  cat > "$dir/colors.toml" <<TOML
+# themes/$name/colors.toml
+# Fill in every key below. Run \`theme build $name\` after editing.
+[meta]
+name = "$name"
+appearance = "dark"
+
+[palette]
+background           = "#000000"
+foreground           = "#000000"
+cursor               = "#000000"
+selection_background = "#000000"
+selection_foreground = "#000000"
+
+comment   = "#000000"
+keyword   = "#000000"
+string    = "#000000"
+function  = "#000000"
+type      = "#000000"
+number    = "#000000"
+variable  = "#000000"
+constant  = "#000000"
+operator  = "#000000"
+property  = "#000000"
+parameter = "#000000"
+
+error   = "#000000"
+warning = "#000000"
+info    = "#000000"
+hint    = "#000000"
+TOML
+  log "scaffolded themes/$name/ — edit colors.toml, then run \`theme build $name\`"
+}
+
+cmd_build() {
+  if [[ "${1:-}" == "--check" ]]; then
+    local drift=0
+    for dir in "$THEMES_DIR"/*/; do
+      local name
+      name="$(basename "$dir")"
+      [[ "$name" == "templates" ]] && continue
+      if [[ -f "$THEMES_DIR/$name/.do-not-build" ]]; then
+        log "skipping $name (.do-not-build present)"
+        continue
+      fi
+      validate_palette "$name"
+      local palette_pairs
+      palette_pairs="$(parse_palette "$THEMES_DIR/$name/colors.toml")"
+      local pairs_list=(
+        "starship.toml.tmpl:starship.toml"
+      )
+      for entry in "${pairs_list[@]}"; do
+        local tmpl="$TEMPLATES_DIR/${entry%%:*}"
+        local out_path="$THEMES_DIR/$name/${entry##*:}"
+        local rendered
+        rendered="$(render_template "$tmpl" "$palette_pairs")"
+        if ! diff -q <(printf '%s' "$rendered") "$out_path" >/dev/null 2>&1; then
+          log "drift: $name/${entry##*:}"
+          drift=1
+        fi
+      done
+    done
+    if (( drift )); then
+      die "theme build --check: drift detected — run \`theme build\`"
+    fi
+    log "theme build --check: all generated files in sync"
+    return
+  fi
+  if [[ -n "${1:-}" ]]; then
+    build_theme "$1"
+    return
+  fi
+  for dir in "$THEMES_DIR"/*/; do
+    local name
+    name="$(basename "$dir")"
+    [[ "$name" == "templates" ]] && continue
+    build_theme "$name"
+  done
+}
+
+main() {
+  local subcommand="${1:-}"
+  shift || true
+  case "$subcommand" in
+    list)            cmd_list "$@" ;;
+    current)         cmd_current "$@" ;;
+    set)             cmd_set "$@" ;;
+    build)           cmd_build "$@" ;;
+    init)            cmd_init "$@" ;;
+    extract)         cmd_extract "$@" ;;
+    help|-h|--help)  cmd_help ;;
+    "")              cmd_help ;;
+    *)               printf 'theme: unknown command: %s\n' "$subcommand" >&2
+                     printf "run 'theme help' for usage\n" >&2
+                     exit 1 ;;
+  esac
+}
+
+main "$@"

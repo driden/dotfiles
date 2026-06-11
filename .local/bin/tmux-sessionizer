@@ -215,7 +215,7 @@ sanity_check
 # Add any extra search paths to the TS_SEARCH_PATHS array
 # e.g : EXTRA_SEARCH_PATHS=("$HOME/extra1:4" "$HOME/extra2")
 # note : Path can be suffixed with :number to limit or extend the depth of the search for the Path
-
+TS_EXTRA_SEARCH_PATHS=("$HOME:1")
 if [[ ${#TS_EXTRA_SEARCH_PATHS[@]} -gt 0 ]]; then
     TS_SEARCH_PATHS+=("${TS_EXTRA_SEARCH_PATHS[@]}")
 fi

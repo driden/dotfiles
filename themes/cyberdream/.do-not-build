@@ -1,0 +1,2 @@
+Hand-maintained theme. `theme build` and `theme build --check` skip this dir.
+Delete this file to let the templates regenerate the output again.
