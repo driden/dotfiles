@@ -12,6 +12,36 @@ CURRENT_LINK="$HOME/.config/themes/current"
 die() { printf 'theme: %s\n' "$*" >&2; exit 1; }
 log() { printf 'theme: %s\n' "$*"; }
 
+cmd_help() {
+  cat <<'EOF'
+theme — manage and switch the dotfiles theme
+
+USAGE
+  theme <command> [args]
+
+COMMANDS
+  list                       List all themes (* marks the active one)
+  current                    Print the active theme name
+  set <name>                 Make <name> active (repoints ~/.config/themes/current)
+  build [<name>]             Render templates -> output files for <name>
+                             (all themes if <name> omitted)
+  build --check              Report drift between templates and output files;
+                             exit non-zero if any is found
+  init <name> [--from <nvim-scheme>]
+                             Scaffold a new theme dir, optionally seeding the
+                             palette from an nvim colorscheme
+  extract <nvim-scheme> [--name <name>] [--plugin-dir <path>]
+                             Extract a palette from an nvim colorscheme, then build
+  help, -h, --help           Show this help
+
+NOTES
+  - The active theme is the symlink ~/.config/themes/current.
+  - Only starship.toml is generated right now (tmux/fzf/borders are WIP).
+  - A theme dir containing a .do-not-build file is hand-maintained: it is
+    skipped by `build` and `build --check`. Delete the marker to re-enable.
+EOF
+}
+
 cmd_list() {
   local current_name=""
   current_name="$(cmd_current 2>/dev/null || true)"
@@ -296,14 +326,17 @@ main() {
   local subcommand="${1:-}"
   shift || true
   case "$subcommand" in
-    list)    cmd_list "$@" ;;
-    current) cmd_current "$@" ;;
-    set)     cmd_set "$@" ;;
-    build)   cmd_build "$@" ;;
-    init)    cmd_init "$@" ;;
-    extract) cmd_extract "$@" ;;
-    "")      die "usage: theme {list|current|set <name>|build [<name>]|init <name>|extract <colorscheme>}" ;;
-    *)       die "unknown subcommand: $subcommand" ;;
+    list)            cmd_list "$@" ;;
+    current)         cmd_current "$@" ;;
+    set)             cmd_set "$@" ;;
+    build)           cmd_build "$@" ;;
+    init)            cmd_init "$@" ;;
+    extract)         cmd_extract "$@" ;;
+    help|-h|--help)  cmd_help ;;
+    "")              cmd_help ;;
+    *)               printf 'theme: unknown command: %s\n' "$subcommand" >&2
+                     printf "run 'theme help' for usage\n" >&2
+                     exit 1 ;;
   esac
 }
 
