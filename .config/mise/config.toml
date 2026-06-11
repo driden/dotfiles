@@ -15,6 +15,12 @@ bun = "latest"
 tree-sitter = "latest"
 "npm:typescript-language-server" = "latest"
 gh = "latest"
+claude-code = "latest"
+"pipx:pyright" = "latest"
 
 [settings]
-idiomatic_version_file_enable_tools = ["node"]
+pipx.uvx = true
+idiomatic_version_file_enable_tools = [
+  "node", "python", "go", "java",
+  "ruby", "rust", "terraform", "bun", "deno",
+]
