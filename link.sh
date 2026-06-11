@@ -17,12 +17,15 @@ stow --dotfiles --stow ${DRY_RUN:+-n} --verbose 2 --target="$HOME" .
 # link, but never clobber an existing choice (switching themes re-points it).
 DEFAULT_THEME="bamboo"
 THEMES_LINK="$HOME/.config/themes/current"
-if [ ! -e "$THEMES_LINK" ] && [ ! -L "$THEMES_LINK" ]; then
+# Point at the default when nothing usable is linked yet — a valid existing
+# choice is left alone, but a missing or broken symlink gets (re)pointed.
+# -e is false for both an absent path and a dangling symlink.
+if [ ! -e "$THEMES_LINK" ]; then
     if [ -n "$DRY_RUN" ]; then
         echo "WOULD LINK: themes/current => themes/$DEFAULT_THEME"
     else
         mkdir -p "$(dirname "$THEMES_LINK")"
-        ln -s "$DOTFILES_DIR/themes/$DEFAULT_THEME" "$THEMES_LINK"
+        ln -sfn "$DOTFILES_DIR/themes/$DEFAULT_THEME" "$THEMES_LINK"
         echo "linked themes/current -> $DEFAULT_THEME"
     fi
 fi

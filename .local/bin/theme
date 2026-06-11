@@ -1,10 +1,17 @@
 #!/usr/bin/env bash
 # theme — manage and switch the dotfiles theme.
-# See docs/superpowers/specs/2026-05-30-theming-design.md.
 
 set -euo pipefail
 
-REPO_DIR="$(cd "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")/../../" && pwd)"
+# Resolve this (stow-symlinked) script back to the repo root — portable, since
+# macOS/BSD readlink has no -f.
+SOURCE="${BASH_SOURCE[0]}"
+while [ -L "$SOURCE" ]; do
+  DIR="$(cd -P "$(dirname "$SOURCE")" && pwd)"
+  SOURCE="$(readlink "$SOURCE")"
+  if [[ "$SOURCE" != /* ]]; then SOURCE="$DIR/$SOURCE"; fi
+done
+REPO_DIR="$(cd -P "$(dirname "$SOURCE")/../.." && pwd)"
 THEMES_DIR="$REPO_DIR/themes"
 TEMPLATES_DIR="$THEMES_DIR/templates"
 CURRENT_LINK="$HOME/.config/themes/current"
@@ -55,9 +62,8 @@ cmd_list() {
 }
 
 cmd_current() {
-  if [[ ! -L "$CURRENT_LINK" ]]; then
-    die "no current theme (symlink missing at $CURRENT_LINK)"
-  fi
+  [[ -L "$CURRENT_LINK" ]] || die "no current theme (symlink missing at $CURRENT_LINK)"
+  [[ -e "$CURRENT_LINK" ]] || die "current theme symlink is broken (-> $(readlink "$CURRENT_LINK"))"
   basename "$(readlink "$CURRENT_LINK")"
 }
 
@@ -66,7 +72,8 @@ cmd_set() {
   local name="${1:-}"
   [[ -n "$name" ]] || die "usage: theme set <name>"
   local dir="$THEMES_DIR/$name"
-  [[ -d "$dir" ]] || die "themes/$name not found (see 'theme list')"
+  # A real theme has a colors.toml — this also rejects 'templates' and stray dirs.
+  [[ -f "$dir/colors.toml" ]] || die "not a theme: $name (see 'theme list')"
   mkdir -p "$(dirname "$CURRENT_LINK")"
   # -n so an existing current symlink is replaced, not followed into its target.
   ln -sfn "$dir" "$CURRENT_LINK"
