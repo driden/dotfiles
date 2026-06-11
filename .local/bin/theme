@@ -31,6 +31,18 @@ cmd_current() {
   basename "$(readlink "$CURRENT_LINK")"
 }
 
+# Point ~/.config/themes/current at the named theme (the active-theme contract).
+cmd_set() {
+  local name="${1:-}"
+  [[ -n "$name" ]] || die "usage: theme set <name>"
+  local dir="$THEMES_DIR/$name"
+  [[ -d "$dir" ]] || die "themes/$name not found (see 'theme list')"
+  mkdir -p "$(dirname "$CURRENT_LINK")"
+  # -n so an existing current symlink is replaced, not followed into its target.
+  ln -sfn "$dir" "$CURRENT_LINK"
+  log "active theme → $name"
+}
+
 # Reads colors.toml and emits `key=value` pairs on stdout, one per line,
 # for everything under [palette]. Whitespace and quotes stripped.
 parse_palette() {
@@ -86,16 +98,20 @@ render_template() {
 
 build_theme() {
   local theme="$1"
+  local out_dir="$THEMES_DIR/$theme"
+  # Opt out of regeneration: a theme dir with a .do-not-build marker is
+  # hand-maintained — never overwrite its generated files.
+  if [[ -f "$out_dir/.do-not-build" ]]; then
+    log "skipping $theme (.do-not-build present)"
+    return 0
+  fi
   validate_palette "$theme"
   local palette_pairs
   palette_pairs="$(parse_palette "$THEMES_DIR/$theme/colors.toml")"
-  local out_dir="$THEMES_DIR/$theme"
 
-  # template-name → output-name mapping
+  # template-name → output-name mapping.
+  # Only starship is wired up for now; tmux/fzf/borders come later.
   local pairs=(
-    "borders.sh.tmpl:borders.sh"
-    "fzf.sh.tmpl:fzf.sh"
-    "tmux.conf.tmpl:tmux.conf"
     "starship.toml.tmpl:starship.toml"
   )
 
@@ -237,13 +253,14 @@ cmd_build() {
       local name
       name="$(basename "$dir")"
       [[ "$name" == "templates" ]] && continue
+      if [[ -f "$THEMES_DIR/$name/.do-not-build" ]]; then
+        log "skipping $name (.do-not-build present)"
+        continue
+      fi
       validate_palette "$name"
       local palette_pairs
       palette_pairs="$(parse_palette "$THEMES_DIR/$name/colors.toml")"
       local pairs_list=(
-        "borders.sh.tmpl:borders.sh"
-        "fzf.sh.tmpl:fzf.sh"
-        "tmux.conf.tmpl:tmux.conf"
         "starship.toml.tmpl:starship.toml"
       )
       for entry in "${pairs_list[@]}"; do
@@ -281,10 +298,11 @@ main() {
   case "$subcommand" in
     list)    cmd_list "$@" ;;
     current) cmd_current "$@" ;;
+    set)     cmd_set "$@" ;;
     build)   cmd_build "$@" ;;
     init)    cmd_init "$@" ;;
     extract) cmd_extract "$@" ;;
-    "")      die "usage: theme {list|current|build [<name>]|init <name>|extract <colorscheme>}" ;;
+    "")      die "usage: theme {list|current|set <name>|build [<name>]|init <name>|extract <colorscheme>}" ;;
     *)       die "unknown subcommand: $subcommand" ;;
   esac
 }
