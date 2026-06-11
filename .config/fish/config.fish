@@ -68,5 +68,10 @@ mise activate fish | source
 if status is-interactive
     # Commands to run in interactive sessions can go here
     set fish_greeting # disable welcome message
+    # Use the active theme's starship config when a theme is linked; otherwise
+    # fall back to starship's default (~/.config/starship.toml).
+    if test -e "$HOME/.config/themes/current/starship.toml"
+        set -gx STARSHIP_CONFIG "$HOME/.config/themes/current/starship.toml"
+    end
     starship init fish | source
 end

@@ -53,7 +53,9 @@ A personal dotfiles repo deployed to `$HOME` via GNU Stow. Files in this repo ar
 
 ## Theming
 
-Themes live in `themes/<name>/` — each dir has `colors.toml` (semantic palette) plus generated outputs. **Only `starship.toml` is wired up right now** (`borders.sh`/`fzf.sh`/`tmux.conf` exist in some dirs but are not yet built or consumed — WIP). `themes/` is **not** stowed (it's in `.stow-local-ignore`); the active theme lives at the `~/.config/themes/current` symlink, which `link.sh` creates pointing at `bamboo` on first link (never clobbering an existing choice). Switch with `theme set <name>`, which **only** repoints that symlink — nothing is reloaded/hooked yet.
+Themes live in `themes/<name>/` — each dir has `colors.toml` (semantic palette) plus generated outputs. **Only `starship.toml` is wired up right now** (`borders.sh`/`fzf.sh`/`tmux.conf` exist in some dirs but are not yet built or consumed — WIP). `themes/` is **not** stowed (it's in `.stow-local-ignore`); the active theme lives at the `~/.config/themes/current` symlink, which `link.sh` creates pointing at `bamboo` on first link (never clobbering an existing choice). Switch with `theme set <name>`, which repoints that symlink; **open a new shell** to pick up the change.
+
+**Starship wiring:** `.zshrc` and `.config/fish/config.fish` set `STARSHIP_CONFIG` to `~/.config/themes/current/starship.toml` *only when that file exists*, otherwise starship falls back to its default `~/.config/starship.toml` (kept as the fallback, never deleted). So a fresh machine with no linked theme still gets a working prompt.
 
 **CLI** (`.local/bin/theme`, stowed to `~/.local/bin/`):
 ```sh

@@ -208,6 +208,12 @@ znap source zsh-users/zsh-autosuggestions
 source $PLUGINS_FOLDER/zsh-users/zsh-autosuggestions/zsh-autosuggestions.zsh
 
 eval "$(fzf --zsh)"
+
+# Default to bamboo if no current theme is set
+if [[ -e "$HOME/.config/themes/current/starship.toml" ]]; then
+  export STARSHIP_CONFIG="$HOME/.config/themes/current/starship.toml"
+fi
+
 eval "$(starship init zsh)"
 
 if type mise &>/dev/null; then
