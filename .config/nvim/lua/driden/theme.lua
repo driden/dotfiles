@@ -1,4 +1,4 @@
 ---@type "cyberdream"|"gruvbox"|"kanagawa"|"tokyonight" | "bamboo"
-local theme = "cyberdream"
+local theme = "bamboo"
 
 return { theme = theme }
