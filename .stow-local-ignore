@@ -1,4 +1,5 @@
 README.md
+.claude
 .git
 .gitignore
 simple_zshrc
@@ -9,4 +10,9 @@ setup
 picom.conf
 init.sh
 keyd
-postinstal
+postinstall
+.config/git/ignore
+themes
+Brewfile
+CLAUDE.md
+docs

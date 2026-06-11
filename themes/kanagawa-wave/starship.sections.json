@@ -1,0 +1,9 @@
+[
+  { "name": "os", "modules": ["os", "username"] },
+  { "name": "separator1" },
+  { "name": "cwd", "modules": ["directory"] },
+  { "name": "separator2" },
+  { "name": "branch", "modules": ["git_branch", "git_status"] },
+  { "name": "separator3" },
+  { "name": "separator4" }
+]
