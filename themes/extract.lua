@@ -12,9 +12,6 @@
 --     --cmd "colorscheme <scheme>" \
 --     --cmd "source <this-file>" \
 --     -c "qa!"
---
--- See docs/superpowers/specs/2026-05-30-theming-design.md for the
--- canonical semantic vocabulary and fallback rationale.
 
 local roles = {
   { name = "background",           chains = {{"Normal", "bg"}} },

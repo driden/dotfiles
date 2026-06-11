@@ -20,6 +20,7 @@ zsh-snap
 .config/discord
 .config/fish/fish_variables
 .config/git/ignore
+/docs/
 */.claude
 
 
