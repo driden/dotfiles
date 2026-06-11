@@ -22,5 +22,4 @@ claude-code = "latest"
 pipx.uvx = true
 idiomatic_version_file_enable_tools = [
   "node", "python", "go", "java",
-  "ruby", "rust", "terraform", "bun", "deno",
-]
+  "ruby", "rust", "terraform", "bun", "deno"]
