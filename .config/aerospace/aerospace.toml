@@ -200,6 +200,10 @@ automatically-unhide-macos-hidden-apps = true
     run = 'move-node-to-workspace 9'
 
 [[on-window-detected]]
+    if.app-id = "com.google.Chrome"
+    run = 'move-node-to-workspace 6'
+
+[[on-window-detected]]
     if.window-title-regex-substring = 'Picture-in-Picture'
     run = 'layout floating'
 
