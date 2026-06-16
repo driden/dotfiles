@@ -17,6 +17,7 @@ tree-sitter = "latest"
 gh = "latest"
 claude-code = "latest"
 "pipx:pyright" = "latest"
+jq = "latest"
 
 [settings]
 pipx.uvx = true
