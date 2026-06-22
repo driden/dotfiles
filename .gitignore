@@ -30,3 +30,6 @@ zsh-snap
 
 /themes/*/.drafts/
 /.config/homebrew/trust.json.lock
+/.config/colima
+/.config/containers
+/.config/zed
