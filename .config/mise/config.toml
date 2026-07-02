@@ -18,6 +18,7 @@ gh = "latest"
 claude-code = "latest"
 "pipx:pyright" = "latest"
 jq = "latest"
+hunk = "latest"
 
 [settings]
 pipx.uvx = true
