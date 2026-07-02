@@ -33,3 +33,4 @@ zsh-snap
 /.config/colima
 /.config/containers
 /.config/zed
+/.config/opencode
