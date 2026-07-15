@@ -46,7 +46,7 @@ click_flag=""
 
 args=(-title "Claude · $label" -subtitle "$event" -message "$message" -sound default -group "claude-$label")
 if [ -n "$client_tty" ] && [ -n "$session" ]; then
-  args+=(-activate "com.mitchellh.ghostty" -execute "$HOME/.local/bin/notify-click.sh $click_flag '$session' '$client_tty'")
+  args+=(-activate "com.mitchellh.ghostty" -execute "$HOME/.local/bin/notify-click.sh $click_flag '$session' '$client_tty' '$TMUX_PANE'")
 fi
 
 terminal-notifier "${args[@]}" >/dev/null 2>&1
