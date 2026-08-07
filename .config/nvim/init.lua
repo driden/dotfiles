@@ -25,6 +25,9 @@ vim.opt.shiftwidth = 4
 vim.opt.tabstop = 4
 vim.opt.expandtab = true
 
+vim.o.exrc = true -- local project stuff
+vim.o.secure = true
+
 local toggle_meta_chars = function()
   vim.o.list = not vim.o.list
 end

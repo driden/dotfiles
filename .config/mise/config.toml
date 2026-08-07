@@ -4,7 +4,6 @@ java = "latest"
 lua = "5.1"
 lua-language-server = "latest"
 node = "latest"
-opencode = "latest"
 pi = "latest"
 ruff = "latest"
 uv = "latest"
@@ -19,6 +18,8 @@ claude-code = "latest"
 "pipx:pyright" = "latest"
 jq = "latest"
 hunk = "latest"
+opencode = "latest"
+superhtml = "latest"
 
 [settings]
 pipx.uvx = true

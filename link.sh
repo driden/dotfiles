@@ -9,8 +9,8 @@ case "${1:-}" in
     "") ;;
     *) echo "usage: $0 [-n|--dry-run]" >&2; exit 1 ;;
 esac
-
-stow --dotfiles --stow ${DRY_RUN:+-n} --verbose 2 --target="$HOME" .
+#--verbose 2 
+stow --dotfiles --stow ${DRY_RUN:+-n} --target="$HOME" .
 
 # themes/ is not stowed (see .stow-local-ignore); apps read the active theme via
 # the ~/.config/themes/current symlink. Point it at the default theme on first
