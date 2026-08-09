@@ -20,6 +20,7 @@ jq = "latest"
 hunk = "latest"
 opencode = "latest"
 superhtml = "latest"
+"npm:@opencode-ai/cli" = { version = "next", allow_builds = ["@opencode-ai/cli"] }
 
 [settings]
 pipx.uvx = true

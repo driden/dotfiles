@@ -18,6 +18,7 @@ bindkey -e
 
 # General
 export PATH="$HOME/.local/bin:$PATH"
+export PATH="$HOME/.local/third-party/bin:$PATH"
 # export PATH="$HOME/neovim/bin:/usr/bin:/bin:${PATH}"
 export PATH="$HOME/neovim/bin:$PATH"
 export PATH="$HOME/.emacs.d/bin:$PATH"
@@ -225,4 +226,3 @@ fi
 if [ -z "$SSH_AUTH_SOCK" ]; then
     eval "$(ssh-agent -s)" >/dev/null
 fi
-
