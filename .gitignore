@@ -34,3 +34,9 @@ zsh-snap
 /.config/containers
 /.config/zed
 /.config/opencode
+/.config/themes/current
+/.config/configstore/update-notifier-web-ext.json
+/.config/https:/nomacs.org/Image Lounge.ini
+/.config/hunk/state.json
+/.config/lazydocker/config.yml
+/.config/snyk/snyk-mcp.log
