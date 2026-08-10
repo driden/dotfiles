@@ -1,6 +1,8 @@
-tap "felixkratz/formulae"
+tap "felixkratz/formulae", "https://github.com/FelixKratz/homebrew-formulae"
+tap "hashicorp/tap"
 tap "nikitabobko/tap"
-tap "wez/wezterm"
+tap "vjeantet/tap"
+tap "wezterm/wezterm", "https://github.com/wezterm/homebrew-wezterm.git"
 # Tool for generating GNU Standards-compliant Makefiles
 brew "automake"
 # Cryptography and SSL/TLS Toolkit
@@ -13,18 +15,30 @@ brew "bash"
 brew "glib"
 # Cross-platform make
 brew "cmake"
+# Container runtimes on MacOS (and Linux) with minimal setup
+brew "colima"
 # GNU File, Shell, and Text utilities
 brew "coreutils"
 # Get a file from an HTTP, HTTPS or FTP server
 brew "curl"
 # Tool for exploring each layer in a docker image
 brew "dive"
+# Pack, ship and run any application as a lightweight container
+brew "docker"
+# Docker CLI plugin for extended build capabilities with BuildKit
+brew "docker-buildx"
+# Clean Docker containers, images, networks, and volumes
+brew "docker-clean"
+# Isolated development environments using Docker
+brew "docker-compose"
 # Run arbitrary commands when files change
 brew "entr"
 # Modern, maintained replacement for ls
 brew "eza"
 # Simple, fast and user-friendly alternative to find
 brew "fd"
+# Play, record, convert, and stream select audio and video codecs
+brew "ffmpeg"
 # Command-line fuzzy finder written in Go
 brew "fzf"
 # GNU awk utility
@@ -37,6 +51,8 @@ brew "gh"
 brew "git"
 # Syntax-highlighting pager for git and diff output
 brew "git-delta"
+# Quickly rewrite git repository history
+brew "git-filter-repo"
 # GNU Transport Layer Security (TLS) Library
 brew "gnutls"
 # GNU Privacy Guard (OpenPGP)
@@ -77,6 +93,8 @@ brew "pkgconf"
 brew "plantuml"
 # Fast, disk space efficient package manager
 brew "pnpm"
+# Podman Terminal User Interface
+brew "podman-tui"
 # Search tool like grep and The Silver Searcher
 brew "ripgrep"
 # Smart session manager for the terminal
@@ -85,6 +103,8 @@ brew "sesh"
 brew "starship"
 # Organize software neatly under a single directory tree (e.g. /usr/local)
 brew "stow"
+# Send macOS User Notifications from the command-line
+brew "terminal-notifier"
 # Terminal multiplexer
 brew "tmux"
 # Display directories as trees (with optional color/HTML output)
@@ -99,14 +119,20 @@ brew "yq"
 brew "zoxide"
 # UNIX shell (command interpreter)
 brew "zsh"
+# A window border system for macOS
+brew "felixkratz/formulae/borders", trusted: true
+# Vault
+brew "hashicorp/tap/vault", trusted: true
 # AeroSpace is an i3-like tiling window manager for macOS
-cask "nikitabobko/tap/aerospace"
+cask "nikitabobko/tap/aerospace", trusted: true
 # Desktop password and login vault
 cask "bitwarden"
+# Open source IDE for exploring and testing APIs
+cask "bruno"
 # Utility that prevents the system from going to sleep
 cask "caffeine"
-# Screenshot software with built-in annotation tools
-cask "flameshot"
+# Anthropic's official Claude AI desktop app
+cask "claude"
 # Privacy-focused Firefox-based browser
 cask "floorp"
 cask "font-hack-nerd-font"
@@ -120,10 +146,8 @@ cask "handy"
 cask "insomnia"
 # Keyboard customiser
 cask "karabiner-elements", args: { appdir: "/Applications" }
-# Password manager app
-cask "keepassxc"
-# Free and open-source painting and sketching program
-cask "krita"
+# Reverse proxy, secure introspectable tunnels to localhost
+cask "ngrok"
 # Knowledge base that works on top of a local folder of plain text Markdown files
 cask "obsidian"
 # Simple Gtk# Paint Program
@@ -136,3 +160,7 @@ cask "sioyek"
 cask "vesktop"
 # Open-source code editor
 cask "visual-studio-code", args: { appdir: "/Applications" }
+# REST, GraphQL and gRPC client
+cask "yaak"
+# Multiplayer code editor
+cask "zed"
