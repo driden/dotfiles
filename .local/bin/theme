@@ -51,7 +51,9 @@ EOF
 
 cmd_list() {
   local current_name=""
-  current_name="$(cmd_current 2>/dev/null || true)"
+  # `|| true` must sit outside the substitution: cmd_current dies via `exit`,
+  # which tears down the subshell before any `||` inside it could run.
+  current_name="$(cmd_current 2>/dev/null)" || true
   for dir in "$THEMES_DIR"/*/; do
     local name marker
     name="$(basename "$dir")"
