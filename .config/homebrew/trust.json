@@ -1,0 +1,9 @@
+{
+  "trustedformulae": [
+    "felixkratz/formulae/borders",
+    "hashicorp/tap/vault"
+  ],
+  "trustedcasks": [
+    "nikitabobko/tap/aerospace"
+  ]
+}
