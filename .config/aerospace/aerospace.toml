@@ -3,13 +3,7 @@
 
 config-version = 2
 
-# You can use it to add commands that run after login to macOS user session.
-# 'start-at-login' needs to be 'true' for 'after-login-command' to work
-# Available commands: https://nikitabobko.github.io/AeroSpace/commands
-after-login-command = []
-
 # You can use it to add commands that run after AeroSpace startup.
-# 'after-startup-command' is run after 'after-login-command'
 # Available commands : https://nikitabobko.github.io/AeroSpace/commands
 after-startup-command = [
 "exec-and-forget borders width=10.0 hidpi=off active_color=0xffaaaaff inactive_color=0xff5b5e5a"
@@ -17,6 +11,9 @@ after-startup-command = [
 
 # Start AeroSpace at login
 start-at-login = true
+
+# Reload this file as soon as it changes on disk
+auto-reload-config = true
 
 # Normalizations. See: https://nikitabobko.github.io/AeroSpace/guide#normalization
 enable-normalization-flatten-containers = true
@@ -51,7 +48,7 @@ automatically-unhide-macos-hidden-apps = true
 [exec]
     inherit-env-vars = true
 [exec.env-vars]
-    PATH = '~/.local/bin:/usr/local/bin:/opt/homebrew/bin:/opt/homebrew/sbin:${PATH}'
+    PATH = '${HOME}/.local/bin:/usr/local/bin:/opt/homebrew/bin:/opt/homebrew/sbin:${PATH}'
 
 # Possible values: (qwerty|dvorak|colemak)
 # See https://nikitabobko.github.io/AeroSpace/guide#key-mapping
@@ -81,6 +78,8 @@ automatically-unhide-macos-hidden-apps = true
 [mode.main.binding]
 
     alt-shift-f = 'fullscreen'
+    alt-shift-space = 'layout floating tiling'
+    alt-shift-q = 'close'
     # All possible keys:
     # - Letters.        a, b, c, ..., z
     # - Numbers.        0, 1, 2, ..., 9
