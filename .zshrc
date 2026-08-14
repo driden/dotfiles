@@ -53,7 +53,7 @@ fi
 
 export MANPATH="/usr/local/man:$MANPATH"
 export LANG=en_US.UTF-8
-export BROWSER=$(which firefox)
+export BROWSER=floorp # dot-bin/floorp resolves the platform's actual install
 export FZF_DEFAULT_COMMAND='rg --hidden -l ""'
 export FZF_ALT_C_COMMAND='fd --absolute-path --type d --max-depth 2 -E Library -E Pictures -E Music -E Applications -E zsh-plugins -E go . "$HOME"'
 

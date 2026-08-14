@@ -1,6 +1,7 @@
 return {
   "MeanderingProgrammer/render-markdown.nvim",
-  dependencies = { "nvim-treesitter/nvim-treesitter", "nvim-tree/nvim-web-devicons" },
+  -- Uses core vim.treesitter, not nvim-treesitter modules, so no parser-plugin dep needed.
+  dependencies = { "nvim-tree/nvim-web-devicons" },
   opts = {
     file_types = { "Avante", "markdown" },
     render_modes = { "n", "c", "t" },

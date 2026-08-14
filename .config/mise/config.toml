@@ -21,6 +21,7 @@ hunk = "latest"
 opencode = "latest"
 superhtml = "latest"
 "npm:@opencode-ai/cli" = { version = "next", allow_builds = ["@opencode-ai/cli"] }
+"npm:typescript" = "6"
 
 [settings]
 pipx.uvx = true

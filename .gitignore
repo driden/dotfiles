@@ -40,3 +40,4 @@ zsh-snap
 /.config/hunk/state.json
 /.config/lazydocker/config.yml
 /.config/snyk/snyk-mcp.log
+/.local/bin/python3.12

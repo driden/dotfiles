@@ -1,5 +1,55 @@
 local M = {}
 
+--- Directory holding tsserver.js for a globally installed TypeScript, or nil.
+--- Resolved from whatever `tsserver` is on $PATH, so this works with any install
+--- method (mise, npm -g, volta, a distro package) rather than one machine's
+--- layout. TypeScript 7 is the native rewrite and ships no tsserver.js, so the
+--- check is for that file specifically, not merely for the executable.
+--- @return string|nil
+local function global_tsserver_lib()
+  local roots = {}
+  -- Where `tsserver` actually lives, following symlinks. Covers `npm -g`, whose
+  -- /usr/local/bin/tsserver points into lib/node_modules/typescript/bin/.
+  local exe = vim.fn.exepath("tsserver")
+  if exe ~= "" then
+    for dir in vim.fs.parents(vim.fn.resolve(exe)) do
+      roots[#roots + 1] = dir
+    end
+  end
+  -- Every $PATH entry as well, because a version manager's shim resolves to the
+  -- manager itself rather than to the package, so following the executable
+  -- alone finds nothing. The real install is still a $PATH entry's neighbour.
+  for entry in vim.gsplit(vim.env.PATH or "", ":", { trimempty = true }) do
+    roots[#roots + 1] = vim.fs.dirname(entry)
+  end
+  -- A package's `bin/tsserver` sits beside its `lib/`, while npm's
+  -- `node_modules/.bin/tsserver` sits beside `node_modules/typescript/lib/`.
+  for _, dir in ipairs(roots) do
+    for _, lib in ipairs({ vim.fs.joinpath(dir, "lib"), vim.fs.joinpath(dir, "typescript", "lib") }) do
+      if vim.uv.fs_stat(vim.fs.joinpath(lib, "tsserver.js")) then
+        return lib
+      end
+    end
+  end
+  return nil
+end
+
+--- True when the project ships its own TypeScript. That must always win, so
+--- diagnostics match the version the project actually builds with. Searches
+--- upward so a package in a monorepo still sees a hoisted root install.
+local function has_local_tsserver(root)
+  if not root or root == vim.NIL then
+    return false
+  end
+  local found = vim.fs.find("node_modules", { path = root, upward = true, type = "directory", limit = math.huge })
+  for _, node_modules in ipairs(found) do
+    if vim.uv.fs_stat(vim.fs.joinpath(node_modules, "typescript", "lib", "tsserver.js")) then
+      return true
+    end
+  end
+  return false
+end
+
 function M.setup(capabilities)
   vim.lsp.config(
     "ts_lang",
@@ -82,6 +132,23 @@ function M.setup(capabilities)
     {
       init_options = { hostInfo = "neovim" },
       cmd = { "typescript-language-server", "--stdio" },
+      -- Projects without a local `typescript` dep otherwise kill the server at
+      -- initialize with "Could not find a valid TypeScript installation".
+      -- Point those at the mise-managed global copy, and leave projects that
+      -- have their own TypeScript alone.
+      before_init = function(params, config)
+        if has_local_tsserver(params.rootPath) then
+          return
+        end
+        local lib = global_tsserver_lib()
+        if not lib then
+          return
+        end
+        -- Build a new table rather than mutating the shared config.init_options,
+        -- which is reused for every root this server attaches to.
+        params.initializationOptions =
+          vim.tbl_deep_extend("force", config.init_options or {}, { tsserver = { path = lib } })
+      end,
       filetypes = {
         "javascript",
         "javascriptreact",

@@ -1,3 +1,13 @@
+-- Fall back to mise shims for spawned tools (LSP servers, formatters, linters).
+-- Appended, not prepended, so an active `mise activate` env still wins.
+-- Without this, a project whose node version resolution drops out leaves the
+-- typescript-language-server shim on PATH but not `node`, and the server dies
+-- with "line 8: exec: node: not found".
+local mise_shims = vim.fn.expand("~/.local/share/mise/shims")
+if vim.fn.isdirectory(mise_shims) == 1 and not string.find(vim.env.PATH or "", mise_shims, 1, true) then
+  vim.env.PATH = (vim.env.PATH or "") .. ":" .. mise_shims
+end
+
 vim.opt.shortmess:append("I")
 vim.g.mapleader = " "
 vim.g.maplocalleader = ","
@@ -236,10 +246,44 @@ require("lazy").setup({
         highlight = true, -- treesitter highlighting is enabled by default
         -- languages = {}, -- override or add new parser sources
       })
+
+      -- Dedupe concurrent installs of the same parser.
+      --
+      -- auto_install runs off a `pattern = "*"` FileType autocmd, and lazy.nvim
+      -- re-emits FileType whenever it lazy-loads a plugin registered for that
+      -- filetype (lazy/core/handler/event.lua). So any filetype backed by a
+      -- lazy `ft =` spec (http/rest via kulala, lua via lazydev, markdown via
+      -- render-markdown) delivers two FileType events for one buffer.
+      --
+      -- The plugin's only guard is "is the parser already on disk", which is
+      -- still false while the async git clone is in flight, so both events start
+      -- a full clone and build racing onto the same output file. Track what is
+      -- in flight and drop the duplicate.
+      --
+      -- Patched here rather than in the plugin so it survives updates.
+      local installer = require("tree-sitter-manager.installer")
+      local install = installer.install
+      local in_flight = {}
+      installer.install = function(lang, callback)
+        if in_flight[lang] then
+          return
+        end
+        in_flight[lang] = true
+        return install(lang, function(ok)
+          in_flight[lang] = nil
+          if callback then
+            callback(ok)
+          end
+        end)
+      end
     end,
   },
   { -- Highlight, edit, and navigate code
     "nvim-treesitter/nvim-treesitter",
+    -- Disabled: tree-sitter-manager.nvim above owns parser install/highlight now.
+    -- This spec is pinned to the archived master branch, and its `build = ":TSUpdate"`
+    -- writes .so parsers into the plugin dir, which shadow ~/.local/share/nvim/site/parser.
+    enabled = false,
     build = ":TSUpdate",
     -- [[ Configure Treesitter ]] See `:help nvim-treesitter`
     opts = {
