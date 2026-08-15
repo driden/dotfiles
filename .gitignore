@@ -28,16 +28,19 @@ zsh-snap
 .config/bt
 .local/bin/bt
 
-/themes/*/.drafts/
-/.config/homebrew/trust.json.lock
 /.config/colima
-/.config/containers
-/.config/zed
-/.config/opencode
-/.config/themes/current
 /.config/configstore/update-notifier-web-ext.json
+/.config/containers
+/.config/homebrew/trust.json.lock
 /.config/https:/nomacs.org/Image Lounge.ini
 /.config/hunk/state.json
 /.config/lazydocker/config.yml
+/.config/opencode/*
 /.config/snyk/snyk-mcp.log
+/.config/themes/current
+/.config/zed
 /.local/bin/python3.12
+/themes/*/.drafts/
+
+!/.config/opencode/plugins/
+!/.config/opencode/plugins/notify-tmux.ts
