@@ -1,6 +1,15 @@
 #!/bin/bash
 set -e
 
+# Invoke this repo-local updater with only the integrations used on each machine:
+#   OpenCode/OpenCode2 + Pi:
+#     ./install-plannotator.sh --skip-claude --skip-codex --skip-gemini --skip-kiro
+#   Claude Code only:
+#     ./install-plannotator.sh --skip-codex --skip-gemini --skip-kiro --skip-opencode --skip-pi
+#   Codex only:
+#     ./install-plannotator.sh --skip-claude --skip-gemini --skip-kiro --skip-opencode --skip-pi
+# OpenCode and OpenCode 2 share ~/.config/opencode.
+
 REPO="backnotprop/plannotator"
 INSTALL_DIR="$HOME/.local/third-party/bin"
 
@@ -56,10 +65,12 @@ MINIMAL_FLAG=-1
 # writes nothing to that agent's home; it never removes an integration a
 # previous install already wired. 1 = flag passed. Resolution (flag > env >
 # config skipInstall.<agent> > default off) happens after _config_dir is known.
+SKIP_CLAUDE_FLAG=0
 SKIP_CODEX_FLAG=0
 SKIP_GEMINI_FLAG=0
 SKIP_KIRO_FLAG=0
 SKIP_OPENCODE_FLAG=0
+SKIP_PI_FLAG=0
 # Same shape, but scoped to the skills/slash-command sparse checkout rather
 # than one agent's home: --skip-skills turns the whole fetch into a no-op for
 # every scope it writes (Claude, ~/.agents, OpenCode, Gemini, Kiro), including
@@ -72,8 +83,9 @@ usage() {
     cat <<'USAGE'
 Usage: install.sh [--version <tag>] [--verify-attestation | --skip-attestation]
                   [--extras | --no-extras] [--model-invocable <list>|none]
-                  [--minimal | --no-minimal] [--skip-codex] [--skip-gemini]
-                  [--skip-kiro] [--skip-opencode] [--skip-skills]
+                  [--minimal | --no-minimal] [--skip-claude] [--skip-codex]
+                  [--skip-gemini] [--skip-kiro] [--skip-opencode] [--skip-pi]
+                  [--skip-skills]
                   [--non-interactive] [--reconfigure] [--help]
        install.sh <tag>
 
@@ -108,6 +120,8 @@ Options:
                          enabled by exporting PLANNOTATOR_MINIMAL=1.
   --no-minimal           Force a full install even when PLANNOTATOR_MINIMAL is
                          set in the environment.
+  --skip-claude          Do not write or clean Claude Code hooks, skills, or
+                         commands. Existing Claude integration is untouched.
   --skip-codex           Do not write the Codex integration (hooks.json /
                          config.toml under CODEX_HOME) even when Codex is
                          detected. Never removes an existing integration.
@@ -128,6 +142,9 @@ Options:
                          so this is a plain do-not-write switch. Env var:
                          PLANNOTATOR_SKIP_OPENCODE_INSTALL; config key:
                          skipInstall.opencode.
+  --skip-pi              Do not clear Pi's extension cache or update the
+                         Plannotator Pi extension. Existing Pi integration is
+                         untouched.
   --skip-skills          Do not fetch or write the /plannotator-* skills and
                          slash commands (the sparse checkout that feeds Claude
                          Code, ~/.agents, OpenCode, Gemini, and Kiro), the
@@ -170,11 +187,11 @@ itself. Skip it by exporting PLANNOTATOR_SKIP_AGENT_TERMINAL_INSTALL=1. If
 Node/npm is unavailable, Plannotator still installs and annotate mode works
 without the integrated terminal.
 
-Examples:
-  curl -fsSL https://plannotator.ai/install.sh | bash
-  curl -fsSL https://plannotator.ai/install.sh | bash -s -- --version vX.Y.Z
-  curl -fsSL https://plannotator.ai/install.sh | bash -s -- --no-extras --model-invocable none
-  bash install.sh vX.Y.Z
+Examples (run this repo-local script; the upstream installer lacks these policies):
+  ./install-plannotator.sh --skip-claude --skip-codex --skip-gemini --skip-kiro
+  ./install-plannotator.sh --skip-codex --skip-gemini --skip-kiro --skip-opencode --skip-pi
+  ./install-plannotator.sh --skip-claude --skip-gemini --skip-kiro --skip-opencode --skip-pi
+  ./install-plannotator.sh --minimal
 USAGE
 }
 
@@ -289,6 +306,10 @@ while [ $# -gt 0 ]; do
             MINIMAL_FLAG=0
             shift
             ;;
+        --skip-claude)
+            SKIP_CLAUDE_FLAG=1
+            shift
+            ;;
         --skip-codex)
             SKIP_CODEX_FLAG=1
             shift
@@ -303,6 +324,10 @@ while [ $# -gt 0 ]; do
             ;;
         --skip-opencode)
             SKIP_OPENCODE_FLAG=1
+            shift
+            ;;
+        --skip-pi)
+            SKIP_PI_FLAG=1
             shift
             ;;
         --skip-skills)
@@ -345,6 +370,9 @@ esac
 if [ "$MINIMAL_FLAG" -ne -1 ]; then
     minimal="$MINIMAL_FLAG"
 fi
+
+skip_claude="$SKIP_CLAUDE_FLAG"
+skip_pi="$SKIP_PI_FLAG"
 
 case "$(uname -s)" in
     Darwin) os="darwin" ;;
@@ -977,8 +1005,7 @@ if [ "$codex_available" -eq 1 ] && [ "$skip_codex" -eq 1 ]; then
     if [ -f "$CODEX_DIR/hooks.json" ] && grep -q "plannotator" "$CODEX_DIR/hooks.json" 2>/dev/null; then
         echo "An existing Codex integration at ${CODEX_DIR}/hooks.json was left untouched."
     fi
-    echo "Note: the shared agent skills in ~/.agents/skills serve multiple agents"
-    echo "(Codex among them) and are still installed."
+    echo "Shared agent skills in ~/.agents/skills were left untouched."
 elif [ "$codex_available" -eq 1 ]; then
     CODEX_CONFIG="$CODEX_DIR/config.toml"
     CODEX_HOOKS="$CODEX_DIR/hooks.json"
@@ -1160,7 +1187,7 @@ fi
 
 # Validate plugin hooks.json if plugin is already installed
 PLUGIN_HOOKS="${CLAUDE_CONFIG_DIR:-$HOME/.claude}/plugins/marketplaces/plannotator/apps/hook/hooks/hooks.json"
-if [ -f "$PLUGIN_HOOKS" ]; then
+if [ "$skip_claude" -eq 0 ] && [ -f "$PLUGIN_HOOKS" ]; then
     cat > "$PLUGIN_HOOKS" << 'HOOKS_EOF'
 {
   "hooks": {
@@ -1200,11 +1227,13 @@ fi
 # always cleared.
 if [ "$skip_opencode" -eq 0 ]; then
     rm -rf "$HOME/.cache/opencode/node_modules/@plannotator" "$HOME/.cache/opencode/packages/@plannotator" 2>/dev/null || true
+    rm -rf "$HOME/.bun/install/cache/@plannotator" 2>/dev/null || true
 fi
-rm -rf "$HOME/.bun/install/cache/@plannotator" 2>/dev/null || true
 
-# Clear Pi jiti cache to force fresh download on next run
-rm -rf /tmp/jiti 2>/dev/null || true
+# Clear Pi's jiti cache only when Pi was explicitly selected.
+if [ "$skip_pi" -eq 0 ]; then
+    rm -rf /tmp/jiti 2>/dev/null || true
+fi
 
 update_pi_extension_if_present() {
     if ! command -v pi &>/dev/null; then
@@ -1235,12 +1264,14 @@ STALE_CODEX_SKILLS_DIR="$CODEX_DIR/skills"
 # Old installers (pre core/extra split) ran `cp -r apps/skills/*` against a
 # new-layout tag and could leave junk `core`/`extra` directory copies in the
 # Claude skills scope. Never valid skill names — always safe to remove.
-for junk in core extra; do
-    if [ -d "${CLAUDE_CONFIG_DIR:-$HOME/.claude}/skills/$junk" ]; then
-        rm -rf "${CLAUDE_CONFIG_DIR:-$HOME/.claude}/skills/$junk"
-        echo "Removed stale layout directory ~/.claude/skills/$junk (left by an older installer)"
-    fi
-done
+if [ "$skip_claude" -eq 0 ]; then
+    for junk in core extra; do
+        if [ -d "${CLAUDE_CONFIG_DIR:-$HOME/.claude}/skills/$junk" ]; then
+            rm -rf "${CLAUDE_CONFIG_DIR:-$HOME/.claude}/skills/$junk"
+            echo "Removed stale layout directory ~/.claude/skills/$junk (left by an older installer)"
+        fi
+    done
+fi
 
 # Extras are no longer installed by this script anywhere except Kiro. Remove
 # previously default-installed copies ONCE per machine — recorded in the
@@ -1251,17 +1282,29 @@ CLAUDE_SKILLS_DIR="${CLAUDE_CONFIG_DIR:-$HOME/.claude}/skills"
 AGENTS_SKILLS_DIR="$HOME/.agents/skills"
 MIGRATIONS_DIR="$_config_dir/migrations"
 EXTRAS_MIGRATION="$MIGRATIONS_DIR/2026-06-extras-default-install-removed"
+CLAUDE_EXTRAS_MIGRATION="$MIGRATIONS_DIR/2026-06-claude-extras-default-install-removed"
+CODEX_EXTRAS_MIGRATION="$MIGRATIONS_DIR/2026-06-codex-extras-default-install-removed"
 if [ ! -f "$EXTRAS_MIGRATION" ]; then
-    for scope in "$CLAUDE_SKILLS_DIR" "$AGENTS_SKILLS_DIR"; do
+    if [ "$skip_claude" -eq 0 ] && [ ! -f "$CLAUDE_EXTRAS_MIGRATION" ]; then
         for skill in plannotator-compound plannotator-setup-goal plannotator-visual-explainer; do
-            if [ -d "$scope/$skill" ]; then
-                rm -rf "$scope/$skill"
-                echo "Removed extra Plannotator skill from ${scope}/$skill (reinstall via npx skills add)"
+            if [ -d "$CLAUDE_SKILLS_DIR/$skill" ]; then
+                rm -rf "$CLAUDE_SKILLS_DIR/$skill"
+                echo "Removed extra Plannotator skill from ${CLAUDE_SKILLS_DIR}/$skill (reinstall via npx skills add)"
             fi
         done
-    done
-    mkdir -p "$MIGRATIONS_DIR"
-    : > "$EXTRAS_MIGRATION"
+        mkdir -p "$MIGRATIONS_DIR"
+        : > "$CLAUDE_EXTRAS_MIGRATION"
+    fi
+    if [ "$skip_codex" -eq 0 ] && [ ! -f "$CODEX_EXTRAS_MIGRATION" ]; then
+        for skill in plannotator-compound plannotator-setup-goal plannotator-visual-explainer; do
+            if [ -d "$AGENTS_SKILLS_DIR/$skill" ]; then
+                rm -rf "$AGENTS_SKILLS_DIR/$skill"
+                echo "Removed extra Plannotator skill from ${AGENTS_SKILLS_DIR}/$skill (reinstall via npx skills add)"
+            fi
+        done
+        mkdir -p "$MIGRATIONS_DIR"
+        : > "$CODEX_EXTRAS_MIGRATION"
+    fi
 fi
 
 # --- Guided install (interactive terminals only) ---
@@ -1470,7 +1513,10 @@ fi
 # The extras ARE skills, so --skip-skills suppresses them too — a saved
 # extras=yes preference must not smuggle a skill install past the opt-out.
 if [ "$skip_skills" -eq 0 ] && [ "$extras_choice" = "yes" ] && [ "$extras_present" -eq 0 ]; then
-    if [ "$can_prompt" -eq 1 ] && command -v npx >/dev/null 2>&1; then
+    if [ "$skip_claude" -eq 1 ] || [ "$skip_codex" -eq 1 ] || [ "$skip_gemini" -eq 1 ] || [ "$skip_kiro" -eq 1 ] || [ "$skip_opencode" -eq 1 ]; then
+        echo "Automatic extras install skipped because npx installs globally and a harness opt-out is active."
+        echo "Install extras manually only in the harnesses where you want them."
+    elif [ "$can_prompt" -eq 1 ] && command -v npx >/dev/null 2>&1; then
         echo "Launching the skills CLI for the extras (pick your agents in its UI)..."
         npx skills add backnotprop/plannotator/apps/skills/extra --global < /dev/tty || \
             echo "skills CLI did not complete — install later with: npx skills add backnotprop/plannotator/apps/skills/extra --global"
@@ -1630,23 +1676,27 @@ checkout_failed=0
     # whose prose bodies the model follows via its own shell; the `!`…``
     # injection is a Claude-Code-only extension, so the two are sourced
     # separately rather than sharing one body.
-    if [ -d "apps/skills/claude" ] && [ -n "$(ls -A apps/skills/claude 2>/dev/null)" ]; then
-        mkdir -p "$CLAUDE_SKILLS_DIR"
-        copy_skill_if_present apps/skills/claude/plannotator-review "$CLAUDE_SKILLS_DIR"
-        copy_skill_if_present apps/skills/claude/plannotator-annotate "$CLAUDE_SKILLS_DIR"
-        copy_skill_if_present apps/skills/claude/plannotator-last "$CLAUDE_SKILLS_DIR"
-        echo "Installed Claude Code skills to ${CLAUDE_SKILLS_DIR}/"
-    else
-        echo "Tag ${latest_tag} predates the per-agent skill layout — skipping Claude Code skill install"
+    if [ "$skip_claude" -eq 0 ]; then
+        if [ -d "apps/skills/claude" ] && [ -n "$(ls -A apps/skills/claude 2>/dev/null)" ]; then
+            mkdir -p "$CLAUDE_SKILLS_DIR"
+            copy_skill_if_present apps/skills/claude/plannotator-review "$CLAUDE_SKILLS_DIR"
+            copy_skill_if_present apps/skills/claude/plannotator-annotate "$CLAUDE_SKILLS_DIR"
+            copy_skill_if_present apps/skills/claude/plannotator-last "$CLAUDE_SKILLS_DIR"
+            echo "Installed Claude Code skills to ${CLAUDE_SKILLS_DIR}/"
+        else
+            echo "Tag ${latest_tag} predates the per-agent skill layout — skipping Claude Code skill install"
+        fi
     fi
-    if [ -d "apps/skills/core" ] && [ -n "$(ls -A apps/skills/core 2>/dev/null)" ]; then
-        mkdir -p "$AGENTS_SKILLS_DIR"
-        copy_skill_if_present apps/skills/core/plannotator-review "$AGENTS_SKILLS_DIR"
-        copy_skill_if_present apps/skills/core/plannotator-annotate "$AGENTS_SKILLS_DIR"
-        copy_skill_if_present apps/skills/core/plannotator-last "$AGENTS_SKILLS_DIR"
-        echo "Installed shared agent skills to ${AGENTS_SKILLS_DIR}/"
-    else
-        echo "Tag ${latest_tag} predates the core/extra skill layout — skipping shared agent skill install"
+    if [ "$skip_codex" -eq 0 ]; then
+        if [ -d "apps/skills/core" ] && [ -n "$(ls -A apps/skills/core 2>/dev/null)" ]; then
+            mkdir -p "$AGENTS_SKILLS_DIR"
+            copy_skill_if_present apps/skills/core/plannotator-review "$AGENTS_SKILLS_DIR"
+            copy_skill_if_present apps/skills/core/plannotator-annotate "$AGENTS_SKILLS_DIR"
+            copy_skill_if_present apps/skills/core/plannotator-last "$AGENTS_SKILLS_DIR"
+            echo "Installed shared agent skills to ${AGENTS_SKILLS_DIR}/"
+        else
+            echo "Tag ${latest_tag} predates the core/extra skill layout — skipping shared agent skill install"
+        fi
     fi
 
     # OpenCode slash command stubs (the plugin intercepts execution) —
@@ -1696,9 +1746,9 @@ fi
 # leaves users with neither the command nor the skill.
 CLAUDE_COMMANDS_DIR="${CLAUDE_CONFIG_DIR:-$HOME/.claude}/commands"
 for cmd in plannotator-review plannotator-annotate plannotator-last; do
-    # A skills opt-out installed no replacement this run, so it removes
-    # nothing either — skip means do-not-write, never remove.
-    if [ "$skip_skills" -eq 1 ]; then
+    # A Claude or skills opt-out installed no replacement this run, so it
+    # removes nothing either — skip means do-not-write, never remove.
+    if [ "$skip_claude" -eq 1 ] || [ "$skip_skills" -eq 1 ]; then
         continue
     fi
     if [ -d "$CLAUDE_SKILLS_DIR/$cmd" ] && [ -f "$CLAUDE_COMMANDS_DIR/$cmd.md" ]; then
@@ -1714,7 +1764,13 @@ for scope in "$CLAUDE_SKILLS_DIR" "$AGENTS_SKILLS_DIR" "$KIRO_SKILLS_DIR"; do
     if [ "$skip_skills" -eq 1 ]; then
         continue
     fi
-    # A Kiro opt-out leaves ~/.kiro entirely untouched — including this sweep.
+    # Per-harness opt-outs leave their skill scopes entirely untouched.
+    if [ "$scope" = "$CLAUDE_SKILLS_DIR" ] && [ "$skip_claude" -eq 1 ]; then
+        continue
+    fi
+    if [ "$scope" = "$AGENTS_SKILLS_DIR" ] && [ "$skip_codex" -eq 1 ]; then
+        continue
+    fi
     if [ "$scope" = "$KIRO_SKILLS_DIR" ] && [ "$skip_kiro" -eq 1 ]; then
         continue
     fi
@@ -1765,6 +1821,12 @@ done
 if [ "$skip_skills" -eq 0 ] && [ -n "$invocable_choice" ] && [ "$invocable_choice" != "none" ]; then
     for skill in $(echo "$invocable_choice" | tr ',' ' '); do
         for scope in "$CLAUDE_SKILLS_DIR" "$AGENTS_SKILLS_DIR"; do
+            if [ "$scope" = "$CLAUDE_SKILLS_DIR" ] && [ "$skip_claude" -eq 1 ]; then
+                continue
+            fi
+            if [ "$scope" = "$AGENTS_SKILLS_DIR" ] && [ "$skip_codex" -eq 1 ]; then
+                continue
+            fi
             skill_md="$scope/$skill/SKILL.md"
             if [ -f "$skill_md" ] && grep -q '^disable-model-invocation: true$' "$skill_md"; then
                 grep -v '^disable-model-invocation: true$' "$skill_md" > "$skill_md.tmp" && mv "$skill_md.tmp" "$skill_md"
@@ -1778,9 +1840,11 @@ if [ "$skip_skills" -eq 0 ] && [ -n "$invocable_choice" ] && [ "$invocable_choic
     done
 fi
 
-# Update Pi extension if pi is installed. The pi-extension no longer bundles
+# Update Pi only when explicitly selected. The pi-extension no longer bundles
 # skills; Pi keeps its extension commands and the plannotator_submit_plan tool.
-update_pi_extension_if_present
+if [ "$skip_pi" -eq 0 ]; then
+    update_pi_extension_if_present
+fi
 
 # --- Gemini CLI support (only if Gemini is installed) ---
 if [ -d "$HOME/.gemini" ] && [ "$skip_gemini" -eq 1 ]; then
@@ -1892,9 +1956,13 @@ echo "=========================================="
 echo "  PI USERS"
 echo "=========================================="
 echo ""
-echo "Install or update the extension:"
-echo ""
-echo "  pi install npm:@plannotator/pi-extension"
+if [ "$skip_pi" -eq 1 ]; then
+    echo "Pi integration skipped (--skip-pi); its cache and extension were untouched."
+else
+    echo "Install or update the extension:"
+    echo ""
+    echo "  pi install npm:@plannotator/pi-extension"
+fi
 echo ""
 echo "=========================================="
 echo "  GEMINI CLI USERS"
@@ -1924,9 +1992,8 @@ echo "=========================================="
 echo ""
 if [ "$codex_available" -eq 1 ] && [ "$skip_codex" -eq 1 ]; then
     echo "Codex was detected, but the integration was skipped (${skip_codex_source})."
-    echo "No files under ${CODEX_DIR} were written or removed. The shared agent"
-    echo "skills in ~/.agents/skills serve multiple agents and are still installed."
-    echo "Re-run without the opt-out to add the Stop hook."
+    echo "No files under ${CODEX_DIR} or ~/.agents/skills were written or removed."
+    echo "Re-run without the opt-out to add the Stop hook and shared skills."
 elif [ "$codex_available" -eq 1 ]; then
     echo "Restart Codex Desktop or CLI after installing."
     echo "Plan review is configured through the Codex Stop hook."
@@ -1966,50 +2033,56 @@ else
 fi
 echo ""
 echo "=========================================="
-if [ "$skip_skills" -eq 1 ]; then
-    # Never claim the /plannotator-* commands are ready when nothing was
-    # installed — that false banner is exactly what the skills-checkout guard
-    # exists to prevent.
-    echo "  CLAUDE CODE USERS: BINARY INSTALLED"
+if [ "$skip_claude" -eq 1 ]; then
+    echo "  CLAUDE CODE USERS: INTEGRATION SKIPPED"
+    echo "=========================================="
+    echo ""
+    echo "Claude hooks, skills, and commands were left untouched (--skip-claude)."
 else
-    echo "  CLAUDE CODE USERS: YOU'RE ALL SET!"
-fi
-echo "=========================================="
-echo ""
-echo "Install the Claude Code plugin:"
-echo "  /plugin marketplace add backnotprop/plannotator"
-echo "  /plugin install plannotator@plannotator"
-echo ""
-echo "Upgrading from an older version? Also run /plugin marketplace update"
-echo "so the plugin drops its old plannotator:* command entries."
-echo ""
-if [ "$skip_skills" -eq 1 ]; then
-    echo "Skills were skipped (${skip_skills_source}), so the /plannotator-review,"
-    echo "/plannotator-annotate, and /plannotator-last commands are NOT installed."
-    echo "Re-run the installer without the opt-out to add them."
-else
-    echo "The /plannotator-review, /plannotator-annotate, and /plannotator-last commands are ready to use after you restart Claude Code!"
-fi
+    if [ "$skip_skills" -eq 1 ]; then
+        # Never claim the /plannotator-* commands are ready when nothing was
+        # installed — that false banner is exactly what the skills-checkout guard
+        # exists to prevent.
+        echo "  CLAUDE CODE USERS: BINARY INSTALLED"
+    else
+        echo "  CLAUDE CODE USERS: YOU'RE ALL SET!"
+    fi
+    echo "=========================================="
+    echo ""
+    echo "Install the Claude Code plugin:"
+    echo "  /plugin marketplace add backnotprop/plannotator"
+    echo "  /plugin install plannotator@plannotator"
+    echo ""
+    echo "Upgrading from an older version? Also run /plugin marketplace update"
+    echo "so the plugin drops its old plannotator:* command entries."
+    echo ""
+    if [ "$skip_skills" -eq 1 ]; then
+        echo "Skills were skipped (${skip_skills_source}), so the /plannotator-review,"
+        echo "/plannotator-annotate, and /plannotator-last commands are NOT installed."
+        echo "Re-run the installer without the opt-out to add them."
+    else
+        echo "The /plannotator-review, /plannotator-annotate, and /plannotator-last commands are ready to use after you restart Claude Code!"
+    fi
 
-if [ "$skip_skills" -eq 0 ] && [ "$extras_choice" != "yes" ]; then
-    echo ""
-    echo "Optional skills (compound planning, setup-goal, visual explainer):"
-    echo "  npx skills add backnotprop/plannotator/apps/skills/extra --global"
-fi
+    if [ "$skip_skills" -eq 0 ] && [ "$extras_choice" != "yes" ]; then
+        echo ""
+        echo "Optional skills (compound planning, setup-goal, visual explainer):"
+        echo "  npx skills add backnotprop/plannotator/apps/skills/extra --global"
+    fi
 
-# Warn if plannotator is configured in both settings.json hooks AND the plugin (causes double execution)
-# Only warn when the plugin is installed — manual-only users won't have overlap
-CLAUDE_SETTINGS="${CLAUDE_CONFIG_DIR:-$HOME/.claude}/settings.json"
-if [ -f "$PLUGIN_HOOKS" ] && [ -f "$CLAUDE_SETTINGS" ] && grep -q '"command".*plannotator' "$CLAUDE_SETTINGS" 2>/dev/null; then
-    echo ""
-    echo "⚠️ ⚠️ ⚠️  WARNING: DUPLICATE HOOK DETECTED  ⚠️ ⚠️ ⚠️"
-    echo ""
-    echo "  plannotator was found in your settings.json hooks:"
-    echo "  $CLAUDE_SETTINGS"
-    echo ""
-    echo "  This will cause plannotator to run TWICE on each plan review."
-    echo "  Remove the plannotator hook from settings.json and rely on the"
-    echo "  plugin instead (installed automatically via marketplace)."
-    echo ""
-    echo "⚠️ ⚠️ ⚠️ ⚠️ ⚠️ ⚠️ ⚠️ ⚠️ ⚠️ ⚠️ ⚠️ ⚠️ ⚠️ ⚠️ ⚠️ ⚠️ ⚠️"
+    # Warn if plannotator is configured in both settings.json hooks AND the plugin.
+    CLAUDE_SETTINGS="${CLAUDE_CONFIG_DIR:-$HOME/.claude}/settings.json"
+    if [ -f "$PLUGIN_HOOKS" ] && [ -f "$CLAUDE_SETTINGS" ] && grep -q '"command".*plannotator' "$CLAUDE_SETTINGS" 2>/dev/null; then
+        echo ""
+        echo "⚠️ ⚠️ ⚠️  WARNING: DUPLICATE HOOK DETECTED  ⚠️ ⚠️ ⚠️"
+        echo ""
+        echo "  plannotator was found in your settings.json hooks:"
+        echo "  $CLAUDE_SETTINGS"
+        echo ""
+        echo "  This will cause plannotator to run TWICE on each plan review."
+        echo "  Remove the plannotator hook from settings.json and rely on the"
+        echo "  plugin instead (installed automatically via marketplace)."
+        echo ""
+        echo "⚠️ ⚠️ ⚠️ ⚠️ ⚠️ ⚠️ ⚠️ ⚠️ ⚠️ ⚠️ ⚠️ ⚠️ ⚠️ ⚠️ ⚠️ ⚠️ ⚠️"
+    fi
 fi
