@@ -78,7 +78,7 @@ local function on_attach_evt(client, bufnr)
   if client and client:supports_method(vim.lsp.protocol.Methods.textDocument_inlayHint, bufnr) then
     vim.keymap.set("n", "<leader>th", function()
       vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({ bufnr = bufnr }))
-    end, { desc = "[T]oggle Inlay [H]ints", silent = true })
+    end, { buffer = bufnr, desc = "[T]oggle Inlay [H]ints", silent = true })
   end
 end
 
