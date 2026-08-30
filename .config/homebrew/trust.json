@@ -5,5 +5,8 @@
   ],
   "trustedcasks": [
     "nikitabobko/tap/aerospace"
+  ],
+  "trustedtaps": [
+    "gentleman-programming/tap"
   ]
 }
