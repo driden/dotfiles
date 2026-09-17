@@ -124,9 +124,6 @@ setup_animations() {
     # Disable opening and closing window animations
     defaults write NSGlobalDomain NSAutomaticWindowAnimationsEnabled -bool false
 
-    # Disable smooth scrolling
-    defaults write NSGlobalDomain NSScrollAnimationEnabled -bool false
-
     # Faster Mission Control animations
     defaults write com.apple.dock expose-animation-duration -float 0.1
 
