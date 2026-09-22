@@ -11,7 +11,7 @@ set -e
 # OpenCode and OpenCode 2 share ~/.config/opencode.
 
 REPO="backnotprop/plannotator"
-INSTALL_DIR="$HOME/.local/third-party/bin"
+INSTALL_DIR="$HOME/third-party/bin"
 
 # First plannotator release that carries SLSA build-provenance attestations.
 # Releases before this tag were cut before release.yml added the
@@ -115,7 +115,7 @@ Options:
                          agent-terminal runtime, and every per-agent integration
                          (skills, hooks, slash commands, and config for Claude,
                          Codex, OpenCode, Gemini, and Kiro). No persistent state
-                         is written outside $HOME/.local/third-party/bin (a temp
+                         is written outside $HOME/third-party/bin (a temp
                          download file is still used and removed). Also
                          enabled by exporting PLANNOTATOR_MINIMAL=1.
   --no-minimal           Force a full install even when PLANNOTATOR_MINIMAL is
@@ -924,7 +924,7 @@ print_path_advice() {
             *)      shell_config="your shell config" ;;
         esac
 
-        echo "  echo 'export PATH=\"\$HOME/.local/third-party/bin:\$PATH\"' >> ${shell_config}"
+        echo "  echo 'export PATH=\"\$HOME/third-party/bin:\$PATH\"' >> ${shell_config}"
         echo "  source ${shell_config}"
     fi
     echo ""

@@ -1,0 +1,49 @@
+#!/usr/bin/env bash
+# Pick a live Plannotator session and open it in the browser.
+# Bound to prefix-a in tmux. fzf draws its own tmux popup.
+set -eu
+
+# One JSON file per session; entries outlive the server, so drop dead pids.
+# URL stays last: column(1) aligns the rest, fzf hides it, the open uses it.
+live_sessions() {
+    jq -r '(.label // "-") as $l | .mode as $m
+           | [ .pid,
+               (.project // "-"),
+               ($l | sub("^" + $m + "-"; "")),
+               (((now - (.startedAt | sub("\\.[0-9]+Z$"; "Z") | fromdateiso8601)) / 60 | floor | tostring) + "m"),
+               .url ]
+           | @tsv' ~/.plannotator/sessions/*.json 2>/dev/null |
+        while IFS=$'\t' read -r pid rest; do
+            kill -0 "$pid" 2>/dev/null && printf '%s\n' "$rest"
+        done
+}
+
+sessions=$(live_sessions || true)
+count=$(printf '%s' "$sessions" | grep -c . || true)
+
+case "$count" in
+    0) if [ -n "${TMUX:-}" ]; then
+           tmux display-popup -xR -y0 -w 22 -h 3 -E \
+               "printf '\033[1;31mNo live sessions\033[0m\n'; sleep 1"
+       else
+           echo "No live sessions" >&2
+       fi
+       exit 0 ;;
+    1) selected=$sessions ;;
+    # fzf --tmux popups are borderless and both the input and info lines are
+    # off, so sizing the popup to the rows leaves the list centred on screen
+    # with nothing around it. Width is the widest visible row (the URL is
+    # hidden) plus fzf's pointer column.
+    *)
+        rows=$(printf '%s\n' "$sessions" | column -t -s $'\t')
+        width=$(printf '%s\n' "$rows" |
+            sed 's/[[:space:]]*http[^[:space:]]*$//' |
+            awk '{ if (length > m) m = length } END { print m + 3 }')
+        selected=$(printf '%s\n' "$rows" |
+            fzf --tmux "center,$width,$count" --layout reverse \
+                --with-nth ..-2 --no-input --info hidden) ;;
+esac
+
+[ -n "$selected" ] || exit 0
+url=${selected##*$'\t'}
+exec "${BROWSER:-open}" "${url##* }"

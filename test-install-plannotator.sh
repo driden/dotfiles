@@ -171,8 +171,8 @@ run_case() {
 }
 
 assert_common_install_policy() {
-    if [ ! -x "$case_dir/home/.local/third-party/bin/plannotator" ]; then
-        fail "$1 did not install ~/.local/third-party/bin/plannotator"
+    if [ ! -x "$case_dir/home/third-party/bin/plannotator" ]; then
+        fail "$1 did not install ~/third-party/bin/plannotator"
     fi
     if [ -e "$case_dir/home/.local/bin/plannotator" ]; then
         fail "$1 wrote the binary under ~/.local/bin"
