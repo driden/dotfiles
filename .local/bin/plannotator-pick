@@ -30,18 +30,17 @@ case "$count" in
        fi
        exit 0 ;;
     1) selected=$sessions ;;
-    # fzf --tmux popups are borderless and both the input and info lines are
-    # off, so sizing the popup to the rows leaves the list centred on screen
-    # with nothing around it. Width is the widest visible row (the URL is
-    # hidden) plus fzf's pointer column.
+    # The input and info lines are off, so the popup only needs the rows plus
+    # fzf's border (one line/column each side). Width is the widest visible
+    # row (the URL is hidden) plus the pointer column and border.
     *)
         rows=$(printf '%s\n' "$sessions" | column -t -s $'\t')
         width=$(printf '%s\n' "$rows" |
             sed 's/[[:space:]]*http[^[:space:]]*$//' |
-            awk '{ if (length > m) m = length } END { print m + 3 }')
+            awk '{ if (length > m) m = length } END { print m + 5 }')
         selected=$(printf '%s\n' "$rows" |
-            fzf --tmux "center,$width,$count" --layout reverse \
-                --with-nth ..-2 --no-input --info hidden) ;;
+            fzf --tmux "center,$width,$((count + 2))" --layout reverse \
+                --with-nth ..-2 --no-input --info hidden) || exit 0 ;;
 esac
 
 [ -n "$selected" ] || exit 0

@@ -44,3 +44,6 @@ zsh-snap
 
 !/.config/opencode/plugins/
 !/.config/opencode/plugins/notify-tmux.ts
+
+# fnox secret names are machine-specific (work Mac only)
+.config/fnox/
