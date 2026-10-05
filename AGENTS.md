@@ -24,7 +24,7 @@ A personal dotfiles repo deployed to `$HOME` via GNU Stow. Files in this repo ar
 - `bootstrap.sh` / `init.sh` — provisioning entry points. `init.sh` is for empty machines (needs git + ssh); `bootstrap.sh` can run on its own once the repo exists.
 - `setup/{macos,arch,debian,fedora}.sh` — installs packages for that platform. macOS reads `Brewfile`; Arch keeps `PACMAN_PACKAGES` and `AUR_PACKAGES` arrays inline.
 - `postinstall/{macos,arch}.sh` — OS-level tweaks run after packages are in place (macOS uses `defaults write` for Dock/Finder/keyboard/etc.).
-- `.config/mise/config.toml` — runtime versions managed by mise (go, node, java, lua 5.1, bun, ruff, uv, shellcheck, shfmt, stylua, lua-language-server, opencode, pi). On macOS, mise itself is installed via brew (so `install_mise` in bootstrap is a no-op there); Linux installs it from the upstream installer.
+- `.config/mise/config.toml` — runtime versions managed by mise (go, node, java, lua 5.1, bun, ruff, uv, shellcheck, shfmt, stylua, lua-language-server, opencode2 (npm:@opencode-ai/cli), pi, pnpm). On macOS, mise itself is installed via brew (so `install_mise` in bootstrap is a no-op there); Linux installs it from the upstream installer.
 - `.stow-local-ignore` — files Stow must NOT symlink (scripts, README, setup dirs, etc.). When adding top-level repo files that shouldn't land in `$HOME`, add them here.
 - `scripts/` — sourced by `.zshrc` from `$HOME/scripts` (and `$HOME/workscripts` if present). Anything matching `*.zsh` or `*.sh` is auto-sourced.
 - `.local/bin/` — user-scope executables stowed to `~/.local/bin/`. Includes `tmux-sessionizer` (custom), `theme`, and several `build-*` scripts.

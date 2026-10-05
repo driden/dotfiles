@@ -18,11 +18,11 @@ claude-code = "latest"
 "pipx:pyright" = "latest"
 jq = "latest"
 hunk = "latest"
-opencode = "latest"
 superhtml = "latest"
 "npm:@opencode-ai/cli" = { version = "next", allow_builds = ["@opencode-ai/cli"] }
 "npm:typescript" = "6"
 fnox = "latest"
+pnpm = "latest"
 
 [settings]
 pipx.uvx = true

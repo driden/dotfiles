@@ -91,8 +91,6 @@ brew "mise"
 brew "pkgconf"
 # Draw UML diagrams
 brew "plantuml"
-# Fast, disk space efficient package manager
-brew "pnpm"
 # Podman Terminal User Interface
 brew "podman-tui"
 # Search tool like grep and The Silver Searcher

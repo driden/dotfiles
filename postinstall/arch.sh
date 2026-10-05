@@ -42,9 +42,6 @@ PACMAN_PACKAGES=(
     # Build tools
     cmake
 
-    # JS/TS tooling
-    pnpm
-
     # Dev tooling
     mise
 
