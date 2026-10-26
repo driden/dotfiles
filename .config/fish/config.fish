@@ -65,6 +65,10 @@ set -gx FZF_ALT_C_OPTS "--preview 'eza --icons --color=always --tree --level=1 {
 fzf --fish | source
 mise activate fish | source
 
+if type -q fnox
+    fnox activate fish | source
+end
+
 if status is-interactive
     # Commands to run in interactive sessions can go here
     set fish_greeting # disable welcome message
