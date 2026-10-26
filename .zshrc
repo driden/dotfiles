@@ -222,6 +222,10 @@ if type mise &>/dev/null; then
    mise settings add idiomatic_version_file_enable_tools node
 fi
 
+if type fnox &>/dev/null; then
+  eval "$(fnox activate zsh)"
+fi
+
 # Start SSH agent if not already running
 if [ -z "$SSH_AUTH_SOCK" ]; then
     eval "$(ssh-agent -s)" >/dev/null

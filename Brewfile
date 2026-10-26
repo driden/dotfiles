@@ -2,17 +2,12 @@ tap "felixkratz/formulae", "https://github.com/FelixKratz/homebrew-formulae"
 tap "hashicorp/tap"
 tap "nikitabobko/tap"
 tap "vjeantet/tap"
-tap "wezterm/wezterm", "https://github.com/wezterm/homebrew-wezterm.git"
 # Tool for generating GNU Standards-compliant Makefiles
 brew "automake"
-# Cryptography and SSL/TLS Toolkit
-brew "openssl@3"
 # Official Amazon AWS command-line interface
 brew "awscli"
 # Bourne-Again SHell, a UNIX command interpreter
 brew "bash"
-# Core application library for C
-brew "glib"
 # Cross-platform make
 brew "cmake"
 # Container runtimes on MacOS (and Linux) with minimal setup
@@ -43,8 +38,6 @@ brew "ffmpeg"
 brew "fzf"
 # GNU awk utility
 brew "gawk"
-# Toolkit for image loading and pixel buffer manipulation
-brew "gdk-pixbuf"
 # GitHub command-line tool
 brew "gh"
 # Distributed revision control system
@@ -53,20 +46,10 @@ brew "git"
 brew "git-delta"
 # Quickly rewrite git repository history
 brew "git-filter-repo"
-# GNU Transport Layer Security (TLS) Library
-brew "gnutls"
-# GNU Privacy Guard (OpenPGP)
-brew "gnupg"
 # Library access to GnuPG
 brew "gpgme"
-# Framework for layout and rendering of i18n text
-brew "pango"
-# Library to render SVG files using Cairo
-brew "librsvg"
 # GitHub Markdown previewer
 brew "grip"
-# ISO/IEC 23008-12:2017 HEIF file format decoder and encoder
-brew "libheif"
 # Tools and libraries to manipulate images in select formats
 brew "imagemagick"
 # Lightweight and flexible command-line JSON processor
@@ -91,8 +74,6 @@ brew "mise"
 brew "pkgconf"
 # Draw UML diagrams
 brew "plantuml"
-# Podman Terminal User Interface
-brew "podman-tui"
 # Search tool like grep and The Silver Searcher
 brew "ripgrep"
 # Smart session manager for the terminal
@@ -140,8 +121,6 @@ cask "font-powerline-symbols"
 cask "ghostty"
 # Speech to text application
 cask "handy"
-# HTTP and GraphQL Client
-cask "insomnia"
 # Keyboard customiser
 cask "karabiner-elements", args: { appdir: "/Applications" }
 # Reverse proxy, secure introspectable tunnels to localhost
@@ -158,7 +137,5 @@ cask "sioyek"
 cask "vesktop"
 # Open-source code editor
 cask "visual-studio-code", args: { appdir: "/Applications" }
-# REST, GraphQL and gRPC client
-cask "yaak"
 # Multiplayer code editor
 cask "zed"
