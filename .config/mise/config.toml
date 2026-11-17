@@ -23,6 +23,9 @@ superhtml = "latest"
 "npm:typescript" = "6"
 fnox = "latest"
 pnpm = "latest"
+"github:braintrustdata/bt" = "latest"
+ollama = "latest"
+engram = "latest"
 
 [settings]
 pipx.uvx = true

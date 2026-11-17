@@ -70,6 +70,10 @@ click_flag=""
 args=(-title "$app · $label" -subtitle "$event" -message "$message" -sound default -group "$group")
 if [ -n "$session" ] && [ -n "$TMUX_PANE" ]; then
   args+=(-activate "com.mitchellh.ghostty" -execute "$HOME/.local/bin/notify-click.sh $click_flag '$TMUX_PANE'")
+elif [ -n "$__CFBundleIdentifier" ]; then
+  # Not in tmux (e.g. the Claude desktop app): macOS hands every process the
+  # bundle id of the app that launched it, so clicking focuses that app.
+  args+=(-activate "$__CFBundleIdentifier")
 fi
 
 terminal-notifier "${args[@]}" >/dev/null 2>&1 || true
