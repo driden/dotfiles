@@ -13,9 +13,13 @@ A personal dotfiles repo deployed to `$HOME` via GNU Stow. Files in this repo ar
                        #   then points ~/.config/themes/current at the default theme
 ./link.sh --dry-run    # (-n) show what stow + the theme symlink WOULD do, change nothing
 ./unlink.sh            # stow --dotfiles --delete → removes those symlinks
+./unfold.sh [-n]       # one-time per machine: replace old folded dir links (~/.config -> repo)
+                       #   with real dirs, move app state out of the repo, relink
 ./init.sh              # step 1/2 for a brand-new machine: ssh key + clone + hand off to bootstrap.sh
 ./bootstrap.sh         # step 2/2: platform setup → mise tools → default shell → stow → fonts → postinstall
 ```
+
+`link.sh` runs stow with `--no-folding`: only files are symlinked, directories in `$HOME` are real, so app state never lands in the repo. It also skips other-OS configs (`OS_IGNORE` in `link.sh`) and anything listed in the untracked, per-machine `~/.driden-ignore` (one stow regex per line, full paths).
 
 `stow --dotfiles` strips the `dot-` prefix from filenames, so a tracked `dot-zshrc` would land as `~/.zshrc`. Tracked dotfiles in this repo already start with `.` and stow handles them directly.
 
