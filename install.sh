@@ -9,6 +9,9 @@ case "${1:-}" in
     "") ;;
     *) echo "usage: $0 [-n|--dry-run]" >&2; exit 1 ;;
 esac
+# Plugins pinned as submodules (e.g. rex): a fresh clone has them empty.
+[ -n "$DRY_RUN" ] || git -C "$DOTFILES_DIR" submodule update --init --quiet
+
 # Skip configs that make no sense on this OS. Same regex rules as
 # .stow-local-ignore, but only anchored at the end, so use full paths.
 case "$(uname -s)" in

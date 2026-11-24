@@ -9,17 +9,17 @@ A personal dotfiles repo deployed to `$HOME` via GNU Stow. Files in this repo ar
 ## Common commands
 
 ```sh
-./link.sh              # stow --dotfiles --stow → symlinks everything into $HOME,
-                       #   then points ~/.config/themes/current at the default theme
-./link.sh --dry-run    # (-n) show what stow + the theme symlink WOULD do, change nothing
-./unlink.sh            # stow --dotfiles --delete → removes those symlinks
+./install.sh           # init submodules, then stow --no-folding: file-level symlinks into $HOME
+                       #   (skips other-OS configs + ~/.driden-ignore), then the default theme link
+./install.sh --dry-run # (-n) show what stow + the theme symlink WOULD do, change nothing
+./uninstall.sh         # stow --dotfiles --delete → removes those symlinks
 ./unfold.sh [-n]       # one-time per machine: replace old folded dir links (~/.config -> repo)
                        #   with real dirs, move app state out of the repo, relink
 ./init.sh              # step 1/2 for a brand-new machine: ssh key + clone + hand off to bootstrap.sh
 ./bootstrap.sh         # step 2/2: platform setup → mise tools → default shell → stow → fonts → postinstall
 ```
 
-`link.sh` runs stow with `--no-folding`: only files are symlinked, directories in `$HOME` are real, so app state never lands in the repo. It also skips other-OS configs (`OS_IGNORE` in `link.sh`) and anything listed in the untracked, per-machine `~/.driden-ignore` (one stow regex per line, full paths).
+`install.sh` runs stow with `--no-folding`: only files are symlinked, directories in `$HOME` are real, so app state never lands in the repo. It also skips other-OS configs (`OS_IGNORE` in `install.sh`) and anything listed in the untracked, per-machine `~/.driden-ignore` (one stow regex per line, full paths).
 
 `stow --dotfiles` strips the `dot-` prefix from filenames, so a tracked `dot-zshrc` would land as `~/.zshrc`. Tracked dotfiles in this repo already start with `.` and stow handles them directly.
 
@@ -39,14 +39,14 @@ A personal dotfiles repo deployed to `$HOME` via GNU Stow. Files in this repo ar
 - **macOS package** → add to `Brewfile`.
 - **Arch package** → append to `PACMAN_PACKAGES` (official) or `AUR_PACKAGES` (yay) in `setup/arch.sh`.
 - **Cross-platform managed runtime** (anything with a versioned toolchain) → `.config/mise/config.toml`.
-- **Top-level repo file that must NOT be stowed** → add to `.stow-local-ignore` before running `link.sh`.
+- **Top-level repo file that must NOT be stowed** → add to `.stow-local-ignore` before running `install.sh`.
 
 ## Stow ignore gotcha
 
 `.stow-local-ignore` entries are **anchored Perl regexes** (full-match), tested against *both* the basename *and* the package-relative path of every node — not globs.
 
 - A bare word like `rofi` matches the basename, so it would ignore **every** `rofi` dir — including `.config/rofi`. To ignore only a nested path, write the full path (`.config/git/ignore`).
-- Anchoring is exact: a typo like `postinstal` does **not** match `postinstall`, so the entry silently does nothing and the dir gets stowed anyway. Verify with `./link.sh --dry-run`.
+- Anchoring is exact: a typo like `postinstal` does **not** match `postinstall`, so the entry silently does nothing and the dir gets stowed anyway. Verify with `./install.sh --dry-run`.
 
 ## Neovim specifics
 
@@ -57,7 +57,7 @@ A personal dotfiles repo deployed to `$HOME` via GNU Stow. Files in this repo ar
 
 ## Theming
 
-Themes live in `themes/<name>/` — each dir has `colors.toml` (semantic palette) plus generated outputs. **Only `starship.toml` is wired up right now** (`borders.sh`/`fzf.sh`/`tmux.conf` exist in some dirs but are not yet built or consumed — WIP). `themes/` is **not** stowed (it's in `.stow-local-ignore`); the active theme lives at the `~/.config/themes/current` symlink, which `link.sh` creates pointing at `bamboo` on first link (never clobbering an existing choice). Switch with `theme set <name>`, which repoints that symlink; **open a new shell** to pick up the change.
+Themes live in `themes/<name>/` — each dir has `colors.toml` (semantic palette) plus generated outputs. **Only `starship.toml` is wired up right now** (`borders.sh`/`fzf.sh`/`tmux.conf` exist in some dirs but are not yet built or consumed — WIP). `themes/` is **not** stowed (it's in `.stow-local-ignore`); the active theme lives at the `~/.config/themes/current` symlink, which `install.sh` creates pointing at `bamboo` on first link (never clobbering an existing choice). Switch with `theme set <name>`, which repoints that symlink; **open a new shell** to pick up the change.
 
 **Starship wiring:** `.zshrc` and `.config/fish/config.fish` set `STARSHIP_CONFIG` to `~/.config/themes/current/starship.toml` *only when that file exists*, otherwise starship falls back to its default `~/.config/starship.toml` (kept as the fallback, never deleted). So a fresh machine with no linked theme still gets a working prompt.
 

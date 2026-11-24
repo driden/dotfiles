@@ -3,8 +3,8 @@ README.md
 .git
 .gitignore
 simple_zshrc
-link.sh
-unlink.sh
+install\.sh
+uninstall\.sh
 bootstrap.sh
 setup
 picom.conf
@@ -20,3 +20,4 @@ install-plannotator\.sh
 test-install-plannotator\.sh
 AGENTS.md
 unfold\.sh
+\.gitmodules

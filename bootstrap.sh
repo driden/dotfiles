@@ -117,7 +117,7 @@ set_default_shell() {
 
 link_dotfiles() {
     log "Linking dotfiles"
-    "$DOTFILES_DIR/link.sh"
+    "$DOTFILES_DIR/install.sh"
     ok "Dotfiles linked"
 }
 
