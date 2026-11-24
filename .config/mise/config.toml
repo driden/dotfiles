@@ -26,6 +26,7 @@ pnpm = "latest"
 "github:braintrustdata/bt" = "latest"
 ollama = "latest"
 engram = "latest"
+worktrunk = "latest"
 
 [settings]
 pipx.uvx = true
