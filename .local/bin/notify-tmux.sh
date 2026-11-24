@@ -26,6 +26,13 @@ event=$(printf '%s' "$input" | jq -r '.event // .hook_event_name // empty')
 session_id=$(printf '%s' "$input" | jq -r '.session_id // empty')
 pending_bg=$(printf '%s' "$input" | jq -r '(.background_tasks // []) | length')
 
+# Inside Rex (and not nested in tmux) Rex already notifies natively, so a
+# second one from here is a duplicate. Click-to-pane only matters for tmux.
+if [ -n "$REX_BLOCK" ] && [ -z "$TMUX_PANE" ]; then
+    log "SKIP event='$event' (Rex built-in notifications handle this)"
+    exit 0
+fi
+
 if [ "$event" = "Stop" ] && [ "$pending_bg" != "0" ] && [ -n "$pending_bg" ]; then
     log "SKIP event='Stop' pending_bg=$pending_bg (not actually done yet)"
     exit 0
