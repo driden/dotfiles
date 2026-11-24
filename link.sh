@@ -9,8 +9,23 @@ case "${1:-}" in
     "") ;;
     *) echo "usage: $0 [-n|--dry-run]" >&2; exit 1 ;;
 esac
-#--verbose 2 
-stow --dotfiles --stow ${DRY_RUN:+-n} --target="$HOME" .
+# Skip configs that make no sense on this OS. Same regex rules as
+# .stow-local-ignore, but only anchored at the end, so use full paths.
+case "$(uname -s)" in
+    Darwin) OS_IGNORE='\.config/(awesome|rofi|\.xmobarrc) \.xmonad' ;;
+    *) OS_IGNORE='\.config/(aerospace|karabiner|borders|homebrew) \.hammerspoon' ;;
+esac
+
+# Per-machine opt-outs: one regex per line in ~/.driden-ignore (not tracked).
+LOCAL_IGNORE="$HOME/.driden-ignore"
+[ -f "$LOCAL_IGNORE" ] && OS_IGNORE="$OS_IGNORE $(grep -v '^\s*\(#\|$\)' "$LOCAL_IGNORE")"
+
+set -f --  # -f: regexes are not globs
+for re in $OS_IGNORE; do set -- "$@" --ignore="$re"; done
+
+# --no-folding: link files, never whole dirs. Otherwise ~/.config itself becomes
+# a symlink into this repo and every app's state ends up in git status.
+stow --dotfiles --no-folding --stow ${DRY_RUN:+-nv} "$@" --target="$HOME" .
 
 # themes/ is not stowed (see .stow-local-ignore); apps read the active theme via
 # the ~/.config/themes/current symlink. Point it at the default theme on first

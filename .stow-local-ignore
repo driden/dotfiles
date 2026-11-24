@@ -19,3 +19,4 @@ docs
 install-plannotator\.sh
 test-install-plannotator\.sh
 AGENTS.md
+unfold\.sh
