@@ -7,9 +7,8 @@ rex.bind("ctrl+b>x", "pane.close")
 rex.bind("ctrl+b>z", "pane.zoom")
 rex.bind("ctrl+b>o", "pane.move_to_tab") -- send pane to another tab
 
-for key, dir in pairs({ h = "left", j = "down", k = "up", l = "right" }) do
-	rex.bind("ctrl+" .. key, "pane.focus", { direction = dir })
-end
+-- ctrl+h/j/k/l: move between panes, passing through to Neovim when it is focused.
+require("rex-navigator").setup()
 
 -- Tabs. ctrl+shift+h/l have no prefix, like your bind -n C-H/C-L.
 rex.bind("ctrl+shift+l", "client.tab.next")

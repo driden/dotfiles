@@ -1,5 +1,7 @@
 return {
   "christoomey/vim-tmux-navigator",
+  -- Only inside tmux; in Rex, rex-navigator.nvim owns <C-hjkl>.
+  enabled = vim.env.TMUX ~= nil and vim.env.TMUX ~= "",
   cmd = {
     "TmuxNavigateLeft",
     "TmuxNavigateDown",
