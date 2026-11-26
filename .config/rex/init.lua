@@ -13,8 +13,41 @@ require("rex-navigator").setup()
 -- Tabs. ctrl+shift+h/l have no prefix, like your bind -n C-H/C-L.
 rex.bind("ctrl+shift+l", "client.tab.next")
 rex.bind("ctrl+shift+h", "client.tab.previous")
-rex.bind("ctrl+b>n", "client.tab.next")
-rex.bind("ctrl+b>p", "client.tab.previous")
+-- Session-scoped (client.tab.* walks every session when the tab bar is vertical).
+-- The app only follows its own session.select, not a server-side focus change.
+local function cycle_window(ctx, step)
+	local view = rex.session.view({ session_id = ctx.session_id })
+	local windows = view and view.windows or {}
+	if #windows < 2 then
+		return
+	end
+	local current = 1
+	for i, w in ipairs(windows) do
+		if w.window_id == view.active_window_id then
+			current = i
+		end
+	end
+	local target = windows[(current - 1 + step) % #windows + 1]
+	rex.client.queue("session.select", { session_id = ctx.session_id, window_id = target.window_id })
+end
+rex.action({
+	name = "window_next",
+	title = "Next Window in Session",
+	category = "Window",
+	run = function(ctx)
+		cycle_window(ctx, 1)
+	end,
+})
+rex.action({
+	name = "window_prev",
+	title = "Previous Window in Session",
+	category = "Window",
+	run = function(ctx)
+		cycle_window(ctx, -1)
+	end,
+})
+rex.bind("ctrl+b>n", "window_next")
+rex.bind("ctrl+b>p", "window_prev")
 rex.bind("ctrl+b>c", "client.tab.new")
 rex.bind("ctrl+b>,", "client.tab.rename")
 rex.bind("ctrl+b>shift+7", "client.tab.close") -- &
