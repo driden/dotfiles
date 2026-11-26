@@ -46,6 +46,20 @@ rex.action({
 		cycle_window(ctx, -1)
 	end,
 })
+-- Toggle back to the previous session/tab (tmux last-window, across sessions).
+rex.action({
+	name = "window_last",
+	title = "Last Session/Tab",
+	category = "Window",
+	run = function(ctx)
+		local view = rex.session.view({ session_id = ctx.session_id })
+		local res = rex.call("focus_history.reverse", { not_window_id = view and view.active_window_id })
+		if res and res.reversed then
+			rex.client.queue("session.select", { session_id = res.session_id, window_id = res.window_id })
+		end
+	end,
+})
+rex.bind("ctrl+b>shift+6", "window_last") -- ^, like vim's alternate file
 rex.bind("ctrl+b>n", "window_next")
 rex.bind("ctrl+b>p", "window_prev")
 rex.bind("ctrl+b>c", "client.tab.new")
